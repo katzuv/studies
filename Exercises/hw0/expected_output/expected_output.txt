@@ -1,0 +1,5 @@
+Explicit is _much_ better than implicit!
+
+NOW is better than *NEVER*.
+Although 
+never is often bet-ter than 'Right' now.
