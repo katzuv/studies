@@ -1,0 +1,2 @@
+1,2,+,3,4,5,addition,9,5,5,subtraction,0,5,6,-,-1,4,8,*,32,6,5,multiplication,30,3,3,**,27,8,2,power,64
+
