@@ -1,5 +1,5 @@
 calculation = input()
-calculation = calculation.replace("**", "power").replace("*", "multiplication").replace("+", "addition").replace("-", "subtraction")
+calculation = calculation.replace("**", "power").replace("*", "multiplication").replace("+", "addition").replace("-,", "subtraction,")
 
 elements = calculation.split(",")
 
