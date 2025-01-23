@@ -13,3 +13,14 @@ def getMatrix():
         matrix.append(row)
 
     return matrix
+
+
+def permuteMatrix():
+    matrix = getMatrix()
+    permutation_input = input()
+    permutation_lst = [int(number) for number in permutation_input.split(",")]
+    applyPermutation(matrix, permutation_lst)
+    print(matrix)
+
+
+permuteMatrix()
