@@ -14,3 +14,16 @@ def changeToUpper(my_str, char, num):
 def changeToUpperFromList(lst, char, num):
     for i, string in enumerate(lst):
         lst[i] = changeToUpper(string, char, num)
+
+
+def main():
+    str_list = input()
+    char = input()
+    num = int(input())
+
+    strings = str_list.split(",")
+    changeToUpperFromList(strings, char, num)
+    print(strings)
+
+
+main()
