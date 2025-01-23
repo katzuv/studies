@@ -1,0 +1,3 @@
+sand,elk,noon,dragon,herb,elephant,loop,public
+o
+3
