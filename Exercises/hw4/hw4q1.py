@@ -9,3 +9,8 @@ def changeToUpper(my_str, char, num):
             new_str += character
 
     return new_str
+
+
+def changeToUpperFromList(lst, char, num):
+    for i, string in enumerate(lst):
+        lst[i] = changeToUpper(string, char, num)
