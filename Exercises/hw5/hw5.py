@@ -13,7 +13,19 @@ print(read_event_data('sports_event.csv'))
 # ### Section 2
 #%%
 def top_athlete(events, event_name):
-    ## Add your code!
+    event_names = events["Event"]
+    athlete_names = events["Athlete"]
+    scores = events["Score"]
+
+    relevant_athletes = []
+    relevant_scores = []
+
+    for i in range(len(event_names)):
+        if event_names[i] == event_name:
+            relevant_athletes.append(athlete_names[i])
+            relevant_scores.append(scores[i])
+
+    return
 #%%
 # Run - Do not change this cell!
 file_path = 'sports_event.csv'
@@ -24,6 +36,7 @@ for event in ["Discus Throw", "Long Jump", "High Jump", "Shot Put"]:
 # ### Section 3
 #%%
 def event_scores(events, event_name):
+    pass
     ## Add your code!
 #%%
 # Run - Do not change this cell!
@@ -35,7 +48,8 @@ for event in ["Discus Throw", "Long Jump", "High Jump", "Shot Put"]:
 # ### Section 4
 #%%
 def unique_events(events):
-    ## Add your code!
+    pass
+    # Add your code!
 #%%
 # Run - Do not change this cell!
 file_path = 'sports_event.csv'
@@ -45,7 +59,7 @@ print(sorted(unique_events(events)))
 # ### Section 5
 #%%
 def count_events(events):
-    ## Add your code!
+    pass# Add your code!
 #%%
 # Run - Do not change this cell!
 file_path = 'sports_event.csv'
@@ -59,11 +73,13 @@ for event in ["Discus Throw", "Long Jump", "High Jump", "Shot Put"]:
 # ### Section 6
 #%%
 def analyze_scores(events, event_name):
+    pass
     ## Add your code!
 #%% md
 # ### Section 7
 #%%
 def analyze_event(file_path, event_name):
+    pass
     ## Add your code!
     
 #%%
