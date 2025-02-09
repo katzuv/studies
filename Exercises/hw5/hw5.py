@@ -6,7 +6,9 @@ import pandas as pd
 # ### Section 1
 #%%
 def read_event_data(file_path):
-    ## Add your code!
+    return pd.read_csv(file_path)
+
+print(read_event_data('sports_event.csv'))
 #%% md
 # ### Section 2
 #%%
