@@ -14,13 +14,13 @@ $ av = vec(a_1, a_2), bv = vec(b_1, b_2), a_a dot bv = a_1b_1 + a_2b_2  \
  av dot bv = (a_1)^2 + (a_2)^2 = ||av|| => ||av|| = sqrt(av dot av)
 $
 יש הגדרה אחרת: $av dot bv = ||av|| dot ||bv||cos(alpha)$ \
-מכפלה סקלרית תמוגדרת גם ב-$Rn$ לכל $n$: 
+מכפלה סקלרית מוגדרת גם ב-$Rn$ לכל $n$: 
 $av dot bv = sum_(j=1)^n a_j dot b_j$ \ \
 
 ==== מכפלה פנימית
 יהי $V$ מרחב וקטורי (ממימד סופי). מכפלה פנימית ב-$V$ היא פונקציה $innerp(dot,dot): V times V -> bb(R)$.
-כלומר, לכל $u, v$, קיימת $innerp(u,v) in bb(R)$ המקיימת:
-1. *אי-שליליות חזקה*: לכל $u in V$, $innerp(u,u) >= 0$ אם"ם $u=0$ (וקטור האפס).
+כלומר, לכל $u, v$ קיימת $innerp(u,v) in bb(R)$ המקיימת:
+1. *אי-שליליות "חזקה"*: לכל $u in V$, $innerp(u,u) >= 0$ אם"ם $u=arrow(0)$ (וקטור האפס).
 2. *סימטריות*:
     $innerp(u,v)=innerp(v,u)$
 3. *לינאריות ברכיב הראשון*:
@@ -48,4 +48,4 @@ $ x^T A x = x dot A x = innerp(x, A x) = sum_(i,j=1)^n a_(i j) x_i x_j >= 0 $
 ==== משפט: אפיון מכפלה פנימית ב-$Rn$
 1. אם $A in Rnn$ מוגדרת חיובית, אז
     $innerp(x,y)_A: y^T A x = innerp(A x, y) = sum(i,j=1)^n a_(i j) x_i y_j$
-2. אם $innerp(x,y)$ מכפלה פנימית ב-$Rn$ אז קיימת מטריצה מוגדרת חיביות $A$ כך ש: $innerp(x,y)=innerp(x,y)_A$.
+2. אם $innerp(x,y)$ מכפלה פנימית ב-$Rn$ אז קיימת מטריצה מוגדרת חיובית $A$ כך ש: $innerp(x,y)=innerp(x,y)_A$.
