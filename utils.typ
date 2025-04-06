@@ -13,3 +13,5 @@
 #let Cn = [$bb(C)^n$]
 #let Rnn = [$bb(R)^(n times n)$]
 #let Cnn = [$bb(C)^(n times n)$]
+
+#let קותח(text) = [ #underline(text) ]
