@@ -3,6 +3,15 @@
 
 #let שם-מייל = [ == דן קצוב-פייגין #link("mailto:dan.k@campus.technion.ac.il")[`dan.k@campus.technion.ac.il`] ]
 
+#let גיליון(course, semester, number, date) = [
+  #set align(center)
+  = #course -- #semester\ 
+  = גיליון #number \
+  = מגיש: דן קצוב-פייגין `323002915` 
+  =  תאריך הגשה: #date
+  #pagebreak()
+  #set align(right) 
+]
 #let הרצאה(number, date, notes-link) = [
   == הרצאה #number | #date | #link(notes-link, "קישור לרשימות")
 ]
