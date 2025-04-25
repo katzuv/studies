@@ -5,10 +5,10 @@
 
 #let גיליון(course, semester, number, date) = [
   #set align(center)
-  = #course -- #semester\ 
-  = גיליון #number \
-  = מגיש: דן קצוב-פייגין `323002915` 
-  =  תאריך הגשה: #date
+  #text(3.5em)[#course -- #semester\ 
+  גיליון #number \
+  מגיש: דן קצוב-פייגין `323002915` 
+   תאריך הגשה: #date]
   #pagebreak()
   #set align(right) 
 ]
