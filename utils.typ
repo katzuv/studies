@@ -10,7 +10,7 @@
   מגיש: דן קצוב-פייגין 323002915 
    תאריך הגשה: #date]
   #pagebreak()
-  #set align(right) 
+  #set align(right)
 ]
 #let הרצאה(number, date, notes-link) = [
   == הרצאה #number | #date | #link(notes-link, "קישור לרשימות")
