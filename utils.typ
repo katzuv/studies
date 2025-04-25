@@ -24,3 +24,7 @@
 #let Cnn = [$bb(C)^(n times n)$]
 
 #let קותח(text) = [ #underline(text) ]
+
+#let משל = [
+  #align(left)[$qed$]
+]
