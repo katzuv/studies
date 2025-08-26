@@ -13,7 +13,7 @@
   #set align(right)
 ]
 #let הרצאה(number, date, notes-link) = [
-  == הרצאה #number | #date | #link(notes-link, "קישור לרשימות")
+  == הרצאה #number | #date \ #link(notes-link, "קישור להרצאה")
 ]
 
 #let innerp(x, y) = $lr(angle.l #x, #y angle.r)$
