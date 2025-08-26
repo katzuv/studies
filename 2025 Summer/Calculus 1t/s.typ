@@ -2,22 +2,22 @@
 #import "@preview/ctheorems:1.1.3": thmbox, thmrules
 #show: thmrules.with(qed-symbol: $square$) // Applies theorem styling, QED symbol is optional
 
+#set text(lang: "he", dir: rtl)
+
 // 2. Define your custom 'theorem' environment
-// The crucial change is adding `base_level: 1`.
-// This instructs `ctheorems` to only use the *first level* of the heading
-// (e.g., '1' from '1.1') for its numbering base.
+// The `thmbox` function by default links its numbering to the current heading structure
+// through its `base: "heading"` parameter, which is what we want for "Chapter.Theorem" numbering.
 #let theorem = thmbox(
-  "theorem",              // This is the unique identifier for the internal counter for theorems
-  "Theorem",              // This is the displayed name of the environment (e.g., "Theorem 1.1")
-  fill: rgb("#e8e8f8"),   // Optional: adds a light blue background fill to the theorem box
+  "theorem", // This is the unique identifier for the internal counter for theorems
+  "משפט", // This is the displayed name of the environment (e.g., "Theorem 1.1")
+  fill: rgb("#e8e8f8"), // Optional: adds a light blue background fill to the theorem box
   inset: (x: 1.2em, top: 1em, bottom: 0.8em), // Optional: adds padding inside the theorem box
-  radius: 4pt,            // Optional: rounds the corners of the theorem box
-  // --- This is the key change: ---
-  base_level: 1           // Limits the numbering base to only the first heading level [1, 2].
+  radius: 4pt // Optional: rounds the corners of the theorem box
 )
 
-// 3. Configure document headings to be numbered (e.g., "1.", "1.1", "2.", etc.)
-#set heading(numbering: "1.1") // Setting for multi-level heading numbering
+// 3. Configure document headings to be numbered (e.g., "1.", "2.", etc.)
+// This is essential for the "2.3" style numbering to work correctly.
+#set heading(numbering: "1.")
 
 // 4. Implement the crucial show rule to reset the 'theorem' counter
 // whenever a new level 1 heading appears.
@@ -30,25 +30,25 @@
 
 // --- Example Document Content to Demonstrate Numbering ---
 
-= Introduction to Real Analysis // This is heading 1.
+= חדו"א 1ת
 #lorem(20) // Some placeholder text
 
 #theorem[
-  Every convergent sequence of real numbers is a Cauchy sequence.
+  כל סדרה
 ] // This will be Theorem 1.1
 
 #theorem[
   The set of rational numbers is dense in the set of real numbers.
 ] // This will be Theorem 1.2
 
-== Intermediate Concepts // This is heading 1.1, a level 2 heading
+== כותרת
 #lorem(15)
 
 #theorem[
   The Bolzano-Weierstrass theorem states that every bounded sequence in $bb(R)^n$ has a convergent subsequence.
-] // **This will now be Theorem 1.3** (sequential within top-level 1, ignoring the '1.1' sub-heading)
+] // This will be Theorem 1.3
 
-= Advanced Topics in Calculus // This is heading 2.
+= Advanced Topics in Calculus
 #lorem(30) // Some placeholder text. This is the second level 1 heading.
 
 #theorem[
@@ -59,9 +59,13 @@
   The Fundamental Theorem of Calculus establishes a connection between the two main branches of calculus: differential calculus and integral calculus.
 ] // This will be Theorem 2.2
 
-=== Further Exploration // This is heading 2.1.1, a level 3 heading under heading 2.1 (not explicitly defined)
+#theorem[
+  For any real number $x$, the exponential function $e^x$ is equal to its own derivative.
+] // **This will be Theorem 2.3**, matching your desired numbering.
+
+=== Further Exploration (Under "Advanced Topics in Calculus")
 #lorem(10)
 
 #theorem[
-  The Mean Value Theorem states that if a function is continuous on a closed interval and differentiable on the open interval, then there exists a point in that interval where the instantaneous rate of change equals the average rate of change.
-] // **This will be Theorem 2.3**, matching your desired numbering.
+  L'Hôpital's Rule can be used to evaluate indeterminate forms of limits.
+] // This will be Theorem 2.4
