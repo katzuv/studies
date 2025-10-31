@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2562,
+    "title": "How do I change a reference's target?",
+    "slug": "how-do-i-change-a-references-target",
+    "posts_count": 3,
+    "created_at": "2025-01-27T16:31:47.226Z",
+    "last_posted_at": "2025-01-27T17:25:05.232Z",
+    "views": 42,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "LordBaryhobal",
+    "tags": [
+      "scripting",
+      "styling"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 174
+  },
+  "posts": [
+    {
+      "id": 7932,
+      "post_number": 1,
+      "username": "mezzogallium",
+      "name": "André Santos",
+      "created_at": "2025-01-27T16:31:47.448Z",
+      "updated_at": "2025-01-27T16:31:47.448Z",
+      "cooked": "<p>I am trying to write a show rule that takes references and appends something to the name of its target label:</p>\n<pre><code class=\"lang-auto\">show ref: it =&gt; {\n      let label_str = str(it.target).split(\":\")\n      if \"addition\" not in label_str {\n          label_str.push(\"addition\")\n      }\n      ref(label(label_str.join(\":\")))\n     }\n</code></pre>\n<p>However, I can’t call the <code>ref</code> function again at the end, because of show rule depth. The <code>target</code> field is also not mutable. How can I replace the reference in this situation?</p>",
+      "raw": "I am trying to write a show rule that takes references and appends something to the name of its target label: \n\n```\nshow ref: it => {\n      let label_str = str(it.target).split(\":\")\n      if \"addition\" not in label_str {\n          label_str.push(\"addition\")\n      }\n      ref(label(label_str.join(\":\")))\n     }\n```\nHowever, I can't call the `ref` function again at the end, because of show rule depth. The `target` field is also not mutable. How can I replace the reference in this situation?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 17,
+      "score": 93.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 372
+    },
+    {
+      "id": 7933,
+      "post_number": 2,
+      "username": "LordBaryhobal",
+      "name": "Baryhobal",
+      "created_at": "2025-01-27T16:43:51.525Z",
+      "updated_at": "2025-01-27T16:43:51.525Z",
+      "cooked": "<p>The problem is that it will always call ref recursively, leading to infinite recursion. To avoid this, you should move the ref call inside the if, and add an else clause which simply return <code>it</code>. That way, if the label doesn’t have the “addition” suffix, it is added an a new reference is made. Otherwise (including sub-call), it doesn’t modify the reference and simply returns it:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show ref: it =&gt; {\n  let label_str = str(it.target).split(\":\")\n  if \"addition\" not in label_str {\n    label_str.push(\"addition\")\n    ref(label(label_str.join(\":\")))\n  } else {\n    it\n  }\n}\n</code></pre>",
+      "raw": "The problem is that it will always call ref recursively, leading to infinite recursion. To avoid this, you should move the ref call inside the if, and add an else clause which simply return `it`. That way, if the label doesn't have the \"addition\" suffix, it is added an a new reference is made. Otherwise (including sub-call), it doesn't modify the reference and simply returns it:\n\n```typ\n#show ref: it => {\n  let label_str = str(it.target).split(\":\")\n  if \"addition\" not in label_str {\n    label_str.push(\"addition\")\n    ref(label(label_str.join(\":\")))\n  } else {\n    it\n  }\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 16,
+      "score": 8.2,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 585
+    },
+    {
+      "id": 7935,
+      "post_number": 3,
+      "username": "mezzogallium",
+      "name": "André Santos",
+      "created_at": "2025-01-27T17:25:05.232Z",
+      "updated_at": "2025-01-27T17:25:05.232Z",
+      "cooked": "<p>Thanks a lot, now I know!</p>",
+      "raw": "Thanks a lot, now I know!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 16,
+      "score": 3.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 372
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:26.529276"
+}

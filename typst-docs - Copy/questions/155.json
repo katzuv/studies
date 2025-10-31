@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 155,
+    "title": "Is there a way to retrieve the current file name, list files, etc. within Typst?",
+    "slug": "is-there-a-way-to-retrieve-the-current-file-name-list-files-etc-within-typst",
+    "posts_count": 3,
+    "created_at": "2024-09-15T07:53:49.285Z",
+    "last_posted_at": "2024-09-15T10:00:41.608Z",
+    "views": 925,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Tinger",
+    "tags": [
+      "scripting",
+      "data-loading"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 385
+  },
+  "posts": [
+    {
+      "id": 642,
+      "post_number": 1,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-09-15T07:53:49.393Z",
+      "updated_at": "2024-09-15T15:54:07.518Z",
+      "cooked": "<p>For example, some documents may be supposed to have the file name in the footer. Other documents may want to include all chapters or other contents that are defined as <code>*.typ</code> files in a specific directory.</p>\n<p>Can one write something like this?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(\n  footer: [#sys.filename],\n)\n\n#for chapter in sys.list-files(\"chapters/*.typ\").sorted() {\n  include chapter\n}\n</code></pre>\n<p>These specific commands don’t work, but is there something equivalent?</p>",
+      "raw": "For example, some documents may be supposed to have the file name in the footer. Other documents may want to include all chapters or other contents that are defined as `*.typ` files in a specific directory.\n\nCan one write something like this?\n\n```typ\n#set page(\n  footer: [#sys.filename],\n)\n\n#for chapter in sys.list-files(\"chapters/*.typ\").sorted() {\n  include chapter\n}\n```\n\nThese specific commands don't work, but is there something equivalent?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 92,
+      "score": 4483.2,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 647,
+      "post_number": 2,
+      "username": "Tinger",
+      "name": "Tinger",
+      "created_at": "2024-09-15T08:37:48.518Z",
+      "updated_at": "2024-09-15T08:38:33.730Z",
+      "cooked": "<p>Not at the moment.</p>\n<p>There is <a href=\"https://github.com/typst/typst/issues/2123\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">Directory walking · Issue #2123 · typst/typst · GitHub</a> for reading/walking directories, it seems that this is delayed until the <code>path</code> type is added, which ties into <code>resources</code> (fonts, images, supplementary files) as a whole.</p>\n<p>I couldn’t find anything regarding retrieving the file name, but I remember it being requested and closed as not planned I believe.</p>\n<p>It’s possible to work around the directory walking case by passing the directories to Typst using <code>sys.inputs</code>. But this is currently limited to the CLI and will not respond to any changes on <code>typst watch</code>. Assuming a <code>sh</code> compatible shell:</p>\n<pre data-code-wrap=\"bash\"><code class=\"lang-bash\">chapters='[\"chapter1.typ\", \"chapter2.typ\"]'\ntypst compile --input \"chapters=$chapters\" main.typ main.pdf\n</code></pre>\n<p>Then one can walk the directory contents like so:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#for chapter in json.decode(sys.inputs.chapter) {\n  include chapter\n}\n</code></pre>\n<p>I’ve chosen <code>json</code> as the intermediate format here, as it’s supported as an output format by many CLI tools. One could use a script to automatically pass the right files to inputs automatically.</p>\n<p>For example in <code>nu</code> this would look like:</p>\n<pre data-code-wrap=\"nu\"><code class=\"lang-nu\">let chapters = (ls | get name | to json)\ntypst compile --input $\"chapters=(chapters)\" main.typ main.pdf\n</code></pre>",
+      "raw": "Not at the moment. \n\nThere is https://github.com/typst/typst/issues/2123 for reading/walking directories, it seems that this is delayed until the `path` type is added, which ties into `resources` (fonts, images, supplementary files) as a whole.\n\nI couldn't find anything regarding retrieving the file name, but I remember it being requested and closed as not planned I believe.\n\nIt's possible to work around the directory walking case by passing the directories to Typst using `sys.inputs`. But this is currently limited to the CLI and will not respond to any changes on `typst watch`. Assuming a `sh` compatible shell:\n```bash\nchapters='[\"chapter1.typ\", \"chapter2.typ\"]'\ntypst compile --input \"chapters=$chapters\" main.typ main.pdf\n```\n\nThen one can walk the directory contents like so:\n```typ\n#for chapter in json.decode(sys.inputs.chapter) {\n  include chapter\n}\n```\n\nI've chosen `json` as the intermediate format here, as it's supported as an output format by many CLI tools. One could use a script to automatically pass the right files to inputs automatically.\n\nFor example in `nu` this would look like:\n```nu\nlet chapters = (ls | get name | to json)\ntypst compile --input $\"chapters=(chapters)\" main.typ main.pdf\n```",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 91,
+      "score": 248.0,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 29
+    },
+    {
+      "id": 658,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-09-15T10:00:41.608Z",
+      "updated_at": "2024-09-15T10:00:41.608Z",
+      "cooked": "<p>In addition to what <a class=\"mention\" href=\"/u/tinger\">@Tinger</a> wrote, one consideration is that Typst tries to not depend on one specific execution environment: the current file name or directory will exist when compiling via the command line, but not (or in the same way) in the web app, for example. A document that depends on this would not be as “portable”.</p>\n<p>Using <code>--input</code> requires a bit more effort, but the <code>sys.inputs</code> dictionary is accessible no matter the environment, and can be filled with a path even if the environment has no input file path at all.</p>\n<p>Any future improvement in this area will make sure that it applies not just to one of Typst’s execution environments.</p>",
+      "raw": "In addition to what @Tinger wrote, one consideration is that Typst tries to not depend on one specific execution environment: the current file name or directory will exist when compiling via the command line, but not (or in the same way) in the web app, for example. A document that depends on this would not be as \"portable\".\n\nUsing `--input` requires a bit more effort, but the `sys.inputs` dictionary is accessible no matter the environment, and can be filled with a path even if the environment has no input file path at all.\n\nAny future improvement in this area will make sure that it applies not just to one of Typst's execution environments.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 84,
+      "score": 26.8,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:58:59.475446"
+}

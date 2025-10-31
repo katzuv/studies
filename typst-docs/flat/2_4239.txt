@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 4239,
+    "title": "How do I use #case while maintaining & alignment?",
+    "slug": "how-do-i-use-case-while-maintaining-alignment",
+    "posts_count": 3,
+    "created_at": "2025-05-23T04:56:05.172Z",
+    "last_posted_at": "2025-05-24T04:19:05.198Z",
+    "views": 45,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "cetz",
+      "mannot"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 433
+  },
+  "posts": [
+    {
+      "id": 12995,
+      "post_number": 1,
+      "username": "NeoPrim",
+      "name": "",
+      "created_at": "2025-05-23T04:56:05.284Z",
+      "updated_at": "2025-05-24T14:05:18.738Z",
+      "cooked": "<p>I have the following LP problem formulation:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">$\n  min quad &amp;9x_1 + 12x_2 + 10x_3 + 12x_4 + y_1 + y_2 + y_3 + y_4 \\\n  s.t. quad &amp;x_1 - 100 = y_1 \\\n            &amp;y_1 + x_2 - 150 = y_2 \\\n            &amp;y_2 + x_3 - 200 = y_3 \\\n            &amp;y_3 + x_4 - 170 = y_4 \\\n            &amp; x_1 gt.eq 100 \\\n            &amp;y_1 + x_2 gt.eq 150 \\\n            &amp;y_2 + x_3 gt.eq 200 \\\n            &amp;y_3 + x_4 gt.eq 170 \\\n            &amp;x_t, y_t gt.eq 0 quad forall t = 1, dots, 4 \n$\n</code></pre>\n<p>I’d like to maintain the alignment as it currently stands while adding the <span class=\"hashtag-raw\">#case</span> as shown below:<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/0/07b92fe90b8cebbe640b3db010b6a465ead73ecd.jpeg\" data-download-href=\"https://forum.typst.app/uploads/default/07b92fe90b8cebbe640b3db010b6a465ead73ecd\" title=\"Screenshot 2025-05-23 at 12.55.10\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/0/07b92fe90b8cebbe640b3db010b6a465ead73ecd_2_690x439.jpeg\" alt=\"Screenshot 2025-05-23 at 12.55.10\" data-base62-sha1=\"16k6rvOmIJFo8mj3XyUhW2INOoZ\" width=\"690\" height=\"439\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/0/07b92fe90b8cebbe640b3db010b6a465ead73ecd_2_690x439.jpeg, https://forum.typst.app/uploads/default/optimized/2X/0/07b92fe90b8cebbe640b3db010b6a465ead73ecd_2_1035x658.jpeg 1.5x, https://forum.typst.app/uploads/default/optimized/2X/0/07b92fe90b8cebbe640b3db010b6a465ead73ecd_2_1380x878.jpeg 2x\" data-dominant-color=\"F6F9F8\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">Screenshot 2025-05-23 at 12.55.10</span><span class=\"informations\">1920×1223 54.9 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "I have the following LP problem formulation:\n```typst\n$\n  min quad &9x_1 + 12x_2 + 10x_3 + 12x_4 + y_1 + y_2 + y_3 + y_4 \\\n  s.t. quad &x_1 - 100 = y_1 \\\n            &y_1 + x_2 - 150 = y_2 \\\n            &y_2 + x_3 - 200 = y_3 \\\n            &y_3 + x_4 - 170 = y_4 \\\n            & x_1 gt.eq 100 \\\n            &y_1 + x_2 gt.eq 150 \\\n            &y_2 + x_3 gt.eq 200 \\\n            &y_3 + x_4 gt.eq 170 \\\n            &x_t, y_t gt.eq 0 quad forall t = 1, dots, 4 \n$\n```\nI'd like to maintain the alignment as it currently stands while adding the #case as shown below:\n![Screenshot 2025-05-23 at 12.55.10|690x439](upload://16k6rvOmIJFo8mj3XyUhW2INOoZ.jpeg)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 22,
+      "score": 4.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1600
+    },
+    {
+      "id": 13019,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-23T13:41:22.250Z",
+      "updated_at": "2025-05-23T13:42:15.417Z",
+      "cooked": "<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/mannot:0.3.0\": *\n#import \"@preview/cetz:0.3.4\"\n\n#let annotate-brace(start, end, body) = {\n  cetz.decorations.brace(start, end, name: \"a\", stroke: green)\n  cetz.draw.content(\"a.east\", anchor: \"west\", padding: 0.2, text(green, body))\n}\n\n#let offset-brace-start-end(start, end) = (\n  (rel: (0.5, +0.5em), to: (start, \"-|\", end)),\n  (rel: (0.5, -0.5em), to: end),\n)\n\n$\n   min quad &amp; 9x_1 + 12x_2 + 10x_3 + 12x_4 + y_1 + y_2 + y_3 + y_4 \\\n  s.t. quad &amp; x_1 - 100 = mark(y_1, tag: #&lt;y1&gt;)                    \\\n            &amp; y_1 + x_2 - 150 = y_2                                \\\n            &amp; y_2 + x_3 - 200 = y_3                                \\\n            &amp; y_3 + x_4 - 170 = mark(y_4, tag: #&lt;y4&gt;)              \\\n            &amp; x_1 &gt;= mark(100, tag: #&lt;100&gt;)                        \\\n            &amp; y_1 + x_2 &gt;= 150                                     \\\n            &amp; y_2 + x_3 &gt;= 200                                     \\\n            &amp; y_3 + x_4 &gt;= mark(170, tag: #&lt;170&gt;)                  \\\n            &amp; x_t, y_t &gt;= 0 quad forall t = 1, dots, 4             \\\n  #annot-cetz((&lt;y1&gt;, &lt;y4&gt;, &lt;100&gt;, &lt;170&gt;), cetz, {\n    annotate-brace(..offset-brace-start-end(\"y1\", \"y4\"))[I.B.]\n    annotate-brace(..offset-brace-start-end(\"100\", \"170\"))[D.F.]\n  })\n$\n</code></pre>\n<p>Or slightly more compact:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/mannot:0.3.0\": *\n#import \"@preview/cetz:0.3.4\"\n\n#let annotate-brace(start, end, body) = {\n  cetz.decorations.brace(start, end, name: \"a\", stroke: green)\n  cetz.draw.content(\"a.east\", anchor: \"west\", padding: 0.2, text(green, body))\n}\n\n#let offset-brace-start-end(start, end) = (\n  (rel: (0.5, +0.5em), to: (start, \"-|\", end)),\n  (rel: (0.5, -0.5em), to: end),\n)\n\n#let tag(body, tag) = mark(body, tag: label(tag))\n\n$\n   min quad &amp; 9x_1 + 12x_2 + 10x_3 + 12x_4 + y_1 + y_2 + y_3 + y_4 \\\n  s.t. quad &amp; x_1 - 100 = tag(y_1, \"y1\")                           \\\n            &amp; y_1 + x_2 - 150 = y_2                                \\\n            &amp; y_2 + x_3 - 200 = y_3                                \\\n            &amp; y_3 + x_4 - 170 = tag(y_4, \"y4\")                     \\\n            &amp; x_1 &gt;= tag(100, \"100\")                               \\\n            &amp; y_1 + x_2 &gt;= 150                                     \\\n            &amp; y_2 + x_3 &gt;= 200                                     \\\n            &amp; y_3 + x_4 &gt;= tag(170, \"170\")                         \\\n            &amp; x_t, y_t &gt;= 0 quad forall t = 1, dots, 4             \\\n  #annot-cetz((&lt;y1&gt;, &lt;y4&gt;, &lt;100&gt;, &lt;170&gt;), cetz, {\n    annotate-brace(..offset-brace-start-end(\"y1\", \"y4\"))[I.B.]\n    annotate-brace(..offset-brace-start-end(\"100\", \"170\"))[D.F.]\n  })\n$\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/7/708fbff4841421f4be5079d1c91526cc5a08161f.png\" alt=\"image\" data-base62-sha1=\"g3LstqLOb05L2jKjFWuNf1SAGNV\" width=\"343\" height=\"246\"></p>\n<aside class=\"onebox allowlistedgeneric\" data-onebox-src=\"https://typst.app/universe/package/mannot\">\n  <header class=\"source\">\n      <img src=\"https://forum.typst.app/uploads/default/original/1X/098187a593d51c4db99324614e2baeeb1bb355cc.png\" class=\"site-icon\" data-dominant-color=\"3CA8B6\" width=\"32\" height=\"32\">\n\n      <a href=\"https://typst.app/universe/package/mannot\" target=\"_blank\" rel=\"noopener\">Typst</a>\n  </header>\n\n  <article class=\"onebox-body\">\n    <div class=\"aspect-image\" style=\"--aspect-ratio:690/361;\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/db1c18ed802fe6841bee62606931f352da10ed09_2_690x362.png\" class=\"thumbnail\" data-dominant-color=\"7CC2C5\" width=\"690\" height=\"362\"></div>\n\n<h3><a href=\"https://typst.app/universe/package/mannot\" target=\"_blank\" rel=\"noopener\">mannot – Typst Universe</a></h3>\n\n  <p>A package for marking and annotating in math blocks.</p>\n\n\n  </article>\n\n  <div class=\"onebox-metadata\">\n    \n    \n  </div>\n\n  <div style=\"clear: both\"></div>\n</aside>\n\n<p>Cc <a class=\"mention\" href=\"/u/ryuryu\">@ryuryu</a></p>",
+      "raw": "```typ\n#import \"@preview/mannot:0.3.0\": *\n#import \"@preview/cetz:0.3.4\"\n\n#let annotate-brace(start, end, body) = {\n  cetz.decorations.brace(start, end, name: \"a\", stroke: green)\n  cetz.draw.content(\"a.east\", anchor: \"west\", padding: 0.2, text(green, body))\n}\n\n#let offset-brace-start-end(start, end) = (\n  (rel: (0.5, +0.5em), to: (start, \"-|\", end)),\n  (rel: (0.5, -0.5em), to: end),\n)\n\n$\n   min quad & 9x_1 + 12x_2 + 10x_3 + 12x_4 + y_1 + y_2 + y_3 + y_4 \\\n  s.t. quad & x_1 - 100 = mark(y_1, tag: #<y1>)                    \\\n            & y_1 + x_2 - 150 = y_2                                \\\n            & y_2 + x_3 - 200 = y_3                                \\\n            & y_3 + x_4 - 170 = mark(y_4, tag: #<y4>)              \\\n            & x_1 >= mark(100, tag: #<100>)                        \\\n            & y_1 + x_2 >= 150                                     \\\n            & y_2 + x_3 >= 200                                     \\\n            & y_3 + x_4 >= mark(170, tag: #<170>)                  \\\n            & x_t, y_t >= 0 quad forall t = 1, dots, 4             \\\n  #annot-cetz((<y1>, <y4>, <100>, <170>), cetz, {\n    annotate-brace(..offset-brace-start-end(\"y1\", \"y4\"))[I.B.]\n    annotate-brace(..offset-brace-start-end(\"100\", \"170\"))[D.F.]\n  })\n$\n```\n\nOr slightly more compact:\n\n```typ\n#import \"@preview/mannot:0.3.0\": *\n#import \"@preview/cetz:0.3.4\"\n\n#let annotate-brace(start, end, body) = {\n  cetz.decorations.brace(start, end, name: \"a\", stroke: green)\n  cetz.draw.content(\"a.east\", anchor: \"west\", padding: 0.2, text(green, body))\n}\n\n#let offset-brace-start-end(start, end) = (\n  (rel: (0.5, +0.5em), to: (start, \"-|\", end)),\n  (rel: (0.5, -0.5em), to: end),\n)\n\n#let tag(body, tag) = mark(body, tag: label(tag))\n\n$\n   min quad & 9x_1 + 12x_2 + 10x_3 + 12x_4 + y_1 + y_2 + y_3 + y_4 \\\n  s.t. quad & x_1 - 100 = tag(y_1, \"y1\")                           \\\n            & y_1 + x_2 - 150 = y_2                                \\\n            & y_2 + x_3 - 200 = y_3                                \\\n            & y_3 + x_4 - 170 = tag(y_4, \"y4\")                     \\\n            & x_1 >= tag(100, \"100\")                               \\\n            & y_1 + x_2 >= 150                                     \\\n            & y_2 + x_3 >= 200                                     \\\n            & y_3 + x_4 >= tag(170, \"170\")                         \\\n            & x_t, y_t >= 0 quad forall t = 1, dots, 4             \\\n  #annot-cetz((<y1>, <y4>, <100>, <170>), cetz, {\n    annotate-brace(..offset-brace-start-end(\"y1\", \"y4\"))[I.B.]\n    annotate-brace(..offset-brace-start-end(\"100\", \"170\"))[D.F.]\n  })\n$\n```\n\n![image|343x246](upload://g3LstqLOb05L2jKjFWuNf1SAGNV.png)\n\nhttps://typst.app/universe/package/mannot\n\nCc @ryuryu",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 17,
+      "score": 23.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    },
+    {
+      "id": 13058,
+      "post_number": 3,
+      "username": "NeoPrim",
+      "name": "",
+      "created_at": "2025-05-24T04:19:05.198Z",
+      "updated_at": "2025-05-24T04:19:05.198Z",
+      "cooked": "<p>Wow thank you. I would have never come up with this on my own <img src=\"https://forum.typst.app/images/emoji/apple/joy.png?v=12\" title=\":joy:\" class=\"emoji\" alt=\":joy:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Wow thank you. I would have never come up with this on my own :joy:",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 16,
+      "score": 18.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1600
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:24.536423"
+}

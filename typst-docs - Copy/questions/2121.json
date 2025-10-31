@@ -1,0 +1,65 @@
+{
+  "topic_metadata": {
+    "id": 2121,
+    "title": "How to mutate bibliography access-date of specific references?",
+    "slug": "how-to-mutate-bibliography-access-date-of-specific-references",
+    "posts_count": 2,
+    "created_at": "2024-12-17T09:26:34.052Z",
+    "last_posted_at": "2024-12-17T10:04:18.083Z",
+    "views": 114,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "scripting",
+      "literature",
+      "bibtex"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 488
+  },
+  "posts": [
+    {
+      "id": 6694,
+      "post_number": 1,
+      "username": "MartyByrde",
+      "name": "MartyByrde",
+      "created_at": "2024-12-17T09:26:34.227Z",
+      "updated_at": "2025-02-05T15:01:35.338Z",
+      "cooked": "<p>Hey guys I am using typst for writing all of my reports in my daily life and I am very happy with it.</p>\n<p>Something that I have been wondering for quite some time, when using it for scientific papers and reports, is the following. When I use for example online references using e.g. a <code>references.bib</code> file that stores my references in the bibtex format. Then I usually have to update the urlDate property of these references manually. Meaning that whenever I make changes to my document I should also update the access date (<code>urlDate</code> property) of these references to conform with the citation requirements.</p>\n<p>This means that my question is whether it is possible to somehow manipulate / change this property when showing the bibliography in the document. I am thinking about something like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show bibliography.entry: it =&gt; {\n  if (type(it) == \"Online\") {\n     it.urlDate = new Date()\n  }\n  it\n}\n</code></pre>\n<p>However, I was yet unable to achieve something similar because it seems like there is no <code>entry</code> property for the bibliography command. Also, I guess it would not be possible to mutate the <code>urlDate</code> property of an entry. However, it may be possible to achieve the desired behavior without having to mutate the <code>it</code> element, somehow.</p>\n<p>Have you guys, by any chance, thought of something similar before or perhaps even done so in the past? Looking forward to reading your thoughts on this.</p>",
+      "raw": "Hey guys I am using typst for writing all of my reports in my daily life and I am very happy with it. \n\nSomething that I have been wondering for quite some time, when using it for scientific papers and reports, is the following. When I use for example online references using e.g. a `references.bib` file that stores my references in the bibtex format. Then I usually have to update the urlDate property of these references manually. Meaning that whenever I make changes to my document I should also update the access date (`urlDate` property) of these references to conform with the citation requirements.\n\nThis means that my question is whether it is possible to somehow manipulate / change this property when showing the bibliography in the document. I am thinking about something like this:\n\n```typ\n#show bibliography.entry: it => {\n  if (type(it) == \"Online\") {\n     it.urlDate = new Date()\n  }\n  it\n}\n```\n\nHowever, I was yet unable to achieve something similar because it seems like there is no `entry` property for the bibliography command. Also, I guess it would not be possible to mutate the `urlDate` property of an entry. However, it may be possible to achieve the desired behavior without having to mutate the `it` element, somehow.\n\nHave you guys, by any chance, thought of something similar before or perhaps even done so in the past? Looking forward to reading your thoughts on this.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 479.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 689
+    },
+    {
+      "id": 6695,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-12-17T10:04:18.083Z",
+      "updated_at": "2024-12-17T10:09:25.555Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/martybyrde\">@MartyByrde</a>, it might be possible to use a combination of regexp to detect online entries in your bibliography and replace the access dates accordingly, however I do not recommend it for the following reasons:</p>\n<ul>\n<li>the ground truth is your bibfile (or whichever software you use to manage your references), not your Typst document. If you want to update the <code>urlDate</code> property, then you should update your ground truth.</li>\n<li>Websites are not immutable, hence you cannot guarantee that the website is identical to your previous reference if you change the access date. I recommend simply adding a new reference with a more recent access date. Best case scenario, you can cite from a digital archive like <a href=\"http://archive.org\">archive.org</a>. From the Chicago Manual of Style, you can read about online references (if you need a specific version)\n<blockquote>\n<p><a href=\"https://www.chicagomanualofstyle.org/qanda/data/faq/topics/Documentation.html#:~:text=If%20you%20do%20not%20cite%20an%20archived%20version%2C%20you%20will%20need%20to%20include%20an%20access%20date.\">If you do not cite an archived version, you will need to include an access date.</a></p>\n</blockquote>\n</li>\n<li>If you use Zotero with Better BibTeX, you can generate a unique citation key for onlines entries using the following formula<pre><code class=\"lang-auto\">(type(webpage)\n+ auth.lower + '_' + (month ? month + '_': '') + year + '_accessed_' + \nAccessDate.formatDate\n) | (auth.lower + shorttitle(3,3) + year)\n)\n</code></pre>\nYou will obtain something similar to <code>carpenter_jul_2024_accessed_2024-07-11</code>.</li>\n</ul>\n<p>I understand it does not answer the original question, but I think this is a classic case of a <a href=\"https://en.wikipedia.org/wiki/XY_problem\">XY problem</a>!</p>",
+      "raw": "Hello @MartyByrde, it might be possible to use a combination of regexp to detect online entries in your bibliography and replace the access dates accordingly, however I do not recommend it for the following reasons:\n- the ground truth is your bibfile (or whichever software you use to manage your references), not your Typst document. If you want to update the `urlDate` property, then you should update your ground truth.\n- Websites are not immutable, hence you cannot guarantee that the website is identical to your previous reference if you change the access date. I recommend simply adding a new reference with a more recent access date. Best case scenario, you can cite from a digital archive like archive.org. From the Chicago Manual of Style, you can read about online references (if you need a specific version)\n   > [If you do not cite an archived version, you will need to include an access date.](https://www.chicagomanualofstyle.org/qanda/data/faq/topics/Documentation.html#:~:text=If%20you%20do%20not%20cite%20an%20archived%20version%2C%20you%20will%20need%20to%20include%20an%20access%20date.)\n- If you use Zotero with Better BibTeX, you can generate a unique citation key for onlines entries using the following formula\n   ```\n   (type(webpage)\n   + auth.lower + '_' + (month ? month + '_': '') + year + '_accessed_' + \n   AccessDate.formatDate\n   ) | (auth.lower + shorttitle(3,3) + year)\n   )\n   ```\n   You will obtain something similar to `carpenter_jul_2024_accessed_2024-07-11`.\n\nI understand it does not answer the original question, but I think this is a classic case of a [XY problem](https://en.wikipedia.org/wiki/XY_problem)!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 21,
+      "score": 74.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:33.773165"
+}

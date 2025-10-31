@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2283,
+    "title": "How to make custom selectors?",
+    "slug": "how-to-make-custom-selectors",
+    "posts_count": 2,
+    "created_at": "2025-01-03T03:44:16.140Z",
+    "last_posted_at": "2025-01-03T11:38:39.823Z",
+    "views": 114,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 207
+  },
+  "posts": [
+    {
+      "id": 7158,
+      "post_number": 1,
+      "username": "gabe",
+      "name": "",
+      "created_at": "2025-01-03T03:44:16.304Z",
+      "updated_at": "2025-01-04T00:13:53.569Z",
+      "cooked": "<p>Is it possible to make a reusable show query that would achieve the same thing as this?</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">show metadata: metadata =&gt; {\n  if {\n    // some function that return a boolean\n    not is-metadata-with-id(metadata)\n  } or {\n    // another arbitrary boolean function\n    metadata.value.id != tag(\"xlink\")\n  } {\n    // skip\n    return metadata\n  }\n  // start actual show rule\n}\n</code></pre>",
+      "raw": "Is it possible to make a reusable show query that would achieve the same thing as this?\n\n```typc\nshow metadata: metadata => {\n  if {\n    // some function that return a boolean\n    not is-metadata-with-id(metadata)\n  } or {\n    // another arbitrary boolean function\n    metadata.value.id != tag(\"xlink\")\n  } {\n    // skip\n    return metadata\n  }\n  // start actual show rule\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 32,
+      "score": 311.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 433
+    },
+    {
+      "id": 7169,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-03T11:38:39.823Z",
+      "updated_at": "2025-01-03T11:39:10.968Z",
+      "cooked": "<p>Truly custom <a href=\"https://typst.app/docs/reference/foundations/selector/\">selectors</a> (I think that’s the word you’re looking for, maybe edit it in the title) are not supported, but you can probably use the technique shown here: <a href=\"https://forum.typst.app/t/how-can-i-create-show-rules-in-a-loop/952/2#p-3469-actually-generating-show-rules-in-a-loop-3\" class=\"inline-onebox\">How can I create show rules in a loop? - #2 by SillyFreak</a></p>\n<p>In that post’s example, you first go from</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show \"foo\": strong\n#show \"baz\": strong\n</code></pre>\n<p>to</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show: body =&gt; {\n  show \"foo\": strong\n  show \"baz\": strong\n\n  body\n}\n</code></pre>\n<p>The benefit is that now you don’t need to handle show rules as values, but a function, and Typst is functional and can thus do that.</p>\n<p>You would want to go from</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show metadata: metadata =&gt; ...\n</code></pre>\n<p>to</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show: metadata-with-id(\"xlink\", metadata =&gt; ...)\n</code></pre>\n<p>I’ll leave writing <code>metadata-with-id</code> for you, but I can also help if you need it.</p>",
+      "raw": "Truly custom [selectors](https://typst.app/docs/reference/foundations/selector/) (I think that's the word you're looking for, maybe edit it in the title) are not supported, but you can probably use the technique shown here: https://forum.typst.app/t/how-can-i-create-show-rules-in-a-loop/952/2?u=sillyfreak#p-3469-actually-generating-show-rules-in-a-loop-3\n\nIn that post's example, you first go from\n```typ\n#show \"foo\": strong\n#show \"baz\": strong\n```\nto\n```typ\n#show: body => {\n  show \"foo\": strong\n  show \"baz\": strong\n\n  body\n}\n```\nThe benefit is that now you don't need to handle show rules as values, but a function, and Typst is functional and can thus do that.\n\nYou would want to go from\n```typ\n#show metadata: metadata => ...\n```\nto\n```typ\n#show: metadata-with-id(\"xlink\", metadata => ...)\n```\nI'll leave writing `metadata-with-id` for you, but I can also help if you need it.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 10.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:12.034129"
+}

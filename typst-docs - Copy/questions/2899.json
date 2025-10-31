@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2899,
+    "title": "How to convert content to length",
+    "slug": "how-to-convert-content-to-length",
+    "posts_count": 2,
+    "created_at": "2025-02-20T20:01:55.496Z",
+    "last_posted_at": "2025-02-20T20:11:53.451Z",
+    "views": 109,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "context"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 189
+  },
+  "posts": [
+    {
+      "id": 8826,
+      "post_number": 1,
+      "username": "Llama",
+      "name": "Llama",
+      "created_at": "2025-02-20T20:01:55.575Z",
+      "updated_at": "2025-02-22T09:59:12.968Z",
+      "cooked": "<p>Hi,</p>\n<p>I’d like to set text font size twice bigger or smaller than current. Something like this:</p>\n<pre><code class=\"lang-auto\">#[\n  #let stampsize = (context text.size / 2)\n  #set text(size: stampsize)\n  //#(context text.size / 2)\n]\n</code></pre>\n<p>The commented out line shows something I want, like <code>9pt</code> after dividing <code>18pt</code> by two. Unfortunately, there’s an error <em>expected length, found content</em>. Not quite surprising, because the content is probably a string, and <code>18pt</code> is a literal of another type.</p>\n<p>Is there a way to get what I want?</p>",
+      "raw": "Hi,\n\nI'd like to set text font size twice bigger or smaller than current. Something like this:\n```\n#[\n  #let stampsize = (context text.size / 2)\n  #set text(size: stampsize)\n  //#(context text.size / 2)\n]\n```\nThe commented out line shows something I want, like `9pt` after dividing `18pt` by two. Unfortunately, there's an error _expected length, found content_. Not quite surprising, because the content is probably a string, and `18pt` is a literal of another type.\n\nIs there a way to get what I want?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 35,
+      "score": 297.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1201
+    },
+    {
+      "id": 8827,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-02-20T20:11:53.451Z",
+      "updated_at": "2025-02-20T20:11:53.451Z",
+      "cooked": "<p>You can use the sizes <code>2em</code> or <code>0.5em</code> to get a font size that is double or half the current font size. In the example below the first and last “hello” will have the same font size, whereas the second “hello” will have twice the current font size.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">hello\n#set text(size: 2em)\nhello\n#set text(size: 0.5em)\nhello\n</code></pre>\n<p>The error in your case is caused by the fact that a context always returns content. If you want to understand this, I can recommend reading this <a href=\"https://forum.typst.app/t/why-is-the-value-i-receive-from-context-always-content/164\">post</a>.</p>",
+      "raw": "You can use the sizes `2em` or `0.5em` to get a font size that is double or half the current font size. In the example below the first and last \"hello\" will have the same font size, whereas the second \"hello\" will have twice the current font size.\n\n```typ\nhello\n#set text(size: 2em)\nhello\n#set text(size: 0.5em)\nhello\n```\n\nThe error in your case is caused by the fact that a context always returns content. If you want to understand this, I can recommend reading this [post](https://forum.typst.app/t/why-is-the-value-i-receive-from-context-always-content/164).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 35,
+      "score": 22.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:26.168528"
+}

@@ -1,0 +1,65 @@
+{
+  "topic_metadata": {
+    "id": 1361,
+    "title": "How do I use states in between different files?",
+    "slug": "how-do-i-use-states-in-between-different-files",
+    "posts_count": 2,
+    "created_at": "2024-10-26T11:37:36.716Z",
+    "last_posted_at": "2024-10-26T12:56:09.938Z",
+    "views": 173,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "scripting",
+      "layout",
+      "templates"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 365
+  },
+  "posts": [
+    {
+      "id": 4699,
+      "post_number": 1,
+      "username": "VictuarVi",
+      "name": "",
+      "created_at": "2024-10-26T11:37:37.121Z",
+      "updated_at": "2024-10-26T13:09:42.381Z",
+      "cooked": "<p>Suppose I have the following file structure:</p>\n<pre><code class=\"lang-auto\">.\n├── main.typ\n├── properties.typ\n├── lib\n│   ├── colors.typ\n│   ├── functions.typ\n│   └── template.typ\n└── sections\n    ├── abstract.typ\n    ├── introduction.typ\n    ├── first_section.typ\n    └── appendix.typ\n</code></pre>\n<p>I want to set a <code>theme</code> state in <code>main.typ</code> than can be used both in <code>template.typ</code> – which contains the styling functions responsible for margins, page counter, etc – and <code>functions.typ</code>, which contains elements that have to react to the color theme.</p>\n<p>For instance, in <code>functions.typ</code>:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">// this is how I tried to do\n#import \"../properties.typ\" : *\n#let theme = properties.at(\"theme\")\n\n#let title(string, colour) = {\n  set line(stroke: colour)\n\n  grid(\n    columns: (1fr, auto, 1fr),\n    align: horizon + center,\n    line(start: (-8pt, 0pt), end: (56pt, 0pt)),\n    box(stroke: colour, inset: 0pt, outset: 10pt, smallcaps(string)),\n    line(start: (12pt, 0pt), end: (80pt, 0pt)),\n  )\n\n  v(1.5em, weak: false)\n}\n\n// this doesn't work, however it demonstrates how I would want it to work\n#show title.with(colour: theme)\n</code></pre>\n<p>so that every time I import <code>functions.typ</code> with a different <code>theme</code> attribute set in <code>properties</code> I get something like this:<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/c/cfc7e7eed64cc3839d911f543fded99bfa5ba252.jpeg\" data-download-href=\"https://forum.typst.app/uploads/default/cfc7e7eed64cc3839d911f543fded99bfa5ba252\" title=\"main\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/c/cfc7e7eed64cc3839d911f543fded99bfa5ba252_2_525x500.jpeg\" alt=\"main\" data-base62-sha1=\"tE78fczFetFxHotVlBVs00Y7PZU\" width=\"525\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/c/cfc7e7eed64cc3839d911f543fded99bfa5ba252_2_525x500.jpeg, https://forum.typst.app/uploads/default/optimized/2X/c/cfc7e7eed64cc3839d911f543fded99bfa5ba252_2_787x750.jpeg 1.5x, https://forum.typst.app/uploads/default/optimized/2X/c/cfc7e7eed64cc3839d911f543fded99bfa5ba252_2_1050x1000.jpeg 2x\" data-dominant-color=\"FAFAFA\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">main</span><span class=\"informations\">1969×1875 168 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>This styling should affect <em>every</em> function, in whatever document they are. I have tried using states but didn’t manage to get it working.</p>\n<p>So far <code>main.typ</code> looks like this:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">\n#import \"lib/template.typ\": *\n#import \"lib/functions.typ\": *\n#import \"properties.typ\": *\n\n#show: document.with(..properties)\n\n#include \"sections/abstract.typ\"\n#include \"sections/introduction.typ\"\n#include \"sections/first_section.typ\"\n#include \"sections/appendix.typ\"\n</code></pre>\n<p>while <code>properties</code>:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let properties = (\n  title: \"Title\",\n  authors: (),\n  theme: \"blue\",\n)\n</code></pre>",
+      "raw": "Suppose I have the following file structure:\n\n```\n.\n├── main.typ\n├── properties.typ\n├── lib\n│   ├── colors.typ\n│   ├── functions.typ\n│   └── template.typ\n└── sections\n    ├── abstract.typ\n    ├── introduction.typ\n    ├── first_section.typ\n    └── appendix.typ\n```\n\nI want to set a `theme` state in `main.typ` than can be used both in `template.typ` -- which contains the styling functions responsible for margins, page counter, etc -- and `functions.typ`, which contains elements that have to react to the color theme.\n\nFor instance, in `functions.typ`:\n```typ\n// this is how I tried to do\n#import \"../properties.typ\" : *\n#let theme = properties.at(\"theme\")\n\n#let title(string, colour) = {\n  set line(stroke: colour)\n\n  grid(\n    columns: (1fr, auto, 1fr),\n    align: horizon + center,\n    line(start: (-8pt, 0pt), end: (56pt, 0pt)),\n    box(stroke: colour, inset: 0pt, outset: 10pt, smallcaps(string)),\n    line(start: (12pt, 0pt), end: (80pt, 0pt)),\n  )\n\n  v(1.5em, weak: false)\n}\n\n// this doesn't work, however it demonstrates how I would want it to work\n#show title.with(colour: theme)\n```\nso that every time I import `functions.typ` with a different `theme` attribute set in `properties` I get something like this:\n![main|525x500, 100%](upload://tE78fczFetFxHotVlBVs00Y7PZU.jpeg)\n\nThis styling should affect _every_ function, in whatever document they are. I have tried using states but didn't manage to get it working.\n\nSo far `main.typ` looks like this:\n\n```typst\n\n#import \"lib/template.typ\": *\n#import \"lib/functions.typ\": *\n#import \"properties.typ\": *\n\n#show: document.with(..properties)\n\n#include \"sections/abstract.typ\"\n#include \"sections/introduction.typ\"\n#include \"sections/first_section.typ\"\n#include \"sections/appendix.typ\"\n```\nwhile `properties`:\n```typ\n#let properties = (\n  title: \"Title\",\n  authors: (),\n  theme: \"blue\",\n)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 720.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 632
+    },
+    {
+      "id": 4700,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-10-26T12:56:09.938Z",
+      "updated_at": "2024-10-26T12:56:09.938Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/victuarvi\">@VictuarVi</a>, thanks for your question! Could you maybe try to revise your post’s title so others can find it easier in the future? The <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">question guidelines </a> recommend a complete question:</p>\n<blockquote>\n<p>Good titles are questions you would ask your friend about Typst.</p>\n</blockquote>\n<p>I think the questions under the <a class=\"hashtag-cooked\" href=\"/tag/templates\" data-type=\"tag\" data-slug=\"templates\" data-id=\"51\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>templates</span></a> tag could be interesting to you (and that may be a good tag for your question too). Without completely thinking through your situation, this in particular sounds promising:</p>\n<aside class=\"quote\" data-post=\"1\" data-topic=\"228\">\n  <div class=\"title\">\n    <div class=\"quote-controls\"></div>\n    <img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/letter_avatar_proxy/v4/letter/m/8C2563/48.png\" class=\"avatar\">\n    <a href=\"https://forum.typst.app/t/what-is-the-best-way-to-retrieve-template-argument-outside-the-template/228\">What is the best way to retrieve template argument outside the template?</a> <a class=\"badge-category__wrapper \" href=\"/c/questions/5\"><span data-category-id=\"5\" style=\"--category-badge-color: #F7C000; --category-badge-text-color: #fdfdfd;\" data-drop-close=\"true\" class=\"badge-category \" title=\"Your questions about using Typst and the web app go in this category.\"><span class=\"badge-category__name\">Questions</span></span></a>\n  </div>\n  <blockquote>\n    Generally, in the template I create, I define a list of colors as: \n#let colors = (\n    primary: red,\n    secondary: blue\n)\n\nMy question is “What is the best way to give the user access to the template colors?” \nShould I use a state variable ? \n// in template.typ\n#let user-colors = state(\"user-colors\", colors)\n\n// in main.typ\n#let colors = context user-colors.get() // it gives a content\n\nDo you have any recommendation ? \nThank you\n  </blockquote>\n</aside>\n",
+      "raw": "Hi @VictuarVi, thanks for your question! Could you maybe try to revise your post’s title so others can find it easier in the future? The [question guidelines ](https://forum.typst.app/t/how-to-post-in-the-questions-category/11) recommend a complete question:\n\n> Good titles are questions you would ask your friend about Typst.\n\nI think the questions under the #templates tag could be interesting to you (and that may be a good tag for your question too). Without completely thinking through your situation, this in particular sounds promising:\n\nhttps://forum.typst.app/t/what-is-the-best-way-to-retrieve-template-argument-outside-the-template/228?u=sillyfreak",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 15.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:56.043249"
+}

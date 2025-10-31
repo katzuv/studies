@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2974,
+    "title": "How to use LaTeX's \\langle and \\rangle functions in Typst?",
+    "slug": "how-to-use-latexs-langle-and-rangle-functions-in-typst",
+    "posts_count": 3,
+    "created_at": "2025-02-25T13:42:24.407Z",
+    "last_posted_at": "2025-02-25T14:54:24.509Z",
+    "views": 342,
+    "like_count": 4,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "math",
+      "latex-migration"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 226
+  },
+  "posts": [
+    {
+      "id": 9034,
+      "post_number": 1,
+      "username": "jonas.bloch",
+      "name": "Jonas Bloch",
+      "created_at": "2025-02-25T13:42:24.546Z",
+      "updated_at": "2025-02-25T13:42:24.546Z",
+      "cooked": "<p>Hello! I would like to know how to display an average value using the &lt;&gt; brackets. In LaTeX, one would write <code>\\left\\langle X \\right\\rangle</code> for the average value of X. I looked a bit on the internet, in the doc and in the forum, and I could not find any mention of something that approaches what I’m looking for…</p>\n<p>Thank you in advance for helping out!</p>",
+      "raw": "Hello! I would like to know how to display an average value using the <> brackets. In LaTeX, one would write `\\left\\langle X \\right\\rangle` for the average value of X. I looked a bit on the internet, in the doc and in the forum, and I could not find any mention of something that approaches what I'm looking for...\n\nThank you in advance for helping out!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 40,
+      "score": 1443.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1192
+    },
+    {
+      "id": 9043,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-02-25T14:12:11.083Z",
+      "updated_at": "2025-02-25T14:13:32.312Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/jonas.bloch\">@jonas.bloch</a>, most symbols in the typst documentation have their LaTeX equivalent also available for queries.</p>\n<p>If you type “langle” in the search box, it should pop up “sym”, see <a href=\"https://typst.app/docs/reference/symbols/sym/?query=langle\" class=\"inline-onebox\">General Symbols – Typst Documentation</a></p>\n<p>After, you can click on the symbol to get<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/f/fb3918a3c9ac5c6cc36a5e2e38557d5a54c9362a.png\" alt=\"image\" data-base62-sha1=\"zQqaJU91bQfHjCYpetcf6IBHNou\" width=\"399\" height=\"337\"></p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">$angle.l x angle.r$\n</code></pre>\n<p>should give you<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/9/9cd2c3bad598dedf86677fe31ce8ed43afd1cb62.png\" alt=\"image\" data-base62-sha1=\"mnk2SlUDd2GZ1rFs92qzNiIGAka\" width=\"38\" height=\"50\"></p>\n<p>P.S.: you can also take a look at <a href=\"https://detypify.quarticcat.com/\">https://detypify.quarticcat.com/</a>, see this response by <a href=\"https://forum.typst.app/t/how-can-i-more-easily-input-unicode-characters/1485/2\" class=\"inline-onebox\">How can I more easily input unicode characters? - #2 by PgBiel</a></p>",
+      "raw": "Hello @jonas.bloch, most symbols in the typst documentation have their LaTeX equivalent also available for queries.\n\nIf you type \"langle\" in the search box, it should pop up \"sym\", see https://typst.app/docs/reference/symbols/sym/?query=langle\n\nAfter, you can click on the symbol to get \n![image|399x337](upload://zQqaJU91bQfHjCYpetcf6IBHNou.png)\n\n\n```typ\n$angle.l x angle.r$\n```\nshould give you \n![image|38x50](upload://mnk2SlUDd2GZ1rFs92qzNiIGAka.png)\n\nP.S.: you can also take a look at https://detypify.quarticcat.com/, see this response by https://forum.typst.app/t/how-can-i-more-easily-input-unicode-characters/1485/2?u=quachpas",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 40,
+      "score": 128.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 9049,
+      "post_number": 3,
+      "username": "gezepi",
+      "name": "",
+      "created_at": "2025-02-25T14:54:24.509Z",
+      "updated_at": "2025-02-25T14:54:24.509Z",
+      "cooked": "<p>One thing to add is that you can scale the brackets with the content they enclose by using the <a href=\"https://typst.app/docs/reference/math/lr\"><code>lr()</code> function</a>.</p>\n<p>For example:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">$ angle.l sum_(x=1)^n angle.r $\n$ lr(angle.l sum_(x=1)^n angle.r, size: #75%) x $\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/3/3cf45561536e75fe3a5d1f7c818ce5cb93532d12.png\" alt=\"image\" data-base62-sha1=\"8He8599yRzSbIxRrc7TBYnyMPx8\" width=\"190\" height=\"217\"></p>",
+      "raw": "One thing to add is that you can scale the brackets with the content they enclose by using the [`lr()` function](https://typst.app/docs/reference/math/lr).\n\nFor example:\n```typ\n$ angle.l sum_(x=1)^n angle.r $\n$ lr(angle.l sum_(x=1)^n angle.r, size: #75%) x $\n```\n![image|190x217](upload://8He8599yRzSbIxRrc7TBYnyMPx8.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 30,
+      "score": 61.0,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 326
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:09.748118"
+}

@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 4119,
+    "title": "How to resize an included cetz/fletcher chart in a figure to a specific width?",
+    "slug": "how-to-resize-an-included-cetz-fletcher-chart-in-a-figure-to-a-specific-width",
+    "posts_count": 3,
+    "created_at": "2025-05-16T09:10:01.862Z",
+    "last_posted_at": "2025-05-16T20:29:07.535Z",
+    "views": 77,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "layout",
+      "graphics"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 420
+  },
+  "posts": [
+    {
+      "id": 12575,
+      "post_number": 1,
+      "username": "joffdd",
+      "name": "Joff",
+      "created_at": "2025-05-16T09:10:02.071Z",
+      "updated_at": "2025-05-16T17:17:33.347Z",
+      "cooked": "<p>I have created a <code>cetz</code> chart (in fact, using the <code>fletcher</code> package for convenience) and have saved it in a seperate .typ file. This is what the file <code>assets/chart1.typ</code> contains:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#import \"@preview/fletcher:0.5.7\" as fletcher: diagram, node, edge, shapes\n#diagram(\n  // ... nodes &amp; edges go here\n)\n</code></pre>\n<p>In my main document, I place the chart like this:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#figure(\n  include \"assets/chart1.typ\",\n  caption: [Figure caption here.]\n) &lt;fig:chart1&gt;\n</code></pre>\n<p>I would like to have a handy option for setting the desired chart’s width, e.g., 90% of the document width, as I would do with images placed in a figure. I tried this but it has no effect:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#figure(\n  block(include \"assets/chart1.typ\", width: 90%),\n  caption: [Figure caption here.]\n) &lt;fig:chart1&gt;\n</code></pre>\n<p>I’ve found this <a href=\"https://github.com/cetz-package/cetz/discussions/689\" rel=\"noopener nofollow ugc\">suggestion</a> but don’t understand how to implement it in my case.</p>",
+      "raw": "I have created a `cetz` chart (in fact, using the `fletcher` package for convenience) and have saved it in a seperate .typ file. This is what the file `assets/chart1.typ` contains:\n\n```typst\n#import \"@preview/fletcher:0.5.7\" as fletcher: diagram, node, edge, shapes\n#diagram(\n  // ... nodes & edges go here\n)\n```\n\nIn my main document, I place the chart like this:\n\n```typst\n#figure(\n  include \"assets/chart1.typ\",\n  caption: [Figure caption here.]\n) <fig:chart1>\n```\n\nI would like to have a handy option for setting the desired chart's width, e.g., 90% of the document width, as I would do with images placed in a figure. I tried this but it has no effect:\n\n```typst\n#figure(\n  block(include \"assets/chart1.typ\", width: 90%),\n  caption: [Figure caption here.]\n) <fig:chart1>\n```\n\nI've found this [suggestion](https://github.com/cetz-package/cetz/discussions/689) but don't understand how to implement it in my case.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 210.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1494
+    },
+    {
+      "id": 12599,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-05-16T16:57:42.404Z",
+      "updated_at": "2025-05-16T16:57:42.404Z",
+      "cooked": "<p>Do you just want to scale the entire diagram (including the line widths etc…) or do you want to change the cell-size of the fletcher diagram to get the correct width of the diagram while conserving all other sizes?</p>",
+      "raw": "Do you just want to scale the entire diagram (including the line widths etc...) or do you want to change the cell-size of the fletcher diagram to get the correct width of the diagram while conserving all other sizes?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 22,
+      "score": 4.4,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 69
+    },
+    {
+      "id": 12609,
+      "post_number": 3,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-16T20:29:07.535Z",
+      "updated_at": "2025-05-16T20:31:43.362Z",
+      "cooked": "<p>The easiest and most straightforward way to scale is to use <a href=\"https://typst.app/docs/reference/layout/scale/\"><code>scale</code></a> with <code>reflow: true</code>, since it’s not yet on by default.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/fletcher:0.5.7\": diagram, edge, node\n#set scale(reflow: true)\n\n#let diagram1 = diagram({\n  node((0, 0))[$A$]\n  edge(\"-&gt;\")\n  node((1, 0))[$B$]\n})\n\n#figure(scale(100%, diagram1), caption: [Figure caption here.])\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/3/303d777c47182758a27b293d47537b6ab98f0c47.png\" data-download-href=\"https://forum.typst.app/uploads/default/303d777c47182758a27b293d47537b6ab98f0c47\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/3/303d777c47182758a27b293d47537b6ab98f0c47_2_690x46.png\" alt=\"image\" data-base62-sha1=\"6SKBQCRcO1agtzJHELEIwvpTBvV\" width=\"690\" height=\"46\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/3/303d777c47182758a27b293d47537b6ab98f0c47_2_690x46.png, https://forum.typst.app/uploads/default/original/2X/3/303d777c47182758a27b293d47537b6ab98f0c47.png 1.5x, https://forum.typst.app/uploads/default/original/2X/3/303d777c47182758a27b293d47537b6ab98f0c47.png 2x\" data-dominant-color=\"3E3E3D\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">738×50 3.9 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>But if you insist on a specific width…</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/fletcher:0.5.7\": diagram, edge, node\n\n#let scale-to-width(width, body) = layout(page-size =&gt; {\n  let size = measure(body, ..page-size)\n  let target-width = if type(width) == ratio {\n    page-size.width * width\n  } else if type(width) == relative {\n    page-size.width * width.ratio + width.length\n  } else {\n    width\n  }\n  let multiplier = target-width.to-absolute() / size.width\n  scale(reflow: true, multiplier * 100%, body)\n})\n\n#let diagram1 = diagram({\n  node((0, 0))[$A$]\n  edge(\"-&gt;\")\n  node((1, 0))[$B$]\n})\n\n#align(center, rect(width: 2em, stroke: 1pt))\n#figure(scale-to-width(2em, diagram1), caption: [Figure caption here.])\n#figure(scale-to-width(50% + 50pt, diagram1), caption: [Figure caption here.])\n#figure(scale-to-width(100%, diagram1), caption: [Figure caption here.])\n#line(length: 100%)\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/1/1234cbb78ecb0170e90c7ef520334064e198b0ef.png\" data-download-href=\"https://forum.typst.app/uploads/default/1234cbb78ecb0170e90c7ef520334064e198b0ef\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/1/1234cbb78ecb0170e90c7ef520334064e198b0ef_2_690x280.png\" alt=\"image\" data-base62-sha1=\"2B3HWWCEAmPPHdxBeeGlwk1D68f\" width=\"690\" height=\"280\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/1/1234cbb78ecb0170e90c7ef520334064e198b0ef_2_690x280.png, https://forum.typst.app/uploads/default/original/2X/1/1234cbb78ecb0170e90c7ef520334064e198b0ef.png 1.5x, https://forum.typst.app/uploads/default/original/2X/1/1234cbb78ecb0170e90c7ef520334064e198b0ef.png 2x\" data-dominant-color=\"434342\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">738×300 19.2 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>P.S. Thankfully, <code>figure</code> does not create a new container, or probably just not a rigid/fixed container, so we can still fetch the page’s size from the inside.</p>",
+      "raw": "The easiest and most straightforward way to scale is to use [`scale`](https://typst.app/docs/reference/layout/scale/) with `reflow: true`, since it's not yet on by default.\n\n```typ\n#import \"@preview/fletcher:0.5.7\": diagram, edge, node\n#set scale(reflow: true)\n\n#let diagram1 = diagram({\n  node((0, 0))[$A$]\n  edge(\"->\")\n  node((1, 0))[$B$]\n})\n\n#figure(scale(100%, diagram1), caption: [Figure caption here.])\n```\n\n![image|690x46](upload://6SKBQCRcO1agtzJHELEIwvpTBvV.png)\n\nBut if you insist on a specific width...\n\n```typ\n#import \"@preview/fletcher:0.5.7\": diagram, edge, node\n\n#let scale-to-width(width, body) = layout(page-size => {\n  let size = measure(body, ..page-size)\n  let target-width = if type(width) == ratio {\n    page-size.width * width\n  } else if type(width) == relative {\n    page-size.width * width.ratio + width.length\n  } else {\n    width\n  }\n  let multiplier = target-width.to-absolute() / size.width\n  scale(reflow: true, multiplier * 100%, body)\n})\n\n#let diagram1 = diagram({\n  node((0, 0))[$A$]\n  edge(\"->\")\n  node((1, 0))[$B$]\n})\n\n#align(center, rect(width: 2em, stroke: 1pt))\n#figure(scale-to-width(2em, diagram1), caption: [Figure caption here.])\n#figure(scale-to-width(50% + 50pt, diagram1), caption: [Figure caption here.])\n#figure(scale-to-width(100%, diagram1), caption: [Figure caption here.])\n#line(length: 100%)\n```\n\n![image|690x280](upload://2B3HWWCEAmPPHdxBeeGlwk1D68f.png)\n\nP.S. Thankfully, `figure` does not create a new container, or probably just not a rigid/fixed container, so we can still fetch the page's size from the inside.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 20,
+      "score": 39.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:46.075308"
+}

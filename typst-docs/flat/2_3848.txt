@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3848,
+    "title": "Is there a way to produce a larger vertical bar meaning \"evaluated at\"?",
+    "slug": "is-there-a-way-to-produce-a-larger-vertical-bar-meaning-evaluated-at",
+    "posts_count": 3,
+    "created_at": "2025-04-28T11:26:35.058Z",
+    "last_posted_at": "2025-04-28T17:14:37.107Z",
+    "views": 125,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "bluss",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 153
+  },
+  "posts": [
+    {
+      "id": 11717,
+      "post_number": 1,
+      "username": "Nico1",
+      "name": "",
+      "created_at": "2025-04-28T11:26:35.239Z",
+      "updated_at": "2025-04-28T12:11:59.797Z",
+      "cooked": "<p>Like in latex <code>\\big|</code> that produces a larger bar</p>",
+      "raw": "Like in latex `\\big|` that produces a larger bar",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 355.0,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1523
+    },
+    {
+      "id": 11718,
+      "post_number": 2,
+      "username": "bluss",
+      "name": "Ulrik",
+      "created_at": "2025-04-28T11:49:57.989Z",
+      "updated_at": "2025-04-28T11:49:57.989Z",
+      "cooked": "<p>You can use <code>math.lr</code> to size it according to an enclosed expression, but you can also bump up the size with an argument to <code>lr</code>, like in these examples:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let evaluated(expr, size: 100%) = $lr(#expr|, size: #size)$\n$ evaluated(f(x), size: #150%)_a^b $\n$ evaluated(f(x)/g(x))_(x=0)^oo $\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/2/2441991f9de3223677705babe08bc396aeaed688.png\" data-download-href=\"https://forum.typst.app/uploads/default/2441991f9de3223677705babe08bc396aeaed688\" title=\"bild\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/2/2441991f9de3223677705babe08bc396aeaed688_2_690x194.png\" alt=\"bild\" data-base62-sha1=\"5aJJoXCyWqdn3hLbm7tpqilF9Uc\" width=\"690\" height=\"194\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/2/2441991f9de3223677705babe08bc396aeaed688_2_690x194.png, https://forum.typst.app/uploads/default/optimized/2X/2/2441991f9de3223677705babe08bc396aeaed688_2_1035x291.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/2/2441991f9de3223677705babe08bc396aeaed688_2_1380x388.png 2x\" data-dominant-color=\"FDFDFD\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">bild</span><span class=\"informations\">1500×422 29.5 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>The package physica also has a function for this called evaluated that does something similar.</p>",
+      "raw": "You can use `math.lr` to size it according to an enclosed expression, but you can also bump up the size with an argument to `lr`, like in these examples:\n\n```typst\n#let evaluated(expr, size: 100%) = $lr(#expr|, size: #size)$\n$ evaluated(f(x), size: #150%)_a^b $\n$ evaluated(f(x)/g(x))_(x=0)^oo $\n```\n\n![bild|690x194](upload://5aJJoXCyWqdn3hLbm7tpqilF9Uc.png)\n\n\nThe package physica also has a function for this called evaluated that does something similar.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 25,
+      "score": 25.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 1272
+    },
+    {
+      "id": 11735,
+      "post_number": 3,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-04-28T17:14:37.107Z",
+      "updated_at": "2025-04-28T17:17:12.951Z",
+      "cooked": "<p>I don’t see the point in abstraction. Not only the name is much longer, is not built-in, but it also removes the vertical bar, so it makes it harder to read.</p>\n<aside class=\"onebox allowlistedgeneric\" data-onebox-src=\"https://typst.app/docs/reference/math/lr#functions-lr\">\n  <header class=\"source\">\n      <img src=\"https://forum.typst.app/uploads/default/original/1X/098187a593d51c4db99324614e2baeeb1bb355cc.png\" class=\"site-icon\" data-dominant-color=\"3CA8B6\" width=\"32\" height=\"32\">\n\n      <a href=\"https://typst.app/docs/reference/math/lr#functions-lr\" target=\"_blank\" rel=\"noopener\">Typst</a>\n  </header>\n\n  <article class=\"onebox-body\">\n    <div class=\"aspect-image\" style=\"--aspect-ratio:690/361;\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/db1c18ed802fe6841bee62606931f352da10ed09_2_690x362.png\" class=\"thumbnail\" data-dominant-color=\"7CC2C5\" width=\"690\" height=\"362\"></div>\n\n<h3><a href=\"https://typst.app/docs/reference/math/lr#functions-lr\" target=\"_blank\" rel=\"noopener\">Left/Right Functions – Typst Documentation</a></h3>\n\n  <p>Documentation for the lr functions.</p>\n\n\n  </article>\n\n  <div class=\"onebox-metadata\">\n    \n    \n  </div>\n\n  <div style=\"clear: both\"></div>\n</aside>\n\n<p>Alternatively, you can define a few variables that will represent the vertical bar of different sizes, and use that substitution name instead, like <code>vbar1</code>, <code>vbar2</code>, etc.</p>",
+      "raw": "I don't see the point in abstraction. Not only the name is much longer, is not built-in, but it also removes the vertical bar, so it makes it harder to read.\n\nhttps://typst.app/docs/reference/math/lr#functions-lr\n\nAlternatively, you can define a few variables that will represent the vertical bar of different sizes, and use that substitution name instead, like `vbar1`, `vbar2`, etc.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 9.8,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:33.385716"
+}

@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 3949,
+    "title": "Can Typst detect the current column?",
+    "slug": "can-typst-detect-the-current-column",
+    "posts_count": 2,
+    "created_at": "2025-05-06T11:25:52.434Z",
+    "last_posted_at": "2025-05-06T11:33:42.928Z",
+    "views": 40,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "layout",
+      "layout-containers"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 170
+  },
+  "posts": [
+    {
+      "id": 12031,
+      "post_number": 1,
+      "username": "Hurtleberry",
+      "name": "Hurtleberry",
+      "created_at": "2025-05-06T11:25:52.592Z",
+      "updated_at": "2025-05-06T11:25:52.592Z",
+      "cooked": "<p>I have a two-column layout. I’d like to insert symbols in the appropriate margin (left or right) at certain points in the text. Ideally I could do this automatically. Automatically adding symbols is straightforward, but I’m not sure of the best way to automatically determine the appropriate margin to place them in.</p>\n<p>Currently I’m using</p>\n<pre><code class=\"lang-auto\">  set text(blue)\n  underline(overline[*#words*])\n  place(left, dy: -1.5em, dx: -1.5cm, block(image(\"Handout.png\", width: 1cm)))\n}\n</code></pre>\n<p>to insert the images whenever I tag a keyword.</p>\n<p>I think I could use <strong>location</strong> and then run calculations vs. page size to work out whether it’s the left or right column, and place it appropriately, but if there’s a more elegant way that would be great.</p>",
+      "raw": "I have a two-column layout. I'd like to insert symbols in the appropriate margin (left or right) at certain points in the text. Ideally I could do this automatically. Automatically adding symbols is straightforward, but I'm not sure of the best way to automatically determine the appropriate margin to place them in.\n\nCurrently I'm using \n```#let hd(words) = {\n  set text(blue)\n  underline(overline[*#words*])\n  place(left, dy: -1.5em, dx: -1.5cm, block(image(\"Handout.png\", width: 1cm)))\n}\n```\n\nto insert the images whenever I tag a keyword.\n\nI think I could use **location** and then run calculations vs. page size to work out whether it's the left or right column, and place it appropriately, but if there's a more elegant way that would be great.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 22,
+      "score": 14.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1553
+    },
+    {
+      "id": 12034,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-05-06T11:33:42.928Z",
+      "updated_at": "2025-05-06T12:45:21.520Z",
+      "cooked": "<p>Hi, welcome to the Typst forum! The idea you suggest is the only way I know of to do this. Note that you can get the current location with the <a href=\"https://typst.app/docs/reference/introspection/here/\">here</a> function.</p>",
+      "raw": "Hi, welcome to the Typst forum! The idea you suggest is the only way I know of to do this. Note that you can get the current location with the [here](https://typst.app/docs/reference/introspection/here/) function.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 22,
+      "score": 24.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:16.515186"
+}

@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1356,
+    "title": "How do I use references in theorems?",
+    "slug": "how-do-i-use-references-in-theorems",
+    "posts_count": 2,
+    "created_at": "2024-10-26T00:17:27.487Z",
+    "last_posted_at": "2024-10-26T05:32:16.942Z",
+    "views": 85,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "jbirnick",
+    "tags": [
+      "citation"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 130
+  },
+  "posts": [
+    {
+      "id": 4689,
+      "post_number": 1,
+      "username": "Monkey",
+      "name": "",
+      "created_at": "2024-10-26T00:17:27.584Z",
+      "updated_at": "2025-02-05T15:09:32.494Z",
+      "cooked": "<p>I’m currently using the package <code>ctheorems:1.1.3</code></p>\n<p>I was looking at this page for help: <a href=\"https://typst.app/universe/package/ctheorems/\" class=\"inline-onebox\">ctheorems – Typst Universe</a></p>\n<p>There they gave this example.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#theorem(\"Euclid\")[\n  There are infinitely many primes.\n]\n</code></pre>\n<p>I would like to be able to write something like</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#theorem(\"Euclid\" @elements)[\n  There are infinitely many primes.\n]\n</code></pre>\n<p>and have the <code>@elements</code> render as the number in my bibliography corresponding to the entry for Euclid’s Elements. Is this possible?</p>",
+      "raw": "I'm currently using the package ```ctheorems:1.1.3```\n\nI was looking at this page for help: https://typst.app/universe/package/ctheorems/\n\nThere they gave this example. \n\n```typ\n#theorem(\"Euclid\")[\n  There are infinitely many primes.\n]\n```\n\nI would like to be able to write something like \n```typ\n#theorem(\"Euclid\" @elements)[\n  There are infinitely many primes.\n]\n```\n\nand have the `@elements` render as the number in my bibliography corresponding to the entry for Euclid's Elements. Is this possible?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 219.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 411
+    },
+    {
+      "id": 4691,
+      "post_number": 2,
+      "username": "jbirnick",
+      "name": "Johann Birnick",
+      "created_at": "2024-10-26T05:32:16.942Z",
+      "updated_at": "2024-10-26T05:32:16.942Z",
+      "cooked": "<p>You can just replace <code>\"Euclid\"</code> with <code>[Euclid @elements]</code>.</p>\n<p>Here is an example which uses <a href=\"https://typst.app/universe/package/great-theorems/\">great-theorems</a> instead of ctheorems.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/great-theorems:0.1.1\": *\n\n#show: great-theorems-init\n\n#let theorem = mathblock(\n  blocktitle: \"Theorem\",\n)\n#theorem(title: [Euclid @elements])[\n  There are infinitely many primes.\n]\n</code></pre>",
+      "raw": "You can just replace `\"Euclid\"` with `[Euclid @elements]`.\n\nHere is an example which uses [great-theorems](https://typst.app/universe/package/great-theorems/) instead of ctheorems.\n\n```typ\n#import \"@preview/great-theorems:0.1.1\": *\n\n#show: great-theorems-init\n\n#let theorem = mathblock(\n  blocktitle: \"Theorem\",\n)\n#theorem(title: [Euclid @elements])[\n  There are infinitely many primes.\n]\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 9.6,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 218
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:56.723165"
+}

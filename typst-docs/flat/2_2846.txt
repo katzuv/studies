@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2846,
+    "title": "How to get the title with its name?",
+    "slug": "how-to-get-the-title-with-its-name",
+    "posts_count": 2,
+    "created_at": "2025-02-16T02:37:46.736Z",
+    "last_posted_at": "2025-02-16T07:52:46.344Z",
+    "views": 147,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "referencing"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 163
+  },
+  "posts": [
+    {
+      "id": 8723,
+      "post_number": 1,
+      "username": "Akshay_Raj_Gollahall",
+      "name": "Akshay Raj Gollahalli",
+      "created_at": "2025-02-16T02:37:46.974Z",
+      "updated_at": "2025-02-16T02:38:04.806Z",
+      "cooked": "<p>This question is part of the <a href=\"https://forum.typst.app/t/how-to-get-the-entire-title-when-referencing-headings/2078/1\" class=\"inline-onebox\">How to get the entire title when referencing headings?</a>, which was already answered.</p>\n<p>Consider this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set heading(numbering: \"1.\")\n\n#let refName(\n  label\n) = {\n  ref(label, supplement: it =&gt; {\n      if it != none and it.func() == heading {\n        link(it.location(), it.body)\n      }\n    }\n  )\n}\n\n= Introduction\n\n== Introduction Title &lt;intro&gt;\n\nThis is the introduction.\n\n= Background\n\n== Background\n\nThis is the background. And intro is #refName(&lt;intro&gt;).\n</code></pre>\n<p>This gives me an output as</p>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/8/80ca2d6f64a4e9786b7a0ffcc042cacfda78476e.png\" alt=\"image\" data-base62-sha1=\"inkhkib5RU9oxgpDfbAeFLjPAZw\" width=\"532\" height=\"264\"></p>\n<p>But the referenced title also shows the number, is it possible to just get the title and not it’s number?</p>",
+      "raw": "This question is part of the https://forum.typst.app/t/how-to-get-the-entire-title-when-referencing-headings/2078/1, which was already answered.\n\nConsider this:\n\n```typ\n#set heading(numbering: \"1.\")\n\n#let refName(\n  label\n) = {\n  ref(label, supplement: it => {\n      if it != none and it.func() == heading {\n        link(it.location(), it.body)\n      }\n    }\n  )\n}\n\n= Introduction\n\n== Introduction Title <intro>\n\nThis is the introduction.\n\n= Background\n\n== Background\n\nThis is the background. And intro is #refName(<intro>).\n```\n\nThis gives me an output as \n\n![image|532x264](upload://inkhkib5RU9oxgpDfbAeFLjPAZw.png)\n\nBut the referenced title also shows the number, is it possible to just get the title and not it's number?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 34,
+      "score": 566.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 106
+    },
+    {
+      "id": 8727,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-02-16T07:52:46.344Z",
+      "updated_at": "2025-02-16T07:52:46.344Z",
+      "cooked": "<p>You can either adapt the solution from the thread you linked:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let refName(\n  label\n) = {\n  show ref: it =&gt; {\n    let el = it.element\n    if el != none and el.func() == heading {\n      link(el.location(), el.body)\n    }\n  }\n  ref(label)\n}\n</code></pre>\n<p>or use <code>query</code>, to get and display the title.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let refName(label) = context {\n  let el = query(label).first()\n  link(el.location(), el.body)\n}\n</code></pre>",
+      "raw": "You can either adapt the solution from the thread you linked:\n```typst\n#let refName(\n  label\n) = {\n  show ref: it => {\n    let el = it.element\n    if el != none and el.func() == heading {\n      link(el.location(), el.body)\n    }\n  }\n  ref(label)\n}\n```\nor use `query`, to get and display the title.\n```typst\n#let refName(label) = context {\n  let el = query(label).first()\n  link(el.location(), el.body)\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 15.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:29.778582"
+}

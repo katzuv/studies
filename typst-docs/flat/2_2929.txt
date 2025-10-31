@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2929,
+    "title": "How do I reset a counter if an element is in the next chapter?",
+    "slug": "how-do-i-reset-a-counter-if-an-element-is-in-the-next-chapter",
+    "posts_count": 3,
+    "created_at": "2025-02-22T22:16:33.561Z",
+    "last_posted_at": "2025-02-23T00:03:05.525Z",
+    "views": 100,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "scripting",
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 304
+  },
+  "posts": [
+    {
+      "id": 8897,
+      "post_number": 1,
+      "username": "engifar",
+      "name": "",
+      "created_at": "2025-02-22T22:16:33.716Z",
+      "updated_at": "2025-02-22T22:16:33.716Z",
+      "cooked": "<p>Hello, I am trying to write a custom box for theorems, definitions etc. with a custom counter. Each theorem should be labeled as chapter.subchapter.counter and if either the chapter or the subchapter have gone up, the counter should be reset to 0.<br>\nSo far I have come up with this code, which does not handle the reset after each (sub-)chapter break but instead counts up indefinitely.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let thmbox = (body, type: none, title: none) =&gt; [\n    // Counter\n    #let c_thm = counter(\"definition\")\n    #let c_herl = counter(\"herleitung\")\n    #let c_satz = counter(\"satz\")\n\n    // Get current position in document\n    #let chapter = {context counter(heading).get().at(0)}\n    #let subchapter = {context counter(heading).get().at(1)}\n\n    // Function that handles styling and counters of thmbox_title\n    #let set_thmbox_title = (supplement: none, counter_: none) =&gt; [\n        #counter_.step()\n        #strong[#supplement\n            #chapter.#subchapter.#context counter_.display()\n        ] (#title)\n    ]\n\n    #showybox(\n        title: {\n            if type == \"def\" { set_thmbox_title(supplement: \"Definition\", counter_: c_def) }\n            else if type == \"herl\" { set_thmbox_title(supplement: \"Herleitung\", counter_: c_herl) }\n            else if type == \"satz\" { set_thmbox_title(supplement: \"Satz\", counter_: c_satz) }\n            else [Nicht definiert]\n        },\n        frame: (\n            title-color: black.lighten(70%),\n            border-color: black.lighten(50%),\n            body-color: black.lighten(90%),\n            radius: 4pt,\n        ),\n        title-style: (\n            color: black,\n        ),\n        breakable: true,\n    )[#body]\n]\n</code></pre>\n<p>I tried to extend this as such, but the code doesn’t work:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">    #let set_thmbox_title = (supplement: none, counter_: none) =&gt; {\n        if chapter &gt; last_used_chapter {for c in counters {\n            c.update(0)\n        }}\n        else if subchapter &gt; last_used_subchapter {for c in counter {\n            c.update(0)\n        }}\n    }[\n        #counter_.step()\n        #strong[#supplement\n            #chapter.#subchapter.#context counter_.display()\n        ] (#title)\n    ]\n</code></pre>",
+      "raw": "Hello, I am trying to write a custom box for theorems, definitions etc. with a custom counter. Each theorem should be labeled as chapter.subchapter.counter and if either the chapter or the subchapter have gone up, the counter should be reset to 0.\nSo far I have come up with this code, which does not handle the reset after each (sub-)chapter break but instead counts up indefinitely.\n\n```typ\n#let thmbox = (body, type: none, title: none) => [\n    // Counter\n    #let c_thm = counter(\"definition\")\n    #let c_herl = counter(\"herleitung\")\n    #let c_satz = counter(\"satz\")\n\n    // Get current position in document\n    #let chapter = {context counter(heading).get().at(0)}\n    #let subchapter = {context counter(heading).get().at(1)}\n\n    // Function that handles styling and counters of thmbox_title\n    #let set_thmbox_title = (supplement: none, counter_: none) => [\n        #counter_.step()\n        #strong[#supplement\n            #chapter.#subchapter.#context counter_.display()\n        ] (#title)\n    ]\n\n    #showybox(\n        title: {\n            if type == \"def\" { set_thmbox_title(supplement: \"Definition\", counter_: c_def) }\n            else if type == \"herl\" { set_thmbox_title(supplement: \"Herleitung\", counter_: c_herl) }\n            else if type == \"satz\" { set_thmbox_title(supplement: \"Satz\", counter_: c_satz) }\n            else [Nicht definiert]\n        },\n        frame: (\n            title-color: black.lighten(70%),\n            border-color: black.lighten(50%),\n            body-color: black.lighten(90%),\n            radius: 4pt,\n        ),\n        title-style: (\n            color: black,\n        ),\n        breakable: true,\n    )[#body]\n]\n```\n\nI tried to extend this as such, but the code doesn't work:\n```typ\n    #let set_thmbox_title = (supplement: none, counter_: none) => {\n        if chapter > last_used_chapter {for c in counters {\n            c.update(0)\n        }}\n        else if subchapter > last_used_subchapter {for c in counter {\n            c.update(0)\n        }}\n    }[\n        #counter_.step()\n        #strong[#supplement\n            #chapter.#subchapter.#context counter_.display()\n        ] (#title)\n    ]\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 21,
+      "score": 414.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1229
+    },
+    {
+      "id": 8898,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-02-22T22:49:41.816Z",
+      "updated_at": "2025-02-22T22:52:36.079Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/engifar\">@engifar</a>, if I understood your requirements correctly, resetting your custom counters at each level 1 or 2 heading, with a show rule, should do what you want.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show heading.where(level: 1): it =&gt; {\n  counter(\"definition\").update(0)\n  counter(\"herleitung\").update(0)\n  counter(\"satz\").update(0)\n  it\n}\n#show heading.where(level: 2): it =&gt; {\n  ...\n}\n</code></pre>",
+      "raw": "Hi @engifar, if I understood your requirements correctly, resetting your custom counters at each level 1 or 2 heading, with a show rule, should do what you want.\n```typst\n#show heading.where(level: 1): it => {\n  counter(\"definition\").update(0)\n  counter(\"herleitung\").update(0)\n  counter(\"satz\").update(0)\n  it\n}\n#show heading.where(level: 2): it => {\n  ...\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 19,
+      "score": 23.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    },
+    {
+      "id": 8901,
+      "post_number": 3,
+      "username": "engifar",
+      "name": "",
+      "created_at": "2025-02-23T00:03:05.525Z",
+      "updated_at": "2025-02-23T00:03:05.525Z",
+      "cooked": "<p>Yes, that was it. Thank you very much :))</p>",
+      "raw": "Yes, that was it. Thank you very much :))",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 17,
+      "score": 13.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1229
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:21.871843"
+}

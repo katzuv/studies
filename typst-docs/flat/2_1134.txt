@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1134,
+    "title": "How to check if in development version?",
+    "slug": "how-to-check-if-in-development-version",
+    "posts_count": 2,
+    "created_at": "2024-10-16T11:00:19.151Z",
+    "last_posted_at": "2024-10-16T11:54:54.986Z",
+    "views": 60,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 137
+  },
+  "posts": [
+    {
+      "id": 4001,
+      "post_number": 1,
+      "username": "Carlos",
+      "name": "Carlos",
+      "created_at": "2024-10-16T11:00:19.306Z",
+      "updated_at": "2024-10-16T11:00:49.024Z",
+      "cooked": "<p>Hi, sometimes I compile documents using the development version because if fixes some problems in pdf output, while still writing and previewing with current stable version. So I would like some fragments of code to be conditional on the version. Thing is that <code>sys.version</code> reports the same version for both and I don’t know where to look for the patch/revision, if available at all. Thanks!</p>",
+      "raw": "Hi, sometimes I compile documents using the development version because if fixes some problems in pdf output, while still writing and previewing with current stable version. So I would like some fragments of code to be conditional on the version. Thing is that `sys.version` reports the same version for both and I don't know where to look for the patch/revision, if available at all. Thanks!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 139.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 399
+    },
+    {
+      "id": 4003,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-10-16T11:54:54.986Z",
+      "updated_at": "2024-10-16T11:54:54.986Z",
+      "cooked": "<p>Hello!<br>\nThe reason why <code>sys.version</code> reports the same version for both is because the compilation was done without modifying the version in <code>Cargo.toml</code>. You can re-compile after changing that, or use a condition on a <code>sys.inputs</code>. See <a href=\"https://forum.typst.app/t/can-i-configure-my-document-e-g-draft-release-version-color-theme-when-creating-a-pdf-without-modifying-the-typst-file-directly/160\" class=\"inline-onebox\">Can I configure my document (e.g. draft/release version, color theme) when creating a PDF without modifying the Typst file directly?</a></p>",
+      "raw": "Hello! \nThe reason why `sys.version` reports the same version for both is because the compilation was done without modifying the version in `Cargo.toml`. You can re-compile after changing that, or use a condition on a `sys.inputs`. See https://forum.typst.app/t/can-i-configure-my-document-e-g-draft-release-version-color-theme-when-creating-a-pdf-without-modifying-the-typst-file-directly/160",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 22,
+      "score": 24.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:43.173342"
+}

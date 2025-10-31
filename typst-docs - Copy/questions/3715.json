@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 3715,
+    "title": "How to adjust numerator fraction line vertical spacing?",
+    "slug": "how-to-adjust-numerator-fraction-line-vertical-spacing",
+    "posts_count": 3,
+    "created_at": "2025-04-18T13:07:59.836Z",
+    "last_posted_at": "2025-04-18T15:31:54.212Z",
+    "views": 83,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "layout",
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 551
+  },
+  "posts": [
+    {
+      "id": 11278,
+      "post_number": 1,
+      "username": "HuangMI",
+      "name": "HuangMI",
+      "created_at": "2025-04-18T13:08:00.188Z",
+      "updated_at": "2025-04-22T06:40:25.801Z",
+      "cooked": "<p>I want to adjust the black equation in the image to make the spacing between the numerator and the fraction line equal to the purple equation’s spacing. How should I write the code? I think the purple equation has more aesthetically pleasing formatting.<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/4/4363dd2985944161f1275f65fd8425244d58769e.png\" data-download-href=\"https://forum.typst.app/uploads/default/4363dd2985944161f1275f65fd8425244d58769e\" title=\"1744980686886\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/4/4363dd2985944161f1275f65fd8425244d58769e_2_690x337.png\" alt=\"1744980686886\" data-base62-sha1=\"9C9WLZZx5aFcm254tTjJOJfrSlU\" width=\"690\" height=\"337\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/4/4363dd2985944161f1275f65fd8425244d58769e_2_690x337.png, https://forum.typst.app/uploads/default/optimized/2X/4/4363dd2985944161f1275f65fd8425244d58769e_2_1035x505.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/4/4363dd2985944161f1275f65fd8425244d58769e_2_1380x674.png 2x\" data-dominant-color=\"F0EFF2\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">1744980686886</span><span class=\"informations\">1699×831 64.6 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div><br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/8/865db5b403818d3ba40e2c3a386cbd15a74d2cac.png\" data-download-href=\"https://forum.typst.app/uploads/default/865db5b403818d3ba40e2c3a386cbd15a74d2cac\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/8/865db5b403818d3ba40e2c3a386cbd15a74d2cac_2_594x500.png\" alt=\"image\" data-base62-sha1=\"jaEKHJJXGJ1OpovaoVtNPvQWWZK\" width=\"594\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/8/865db5b403818d3ba40e2c3a386cbd15a74d2cac_2_594x500.png, https://forum.typst.app/uploads/default/optimized/2X/8/865db5b403818d3ba40e2c3a386cbd15a74d2cac_2_891x750.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/8/865db5b403818d3ba40e2c3a386cbd15a74d2cac_2_1188x1000.png 2x\" data-dominant-color=\"F7F6F8\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">1861×1564 108 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "I want to adjust the black equation in the image to make the spacing between the numerator and the fraction line equal to the purple equation's spacing. How should I write the code? I think the purple equation has more aesthetically pleasing formatting. \n![1744980686886|690x337](upload://9C9WLZZx5aFcm254tTjJOJfrSlU.png)\n![image|594x500](upload://jaEKHJJXGJ1OpovaoVtNPvQWWZK.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 65.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1479
+    },
+    {
+      "id": 11282,
+      "post_number": 2,
+      "username": "Mathemensch",
+      "name": "Alexander Schulz",
+      "created_at": "2025-04-18T14:22:34.644Z",
+      "updated_at": "2025-04-18T14:22:34.644Z",
+      "cooked": "<p>This solution is admittedly a bit hacky. However, since there is no (documented) way to adjust the spacing between the numerator and denominator, recreating the <code>frac</code> function was the only viable approach I found.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show math.frac: it =&gt; {\n  context {\n    let width = calc.max(measure($it.num$).width, measure($it.denom$).width)\n    stack(spacing: 0.25em, \n      $it.num$,\n      line(stroke:0.5pt, length: width),\n      $it.denom$)\n  }\n}\n\n$ a^2/b + x/y = 1 $\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/1/17b6f9fd5c5da149d531314d77ee4ed2b2a2064c.png\" alt=\"image\" data-base62-sha1=\"3nN0rID9acd9zsZKYLQwcGx7GkQ\" width=\"366\" height=\"356\"></p>\n<p><a href=\"https://typst.app/project/reQMeWLVRNivMbaUZgRYSd\" class=\"onebox\" target=\"_blank\" rel=\"noopener\">https://typst.app/project/reQMeWLVRNivMbaUZgRYSd</a></p>",
+      "raw": "This solution is admittedly a bit hacky. However, since there is no (documented) way to adjust the spacing between the numerator and denominator, recreating the `frac` function was the only viable approach I found.\n\n\n```typ\n#show math.frac: it => {\n  context {\n    let width = calc.max(measure($it.num$).width, measure($it.denom$).width)\n    stack(spacing: 0.25em, \n      $it.num$,\n      line(stroke:0.5pt, length: width),\n      $it.denom$)\n  }\n}\n\n$ a^2/b + x/y = 1 $\n```\n\n![image|366x356](upload://3nN0rID9acd9zsZKYLQwcGx7GkQ.png)\n\n\nhttps://typst.app/project/reQMeWLVRNivMbaUZgRYSd",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 15.4,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 307
+    },
+    {
+      "id": 11285,
+      "post_number": 3,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-04-18T15:31:54.212Z",
+      "updated_at": "2025-04-27T13:34:18.855Z",
+      "cooked": "<p>Hello. There is no way to adjust that with rules, so you can open an issue about it.</p>\n<p>By looking at <a href=\"https://github.com/typst/typst/blob/7e072e24930d8a7524f700b62cabd97ceb4f45e6/crates/typst-layout/src/math/frac.rs#L44\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">typst/crates/typst-layout/src/math/frac.rs at 7e072e24930d8a7524f700b62cabd97ceb4f45e6 · typst/typst · GitHub</a>, the default show rule is pretty big and it uses a lot of things that do not exist in Typst, but here is roughly how it works for <code>frac</code>:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show math.equation.where(block: true): it =&gt; {\n  show math.frac: it =&gt; context {\n    let num-vert-spacing = 2pt\n    let thickness = 0.045em.to-absolute()\n    let around = 0.1em\n\n    // Grabbed from font, it looks like.\n    let axis = -0.55em.to-absolute() // denom/line\n    let shift-up = 0pt // denom + line\n    let shift-down = 0.45em.to-absolute() // denom + other stuff\n    let num-descent = 0pt // denom + line\n    let denom-ascent = -0.35em.to-absolute() // denom + other stuff\n    let num-min = 0.1em.to-absolute() // denom + line\n    let denom-min = 0.1em.to-absolute() // denom + line\n\n    let num-size = measure(it.num)\n    let denom-size = measure(it.denom)\n\n    import calc: max\n    let num-gap = max(shift-up - (axis + thickness / 2) - num-descent, num-min)\n    let denom-gap = max(shift-down + (axis - thickness / 2) - denom-ascent, denom-min)\n    let line-width = max(num-size.width, denom-size.width)\n    let width = line-width + 2 * around\n    let height = num-size.height + num-gap + thickness + denom-gap + denom-size.height\n\n    let size = (width, height)\n    let num-pos = ((width - num-size.width) / 2, 1pt + num-vert-spacing)\n    let line-pos = ((width - line-width) / 2, num-size.height + num-gap + thickness / 2)\n    let denom-pos = ((width - denom-size.width) / 2, height - denom-size.height)\n    let baseline = line-pos.last() + axis\n\n    let frame = box.with(width: size.first(), height: size.last())\n    frame = frame.with(baseline: baseline)\n    frame({\n      place(dx: num-pos.first(), dy: num-pos.last(), $it.num$)\n      place(dx: denom-pos.first(), dy: denom-pos.last(), $it.denom$)\n      place(\n        dx: line-pos.first(),\n        dy: line-pos.last(),\n        line(length: line-width, stroke: thickness)\n      )\n    })\n  }\n  it\n}\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/6/67ed4562b698cf43c2445fe95efa22f15613333a.png\" alt=\"image\" data-base62-sha1=\"ePnwSvCMoeVEDV4Yy6f7ILeO4C6\" width=\"328\" height=\"156\"></p>\n<p>It has different values for display/non-display variants, so I only played with block equation, for inline one the values should be different.</p>\n<p>The only problem with it is that the values are manually assigned, and the end result is slightly different: the line width is slightly different, the x position is slightly changed. The only noticeable change I had to make is add <code>1pt</code> to the numerator y value, because the zero looks way off from the default look.</p>",
+      "raw": "Hello. There is no way to adjust that with rules, so you can open an issue about it.\n\nBy looking at https://github.com/typst/typst/blob/7e072e24930d8a7524f700b62cabd97ceb4f45e6/crates/typst-layout/src/math/frac.rs#L44, the default show rule is pretty big and it uses a lot of things that do not exist in Typst, but here is roughly how it works for `frac`:\n\n```typ\n#show math.equation.where(block: true): it => {\n  show math.frac: it => context {\n    let num-vert-spacing = 2pt\n    let thickness = 0.045em.to-absolute()\n    let around = 0.1em\n\n    // Grabbed from font, it looks like.\n    let axis = -0.55em.to-absolute() // denom/line\n    let shift-up = 0pt // denom + line\n    let shift-down = 0.45em.to-absolute() // denom + other stuff\n    let num-descent = 0pt // denom + line\n    let denom-ascent = -0.35em.to-absolute() // denom + other stuff\n    let num-min = 0.1em.to-absolute() // denom + line\n    let denom-min = 0.1em.to-absolute() // denom + line\n\n    let num-size = measure(it.num)\n    let denom-size = measure(it.denom)\n\n    import calc: max\n    let num-gap = max(shift-up - (axis + thickness / 2) - num-descent, num-min)\n    let denom-gap = max(shift-down + (axis - thickness / 2) - denom-ascent, denom-min)\n    let line-width = max(num-size.width, denom-size.width)\n    let width = line-width + 2 * around\n    let height = num-size.height + num-gap + thickness + denom-gap + denom-size.height\n\n    let size = (width, height)\n    let num-pos = ((width - num-size.width) / 2, 1pt + num-vert-spacing)\n    let line-pos = ((width - line-width) / 2, num-size.height + num-gap + thickness / 2)\n    let denom-pos = ((width - denom-size.width) / 2, height - denom-size.height)\n    let baseline = line-pos.last() + axis\n\n    let frame = box.with(width: size.first(), height: size.last())\n    frame = frame.with(baseline: baseline)\n    frame({\n      place(dx: num-pos.first(), dy: num-pos.last(), $it.num$)\n      place(dx: denom-pos.first(), dy: denom-pos.last(), $it.denom$)\n      place(\n        dx: line-pos.first(),\n        dy: line-pos.last(),\n        line(length: line-width, stroke: thickness)\n      )\n    })\n  }\n  it\n}\n```\n\n![image|328x156](upload://ePnwSvCMoeVEDV4Yy6f7ILeO4C6.png)\n\nIt has different values for display/non-display variants, so I only played with block equation, for inline one the values should be different.\n\nThe only problem with it is that the values are manually assigned, and the end result is slightly different: the line width is slightly different, the x position is slightly changed. The only noticeable change I had to make is add `1pt` to the numerator y value, because the zero looks way off from the default look.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 105.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:49:00.689680"
+}

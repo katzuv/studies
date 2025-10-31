@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1660,
+    "title": "How come this does not generate a grid as expected?",
+    "slug": "how-come-this-does-not-generate-a-grid-as-expected",
+    "posts_count": 3,
+    "created_at": "2024-11-10T21:00:45.632Z",
+    "last_posted_at": "2024-11-10T21:50:14.230Z",
+    "views": 228,
+    "like_count": 4,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Eric",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 487
+  },
+  "posts": [
+    {
+      "id": 5470,
+      "post_number": 1,
+      "username": "AhmedSalih",
+      "name": "",
+      "created_at": "2024-11-10T21:00:45.753Z",
+      "updated_at": "2024-11-10T21:43:32.011Z",
+      "cooked": "<p>Hello!</p>\n<p>I have the following code:</p>\n<pre><code class=\"lang-auto\">// Define the vimg function to create image rectangles with text\n#let vimg(body) = {\n  rect(width: 50mm, height: 30mm)[\n    #text(body)\n  ]\n}\n\n// Example logos array for testing\n#let Example_logos = (\"Example 1\", \"Example 2\", \"Example 3\", \"Example 4\")\n\n// Example 1: Manual Approach (Works as Expected)\n#figure(\n  grid(\n    columns: 2,       // Enforce a two-column layout\n    gutter: 20mm,     // Space between columns\n\n    // Manually adding each logo, assuming we have four logos for example\n    vimg(\"Example 1\"),\n    vimg(\"Example 2\"),\n    vimg(\"Example 3\"),\n    vimg(\"Example 4\")\n  )\n)\n\n// Example 2: For Loop Approach (Problem Case)\n#figure(\n  grid(\n    columns: 2,       // Enforce a two-column layout\n    gutter: 20mm,     // Space between columns\n\n    // Using a `for` loop to add each logo dynamically\n    if Example_logos != none {\n      for logo in Example_logos {\n        vimg(logo)\n      }\n    }\n  )\n)\n\n</code></pre>\n<p>It generates the following:</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/4/40b8c48efde1b645bc4ac556b919774695aaad86.png\" data-download-href=\"https://forum.typst.app/uploads/default/40b8c48efde1b645bc4ac556b919774695aaad86\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/4/40b8c48efde1b645bc4ac556b919774695aaad86_2_382x500.png\" alt=\"image\" data-base62-sha1=\"9eyq7vNtoPaEbq1tV0ob7PoN2rs\" width=\"382\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/4/40b8c48efde1b645bc4ac556b919774695aaad86_2_382x500.png, https://forum.typst.app/uploads/default/optimized/2X/4/40b8c48efde1b645bc4ac556b919774695aaad86_2_573x750.png 1.5x, https://forum.typst.app/uploads/default/original/2X/4/40b8c48efde1b645bc4ac556b919774695aaad86.png 2x\" data-dominant-color=\"FCFCFC\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">644×841 26.1 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>What I want is the first, where I do it manually and the 4 inputs are lay out in a grid. When using the for loop it becomes just one vertical line?</p>\n<p>I want to use grid and get this to work with for loop. No packages.</p>\n<p>Kind regards</p>",
+      "raw": "Hello!\n\nI have the following code:\n\n```\n// Define the vimg function to create image rectangles with text\n#let vimg(body) = {\n  rect(width: 50mm, height: 30mm)[\n    #text(body)\n  ]\n}\n\n// Example logos array for testing\n#let Example_logos = (\"Example 1\", \"Example 2\", \"Example 3\", \"Example 4\")\n\n// Example 1: Manual Approach (Works as Expected)\n#figure(\n  grid(\n    columns: 2,       // Enforce a two-column layout\n    gutter: 20mm,     // Space between columns\n\n    // Manually adding each logo, assuming we have four logos for example\n    vimg(\"Example 1\"),\n    vimg(\"Example 2\"),\n    vimg(\"Example 3\"),\n    vimg(\"Example 4\")\n  )\n)\n\n// Example 2: For Loop Approach (Problem Case)\n#figure(\n  grid(\n    columns: 2,       // Enforce a two-column layout\n    gutter: 20mm,     // Space between columns\n\n    // Using a `for` loop to add each logo dynamically\n    if Example_logos != none {\n      for logo in Example_logos {\n        vimg(logo)\n      }\n    }\n  )\n)\n\n```\n\nIt generates the following:\n\n![image|382x500](upload://9eyq7vNtoPaEbq1tV0ob7PoN2rs.png)\n\nWhat I want is the first, where I do it manually and the 4 inputs are lay out in a grid. When using the for loop it becomes just one vertical line?\n\nI want to use grid and get this to work with for loop. No packages.\n\nKind regards",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 31,
+      "score": 966.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 786
+    },
+    {
+      "id": 5471,
+      "post_number": 2,
+      "username": "Eric",
+      "name": "Eric Biedert",
+      "created_at": "2024-11-10T21:39:25.542Z",
+      "updated_at": "2024-11-10T21:39:25.542Z",
+      "cooked": "<p>By using a for loop for inserting the images, you end up creating just a single grid cell that contains a sequence of all images. What you need to use, is the <a href=\"https://typst.app/docs/reference/foundations/arguments/#spreading\">spreading</a> of arguments via the <code>..</code> operator, which is then easiest done not with a for loop, but by <a href=\"https://typst.app/docs/reference/foundations/array/#definitions-map\">mapping</a> the <code>Example_logos</code> array to an array of image elements. Assuming that <code>Example_logos</code> is not <code>none</code>, you can then write this as</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">grid(\n  columns: 2,\n  gutter: 20mm,\n  ..Example_logos.map(vimg)\n)\n</code></pre>\n<p>If you still prefer a for loop, you need to make sure that an array is built from it, and not a single piece of content containing all the images. As the results of each loop iteration are in the end joined together, you need to make sure that each iteration yields an array with the image as its single entry:</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">grid(\n  columns: 2,\n  gutter: 20mm,\n  ..for logo in Example_logos {\n    (vimg(logo),)\n  }\n)\n</code></pre>\n<p>If you cannot always assume that <code>Example_logos</code> isn’t <code>none</code>, you can put the <code>if</code> statement <em>after</em> the <code>..</code>, so that whatever is inside that statement is spread into the arguments of the grid:</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">grid(\n  columns: 2,\n  gutter: 20mm,\n  ..if Example_logos != none {\n    Example_logos.map(vimg)\n  }\n)\n</code></pre>\n<hr>\n<p><em>On an unrelated note, please try to put questions in the <a class=\"hashtag-cooked\" href=\"/c/questions/5\" data-type=\"category\" data-slug=\"questions\" data-id=\"5\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>Questions</span></a> category, so that it’s easier to find for other people. This will also allow you to later mark a solution. Also, you can get proper Typst syntax highlighting by creating your code blocks with a language identifier as in</em></p>\n<pre><code class=\"lang-auto\">```typ\n#let vimg(body) = { ... }\n```\n</code></pre>",
+      "raw": "By using a for loop for inserting the images, you end up creating just a single grid cell that contains a sequence of all images. What you need to use, is the [spreading](https://typst.app/docs/reference/foundations/arguments/#spreading) of arguments via the `..` operator, which is then easiest done not with a for loop, but by [mapping](https://typst.app/docs/reference/foundations/array/#definitions-map) the `Example_logos` array to an array of image elements. Assuming that `Example_logos` is not `none`, you can then write this as\n\n```typc\ngrid(\n  columns: 2,\n  gutter: 20mm,\n  ..Example_logos.map(vimg)\n)\n```\n\nIf you still prefer a for loop, you need to make sure that an array is built from it, and not a single piece of content containing all the images. As the results of each loop iteration are in the end joined together, you need to make sure that each iteration yields an array with the image as its single entry:\n```typc\ngrid(\n  columns: 2,\n  gutter: 20mm,\n  ..for logo in Example_logos {\n    (vimg(logo),)\n  }\n)\n```\nIf you cannot always assume that `Example_logos` isn't `none`, you can put the `if` statement _after_ the `..`, so that whatever is inside that statement is spread into the arguments of the grid:\n```typc\ngrid(\n  columns: 2,\n  gutter: 20mm,\n  ..if Example_logos != none {\n    Example_logos.map(vimg)\n  }\n)\n```\n---\n_On an unrelated note, please try to put questions in the #questions category, so that it's easier to find for other people. This will also allow you to later mark a solution. Also, you can get proper Typst syntax highlighting by creating your code blocks with a language identifier as in_\n````\n```typ\n#let vimg(body) = { ... }\n```\n````",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 27,
+      "score": 105.4,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 88
+    },
+    {
+      "id": 5472,
+      "post_number": 3,
+      "username": "AhmedSalih",
+      "name": "",
+      "created_at": "2024-11-10T21:50:14.230Z",
+      "updated_at": "2024-11-10T21:50:14.230Z",
+      "cooked": "<aside class=\"quote no-group\" data-username=\"Eric\" data-post=\"2\" data-topic=\"1660\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/eric/48/87_2.png\" class=\"avatar\"> Eric:</div>\n<blockquote>\n<pre><code class=\"lang-auto\">grid(\n  columns: 2,\n  gutter: 20mm,\n  ..Example_logos.map(vimg)\n)\n</code></pre>\n</blockquote>\n</aside>\n<p>Thank you Eric, a very simple question I had but a great explanation I could follow.</p>\n<p>Kind regards</p>",
+      "raw": "[quote=\"Eric, post:2, topic:1660\"]\n```\ngrid(\n  columns: 2,\n  gutter: 20mm,\n  ..Example_logos.map(vimg)\n)\n```\n[/quote]\n\nThank you Eric, a very simple question I had but a great explanation I could follow.\n\nKind regards",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 2,
+      "reads": 23,
+      "score": 94.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 786
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:10.833082"
+}

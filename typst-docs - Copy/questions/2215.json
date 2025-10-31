@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2215,
+    "title": "How to avoid a reset to the third-level heading counter after changing the first two levels?",
+    "slug": "how-to-avoid-a-reset-to-the-third-level-heading-counter-after-changing-the-first-two-levels",
+    "posts_count": 3,
+    "created_at": "2024-12-27T09:14:30.243Z",
+    "last_posted_at": "2024-12-28T06:07:24.189Z",
+    "views": 175,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "PgBiel",
+    "tags": [
+      "scripting",
+      "counter"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 407
+  },
+  "posts": [
+    {
+      "id": 6944,
+      "post_number": 1,
+      "username": "Jose_Calvillo_Berlan",
+      "name": "José Calvillo Berlanga",
+      "created_at": "2024-12-27T09:14:30.355Z",
+      "updated_at": "2024-12-28T06:08:11.979Z",
+      "cooked": "<p>I am trying to create a customized heading structure, where after the first two levels I want to create a third level header, whose numbering counter does not reset with each change to the fist two levels.</p>\n<p>Is this possible?</p>",
+      "raw": "I am trying to create a customized heading structure, where after the first two levels I want to create a third level header, whose numbering counter does not reset with each change to the fist two levels.\n\nIs this possible?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 37,
+      "score": 522.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 980
+    },
+    {
+      "id": 6969,
+      "post_number": 2,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-12-28T05:48:58.772Z",
+      "updated_at": "2024-12-28T05:48:58.772Z",
+      "cooked": "<p>Hey <a class=\"mention\" href=\"/u/jose_calvillo_berlan\">@Jose_Calvillo_Berlan</a>, welcome to the forum! I’ve added some tags and also changed your question post’s title to better fit our guidelines: <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\" class=\"inline-onebox\">How to post in the Questions category</a></p>\n<p>For future posts, make sure your title is a question you’d ask to a friend about Typst. <img src=\"https://forum.typst.app/images/emoji/apple/wink.png?v=12\" title=\":wink:\" class=\"emoji\" alt=\":wink:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Hey @Jose_Calvillo_Berlan, welcome to the forum! I’ve added some tags and also changed your question post’s title to better fit our guidelines: https://forum.typst.app/t/how-to-post-in-the-questions-category/11\n\nFor future posts, make sure your title is a question you’d ask to a friend about Typst. :wink:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 34,
+      "score": 11.8,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    },
+    {
+      "id": 6970,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-12-28T06:07:24.189Z",
+      "updated_at": "2024-12-28T06:07:24.189Z",
+      "cooked": "<p>Due to automatic counter step behavior when placing any heading, I’d recommend using a separate counter which you manually control, like below.<br>\nNote that I’ve taken the additional step of updating the heading counter to ensure it is consistent with the separate counter, ensuring we don’t have to rebuild headings entirely to start using the new counter, but rather keep headings as they are, using <code>counter(heading)</code> like they always do. This also ensures they show up correctly in the outline without having to take any additional steps.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let third-heading-counter = counter(\"third-heading-level\")\n#show selector.or(heading.where(level: 1), heading.where(level: 2)): it =&gt; {\n  it\n\n  // Revert level 3+ resets\n  context {\n    let new-numbers = third-heading-counter.get()\n    counter(heading).update(if it.level == 1 {\n       (one, ..n) =&gt; (one, 0, ..new-numbers)\n    } else {\n       (one, two, ..n) =&gt; (one, two, ..new-numbers)\n    })\n  }\n}\n\n#show heading: it =&gt; {\n  if it.level &gt;= 3 {\n    third-heading-counter.step(level: it.level - 2)\n  }\n  it\n}\n\n// Sample:\n\n#set page(width: 200pt, height: auto, margin: 0.5cm)\n#set heading(numbering: \"1.\")\n\n= A\n\n== B\n\n=== C\n\n==== CC\n\n== D\n\n==== DD\n\n=== E\n\n==== EE\n\n=== F\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/7/71afb66a77a56f7f762d0923c72504cab83a2aa4.png\" data-download-href=\"https://forum.typst.app/uploads/default/71afb66a77a56f7f762d0923c72504cab83a2aa4\" title=\"output: level 3+ headings have numbers kept\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/7/71afb66a77a56f7f762d0923c72504cab83a2aa4_2_445x500.png\" alt=\"output: level 3+ headings have numbers kept\" data-base62-sha1=\"gdIpPmL9vdb9BFSf79d7DlErg4A\" width=\"445\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/7/71afb66a77a56f7f762d0923c72504cab83a2aa4_2_445x500.png, https://forum.typst.app/uploads/default/optimized/2X/7/71afb66a77a56f7f762d0923c72504cab83a2aa4_2_667x750.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/7/71afb66a77a56f7f762d0923c72504cab83a2aa4_2_890x1000.png 2x\" data-dominant-color=\"FBFBFB\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">output: level 3+ headings have numbers kept</span><span class=\"informations\">944×1060 46 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>If you’d like to not display the first two numbers for level 3+ headings, you can selectively change their numbering by adding the following statements at the start, before all the headings:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show heading.where(level: 1): set heading(numbering: \"1.\")\n#show heading.where(level: 2): set heading(numbering: \"1.\")\n// For level 3+: ignore first two numbers\n#set heading(numbering: (first, second, ..n) =&gt; numbering(\"1.\", ..n))\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/7/79b3d0e9a64fc176c67b91b97371b2c33915a65e.png\" data-download-href=\"https://forum.typst.app/uploads/default/79b3d0e9a64fc176c67b91b97371b2c33915a65e\" title=\"new output: level 3+ headings don't display first two numbers\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/7/79b3d0e9a64fc176c67b91b97371b2c33915a65e_2_445x500.png\" alt=\"new output: level 3+ headings don't display first two numbers\" data-base62-sha1=\"hmD1JTdvucQtC6B03mB2gUIoocm\" width=\"445\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/7/79b3d0e9a64fc176c67b91b97371b2c33915a65e_2_445x500.png, https://forum.typst.app/uploads/default/optimized/2X/7/79b3d0e9a64fc176c67b91b97371b2c33915a65e_2_667x750.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/7/79b3d0e9a64fc176c67b91b97371b2c33915a65e_2_890x1000.png 2x\" data-dominant-color=\"FCFCFC\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">new output: level 3+ headings don't display first two numbers</span><span class=\"informations\">944×1060 38.5 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>If you do this, I recommend using <code>indent: auto</code> or <code>indent: 2em</code> in your <code>outline</code> to avoid ambiguity between 2.1. (level 2 heading) and 2.1. (level 4 heading), for example.</p>",
+      "raw": "Due to automatic counter step behavior when placing any heading, I'd recommend using a separate counter which you manually control, like below. \nNote that I've taken the additional step of updating the heading counter to ensure it is consistent with the separate counter, ensuring we don't have to rebuild headings entirely to start using the new counter, but rather keep headings as they are, using `counter(heading)` like they always do. This also ensures they show up correctly in the outline without having to take any additional steps.\n\n```typ\n#let third-heading-counter = counter(\"third-heading-level\")\n#show selector.or(heading.where(level: 1), heading.where(level: 2)): it => {\n  it\n\n  // Revert level 3+ resets\n  context {\n    let new-numbers = third-heading-counter.get()\n    counter(heading).update(if it.level == 1 {\n       (one, ..n) => (one, 0, ..new-numbers)\n    } else {\n       (one, two, ..n) => (one, two, ..new-numbers)\n    })\n  }\n}\n\n#show heading: it => {\n  if it.level >= 3 {\n    third-heading-counter.step(level: it.level - 2)\n  }\n  it\n}\n\n// Sample:\n\n#set page(width: 200pt, height: auto, margin: 0.5cm)\n#set heading(numbering: \"1.\")\n\n= A\n\n== B\n\n=== C\n\n==== CC\n\n== D\n\n==== DD\n\n=== E\n\n==== EE\n\n=== F\n```\n\n![output: level 3+ headings have numbers kept|445x500](upload://gdIpPmL9vdb9BFSf79d7DlErg4A.png)\n\nIf you'd like to not display the first two numbers for level 3+ headings, you can selectively change their numbering by adding the following statements at the start, before all the headings:\n\n```typ\n#show heading.where(level: 1): set heading(numbering: \"1.\")\n#show heading.where(level: 2): set heading(numbering: \"1.\")\n// For level 3+: ignore first two numbers\n#set heading(numbering: (first, second, ..n) => numbering(\"1.\", ..n))\n```\n![new output: level 3+ headings don't display first two numbers|445x500](upload://hmD1JTdvucQtC6B03mB2gUIoocm.png)\n\nIf you do this, I recommend using `indent: auto` or `indent: 2em` in your `outline` to avoid ambiguity between 2.1. (level 2 heading) and 2.1. (level 4 heading), for example.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 33,
+      "score": 111.6,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:24.303790"
+}

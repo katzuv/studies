@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2945,
+    "title": "How to fix counter display and locate functions in Typst v0.13?",
+    "slug": "how-to-fix-counter-display-and-locate-functions-in-typst-v0-13",
+    "posts_count": 3,
+    "created_at": "2025-02-23T19:16:41.485Z",
+    "last_posted_at": "2025-02-24T18:51:30.840Z",
+    "views": 95,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 281
+  },
+  "posts": [
+    {
+      "id": 8930,
+      "post_number": 1,
+      "username": "JESUS",
+      "name": "Jesús Manuel",
+      "created_at": "2025-02-23T19:16:41.621Z",
+      "updated_at": "2025-03-03T15:39:40.640Z",
+      "cooked": "<p>Hello everyone,</p>\n<p>I’m encountering some issues with my code after updating to Typst version 0.13. Previously, everything worked fine, although about a month ago I started receiving a warning related to the <code>ap.display(\"a)\")</code> and <code>loc</code> function. Now, in v0.13, that part of the code doesn’t work at all.</p>\n<p>Here is a part of the entire code</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let c = counter(\"exercise\")\n\n#let ap = counter(\"section\")\n\n#let tag-filter = state(\"tag-filter\", _tag =&gt; true)\n\n\n#let exercise(\n  tag: none,\n  body,\n) = locate(loc =&gt; {\n  if not tag-filter.at(loc)(tag) {\n    return\n  }\n  c.step()\n  block(width: 100%, below: 1.6em,\n    box(width: 12.6pt,\n      c.display(\"1.\"))+body\n  )\n})\n\n\n#let secq(\n  scoring: 1,\n  tdah: false,\n  body,\n) = {\n  block(width: 100%,\n    if scoring == 1 {\n      ap.step()\n      box(width: 100%,inset: (left:16pt), ap.display(\"a)\")+[ (#scoring punto) ]+body)\n    } else {\n      ap.step()\n      box(width: 100%,inset: (left:16pt), ap.display(\"a)\")+[ (#scoring puntos) ]+body)\n    }\n  )\n  if tdah {v(15pt)}\n}\n\n</code></pre>\n<p>Could someone clarify what changes have been made regarding <code>ap.display</code> and the behavior of the <code>loc</code> function in the latest version? I’m looking for guidance on how to properly update my code.</p>\n<p>Thank you for your help!</p>",
+      "raw": "Hello everyone,\n\nI'm encountering some issues with my code after updating to Typst version 0.13. Previously, everything worked fine, although about a month ago I started receiving a warning related to the `ap.display(\"a)\")` and `loc` function. Now, in v0.13, that part of the code doesn't work at all.\n\nHere is a part of the entire code\n\n```typst\n#let c = counter(\"exercise\")\n\n#let ap = counter(\"section\")\n\n#let tag-filter = state(\"tag-filter\", _tag => true)\n\n\n#let exercise(\n  tag: none,\n  body,\n) = locate(loc => {\n  if not tag-filter.at(loc)(tag) {\n    return\n  }\n  c.step()\n  block(width: 100%, below: 1.6em,\n    box(width: 12.6pt,\n      c.display(\"1.\"))+body\n  )\n})\n\n\n#let secq(\n  scoring: 1,\n  tdah: false,\n  body,\n) = {\n  block(width: 100%,\n    if scoring == 1 {\n      ap.step()\n      box(width: 100%,inset: (left:16pt), ap.display(\"a)\")+[ (#scoring punto) ]+body)\n    } else {\n      ap.step()\n      box(width: 100%,inset: (left:16pt), ap.display(\"a)\")+[ (#scoring puntos) ]+body)\n    }\n  )\n  if tdah {v(15pt)}\n}\n\n```\n\nCould someone clarify what changes have been made regarding `ap.display` and the behavior of the `loc` function in the latest version? I'm looking for guidance on how to properly update my code.\n\nThank you for your help!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 22,
+      "score": 204.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 176
+    },
+    {
+      "id": 8931,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-02-23T20:11:42.091Z",
+      "updated_at": "2025-02-23T20:11:42.091Z",
+      "cooked": "<p><a class=\"mention\" href=\"/u/quachpas\">@quachpas</a> wrote a very detailed answer about <code>locate</code>: <a href=\"https://forum.typst.app/t/how-to-use-context-instead-of-a-callback-function-in-locate-function-calls/965/2\" class=\"inline-onebox\">How to use context instead of a callback function in locate function calls? - #2 by quachpas</a></p>\n<p><code>.display(...)</code> is <a href=\"https://typst.app/docs/reference/context/\">contextual</a> and needs to be called with the <code>context</code> keyword: <code>context ap.display(\"a)\")</code></p>",
+      "raw": "@quachpas wrote a very detailed answer about `locate`: https://forum.typst.app/t/how-to-use-context-instead-of-a-callback-function-in-locate-function-calls/965/2?u=flokl \n\n`.display(...)` is [contextual](https://typst.app/docs/reference/context/) and needs to be called with the `context` keyword: `context ap.display(\"a)\")`",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 21,
+      "score": 54.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    },
+    {
+      "id": 9013,
+      "post_number": 3,
+      "username": "JESUS",
+      "name": "Jesús Manuel",
+      "created_at": "2025-02-24T18:51:30.840Z",
+      "updated_at": "2025-02-24T18:51:30.840Z",
+      "cooked": "<p>Thank you so much for your help! The example in the thread was exactly what I needed to understand the changes and update my code accordingly. I really appreciate your clear explanation and support.</p>",
+      "raw": "Thank you so much for your help! The example in the thread was exactly what I needed to understand the changes and update my code accordingly. I really appreciate your clear explanation and support.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 13,
+      "score": 2.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 176
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:18.289374"
+}

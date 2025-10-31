@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 3773,
+    "title": "Why is \"Alphanumeric\" not suitable for bibliographies?",
+    "slug": "why-is-alphanumeric-not-suitable-for-bibliographies",
+    "posts_count": 3,
+    "created_at": "2025-04-23T11:36:10.050Z",
+    "last_posted_at": "2025-04-23T13:17:20.217Z",
+    "views": 86,
+    "like_count": 3,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "literature",
+      "citation"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 194
+  },
+  "posts": [
+    {
+      "id": 11486,
+      "post_number": 1,
+      "username": "niko",
+      "name": "niko",
+      "created_at": "2025-04-23T11:36:10.171Z",
+      "updated_at": "2025-04-26T20:13:14.870Z",
+      "cooked": "<p>Hi everyone, I just found out that the citation style “Alphanumeric” does not seem to work in the following case:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#bibliography(\"refs.bib\", style: \"alphanumeric\")\n</code></pre>\n<p>But it seems to work for individual citations like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#cite(&lt;some-ref&gt;, style:\"alphanumeric\")\n</code></pre>\n<p>Why does it not work for entire bibliographies but only for individual citations?<br>\nHow can I have a bibliography in “alphanumeric” style?</p>",
+      "raw": "Hi everyone, I just found out that the citation style \"Alphanumeric\" does not seem to work in the following case:\n```typ\n#bibliography(\"refs.bib\", style: \"alphanumeric\")\n```\nBut it seems to work for individual citations like this:\n```typ\n#cite(<some-ref>, style:\"alphanumeric\")\n```\nWhy does it not work for entire bibliographies but only for individual citations?\nHow can I have a bibliography in \"alphanumeric\" style?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 130.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1435
+    },
+    {
+      "id": 11488,
+      "post_number": 3,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-04-23T11:57:04.233Z",
+      "updated_at": "2025-04-23T11:57:39.043Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/niko\">@niko</a>, the “alphanumeric” style is a citation style (CSL file) only (see <a href=\"https://github.com/typst/hayagriva/blob/main/styles/alphanumeric.csl\" class=\"inline-onebox\">hayagriva/styles/alphanumeric.csl at main · typst/hayagriva · GitHub</a>).</p>\n<p>It is confusing because on the docs because the style parameter uses the same list for both <a href=\"https://typst.app/docs/reference/model/bibliography/\">bibliography</a> and <a href=\"https://typst.app/docs/reference/model/cite/#parameters-style\">cite</a>.</p>\n<p>If you want an alphanumeric citation style, set it using <code>set cite(style: \"alphanumeric\")</code>. However, it is always best practice to use a CSL style that provides both citation and bibliography instructions. The default style for <code>bibliography</code> is <code>ieee</code>.</p>\n<p>This issue is related: <a href=\"https://github.com/typst/typst/issues/2528\" class=\"inline-onebox\">Some CSL styles are not applicable to `bibliography` · Issue #2528 · typst/typst · GitHub</a></p>",
+      "raw": "Hello @niko, the \"alphanumeric\" style is a citation style (CSL file) only (see https://github.com/typst/hayagriva/blob/main/styles/alphanumeric.csl). \n\nIt is confusing because on the docs because the style parameter uses the same list for both [bibliography](https://typst.app/docs/reference/model/bibliography/) and [cite](https://typst.app/docs/reference/model/cite/#parameters-style). \n\nIf you want an alphanumeric citation style, set it using `set cite(style: \"alphanumeric\")`. However, it is always best practice to use a CSL style that provides both citation and bibliography instructions. The default style for `bibliography` is `ieee`. \n\nThis issue is related: https://github.com/typst/typst/issues/2528",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 27,
+      "score": 55.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 11491,
+      "post_number": 4,
+      "username": "niko",
+      "name": "niko",
+      "created_at": "2025-04-23T13:17:20.217Z",
+      "updated_at": "2025-04-23T13:17:20.217Z",
+      "cooked": "<p>Thanks for the information. This actually achieved the output that I was looking for (even though it seems a bit shady).</p>",
+      "raw": "Thanks for the information. This actually achieved the output that I was looking for (even though it seems a bit shady).",
+      "reply_to_post_number": 3,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 21,
+      "score": 9.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1435
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:48.796208"
+}

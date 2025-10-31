@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 938,
+    "title": "How to set the delim of a single matrix to none?",
+    "slug": "how-to-set-the-delim-of-a-single-matrix-to-none",
+    "posts_count": 3,
+    "created_at": "2024-10-05T07:57:40.265Z",
+    "last_posted_at": "2024-10-05T08:38:06.748Z",
+    "views": 146,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "mkorje",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 180
+  },
+  "posts": [
+    {
+      "id": 3435,
+      "post_number": 1,
+      "username": "Asta",
+      "name": "雪千幻",
+      "created_at": "2024-10-05T07:57:40.358Z",
+      "updated_at": "2024-10-05T07:57:40.358Z",
+      "cooked": "<p>I want to change the delim of a matrix to none.<br>\nOf course, this works:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set math.mat(delim: none)\n$mat(1, 2)$\n</code></pre>\n<p>I only want to change this matrix, instead of all matrices below, so I want to use code like this</p>\n<pre><code class=\"lang-auto\">$mat(1, 2, delim: none)$\n</code></pre>\n<p>But this leads to an error.</p>\n<p>In addition, code like</p>\n<pre><code class=\"lang-auto\">$mat(1, 2, delim: \"[\")$\n</code></pre>\n<p>does not lead to any error.</p>\n<p>I am not familiar with programming, did I do something wrong?</p>",
+      "raw": "I want to change the delim of a matrix to none. \nOf course, this works:\n```typ ... \n#set math.mat(delim: none)\n$mat(1, 2)$\n```\n\nI only want to change this matrix, instead of all matrices below, so I want to use code like this\n```typ...\n$mat(1, 2, delim: none)$\n```\nBut this leads to an error.\n\nIn addition, code like\n```typ...\n$mat(1, 2, delim: \"[\")$\n```\ndoes not lead to any error.\n\nI am not familiar with programming, did I do something wrong?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 669.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 441
+    },
+    {
+      "id": 3436,
+      "post_number": 2,
+      "username": "mkorje",
+      "name": "Max",
+      "created_at": "2024-10-05T08:36:59.131Z",
+      "updated_at": "2024-10-05T08:37:16.491Z",
+      "cooked": "<p>You need to prefix <code>none</code> with a hashtag (switch to code mode), since you are in math mode. For example,</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">$mat(1, 2, delim: #none)$\n</code></pre>",
+      "raw": "You need to prefix `none` with a hashtag (switch to code mode), since you are in math mode. For example,\n```typ\n$mat(1, 2, delim: #none)$\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 22,
+      "score": 9.4,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 76
+    },
+    {
+      "id": 3437,
+      "post_number": 3,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2024-10-05T08:38:06.748Z",
+      "updated_at": "2024-10-05T08:38:06.748Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/asta\">@Asta</a>,<br>\ninside math mode (marked by <code>$..$</code>), function calls work a bit different see <a href=\"https://typst.app/docs/reference/math/#function-calls\">Math - Function Calls</a>.  Your third example works because strings are a special case. In your non working second example <code>$mat(1, 2, delim: none)$</code> the <code>none</code> gets interpreted as an variable thus the error. You have to explicitly enter code mode with <code>#none</code> so that Typst can correctly interpreted it.</p>",
+      "raw": "Hi @Asta,\ninside math mode (marked by `$..$`), function calls work a bit different see [Math - Function Calls](https://typst.app/docs/reference/math/#function-calls).  Your third example works because strings are a special case. In your non working second example `$mat(1, 2, delim: none)$` the `none` gets interpreted as an variable thus the error. You have to explicitly enter code mode with `#none` so that Typst can correctly interpreted it.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 20,
+      "score": 4.0,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 8
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:22.314122"
+}

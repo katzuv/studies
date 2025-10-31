@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 3331,
+    "title": "How to hide list markers in Polylux?",
+    "slug": "how-to-hide-list-markers-in-polylux",
+    "posts_count": 2,
+    "created_at": "2025-03-19T15:09:56.018Z",
+    "last_posted_at": "2025-03-19T15:29:39.772Z",
+    "views": 27,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "polylux"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 105
+  },
+  "posts": [
+    {
+      "id": 9994,
+      "post_number": 1,
+      "username": "Joel",
+      "name": "Joel",
+      "created_at": "2025-03-19T15:09:56.164Z",
+      "updated_at": "2025-03-19T16:12:36.958Z",
+      "cooked": "<p>The <a href=\"https://polylux.dev/book/dynamic/obo-lbl.html\" rel=\"noopener nofollow ugc\">Polylux book</a> states</p>\n<blockquote>\n<p>Note that the list markers and enum numbers are not hidden. You can truly consider this a bug or a feature…</p>\n</blockquote>\n<p>Let’s assume I’d consider this to be more on the bug side of things. Is there an easy way to hide the list markers?</p>",
+      "raw": "The [Polylux book](https://polylux.dev/book/dynamic/obo-lbl.html) states\n\n> Note that the list markers and enum numbers are not hidden. You can truly consider this a bug or a feature...\n\nLet's assume I'd consider this to be more on the bug side of things. Is there an easy way to hide the list markers?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 17,
+      "score": 28.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 479
+    },
+    {
+      "id": 9996,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-03-19T15:29:39.772Z",
+      "updated_at": "2025-03-19T15:34:06.073Z",
+      "cooked": "<p>This is a general problem with <code>hide</code>, see <a href=\"https://github.com/typst/typst/issues/619\">#619</a>.</p>\n<p>A workaround is to set the marker to <code>none</code> inside of <code>hide</code>.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show hide: set list(marker: none)\n\n// and for numbered list\n#show hide: set enum(numbering: it =&gt; none)\n</code></pre>",
+      "raw": "This is a general problem with `hide`, see [#619](https://github.com/typst/typst/issues/619).\n\nA workaround is to set the marker to `none` inside of `hide`.\n```typst\n#show hide: set list(marker: none)\n\n// and for numbered list\n#show hide: set enum(numbering: it => none)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 16,
+      "score": 33.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:14.027784"
+}

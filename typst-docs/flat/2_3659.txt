@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 3659,
+    "title": "What is the correct way to use a for loop plotting within a lilaq diagram?",
+    "slug": "what-is-the-correct-way-to-use-a-for-loop-plotting-within-a-lilaq-diagram",
+    "posts_count": 2,
+    "created_at": "2025-04-15T08:38:39.731Z",
+    "last_posted_at": "2025-04-15T09:30:53.970Z",
+    "views": 89,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Mc-Zen",
+    "tags": [
+      "lilaq"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 238
+  },
+  "posts": [
+    {
+      "id": 11107,
+      "post_number": 1,
+      "username": "Christopher_Marcotte",
+      "name": "Christopher Marcotte",
+      "created_at": "2025-04-15T08:38:39.999Z",
+      "updated_at": "2025-04-15T08:38:39.999Z",
+      "cooked": "<p>The documentation demonstrates multiple plots in a diagram by listing the <code>lq.plot(...),</code> calls as arguments to <code>lq.diagram</code> (i.e. separated by commas). If one wants to plot multiple lines in a loop, is there a way to do so? For example, consider the code below:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">\n#let loop_lq(A) = {\n  \n  import \"@preview/lilaq:0.2.0\" as lq\n  let xs = lq.linspace(0, 1, num: 11)\n  let fn(x, a: 0.0) = calc.sin(a * x)\n\n  lq.diagram(\n    width: 10cm, \n    height: 5cm,\n    ylim: (0, auto),\n    xlim: (0, 1),\n    legend:(position: left+top),\n\n    for a in A {\n      lq.plot(\n        xs, mark: none, \n        xs.map(t =&gt; fn(t, a:a)), \n        stroke: (paint: colors.tertiary.lighten(25%).rotate(calc.log(a)*40deg), thickness: 3pt),\n        //tip: tiptoe.stealth,\n        //toe: tiptoe.bar,\n        label: [$a = #a$],\n      )\n    }\n  )\n}\n\n#loop_lq((0.1, 1.0))\n</code></pre>\n<p>This produces an output which is missing all but the last iteration.<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/b/b73b2d01cee710cf6d5e841bde43d45e2c474b63.png\" data-download-href=\"https://forum.typst.app/uploads/default/b73b2d01cee710cf6d5e841bde43d45e2c474b63\" title=\"loop-plot\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/b/b73b2d01cee710cf6d5e841bde43d45e2c474b63_2_690x459.png\" alt=\"loop-plot\" data-base62-sha1=\"q8W9XE2CPX1t1thdCIgIuQf5ntV\" width=\"690\" height=\"459\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/b/b73b2d01cee710cf6d5e841bde43d45e2c474b63_2_690x459.png, https://forum.typst.app/uploads/default/original/2X/b/b73b2d01cee710cf6d5e841bde43d45e2c474b63.png 1.5x, https://forum.typst.app/uploads/default/original/2X/b/b73b2d01cee710cf6d5e841bde43d45e2c474b63.png 2x\" data-dominant-color=\"FBFAFB\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">loop-plot</span><span class=\"informations\">930×619 22.2 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "The documentation demonstrates multiple plots in a diagram by listing the `lq.plot(...),` calls as arguments to `lq.diagram` (i.e. separated by commas). If one wants to plot multiple lines in a loop, is there a way to do so? For example, consider the code below:\n```typ\n\n#let loop_lq(A) = {\n  \n  import \"@preview/lilaq:0.2.0\" as lq\n  let xs = lq.linspace(0, 1, num: 11)\n  let fn(x, a: 0.0) = calc.sin(a * x)\n\n  lq.diagram(\n    width: 10cm, \n    height: 5cm,\n    ylim: (0, auto),\n    xlim: (0, 1),\n    legend:(position: left+top),\n\n    for a in A {\n      lq.plot(\n        xs, mark: none, \n        xs.map(t => fn(t, a:a)), \n        stroke: (paint: colors.tertiary.lighten(25%).rotate(calc.log(a)*40deg), thickness: 3pt),\n        //tip: tiptoe.stealth,\n        //toe: tiptoe.bar,\n        label: [$a = #a$],\n      )\n    }\n  )\n}\n\n#loop_lq((0.1, 1.0))\n```\nThis produces an output which is missing all but the last iteration.\n![loop-plot|690x459](upload://q8W9XE2CPX1t1thdCIgIuQf5ntV.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 33,
+      "score": 161.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 270
+    },
+    {
+      "id": 11109,
+      "post_number": 2,
+      "username": "Mc-Zen",
+      "name": "Mc-Zen",
+      "created_at": "2025-04-15T09:30:53.970Z",
+      "updated_at": "2025-04-15T09:30:53.970Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/christopher_marcotte\">@Christopher_Marcotte</a> ,</p>\n<p>you can achieve this with unpacking of arrays, like</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/lilaq:0.2.0\" as lq\n\n#let x = lq.linspace(0, 10)\n#lq.diagram(\n  ..range(6).map(i =&gt; lq.plot(x, x.map(x =&gt; x + i)))\n)\n</code></pre>\n<p>In your example, you would replace <code>range(6)</code> with your array <code>A</code>. Each element is mapped to a <code>lq.plot</code> instance which results in an array of plots.</p>\n<p>With the <code>..</code> unpacking syntax, you can pass the array items as individual arguments to <code>lq.diagram</code>.</p>",
+      "raw": "Hi @Christopher_Marcotte ,\n\nyou can achieve this with unpacking of arrays, like \n```typ\n#import \"@preview/lilaq:0.2.0\" as lq\n\n#let x = lq.linspace(0, 10)\n#lq.diagram(\n  ..range(6).map(i => lq.plot(x, x.map(x => x + i)))\n)\n```\nIn your example, you would replace `range(6)` with your array `A`. Each element is mapped to a `lq.plot` instance which results in an array of plots. \n\nWith the `..` unpacking syntax, you can pass the array items as individual arguments to `lq.diagram`.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 29,
+      "score": 50.8,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 9
+    }
+  ],
+  "scraped_at": "2025-06-10T09:49:10.806415"
+}

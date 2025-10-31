@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 115,
+    "title": "(How) can I define a new type in the Typst scripting language?",
+    "slug": "how-can-i-define-a-new-type-in-the-typst-scripting-language",
+    "posts_count": 3,
+    "created_at": "2024-09-14T21:08:44.733Z",
+    "last_posted_at": "2024-09-14T22:15:51.140Z",
+    "views": 856,
+    "like_count": 10,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "laurmaedje",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 408
+  },
+  "posts": [
+    {
+      "id": 508,
+      "post_number": 1,
+      "username": "Greg_Wilson",
+      "name": "Greg Wilson",
+      "created_at": "2024-09-14T21:08:44.834Z",
+      "updated_at": "2024-09-14T21:13:50.739Z",
+      "cooked": "<p>Can I define a new kind of class with methods in the Typst scripting language? (I looked through the documentation but couldn’t find a way - apologies if I missed it.)</p>",
+      "raw": "Can I define a new kind of class with methods in the Typst scripting language? (I looked through the documentation but couldn't find a way - apologies if I missed it.)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 112,
+      "score": 2562.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 92
+    },
+    {
+      "id": 517,
+      "post_number": 2,
+      "username": "laurmaedje",
+      "name": "Laurenz Mädje",
+      "created_at": "2024-09-14T21:18:09.964Z",
+      "updated_at": "2024-09-14T21:30:59.235Z",
+      "cooked": "<p>As of September 2024, this is not yet possible. However, there are plans to add them! To learn more (and shape development), you can read <a href=\"https://laurmaedje.github.io/posts/types-and-context/\">this blog post</a> and visit the <a href=\"https://discord.com/channels/1054443721975922748/1175895383600275516\">Types forge thread on Discord</a>.</p>\n<p>Overall, the plan for custom types is to serve two use cases:</p>\n<ol>\n<li>Aid in writing general programs.</li>\n<li>Use them with set and show rules, like built-in elements. To make this possible, there are plans to remove the content type and instead make each content element (e.g. heading, or list) its own type.</li>\n</ol>\n<p>Until proper types are implemented, there are different workaround for these two use cases:</p>\n<ol>\n<li>\n<p>For general purpose programming, typically, you would use a <a href=\"https://typst.app/docs/reference/foundations/dictionary/\">dictionary</a> and normal functions:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let vec = (\n  x: 10pt,\n  y: 15pt,\n)\n\n#let vec-add(a, b) = (\n  x: a.x + b.x,\n  y: a.y + b.y,\n)\n</code></pre>\n<p>Note that you <em>can</em> store functions in the dictionary, but I would not recommend emulating methods with this: You won’t get access to the members and calling them is cumbersome as you need extra parentheses (e.g. <code>(dict.func)(..)</code>).</p>\n<p>If you are dealing with various types and want to check which kind of type you have, you could add a tag field to your dictionary:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let value = (\n  tag: \"vec\",\n  x: 10pt,\n  y: 10pt,\n)\n\n#if value.tag == \"vec\" { .. }\n</code></pre>\n</li>\n<li>\n<p>To emulate custom set rules, the most common pattern is to use a <a href=\"https://typst.app/docs/reference/introspection/state/\">state</a>. While it doesn’t give the same nice scoping features, it allows you to make some piece of configuration globally available.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">// A state to store the theme.\n#let my-theme = state(\"my-theme\")\n\n// Stores a theme color in the theme.\n#let set-theme(value) = my-theme.update(value)\n\n// Displays text with the current theme color.\n#let themed(it) = context {\n  set text(fill: my-theme.get())\n  it\n}\n\n// \"Hello\" will be red.\n#set-theme(red)\n#themed[Hello]\n\n// \"World\" will be green.\n#[\n  #set-theme(green)\n  #themed[World]\n]\n\n// ... but the usual scoping rules do not apply\n#themed[Still green :(]\n</code></pre>\n</li>\n</ol>",
+      "raw": "As of September 2024, this is not yet possible. However, there are plans to add them! To learn more (and shape development), you can read [this blog post](https://laurmaedje.github.io/posts/types-and-context/) and visit the [Types forge thread on Discord](https://discord.com/channels/1054443721975922748/1175895383600275516).\n\nOverall, the plan for custom types is to serve two use cases:\n1. Aid in writing general programs.\n2. Use them with set and show rules, like built-in elements. To make this possible, there are plans to remove the content type and instead make each content element (e.g. heading, or list) its own type.\n\nUntil proper types are implemented, there are different workaround for these two use cases:\n1. For general purpose programming, typically, you would use a [dictionary](https://typst.app/docs/reference/foundations/dictionary/) and normal functions:\n    ```typ\n    #let vec = (\n      x: 10pt,\n      y: 15pt,\n    )\n\n    #let vec-add(a, b) = (\n      x: a.x + b.x,\n      y: a.y + b.y,\n    )\n    ```\n\n    Note that you _can_ store functions in the dictionary, but I would not recommend emulating methods with this: You won't get access to the members and calling them is cumbersome as you need extra parentheses (e.g. `(dict.func)(..)`).\n\n    If you are dealing with various types and want to check which kind of type you have, you could add a tag field to your dictionary:\n    ```typ\n    #let value = (\n      tag: \"vec\",\n      x: 10pt,\n      y: 10pt,\n    )\n\n    #if value.tag == \"vec\" { .. }\n    ```\n\n2. To emulate custom set rules, the most common pattern is to use a [state](https://typst.app/docs/reference/introspection/state/). While it doesn't give the same nice scoping features, it allows you to make some piece of configuration globally available.\n\n    ```typ\n    // A state to store the theme.\n    #let my-theme = state(\"my-theme\")\n    \n    // Stores a theme color in the theme.\n    #let set-theme(value) = my-theme.update(value)\n    \n    // Displays text with the current theme color.\n    #let themed(it) = context {\n      set text(fill: my-theme.get())\n      it\n    }\n    \n    // \"Hello\" will be red.\n    #set-theme(red)\n    #themed[Hello]\n    \n    // \"World\" will be green.\n    #[\n      #set-theme(green)\n      #themed[World]\n    ]\n    \n    // ... but the usual scoping rules do not apply\n    #themed[Still green :(]\n    ```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 6,
+      "reads": 114,
+      "score": 332.8,
+      "accepted_answer": true,
+      "trust_level": 4,
+      "user_id": 2
+    },
+    {
+      "id": 538,
+      "post_number": 3,
+      "username": "Enivex",
+      "name": "Enivex",
+      "created_at": "2024-09-14T22:15:51.140Z",
+      "updated_at": "2024-09-14T22:15:51.140Z",
+      "cooked": "<p>For the time being you may be interested in this package</p>\n<aside class=\"onebox allowlistedgeneric\" data-onebox-src=\"https://typst.app/universe/package/valkyrie\">\n  <header class=\"source\">\n      <img src=\"https://forum.typst.app/uploads/default/original/1X/098187a593d51c4db99324614e2baeeb1bb355cc.png\" class=\"site-icon\" data-dominant-color=\"3CA8B6\" width=\"32\" height=\"32\">\n\n      <a href=\"https://typst.app/universe/package/valkyrie\" target=\"_blank\" rel=\"noopener\">Typst</a>\n  </header>\n\n  <article class=\"onebox-body\">\n    <div class=\"aspect-image\" style=\"--aspect-ratio:690/361;\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/db1c18ed802fe6841bee62606931f352da10ed09_2_690x362.png\" class=\"thumbnail\" data-dominant-color=\"7CC2C5\" width=\"690\" height=\"362\"></div>\n\n<h3><a href=\"https://typst.app/universe/package/valkyrie\" target=\"_blank\" rel=\"noopener\">valkyrie – Typst Universe</a></h3>\n\n  <p>Type safe type validation</p>\n\n\n  </article>\n\n  <div class=\"onebox-metadata\">\n    \n    \n  </div>\n\n  <div style=\"clear: both\"></div>\n</aside>\n",
+      "raw": "For the time being you may be interested in this package\n\nhttps://typst.app/universe/package/valkyrie",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 99,
+      "score": 69.8,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 5
+    }
+  ],
+  "scraped_at": "2025-06-10T09:59:00.916226"
+}

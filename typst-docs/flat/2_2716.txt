@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2716,
+    "title": "How do you determine the type of a variable?",
+    "slug": "how-do-you-determine-the-type-of-a-variable",
+    "posts_count": 2,
+    "created_at": "2025-02-07T12:17:16.286Z",
+    "last_posted_at": "2025-02-07T12:49:06.580Z",
+    "views": 167,
+    "like_count": 5,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "v0-13"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 82
+  },
+  "posts": [
+    {
+      "id": 8329,
+      "post_number": 1,
+      "username": "Jihan",
+      "name": "Jihan",
+      "created_at": "2025-02-07T12:17:16.410Z",
+      "updated_at": "2025-02-07T12:49:51.552Z",
+      "cooked": "<pre><code class=\"lang-auto\">#let arr = (\"abc\", \"def\", \"ghi\")\n#let dict = (\"a\": \"c\")\n\n= Before 0.13.0\n#str(if type(arr) == \"array\" { \"true\" } else { \"false\" })\n#str(if type(arr) == \"dictionary\" { \"true\" } else { \"false\" })\n\n= After 0.13.0\n// what should i do?\n\n// dict\n#str(if type(dict) == type((:)) { \"true\" } else { \"false\" })\n\n// array\n// ??\n</code></pre>",
+      "raw": "```\n#let arr = (\"abc\", \"def\", \"ghi\")\n#let dict = (\"a\": \"c\")\n\n= Before 0.13.0\n#str(if type(arr) == \"array\" { \"true\" } else { \"false\" })\n#str(if type(arr) == \"dictionary\" { \"true\" } else { \"false\" })\n\n= After 0.13.0\n// what should i do?\n\n// dict\n#str(if type(dict) == type((:)) { \"true\" } else { \"false\" })\n\n// array\n// ??\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 40,
+      "score": 442.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 316
+    },
+    {
+      "id": 8330,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-02-07T12:49:06.580Z",
+      "updated_at": "2025-02-07T12:49:06.580Z",
+      "cooked": "<p>Type to string comparisons were already <a href=\"https://typst.app/docs/reference/foundations/type#compatibility\">deprecated</a> and are now removed. You have to use the type directly (not the string), e.g. <code>if type(arr) == array {...</code></p>",
+      "raw": "Type to string comparisons were already [deprecated](https://typst.app/docs/reference/foundations/type#compatibility) and are now removed. You have to use the type directly (not the string), e.g. `if type(arr) == array {...`",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 5,
+      "reads": 40,
+      "score": 92.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:56.788868"
+}

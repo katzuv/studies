@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 3881,
+    "title": "How to customize numbering for nested enum items?",
+    "slug": "how-to-customize-numbering-for-nested-enum-items",
+    "posts_count": 3,
+    "created_at": "2025-04-30T08:22:47.296Z",
+    "last_posted_at": "2025-04-30T08:38:31.169Z",
+    "views": 77,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "styling",
+      "lists"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 244
+  },
+  "posts": [
+    {
+      "id": 11817,
+      "post_number": 1,
+      "username": "myzinsky",
+      "name": "Matthias Jung",
+      "created_at": "2025-04-30T08:22:47.448Z",
+      "updated_at": "2025-05-04T12:26:16.248Z",
+      "cooked": "<p>I managed to style the numbers of the enumeration in blue:</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">  // Configure Enums:\n  set enum(\n    numbering: n =&gt; (text(fill:blue)[#n.]),\n  )\n</code></pre>\n<p>When I now have a enum like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">+ ABC\n   + DEF\n</code></pre>\n<p>I want that the DEF is colored in gray. How to reach that? Any thoughts?</p>",
+      "raw": "I managed to style the numbers of the enumeration in blue: \n\n```typc\n  // Configure Enums:\n  set enum(\n    numbering: n => (text(fill:blue)[#n.]),\n  )\n```\n\nWhen I now have a enum like this:\n\n```typ\n+ ABC\n   + DEF\n```\nI want that the DEF is colored in gray. How to reach that? Any thoughts?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 170.8,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1517
+    },
+    {
+      "id": 11820,
+      "post_number": 2,
+      "username": "bluss",
+      "name": "Ulrik",
+      "created_at": "2025-04-30T08:29:51.322Z",
+      "updated_at": "2025-04-30T08:29:51.322Z",
+      "cooked": "<p>Set <code>full: true</code> on the enum, then it receives all levels of numbers in the callback, then it can be customized by level (and also create multilevel type numbering like “1.b” if wanted)</p>",
+      "raw": "Set `full: true` on the enum, then it receives all levels of numbers in the callback, then it can be customized by level (and also create multilevel type numbering like \"1.b\" if wanted)",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 16.0,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 1272
+    },
+    {
+      "id": 11821,
+      "post_number": 3,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-04-30T08:38:31.169Z",
+      "updated_at": "2025-04-30T08:38:37.360Z",
+      "cooked": "<p>To complete <a class=\"mention\" href=\"/u/bluss\">@bluss</a>’s answer, if you set <code>full: true</code> to your enum, the numbering function will receive all numbers corresponding to the <code>enum.item</code>s. That is, the first item will send <code>(1,)</code>, the nested item will send <code>(1, 1)</code>.</p>\n<p>You can receive these arguments using <a href=\"https://typst.app/docs/reference/foundations/arguments/\"><code>arguments</code></a> as such:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let nb = (..n) =&gt; { ... }\n</code></pre>\n<p>Then, <code>n</code> will be of type <code>arguments</code>. The easiest here is to convert it directly to an array and look at its length and slice for each level. A full example below. You do need to be careful to either define a default behaviour, or not use any levels with no customization.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">// Configure Enums:\n  #set enum(\n    numbering: (..n) =&gt; {\n      n = n.pos()\n      let level = n.len()\n      if level == 1 {\n        text(blue, numbering(\"1.\", ..n))\n      } else if level == 2 {\n        text(gray, numbering(\"a.\", ..n.slice(1)))\n      } else {\n        // panic(\"Enum level not set\")\n        // or\n        numbering(\"1.\", ..n)\n      }\n    },\n    full: true,\n  )\n\n+ ABC\n   + DEF\n   + DEF\n     + DEF\n</code></pre>",
+      "raw": "To complete @bluss's answer, if you set `full: true` to your enum, the numbering function will receive all numbers corresponding to the `enum.item`s. That is, the first item will send `(1,)`, the nested item will send `(1, 1)`.\n\nYou can receive these arguments using [`arguments`](https://typst.app/docs/reference/foundations/arguments/) as such:\n\n```typ\n#let nb = (..n) => { ... }\n```\n\nThen, `n` will be of type `arguments`. The easiest here is to convert it directly to an array and look at its length and slice for each level. A full example below. You do need to be careful to either define a default behaviour, or not use any levels with no customization.\n```typ\n// Configure Enums:\n  #set enum(\n    numbering: (..n) => {\n      n = n.pos()\n      let level = n.len()\n      if level == 1 {\n        text(blue, numbering(\"1.\", ..n))\n      } else if level == 2 {\n        text(gray, numbering(\"a.\", ..n.slice(1)))\n      } else {\n        // panic(\"Enum level not set\")\n        // or\n        numbering(\"1.\", ..n)\n      }\n    },\n    full: true,\n  )\n\n+ ABC\n   + DEF\n   + DEF\n     + DEF\n```",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 29,
+      "score": 60.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:28.905727"
+}

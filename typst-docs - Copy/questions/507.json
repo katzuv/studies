@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 507,
+    "title": "How can I adjust the heading style only for specific sections?",
+    "slug": "how-can-i-adjust-the-heading-style-only-for-specific-sections",
+    "posts_count": 3,
+    "created_at": "2024-09-19T21:54:30.296Z",
+    "last_posted_at": "2024-09-20T16:51:38.893Z",
+    "views": 666,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "frozolotl",
+    "tags": [
+      "outline"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 297
+  },
+  "posts": [
+    {
+      "id": 1961,
+      "post_number": 1,
+      "username": "fdekerm",
+      "name": "François de Kermenguy",
+      "created_at": "2024-09-19T21:54:30.446Z",
+      "updated_at": "2024-09-22T16:20:32.241Z",
+      "cooked": "<p>Hello,<br>\nI’d like to know how to make my “<em>Introduction</em>” and “<em>Conclusion</em>” parts have a specific heading. I’ve defined a manual style for the different chapters:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show heading.where(level: 1): it =&gt; {\n  place(top + right, dy: -4cm, line(\n    length: 7.5cm,\n    stroke: 2pt + maroon,\n    angle: 90deg),)\n    pad(top: 2cm, left: -1cm, right: 10pt, place(top + right, text(font: \"Calibri\", black, hyphenate: false,  it.body)))\n    pad(top: 0.5cm, 10pt, place(top + right, dx: 0cm, dy: -3cm, text(15pt, font: \"Calibri\", \"Chapter\")))\n    place(top + right, dx: 1.5cm, dy: 1cm, text(50pt, font: \"Calibri\", weight: \"regular\", context(counter(heading).get().first())))\n    v(2cm)}\n</code></pre>\n<p>I’d like not to write “Chapter” nor the number (<code>context(counter(heading).get().first())</code> for the introduction and conclusion.</p>\n<p>Merci <img src=\"https://forum.typst.app/images/emoji/apple/slight_smile.png?v=12\" title=\":slight_smile:\" class=\"emoji\" alt=\":slight_smile:\" loading=\"lazy\" width=\"20\" height=\"20\"><br>\nfdekerm</p>",
+      "raw": "Hello, \nI'd like to know how to make my “*Introduction*” and “*Conclusion*” parts have a specific heading. I've defined a manual style for the different chapters:\n\n```typ\n#show heading.where(level: 1): it => {\n  place(top + right, dy: -4cm, line(\n    length: 7.5cm,\n    stroke: 2pt + maroon,\n    angle: 90deg),)\n    pad(top: 2cm, left: -1cm, right: 10pt, place(top + right, text(font: \"Calibri\", black, hyphenate: false,  it.body)))\n    pad(top: 0.5cm, 10pt, place(top + right, dx: 0cm, dy: -3cm, text(15pt, font: \"Calibri\", \"Chapter\")))\n    place(top + right, dx: 1.5cm, dy: 1cm, text(50pt, font: \"Calibri\", weight: \"regular\", context(counter(heading).get().first())))\n    v(2cm)}\n```\nI'd like not to write “Chapter” nor the number (`context(counter(heading).get().first())` for the introduction and conclusion. \n\nMerci :slight_smile: \nfdekerm",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 63,
+      "score": 2702.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 136
+    },
+    {
+      "id": 1963,
+      "post_number": 2,
+      "username": "frozolotl",
+      "name": "",
+      "created_at": "2024-09-19T23:45:55.445Z",
+      "updated_at": "2024-09-19T23:45:55.445Z",
+      "cooked": "<p>Generally, you would do this by setting the <code>numbering</code> attribute on Introduction and Conclusion to <code>none</code>.</p>\n<p>Here’s the basic idea without any custom styling:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set heading(numbering: \"1.1\")\n// By default, numbers are displayed:\n= Design\n// Here, we explicitly remove it:\n#heading(numbering: none)[Conclusion] \n</code></pre>\n<p>Now, with your show-rule, the basic idea is the same, but you will need to check whether any numbering was provided:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set heading(numbering: \"1.1\")\n\n#show heading.where(level: 1): it =&gt; {\n  set text(font: \"Calibri\")\n\n  place(\n    top + right,\n    dy: -4cm,\n    line(\n      length: 7.5cm,\n      stroke: 2pt + maroon,\n      angle: 90deg,\n    ),\n  )\n  pad(\n    top: 2cm,\n    left: -1cm,\n    right: 10pt,\n    place(top + right, text(fill: black, hyphenate: false, it.body)),\n  )\n\n  if it.numbering != none {\n    pad(\n      top: 0.5cm,\n      10pt,\n      place(\n        top + right,\n        dx: 0cm,\n        dy: -3cm,\n        text(15pt)[Chapter],\n      ),\n    )\n    place(\n      top + right,\n      dx: 1.5cm,\n      dy: 1cm,\n      text(\n        50pt,\n        weight: \"regular\",\n        counter(heading).display(it.numbering),\n      ),\n    )\n  }\n\n  v(2cm)\n}\n\n#heading(numbering: none)[Introduction]\n\n#pagebreak()\n= Design\n</code></pre>",
+      "raw": "Generally, you would do this by setting the `numbering` attribute on Introduction and Conclusion to `none`.\n\nHere's the basic idea without any custom styling:\n```typ\n#set heading(numbering: \"1.1\")\n// By default, numbers are displayed:\n= Design\n// Here, we explicitly remove it:\n#heading(numbering: none)[Conclusion] \n```\n\nNow, with your show-rule, the basic idea is the same, but you will need to check whether any numbering was provided:\n```typ\n#set heading(numbering: \"1.1\")\n\n#show heading.where(level: 1): it => {\n  set text(font: \"Calibri\")\n\n  place(\n    top + right,\n    dy: -4cm,\n    line(\n      length: 7.5cm,\n      stroke: 2pt + maroon,\n      angle: 90deg,\n    ),\n  )\n  pad(\n    top: 2cm,\n    left: -1cm,\n    right: 10pt,\n    place(top + right, text(fill: black, hyphenate: false, it.body)),\n  )\n\n  if it.numbering != none {\n    pad(\n      top: 0.5cm,\n      10pt,\n      place(\n        top + right,\n        dx: 0cm,\n        dy: -3cm,\n        text(15pt)[Chapter],\n      ),\n    )\n    place(\n      top + right,\n      dx: 1.5cm,\n      dy: 1cm,\n      text(\n        50pt,\n        weight: \"regular\",\n        counter(heading).display(it.numbering),\n      ),\n    )\n  }\n\n  v(2cm)\n}\n\n#heading(numbering: none)[Introduction]\n\n#pagebreak()\n= Design\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 58,
+      "score": 111.6,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 65
+    },
+    {
+      "id": 2076,
+      "post_number": 3,
+      "username": "fdekerm",
+      "name": "François de Kermenguy",
+      "created_at": "2024-09-20T16:51:38.893Z",
+      "updated_at": "2024-09-20T16:51:38.893Z",
+      "cooked": "<p>Thanks a lot, it works perfectly, even in the outline!</p>",
+      "raw": "Thanks a lot, it works perfectly, even in the outline!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 40,
+      "score": 18.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 136
+    }
+  ],
+  "scraped_at": "2025-06-10T09:58:35.795127"
+}

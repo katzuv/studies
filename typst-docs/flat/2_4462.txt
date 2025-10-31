@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 4462,
+    "title": "How to set font size of margin notes?",
+    "slug": "how-to-set-font-size-of-margin-notes",
+    "posts_count": 2,
+    "created_at": "2025-06-04T17:25:51.597Z",
+    "last_posted_at": "2025-06-04T20:47:45.603Z",
+    "views": 20,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "scripting",
+      "packages"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 272
+  },
+  "posts": [
+    {
+      "id": 13698,
+      "post_number": 1,
+      "username": "Tom",
+      "name": "Tom",
+      "created_at": "2025-06-04T17:25:51.666Z",
+      "updated_at": "2025-06-04T17:25:51.666Z",
+      "cooked": "<p>I am using <a href=\"https://typst.app/universe/package/marginalia\">the marginalia package</a> and I am having problems customizing of the margin notes.</p>\n<p>I want to change the font size. According to <a>the documentation</a>, <code>note</code> has a <code>text-style</code> argument. When I try to change it using a set rule, the document compiles with an error:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set note(\n    text-style: (size: 8pt)\n)\n</code></pre>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">error: only element functions can be used in set rules\n</code></pre>\n<p>Is there a better solution than to wrap the note function in my custom function?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let mote(t) = note(text-style: (size: 8pt))[#t]\n</code></pre>",
+      "raw": "I am using [the marginalia package](https://typst.app/universe/package/marginalia) and I am having problems customizing of the margin notes.\n\nI want to change the font size. According to [the documentation]([file:///home/tom/Downloads/Marginalia.pdf](https://github.com/nleanba/typst-marginalia/blob/v0.1.4/Marginalia.pdf)), `note` has a `text-style` argument. When I try to change it using a set rule, the document compiles with an error:\n\n```typ\n#set note(\n    text-style: (size: 8pt)\n)\n```\n\n```\nerror: only element functions can be used in set rules\n```\n\nIs there a better solution than to wrap the note function in my custom function?\n\n```\n#let mote(t) = note(text-style: (size: 8pt))[#t]\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 16,
+      "score": 3.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 140
+    },
+    {
+      "id": 13704,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-06-04T20:47:45.603Z",
+      "updated_at": "2025-06-04T20:56:55.390Z",
+      "cooked": "<p>Since the documentation states that</p>\n<blockquote>\n<p>Both <code>note()</code> and <code>notefigure()</code> accept a <code>text-style</code> and <code>par-style</code> parameter…</p>\n</blockquote>\n<p>using the function <code>note()</code> itself for the configuration seems to be your only option. Instead redefining it you can however just change the default value of <code>text-style</code> with <a href=\"https://typst.app/docs/reference/foundations/function/#definitions-with\"><code>with()</code></a>. You will still have access to the other parameters and you can even override the <code>text-style</code>.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let note = note.with(text-style: (size: 8pt))\n</code></pre>\n<p>Edit: This was also the answer by the author of the package to the same question in a GitHub issue, see <a href=\"https://github.com/nleanba/typst-marginalia/issues/5\" class=\"inline-onebox\">Globally setting text characteristics for margin notes · Issue #5 · nleanba/typst-marginalia · GitHub</a>.</p>\n<p>A note regarding the compilation error. Set rules for custom elements/functions are not (yet) available. There is an experimental package called <a href=\"https://github.com/PgBiel/elembic\"><code>elembic</code></a> that introduces custom elements and types. This does however not help you here since marginalia does not use this.</p>",
+      "raw": "Since the documentation states that\n> Both `note()` and `notefigure()` accept a `text-style` and `par-style` parameter...\n\nusing the function `note()` itself for the configuration seems to be your only option. Instead redefining it you can however just change the default value of `text-style` with [`with()`](https://typst.app/docs/reference/foundations/function/#definitions-with). You will still have access to the other parameters and you can even override the `text-style`.\n\n```typ\n#let note = note.with(text-style: (size: 8pt))\n```\n\nEdit: This was also the answer by the author of the package to the same question in a GitHub issue, see https://github.com/nleanba/typst-marginalia/issues/5.\n\nA note regarding the compilation error. Set rules for custom elements/functions are not (yet) available. There is an experimental package called [`elembic`](https://github.com/PgBiel/elembic) that introduces custom elements and types. This does however not help you here since marginalia does not use this.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 13,
+      "score": 47.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    }
+  ],
+  "scraped_at": "2025-06-10T09:46:46.514782"
+}

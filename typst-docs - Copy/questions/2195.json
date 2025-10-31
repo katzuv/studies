@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2195,
+    "title": "How to redefine the default frac behavior while avoiding circular references",
+    "slug": "how-to-redefine-the-default-frac-behavior-while-avoiding-circular-references",
+    "posts_count": 3,
+    "created_at": "2024-12-24T05:21:47.831Z",
+    "last_posted_at": "2024-12-25T07:34:40.091Z",
+    "views": 142,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "omarkovic",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 167
+  },
+  "posts": [
+    {
+      "id": 6892,
+      "post_number": 1,
+      "username": "Matunaga_Touma",
+      "name": "",
+      "created_at": "2024-12-24T05:21:48.190Z",
+      "updated_at": "2024-12-24T09:39:16.954Z",
+      "cooked": "<p>I want to add spaces before and after the numerator and denominator to make the fraction bar longer. Below is the script I tried writing, but apparently there’s an error because of a circular reference. How to overwrite the defition of frac?</p>\n<p>Script</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let AddSpacefrac(num, den) = math.frac(\n[#h(1em /6) #num #h(1em /6)],\n[#h(1em /6) #den #h(1em /6)],\n)\n\n#show math.frac: frac =&gt; {\nAddSpacefrac(frac.num, frac.denom)\n}\n</code></pre>\n<p>Error message</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">maximum show rule depth exceeded\n\nHint: check whether the show rule matches its own output```</code></pre>",
+      "raw": "I want to add spaces before and after the numerator and denominator to make the fraction bar longer. Below is the script I tried writing, but apparently there’s an error because of a circular reference. How to overwrite the defition of frac?\n\nScript\n```typ\n#let AddSpacefrac(num, den) = math.frac(\n[#h(1em /6) #num #h(1em /6)],\n[#h(1em /6) #den #h(1em /6)],\n)\n\n#show math.frac: frac => {\nAddSpacefrac(frac.num, frac.denom)\n}\n```\n\nError message\n```typ\nmaximum show rule depth exceeded\n\nHint: check whether the show rule matches its own output```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 35,
+      "score": 707.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 971
+    },
+    {
+      "id": 6902,
+      "post_number": 2,
+      "username": "omarkovic",
+      "name": "Ognjen Markovic",
+      "created_at": "2024-12-24T23:42:39.332Z",
+      "updated_at": "2024-12-24T23:42:39.332Z",
+      "cooked": "<p>One solution is a workaround for math.equation suggested by <a class=\"mention\" href=\"/u/frozolotl\">@frozolotl</a> in this issue: <a href=\"https://github.com/typst/typst/discussions/2242\" rel=\"noopener nofollow ugc\">https://github.com/typst/typst/discussions/2242</a></p>\n<p>The modified show rule is</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show math.frac: it =&gt; {\n  if it.has(\"label\") and it.label == &lt;stop-frac-recursion&gt; {\n    it\n  } else {\n    [#AddSpacefrac(it.num, it.denom) &lt;stop-frac-recursion&gt; ]\n  }\n}\n</code></pre>\n<p>Not sure if there is a better solution than this workaround.</p>",
+      "raw": "One solution is a workaround for math.equation suggested by @frozolotl in this issue: [https://github.com/typst/typst/discussions/2242](https://github.com/typst/typst/discussions/2242)\n\nThe modified show rule is\n\n```typst\n#show math.frac: it => {\n  if it.has(\"label\") and it.label == <stop-frac-recursion> {\n    it\n  } else {\n    [#AddSpacefrac(it.num, it.denom) <stop-frac-recursion> ]\n  }\n}\n```\nNot sure if there is a better solution than this workaround.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 40.6,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 975
+    },
+    {
+      "id": 6904,
+      "post_number": 3,
+      "username": "Matunaga_Touma",
+      "name": "",
+      "created_at": "2024-12-25T07:34:40.091Z",
+      "updated_at": "2024-12-25T07:34:40.091Z",
+      "cooked": "<p>It worked! Thank you so much!!!</p>",
+      "raw": "It worked! Thank you so much!!!!!!!!",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 15.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 971
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:25.709975"
+}

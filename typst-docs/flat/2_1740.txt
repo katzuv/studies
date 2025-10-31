@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1740,
+    "title": "How to avoid pushing down math content with multi-line overbrace?",
+    "slug": "how-to-avoid-pushing-down-math-content-with-multi-line-overbrace",
+    "posts_count": 3,
+    "created_at": "2024-11-15T11:29:47.408Z",
+    "last_posted_at": "2024-11-17T18:59:17.531Z",
+    "views": 93,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "ParaN3xus",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 412
+  },
+  "posts": [
+    {
+      "id": 5666,
+      "post_number": 1,
+      "username": "miles-1",
+      "name": "miles",
+      "created_at": "2024-11-15T11:29:47.595Z",
+      "updated_at": "2024-11-15T11:29:47.595Z",
+      "cooked": "<p>I am trying to use overbraces for my equation, but a two-line annotation pushes the math content down, out of line from the rest of the equation. Example:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">$S &amp;= overbrace(beta (alpha) S I, \"one line\") - overbrace(mu (N), \"two\" \\  \"line\")$\n</code></pre>\n<p>The <code>µ(N)</code> term is out of line with the rest of the equation. This does not happen in the reverse direction with underbraces:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">$S &amp;= underbrace(beta (alpha) S I, \"one line\") - underbrace(mu (N), \"two\" \\  \"line\")$\n</code></pre>\n<p>Is this a bug or is this intentional? How can I avoid pushing annotated math terms out of the line of the equation?</p>",
+      "raw": "I am trying to use overbraces for my equation, but a two-line annotation pushes the math content down, out of line from the rest of the equation. Example:\n\n```typst\n$S &= overbrace(beta (alpha) S I, \"one line\") - overbrace(mu (N), \"two\" \\  \"line\")$\n```\nThe `µ(N)` term is out of line with the rest of the equation. This does not happen in the reverse direction with underbraces:\n\n```typst\n$S &= underbrace(beta (alpha) S I, \"one line\") - underbrace(mu (N), \"two\" \\  \"line\")$\n```\nIs this a bug or is this intentional? How can I avoid pushing annotated math terms out of the line of the equation?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 235.4,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 177
+    },
+    {
+      "id": 5671,
+      "post_number": 2,
+      "username": "ParaN3xus",
+      "name": "ParaN3xus",
+      "created_at": "2024-11-15T12:50:23.440Z",
+      "updated_at": "2024-11-15T12:50:44.672Z",
+      "cooked": "<p>This may be a bug in Typst, but fortunately, in addition to reporting the bug to the developers, we can also manually adjust the equation’s baseline using <code>box</code> to achieve alignment.</p>\n<p>Here is a example:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let ob(content, annotation) = {\n  let f(x) = move(math.equation(x))\n  box(\n    math.overbrace(f(content), f(math.inline(annotation))),\n    baseline: -0.0912em,\n  )\n}\n\n\n$\n  S &amp;= overbrace(beta (alpha) S I, \"one line\" ) - mu ob(mu (N), alpha) \\ \\\n  S &amp;= overbrace(beta (alpha) S I, \"one line\" ) - mu ob(mu (N), \"two\" \\ \"lines\") \\ \\ \\\n  S &amp;= overbrace(beta (alpha) S I, \"one line\" ) - mu ob(mu (N), \"and\" \\ \"three\" \\ \"lines\") \\ \\ \\\n  S &amp;= overbrace(beta (alpha) S I, \"one line\" ) - mu ob(mu (N), \"also\" \\ \"even\" \\ \"four\" \\ \"lines\") \\\n$\n</code></pre>\n<details>\n<summary>\nPreview</summary>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/3/33171d3a447294fe42c01b46c46b9b7db2eb07b7.png\" data-download-href=\"https://forum.typst.app/uploads/default/33171d3a447294fe42c01b46c46b9b7db2eb07b7\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/3/33171d3a447294fe42c01b46c46b9b7db2eb07b7_2_380x499.png\" alt=\"image\" data-base62-sha1=\"7hXS7kqkBQBtzGbuVgl3R6DOFlt\" width=\"380\" height=\"499\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/3/33171d3a447294fe42c01b46c46b9b7db2eb07b7_2_380x499.png, https://forum.typst.app/uploads/default/original/2X/3/33171d3a447294fe42c01b46c46b9b7db2eb07b7.png 1.5x, https://forum.typst.app/uploads/default/original/2X/3/33171d3a447294fe42c01b46c46b9b7db2eb07b7.png 2x\" data-dominant-color=\"FBFBFB\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">508×667 32.5 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n</details>\n<p>More details about this solution:</p>\n<p><strong>Concept</strong>:<br>\nAs I mentioned, I manually align the formula by adjusting the <code>baseline</code> parameter of the <code>box</code>. There might be some additional techniques involved in this process.</p>\n<p><strong>About the extra <code>move</code></strong>:<br>\nThis is a rather magical technique. Someone told me that using <code>move</code> would make external elements respect the alignment of the elements inside the <code>move</code>, and this turns out to be true. After using <code>move</code>, I only need to account for the remaining offset, since the formula’s alignment has already been addressed. I’m not entirely sure why or how it works, but I guess when facing alignment issues, adding a <code>move</code> might, to some extent, help.</p>\n<p><strong>Why is the <code>baseline</code> -0.0912em?</strong><br>\nI measured it. The value is precise to four decimal places to ensure pixel-perfect alignment. Feel free to modify it if you have a more accurate value.</p>",
+      "raw": "This may be a bug in Typst, but fortunately, in addition to reporting the bug to the developers, we can also manually adjust the equation's baseline using `box` to achieve alignment. \n\nHere is a example:\n```typ\n#let ob(content, annotation) = {\n  let f(x) = move(math.equation(x))\n  box(\n    math.overbrace(f(content), f(math.inline(annotation))),\n    baseline: -0.0912em,\n  )\n}\n\n\n$\n  S &= overbrace(beta (alpha) S I, \"one line\" ) - mu ob(mu (N), alpha) \\ \\\n  S &= overbrace(beta (alpha) S I, \"one line\" ) - mu ob(mu (N), \"two\" \\ \"lines\") \\ \\ \\\n  S &= overbrace(beta (alpha) S I, \"one line\" ) - mu ob(mu (N), \"and\" \\ \"three\" \\ \"lines\") \\ \\ \\\n  S &= overbrace(beta (alpha) S I, \"one line\" ) - mu ob(mu (N), \"also\" \\ \"even\" \\ \"four\" \\ \"lines\") \\\n$\n```\n\n[details=\"Preview\"]\n![image|380x499](upload://7hXS7kqkBQBtzGbuVgl3R6DOFlt.png)\n[/details]\n\nMore details about this solution:\n\n**Concept**:\nAs I mentioned, I manually align the formula by adjusting the `baseline` parameter of the `box`. There might be some additional techniques involved in this process.\n\n**About the extra `move`**:\nThis is a rather magical technique. Someone told me that using `move` would make external elements respect the alignment of the elements inside the `move`, and this turns out to be true. After using `move`, I only need to account for the remaining offset, since the formula's alignment has already been addressed. I'm not entirely sure why or how it works, but I guess when facing alignment issues, adding a `move` might, to some extent, help.\n\n**Why is the `baseline` -0.0912em?**\nI measured it. The value is precise to four decimal places to ensure pixel-perfect alignment. Feel free to modify it if you have a more accurate value.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 26,
+      "score": 45.2,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 14
+    },
+    {
+      "id": 5738,
+      "post_number": 3,
+      "username": "miles-1",
+      "name": "miles",
+      "created_at": "2024-11-17T18:59:17.531Z",
+      "updated_at": "2024-11-17T18:59:17.531Z",
+      "cooked": "<p>Thanks! I submitted a <a href=\"https://github.com/typst/typst/issues/5426\" rel=\"noopener nofollow ugc\">bug report</a>. Another solution offered there:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">$ S = overbrace(beta (alpha) S I, \"one line\" ) - overbrace(mu (N), vec(delim:#none, \"two\", \"lines\")) $\n</code></pre>",
+      "raw": "Thanks! I submitted a [bug report](https://github.com/typst/typst/issues/5426). Another solution offered there:\n\n```typst\n$ S = overbrace(beta (alpha) S I, \"one line\" ) - overbrace(mu (N), vec(delim:#none, \"two\", \"lines\")) $\n```",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 15,
+      "score": 8.0,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 177
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:53.051332"
+}

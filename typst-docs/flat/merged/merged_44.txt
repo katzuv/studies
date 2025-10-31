@@ -1,0 +1,4278 @@
+= text
+
+Customizes the look and layout of text in a variety of ways.
+
+This function is used frequently, both with set rules and directly. While the set rule is often the simpler choice, calling the `text` function directly can be useful when passing text as an argument to another function.
+
+== Example
+
+```typst
+#set text(18pt)
+With a set rule.
+
+#emph(text(blue)[
+  With a function call.
+])
+```
+
+== Parameters
+
+```
+text(
+  font: str | array | dictionary,
+  fallback: bool,
+  style: str,
+  weight: int | str,
+  stretch: ratio,
+  size: length,
+  fill: color | gradient | tiling,
+  stroke: none | length | color | gradient | stroke | tiling | dictionary,
+  tracking: length,
+  spacing: relative,
+  cjk-latin-spacing: none | auto,
+  baseline: length,
+  overhang: bool,
+  top-edge: length | str,
+  bottom-edge: length | str,
+  lang: str,
+  region: none | str,
+  script: auto | str,
+  dir: auto | direction,
+  hyphenate: auto | bool,
+  costs: dictionary,
+  kerning: bool,
+  alternates: bool,
+  stylistic-set: none | int | array,
+  ligatures: bool,
+  discretionary-ligatures: bool,
+  historical-ligatures: bool,
+  number-type: auto | str,
+  number-width: auto | str,
+  slashed-zero: bool,
+  fractions: bool,
+  features: array | dictionary,
+  content: content,
+  str: str
+) -> content
+```
+
+=== `font`: str | array | dictionary (Settable)
+
+A font family descriptor or priority list of font family descriptor.
+
+A font family descriptor can be a plain string representing the family name or a dictionary with the following keys:
+
+- `name` (required): The font family name.
+- `covers` (optional): Defines the Unicode codepoints for which the family shall be used. This can be: A predefined coverage set: "latin-in-cjk" covers all codepoints except for those which exist in Latin fonts, but should preferrably be taken from CJK fonts. A regular expression that defines exactly which codepoints shall be covered. Accepts only the subset of regular expressions which consist of exactly one dot, letter, or character class.
+
+When processing text, Typst tries all specified font families in order until it finds a font that has the necessary glyphs. In the example below, the font `Inria Serif` is preferred, but since it does not contain Arabic glyphs, the arabic text uses `Noto Sans Arabic` instead.
+
+The collection of available fonts differs by platform:
+
+- In the web app, you can see the list of available fonts by clicking on the "Ag" button. You can provide additional fonts by uploading .ttf or .otf files into your project. They will be discovered automatically. The priority is: project fonts > server fonts.
+- Locally, Typst uses your installed system fonts or embedded fonts in the CLI, which are Libertinus Serif, New Computer Modern, New Computer Modern Math, and DejaVu Sans Mono. In addition, you can use the --font-path argument or TYPST_FONT_PATHS environment variable to add directories that should be scanned for fonts. The priority is: --font-paths > system fonts > embedded fonts. Run typst fonts to see the fonts that Typst has discovered on your system. Note that you can pass the --ignore-system-fonts parameter to the CLI to ensure Typst won't search for system fonts.
+
+Default: `"libertinus serif"`
+
+*Example:*
+```typst
+#set text(font: "PT Sans")
+This is sans-serif.
+
+#set text(font: (
+  "Inria Serif",
+  "Noto Sans Arabic",
+))
+
+This is Latin. \
+هذا عربي.
+
+// Change font only for numbers.
+#set text(font: (
+  (name: "PT Sans", covers: regex("[0-9]")),
+  "Libertinus Serif"
+))
+
+The number 123.
+
+// Mix Latin and CJK fonts.
+#set text(font: (
+  (name: "Inria Serif", covers: "latin-in-cjk"),
+  "Noto Serif CJK SC"
+))
+分别设置“中文”和English字体
+```
+
+=== `fallback`: bool (Settable)
+
+Whether to allow last resort font fallback when the primary font list contains no match. This lets Typst search through all available fonts for the most similar one that has the necessary glyphs.
+
+_Note:_ Currently, there are no warnings when fallback is disabled and no glyphs are found. Instead, your text shows up in the form of "tofus": Small boxes that indicate the lack of an appropriate glyph. In the future, you will be able to instruct Typst to issue warnings so you know something is up.
+
+Default: `true`
+
+*Example:*
+```typst
+#set text(font: "Inria Serif")
+هذا عربي
+
+#set text(fallback: false)
+هذا عربي
+```
+
+=== `style`: str (Settable)
+
+The desired font style.
+
+When an italic style is requested and only an oblique one is available, it is used. Similarly, the other way around, an italic style can stand in for an oblique one. When neither an italic nor an oblique style is available, Typst selects the normal style. Since most fonts are only available either in an italic or oblique style, the difference between italic and oblique style is rarely observable.
+
+If you want to emphasize your text, you should do so using the #link("/docs/reference/model/emph/")[emph] function instead. This makes it easy to adapt the style later if you change your mind about how to signify the emphasis.
+
+Default: `"normal"`
+
+*Example:*
+```typst
+#text(font: "Libertinus Serif", style: "italic")[Italic]
+#text(font: "DejaVu Sans", style: "oblique")[Oblique]
+```
+
+=== `weight`: int | str (Settable)
+
+The desired thickness of the font's glyphs. Accepts an integer between `100` and `900` or one of the predefined weight names. When the desired weight is not available, Typst selects the font from the family that is closest in weight.
+
+If you want to strongly emphasize your text, you should do so using the #link("/docs/reference/model/strong/")[strong] function instead. This makes it easy to adapt the style later if you change your mind about how to signify the strong emphasis.
+
+Default: `"regular"`
+
+*Example:*
+```typst
+#set text(font: "IBM Plex Sans")
+
+#text(weight: "light")[Light] \
+#text(weight: "regular")[Regular] \
+#text(weight: "medium")[Medium] \
+#text(weight: 500)[Medium] \
+#text(weight: "bold")[Bold]
+```
+
+=== `stretch`: ratio (Settable)
+
+The desired width of the glyphs. Accepts a ratio between `50%` and `200%`. When the desired width is not available, Typst selects the font from the family that is closest in stretch. This will only stretch the text if a condensed or expanded version of the font is available.
+
+If you want to adjust the amount of space between characters instead of stretching the glyphs itself, use the #link("/docs/reference/text/text/#parameters-tracking")[tracking] property instead.
+
+Default: `100%`
+
+*Example:*
+```typst
+#text(stretch: 75%)[Condensed] \
+#text(stretch: 100%)[Normal]
+```
+
+=== `size`: length (Settable)
+
+The size of the glyphs. This value forms the basis of the `em` unit: `1em` is equivalent to the font size.
+
+You can also give the font size itself in `em` units. Then, it is relative to the previous font size.
+
+Default: `11pt`
+
+*Example:*
+```typst
+#set text(size: 20pt)
+very #text(1.5em)[big] text
+```
+
+=== `fill`: color | gradient | tiling (Settable)
+
+The glyph fill paint.
+
+Default: `luma(0%)`
+
+*Example:*
+```typst
+#set text(fill: red)
+This text is red.
+```
+
+=== `stroke`: none | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+How to stroke the text.
+
+Default: `none`
+
+*Example:*
+```typst
+#text(stroke: 0.5pt + red)[Stroked]
+```
+
+=== `tracking`: length (Settable)
+
+The amount of space that should be added between characters.
+
+Default: `0pt`
+
+*Example:*
+```typst
+#set text(tracking: 1.5pt)
+Distant text.
+```
+
+=== `spacing`: relative (Settable)
+
+The amount of space between words.
+
+Can be given as an absolute length, but also relative to the width of the space character in the font.
+
+If you want to adjust the amount of space between characters rather than words, use the #link("/docs/reference/text/text/#parameters-tracking")[tracking] property instead.
+
+Default: `100% + 0pt`
+
+*Example:*
+```typst
+#set text(spacing: 200%)
+Text with distant words.
+```
+
+=== `cjk-latin-spacing`: none | auto (Settable)
+
+Whether to automatically insert spacing between CJK and Latin characters.
+
+Default: `auto`
+
+*Example:*
+```typst
+#set text(cjk-latin-spacing: auto)
+第4章介绍了基本的API。
+
+#set text(cjk-latin-spacing: none)
+第4章介绍了基本的API。
+```
+
+=== `baseline`: length (Settable)
+
+An amount to shift the text baseline by.
+
+Default: `0pt`
+
+*Example:*
+```typst
+A #text(baseline: 3pt)[lowered]
+word.
+```
+
+=== `overhang`: bool (Settable)
+
+Whether certain glyphs can hang over into the margin in justified text. This can make justification visually more pleasing.
+
+Default: `true`
+
+*Example:*
+```typst
+#set par(justify: true)
+This justified text has a hyphen in
+the paragraph's first line. Hanging
+the hyphen slightly into the margin
+results in a clearer paragraph edge.
+
+#set text(overhang: false)
+This justified text has a hyphen in
+the paragraph's first line. Hanging
+the hyphen slightly into the margin
+results in a clearer paragraph edge.
+```
+
+=== `top-edge`: length | str (Settable)
+
+The top end of the conceptual frame around the text used for layout and positioning. This affects the size of containers that hold text.
+
+Default: `"cap-height"`
+
+*Example:*
+```typst
+#set rect(inset: 0pt)
+#set text(size: 20pt)
+
+#set text(top-edge: "ascender")
+#rect(fill: aqua)[Typst]
+
+#set text(top-edge: "cap-height")
+#rect(fill: aqua)[Typst]
+```
+
+=== `bottom-edge`: length | str (Settable)
+
+The bottom end of the conceptual frame around the text used for layout and positioning. This affects the size of containers that hold text.
+
+Default: `"baseline"`
+
+*Example:*
+```typst
+#set rect(inset: 0pt)
+#set text(size: 20pt)
+
+#set text(bottom-edge: "baseline")
+#rect(fill: aqua)[Typst]
+
+#set text(bottom-edge: "descender")
+#rect(fill: aqua)[Typst]
+```
+
+=== `lang`: str (Settable)
+
+An #link("https://en.wikipedia.org/wiki/ISO_639")[ISO 639-1/2/3 language code.]
+
+Setting the correct language affects various parts of Typst:
+
+- The text processing pipeline can make more informed choices.
+- Hyphenation will use the correct patterns for the language.
+- #link("/docs/reference/text/smartquote/")[Smart quotes] turns into the correct quotes for the language.
+- And all other things which are language-aware.
+
+Default: `"en"`
+
+*Example:*
+```typst
+#set text(lang: "de")
+#outline()
+
+= Einleitung
+In diesem Dokument, ...
+```
+
+=== `region`: none | str (Settable)
+
+An #link("https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2")[ISO 3166-1 alpha-2 region code.]
+
+This lets the text processing pipeline make more informed choices.
+
+Default: `none`
+
+=== `script`: auto | str (Settable)
+
+The OpenType writing script.
+
+The combination of `lang` and `script` determine how font features, such as glyph substitution, are implemented. Frequently the value is a modified (all-lowercase) ISO 15924 script identifier, and the `math` writing script is used for features appropriate for mathematical symbols.
+
+When set to `auto`, the default and recommended setting, an appropriate script is chosen for each block of characters sharing a common Unicode script property.
+
+Default: `auto`
+
+*Example:*
+```typst
+#set text(
+  font: "Libertinus Serif",
+  size: 20pt,
+)
+
+#let scedilla = [Ş]
+#scedilla // S with a cedilla
+
+#set text(lang: "ro", script: "latn")
+#scedilla // S with a subscript comma
+
+#set text(lang: "ro", script: "grek")
+#scedilla // S with a cedilla
+```
+
+=== `dir`: auto | direction (Settable)
+
+The dominant direction for text and inline objects. Possible values are:
+
+- `auto`: Automatically infer the direction from the `lang` property.
+- `ltr`: Layout text from left to right.
+- `rtl`: Layout text from right to left.
+
+When writing in right-to-left scripts like Arabic or Hebrew, you should set the #link("/docs/reference/text/text/#parameters-lang")[text language] or direction. While individual runs of text are automatically layouted in the correct direction, setting the dominant direction gives the bidirectional reordering algorithm the necessary information to correctly place punctuation and inline objects. Furthermore, setting the direction affects the alignment values `start` and `end`, which are equivalent to `left` and `right` in `ltr` text and the other way around in `rtl` text.
+
+If you set this to `rtl` and experience bugs or in some way bad looking output, please get in touch with us through the #link("https://forum.typst.app/")[Forum], #link("https://discord.gg/2uDybryKPe")[Discord server], or our #link("https://typst.app/contact")[contact form].
+
+Default: `auto`
+
+*Example:*
+```typst
+#set text(dir: rtl)
+هذا عربي.
+```
+
+=== `hyphenate`: auto | bool (Settable)
+
+Whether to hyphenate text to improve line breaking. When `auto`, text will be hyphenated if and only if justification is enabled.
+
+Setting the #link("/docs/reference/text/text/#parameters-lang")[text language] ensures that the correct hyphenation patterns are used.
+
+Default: `auto`
+
+*Example:*
+```typst
+#set page(width: 200pt)
+
+#set par(justify: true)
+This text illustrates how
+enabling hyphenation can
+improve justification.
+
+#set text(hyphenate: false)
+This text illustrates how
+enabling hyphenation can
+improve justification.
+```
+
+=== `costs`: dictionary (Settable)
+
+The "cost" of various choices when laying out text. A higher cost means the layout engine will make the choice less often. Costs are specified as a ratio of the default cost, so `50%` will make text layout twice as eager to make a given choice, while `200%` will make it half as eager.
+
+Currently, the following costs can be customized:
+
+- `hyphenation`: splitting a word across multiple lines
+- `runt`: ending a paragraph with a line with a single word
+- `widow`: leaving a single line of paragraph on the next page
+- `orphan`: leaving single line of paragraph on the previous page
+
+Hyphenation is generally avoided by placing the whole word on the next line, so a higher hyphenation cost can result in awkward justification spacing. Note: Hyphenation costs will only be applied when the #link("/docs/reference/model/par/#parameters-linebreaks")[linebreaks] are set to "optimized". (For example by default implied by #link("/docs/reference/model/par/#parameters-justify")[justify].)
+
+Runts are avoided by placing more or fewer words on previous lines, so a higher runt cost can result in more awkward in justification spacing.
+
+Text layout prevents widows and orphans by default because they are generally discouraged by style guides. However, in some contexts they are allowed because the prevention method, which moves a line to the next page, can result in an uneven number of lines between pages. The `widow` and `orphan` costs allow disabling these modifications. (Currently, `0%` allows widows/orphans; anything else, including the default of `100%`, prevents them. More nuanced cost specification for these modifications is planned for the future.)
+
+Default: `( hyphenation: 100%, runt: 100%, widow: 100%, orphan: 100%, )`
+
+*Example:*
+```typst
+#set text(hyphenate: true, size: 11.4pt)
+#set par(justify: true)
+
+#lorem(10)
+
+// Set hyphenation to ten times the normal cost.
+#set text(costs: (hyphenation: 1000%))
+
+#lorem(10)
+```
+
+=== `kerning`: bool (Settable)
+
+Whether to apply kerning.
+
+When enabled, specific letter pairings move closer together or further apart for a more visually pleasing result. The example below demonstrates how decreasing the gap between the "T" and "o" results in a more natural look. Setting this to `false` disables kerning by turning off the OpenType `kern` font feature.
+
+Default: `true`
+
+*Example:*
+```typst
+#set text(size: 25pt)
+Totally
+
+#set text(kerning: false)
+Totally
+```
+
+=== `alternates`: bool (Settable)
+
+Whether to apply stylistic alternates.
+
+Sometimes fonts contain alternative glyphs for the same codepoint. Setting this to `true` switches to these by enabling the OpenType `salt` font feature.
+
+Default: `false`
+
+*Example:*
+```typst
+#set text(
+  font: "IBM Plex Sans",
+  size: 20pt,
+)
+
+0, a, g, ß
+
+#set text(alternates: true)
+0, a, g, ß
+```
+
+=== `stylistic-set`: none | int | array (Settable)
+
+Which stylistic sets to apply. Font designers can categorize alternative glyphs forms into stylistic sets. As this value is highly font-specific, you need to consult your font to know which sets are available.
+
+This can be set to an integer or an array of integers, all of which must be between `1` and `20`, enabling the corresponding OpenType feature(s) from `ss01` to `ss20`. Setting this to `none` will disable all stylistic sets.
+
+Default: `()`
+
+*Example:*
+```typst
+#set text(font: "IBM Plex Serif")
+ß vs #text(stylistic-set: 5)[ß] \
+10 years ago vs #text(stylistic-set: (1, 2, 3))[10 years ago]
+```
+
+=== `ligatures`: bool (Settable)
+
+Whether standard ligatures are active.
+
+Certain letter combinations like "fi" are often displayed as a single merged glyph called a _ligature._ Setting this to `false` disables these ligatures by turning off the OpenType `liga` and `clig` font features.
+
+Default: `true`
+
+*Example:*
+```typst
+#set text(size: 20pt)
+A fine ligature.
+
+#set text(ligatures: false)
+A fine ligature.
+```
+
+=== `discretionary-ligatures`: bool (Settable)
+
+Whether ligatures that should be used sparingly are active. Setting this to `true` enables the OpenType `dlig` font feature.
+
+Default: `false`
+
+=== `historical-ligatures`: bool (Settable)
+
+Whether historical ligatures are active. Setting this to `true` enables the OpenType `hlig` font feature.
+
+Default: `false`
+
+=== `number-type`: auto | str (Settable)
+
+Which kind of numbers / figures to select. When set to `auto`, the default numbers for the font are used.
+
+Default: `auto`
+
+*Example:*
+```typst
+#set text(font: "Noto Sans", 20pt)
+#set text(number-type: "lining")
+Number 9.
+
+#set text(number-type: "old-style")
+Number 9.
+```
+
+=== `number-width`: auto | str (Settable)
+
+The width of numbers / figures. When set to `auto`, the default numbers for the font are used.
+
+Default: `auto`
+
+*Example:*
+```typst
+#set text(font: "Noto Sans", 20pt)
+#set text(number-width: "proportional")
+A 12 B 34. \
+A 56 B 78.
+
+#set text(number-width: "tabular")
+A 12 B 34. \
+A 56 B 78.
+```
+
+=== `slashed-zero`: bool (Settable)
+
+Whether to have a slash through the zero glyph. Setting this to `true` enables the OpenType `zero` font feature.
+
+Default: `false`
+
+*Example:*
+```typst
+0, #text(slashed-zero: true)[0]
+```
+
+=== `fractions`: bool (Settable)
+
+Whether to turn numbers into fractions. Setting this to `true` enables the OpenType `frac` font feature.
+
+It is not advisable to enable this property globally as it will mess with all appearances of numbers after a slash (e.g., in URLs). Instead, enable it locally when you want a fraction.
+
+Default: `false`
+
+*Example:*
+```typst
+1/2 \
+#text(fractions: true)[1/2]
+```
+
+=== `features`: array | dictionary (Settable)
+
+Raw OpenType features to apply.
+
+- If given an array of strings, sets the features identified by the strings to `1`.
+- If given a dictionary mapping to numbers, sets the features identified by the keys to the values.
+
+Default: `(:)`
+
+*Example:*
+```typst
+// Enable the `frac` feature manually.
+#set text(features: ("frac",))
+1/2
+```
+
+=== `body`: content (Required, Positional)
+
+Content in which all text is styled according to the other arguments.
+
+=== `text`: str (Required, Positional)
+
+The text.
+= underline
+
+Underlines text.
+
+== Example
+
+```typst
+This is #underline[important].
+```
+
+== Parameters
+
+```
+underline(
+  stroke: auto | length | color | gradient | stroke | tiling | dictionary,
+  offset: auto | length,
+  extent: length,
+  evade: bool,
+  background: bool,
+  content: content
+) -> content
+```
+
+=== `stroke`: auto | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+How to #link("/docs/reference/visualize/stroke/")[stroke] the line.
+
+If set to `auto`, takes on the text's color and a thickness defined in the current font.
+
+Default: `auto`
+
+*Example:*
+```typst
+Take #underline(
+  stroke: 1.5pt + red,
+  offset: 2pt,
+  [care],
+)
+```
+
+=== `offset`: auto | length (Settable)
+
+The position of the line relative to the baseline, read from the font tables if `auto`.
+
+Default: `auto`
+
+*Example:*
+```typst
+#underline(offset: 5pt)[
+  The Tale Of A Faraway Line I
+]
+```
+
+=== `extent`: length (Settable)
+
+The amount by which to extend the line beyond (or within if negative) the content.
+
+Default: `0pt`
+
+*Example:*
+```typst
+#align(center,
+  underline(extent: 2pt)[Chapter 1]
+)
+```
+
+=== `evade`: bool (Settable)
+
+Whether the line skips sections in which it would collide with the glyphs.
+
+Default: `true`
+
+*Example:*
+```typst
+This #underline(evade: true)[is great].
+This #underline(evade: false)[is less great].
+```
+
+=== `background`: bool (Settable)
+
+Whether the line is placed behind the content it underlines.
+
+Default: `false`
+
+*Example:*
+```typst
+#set underline(stroke: (thickness: 1em, paint: maroon, cap: "round"))
+#underline(background: true)[This is stylized.] \
+#underline(background: false)[This is partially hidden.]
+```
+
+=== `body`: content (Required, Positional)
+
+The content to underline.
+= upper
+
+Converts a string or content to uppercase.
+
+== Example
+
+```typst
+#upper("abc") \
+#upper[*my text*] \
+#upper[ALREADY HIGH]
+```
+
+== Parameters
+
+```
+upper(
+  str: str | content
+) -> content
+```
+
+=== `text`: str | content (Required, Positional)
+
+The text to convert to uppercase.
+= circle
+
+A circle with optional content.
+
+== Example
+
+```typst
+// Without content.
+#circle(radius: 25pt)
+
+// With content.
+#circle[
+  #set align(center + horizon)
+  Automatically \
+  sized to fit.
+]
+```
+
+== Parameters
+
+```
+circle(
+  radius: length,
+  width: auto | relative,
+  height: auto | relative | fraction,
+  fill: none | color | gradient | tiling,
+  stroke: none | auto | length | color | gradient | stroke | tiling | dictionary,
+  inset: relative | dictionary,
+  outset: relative | dictionary,
+  body: none | content
+) -> content
+```
+
+=== `radius`: length (Settable)
+
+The circle's radius. This is mutually exclusive with `width` and `height`.
+
+Default: `0pt`
+
+=== `width`: auto | relative (Settable)
+
+The circle's width. This is mutually exclusive with `radius` and `height`.
+
+In contrast to `radius`, this can be relative to the parent container's width.
+
+Default: `auto`
+
+=== `height`: auto | relative | fraction (Settable)
+
+The circle's height. This is mutually exclusive with `radius` and `width`.
+
+In contrast to `radius`, this can be relative to the parent container's height.
+
+Default: `auto`
+
+=== `fill`: none | color | gradient | tiling (Settable)
+
+How to fill the circle. See the #link("/docs/reference/visualize/rect/#parameters-fill")[rectangle's documentation] for more details.
+
+Default: `none`
+
+=== `stroke`: none | auto | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+How to stroke the circle. See the #link("/docs/reference/visualize/rect/#parameters-stroke")[rectangle's documentation] for more details.
+
+Default: `auto`
+
+=== `inset`: relative | dictionary (Settable)
+
+How much to pad the circle's content. See the #link("/docs/reference/layout/box/#parameters-inset")[box's documentation] for more details.
+
+Default: `0% + 5pt`
+
+=== `outset`: relative | dictionary (Settable)
+
+How much to expand the circle's size without affecting the layout. See the #link("/docs/reference/layout/box/#parameters-outset")[box's documentation] for more details.
+
+Default: `(:)`
+
+=== `body`: none | content (Positional, Settable)
+
+The content to place into the circle. The circle expands to fit this content, keeping the 1-1 aspect ratio.
+
+Default: `none`
+= color
+
+A color in a specific color space.
+
+Typst supports:
+
+- sRGB through the #link("/docs/reference/visualize/color/#definitions-rgb")[rgb function]
+- Device CMYK through #link("/docs/reference/visualize/color/#definitions-cmyk")[cmyk function]
+- D65 Gray through the #link("/docs/reference/visualize/color/#definitions-luma")[luma function]
+- Oklab through the #link("/docs/reference/visualize/color/#definitions-oklab")[oklab function]
+- Oklch through the #link("/docs/reference/visualize/color/#definitions-oklch")[oklch function]
+- Linear RGB through the #link("/docs/reference/visualize/color/#definitions-linear-rgb")[color.linear-rgb function]
+- HSL through the #link("/docs/reference/visualize/color/#definitions-hsl")[color.hsl function]
+- HSV through the #link("/docs/reference/visualize/color/#definitions-hsv")[color.hsv function]
+
+== Example
+
+```typst
+#rect(fill: aqua)
+```
+
+== Predefined colors
+
+Typst defines the following built-in colors:
+
+The predefined colors and the most important color constructors are available globally and also in the color type's scope, so you can write either `color.red` or just `red`.
+
+== Predefined color maps
+
+Typst also includes a number of preset color maps that can be used for #link("/docs/reference/visualize/gradient/#definitions-linear")[gradients]. These are simply arrays of colors defined in the module `color.map`.
+
+```typst
+#circle(fill: gradient.linear(..color.map.crest))
+```
+
+Some popular presets are not included because they are not available under a free licence. Others, like #link("https://jakevdp.github.io/blog/2014/10/16/how-bad-is-your-colormap/")[Jet], are not included because they are not color blind friendly. Feel free to use or create a package with other presets that are useful to you!
+
+== Definitions
+
+=== `luma`
+
+Create a grayscale color.
+
+A grayscale color is represented internally by a single `lightness` component.
+
+These components are also available using the #link("/docs/reference/visualize/color/#definitions-components")[components] method.
+
+```
+luma(
+  int: int | ratio,
+  ratio: ratio,
+  color: color
+) -> color
+```
+
+```typst
+#for x in range(250, step: 50) {
+  box(square(fill: luma(x)))
+}
+```
+
+==== `lightness`: int | ratio (Required, Positional)
+
+The lightness component.
+
+==== `alpha`: ratio (Required, Positional)
+
+The alpha component.
+
+==== `color`: color (Required, Positional)
+
+Alternatively: The color to convert to grayscale.
+
+If this is given, the `lightness` should not be given.
+
+=== `oklab`
+
+Create an #link("https://bottosson.github.io/posts/oklab/")[Oklab] color.
+
+This color space is well suited for the following use cases:
+
+- Color manipulation such as saturating while keeping perceived hue
+- Creating grayscale images with uniform perceived lightness
+- Creating smooth and uniform color transition and gradients
+
+A linear Oklab color is represented internally by an array of four components:
+
+- lightness (#link("/docs/reference/layout/ratio/")[ratio])
+- a (#link("/docs/reference/foundations/float/")[float] or #link("/docs/reference/layout/ratio/")[ratio]. Ratios are relative to `0.4`; meaning `50%` is equal to `0.2`)
+- b (#link("/docs/reference/foundations/float/")[float] or #link("/docs/reference/layout/ratio/")[ratio]. Ratios are relative to `0.4`; meaning `50%` is equal to `0.2`)
+- alpha (#link("/docs/reference/layout/ratio/")[ratio])
+
+These components are also available using the #link("/docs/reference/visualize/color/#definitions-components")[components] method.
+
+```
+oklab(
+  ratio: ratio,
+  float: float | ratio,
+  float: float | ratio,
+  ratio: ratio,
+  color: color
+) -> color
+```
+
+```typst
+#square(
+  fill: oklab(27%, 20%, -3%, 50%)
+)
+```
+
+==== `lightness`: ratio (Required, Positional)
+
+The lightness component.
+
+==== `a`: float | ratio (Required, Positional)
+
+The a ("green/red") component.
+
+==== `b`: float | ratio (Required, Positional)
+
+The b ("blue/yellow") component.
+
+==== `alpha`: ratio (Required, Positional)
+
+The alpha component.
+
+==== `color`: color (Required, Positional)
+
+Alternatively: The color to convert to Oklab.
+
+If this is given, the individual components should not be given.
+
+=== `oklch`
+
+Create an #link("https://bottosson.github.io/posts/oklab/")[Oklch] color.
+
+This color space is well suited for the following use cases:
+
+- Color manipulation involving lightness, chroma, and hue
+- Creating grayscale images with uniform perceived lightness
+- Creating smooth and uniform color transition and gradients
+
+A linear Oklch color is represented internally by an array of four components:
+
+- lightness (#link("/docs/reference/layout/ratio/")[ratio])
+- chroma (#link("/docs/reference/foundations/float/")[float] or #link("/docs/reference/layout/ratio/")[ratio]. Ratios are relative to `0.4`; meaning `50%` is equal to `0.2`)
+- hue (#link("/docs/reference/layout/angle/")[angle])
+- alpha (#link("/docs/reference/layout/ratio/")[ratio])
+
+These components are also available using the #link("/docs/reference/visualize/color/#definitions-components")[components] method.
+
+```
+oklch(
+  ratio: ratio,
+  float: float | ratio,
+  angle: angle,
+  ratio: ratio,
+  color: color
+) -> color
+```
+
+```typst
+#square(
+  fill: oklch(40%, 0.2, 160deg, 50%)
+)
+```
+
+==== `lightness`: ratio (Required, Positional)
+
+The lightness component.
+
+==== `chroma`: float | ratio (Required, Positional)
+
+The chroma component.
+
+==== `hue`: angle (Required, Positional)
+
+The hue component.
+
+==== `alpha`: ratio (Required, Positional)
+
+The alpha component.
+
+==== `color`: color (Required, Positional)
+
+Alternatively: The color to convert to Oklch.
+
+If this is given, the individual components should not be given.
+
+=== `linear-rgb`
+
+Create an RGB(A) color with linear luma.
+
+This color space is similar to sRGB, but with the distinction that the color component are not gamma corrected. This makes it easier to perform color operations such as blending and interpolation. Although, you should prefer to use the #link("/docs/reference/visualize/color/#definitions-oklab")[oklab function] for these.
+
+A linear RGB(A) color is represented internally by an array of four components:
+
+- red (#link("/docs/reference/layout/ratio/")[ratio])
+- green (#link("/docs/reference/layout/ratio/")[ratio])
+- blue (#link("/docs/reference/layout/ratio/")[ratio])
+- alpha (#link("/docs/reference/layout/ratio/")[ratio])
+
+These components are also available using the #link("/docs/reference/visualize/color/#definitions-components")[components] method.
+
+```
+linear-rgb(
+  int: int | ratio,
+  int: int | ratio,
+  int: int | ratio,
+  int: int | ratio,
+  color: color
+) -> color
+```
+
+```typst
+#square(fill: color.linear-rgb(
+  30%, 50%, 10%,
+))
+```
+
+==== `red`: int | ratio (Required, Positional)
+
+The red component.
+
+==== `green`: int | ratio (Required, Positional)
+
+The green component.
+
+==== `blue`: int | ratio (Required, Positional)
+
+The blue component.
+
+==== `alpha`: int | ratio (Required, Positional)
+
+The alpha component.
+
+==== `color`: color (Required, Positional)
+
+Alternatively: The color to convert to linear RGB(A).
+
+If this is given, the individual components should not be given.
+
+=== `rgb`
+
+Create an RGB(A) color.
+
+The color is specified in the sRGB color space.
+
+An RGB(A) color is represented internally by an array of four components:
+
+- red (#link("/docs/reference/layout/ratio/")[ratio])
+- green (#link("/docs/reference/layout/ratio/")[ratio])
+- blue (#link("/docs/reference/layout/ratio/")[ratio])
+- alpha (#link("/docs/reference/layout/ratio/")[ratio])
+
+These components are also available using the #link("/docs/reference/visualize/color/#definitions-components")[components] method.
+
+```
+rgb(
+  int: int | ratio,
+  int: int | ratio,
+  int: int | ratio,
+  int: int | ratio,
+  str: str,
+  color: color
+) -> color
+```
+
+```typst
+#square(fill: rgb("#b1f2eb"))
+#square(fill: rgb(87, 127, 230))
+#square(fill: rgb(25%, 13%, 65%))
+```
+
+==== `red`: int | ratio (Required, Positional)
+
+The red component.
+
+==== `green`: int | ratio (Required, Positional)
+
+The green component.
+
+==== `blue`: int | ratio (Required, Positional)
+
+The blue component.
+
+==== `alpha`: int | ratio (Required, Positional)
+
+The alpha component.
+
+==== `hex`: str (Required, Positional)
+
+Alternatively: The color in hexadecimal notation.
+
+Accepts three, four, six or eight hexadecimal digits and optionally a leading hash.
+
+If this is given, the individual components should not be given.
+
+*Example:*
+```typst
+#text(16pt, rgb("#239dad"))[
+  *Typst*
+]
+```
+
+==== `color`: color (Required, Positional)
+
+Alternatively: The color to convert to RGB(a).
+
+If this is given, the individual components should not be given.
+
+=== `cmyk`
+
+Create a CMYK color.
+
+This is useful if you want to target a specific printer. The conversion to RGB for display preview might differ from how your printer reproduces the color.
+
+A CMYK color is represented internally by an array of four components:
+
+- cyan (#link("/docs/reference/layout/ratio/")[ratio])
+- magenta (#link("/docs/reference/layout/ratio/")[ratio])
+- yellow (#link("/docs/reference/layout/ratio/")[ratio])
+- key (#link("/docs/reference/layout/ratio/")[ratio])
+
+These components are also available using the #link("/docs/reference/visualize/color/#definitions-components")[components] method.
+
+Note that CMYK colors are not currently supported when PDF/A output is enabled.
+
+```
+cmyk(
+  ratio: ratio,
+  ratio: ratio,
+  ratio: ratio,
+  ratio: ratio,
+  color: color
+) -> color
+```
+
+```typst
+#square(
+  fill: cmyk(27%, 0%, 3%, 5%)
+)
+```
+
+==== `cyan`: ratio (Required, Positional)
+
+The cyan component.
+
+==== `magenta`: ratio (Required, Positional)
+
+The magenta component.
+
+==== `yellow`: ratio (Required, Positional)
+
+The yellow component.
+
+==== `key`: ratio (Required, Positional)
+
+The key component.
+
+==== `color`: color (Required, Positional)
+
+Alternatively: The color to convert to CMYK.
+
+If this is given, the individual components should not be given.
+
+=== `hsl`
+
+Create an HSL color.
+
+This color space is useful for specifying colors by hue, saturation and lightness. It is also useful for color manipulation, such as saturating while keeping perceived hue.
+
+An HSL color is represented internally by an array of four components:
+
+- hue (#link("/docs/reference/layout/angle/")[angle])
+- saturation (#link("/docs/reference/layout/ratio/")[ratio])
+- lightness (#link("/docs/reference/layout/ratio/")[ratio])
+- alpha (#link("/docs/reference/layout/ratio/")[ratio])
+
+These components are also available using the #link("/docs/reference/visualize/color/#definitions-components")[components] method.
+
+```
+hsl(
+  angle: angle,
+  int: int | ratio,
+  int: int | ratio,
+  int: int | ratio,
+  color: color
+) -> color
+```
+
+```typst
+#square(
+  fill: color.hsl(30deg, 50%, 60%)
+)
+```
+
+==== `hue`: angle (Required, Positional)
+
+The hue angle.
+
+==== `saturation`: int | ratio (Required, Positional)
+
+The saturation component.
+
+==== `lightness`: int | ratio (Required, Positional)
+
+The lightness component.
+
+==== `alpha`: int | ratio (Required, Positional)
+
+The alpha component.
+
+==== `color`: color (Required, Positional)
+
+Alternatively: The color to convert to HSL.
+
+If this is given, the individual components should not be given.
+
+=== `hsv`
+
+Create an HSV color.
+
+This color space is useful for specifying colors by hue, saturation and value. It is also useful for color manipulation, such as saturating while keeping perceived hue.
+
+An HSV color is represented internally by an array of four components:
+
+- hue (#link("/docs/reference/layout/angle/")[angle])
+- saturation (#link("/docs/reference/layout/ratio/")[ratio])
+- value (#link("/docs/reference/layout/ratio/")[ratio])
+- alpha (#link("/docs/reference/layout/ratio/")[ratio])
+
+These components are also available using the #link("/docs/reference/visualize/color/#definitions-components")[components] method.
+
+```
+hsv(
+  angle: angle,
+  int: int | ratio,
+  int: int | ratio,
+  int: int | ratio,
+  color: color
+) -> color
+```
+
+```typst
+#square(
+  fill: color.hsv(30deg, 50%, 60%)
+)
+```
+
+==== `hue`: angle (Required, Positional)
+
+The hue angle.
+
+==== `saturation`: int | ratio (Required, Positional)
+
+The saturation component.
+
+==== `value`: int | ratio (Required, Positional)
+
+The value component.
+
+==== `alpha`: int | ratio (Required, Positional)
+
+The alpha component.
+
+==== `color`: color (Required, Positional)
+
+Alternatively: The color to convert to HSL.
+
+If this is given, the individual components should not be given.
+
+=== `components`
+
+Extracts the components of this color.
+
+The size and values of this array depends on the color space. You can obtain the color space using #link("/docs/reference/visualize/color/#definitions-space")[space]. Below is a table of the color spaces and their components:
+
+For the meaning and type of each individual value, see the documentation of the corresponding color space. The alpha component is optional and only included if the `alpha` argument is `true`. The length of the returned array depends on the number of components and whether the alpha component is included.
+
+```
+components(
+  alpha: bool
+) -> array
+```
+
+```typst
+// note that the alpha component is included by default
+#rgb(40%, 60%, 80%).components()
+```
+
+==== `alpha`: bool
+
+Whether to include the alpha component.
+
+Default: `true`
+
+=== `space`
+
+Returns the constructor function for this color's space:
+
+- #link("/docs/reference/visualize/color/#definitions-luma")[luma]
+- #link("/docs/reference/visualize/color/#definitions-oklab")[oklab]
+- #link("/docs/reference/visualize/color/#definitions-oklch")[oklch]
+- #link("/docs/reference/visualize/color/#definitions-linear-rgb")[linear-rgb]
+- #link("/docs/reference/visualize/color/#definitions-rgb")[rgb]
+- #link("/docs/reference/visualize/color/#definitions-cmyk")[cmyk]
+- #link("/docs/reference/visualize/color/#definitions-hsl")[hsl]
+- #link("/docs/reference/visualize/color/#definitions-hsv")[hsv]
+
+```
+space(
+  
+) -> 
+```
+
+```typst
+#let color = cmyk(1%, 2%, 3%, 4%)
+#(color.space() == cmyk)
+```
+
+=== `to-hex`
+
+Returns the color's RGB(A) hex representation (such as `#ffaa32` or `#020304fe`). The alpha component (last two digits in `#020304fe`) is omitted if it is equal to `ff` (255 / 100%).
+
+```
+to-hex(
+  
+) -> str
+```
+
+=== `lighten`
+
+Lightens a color by a given factor.
+
+```
+lighten(
+  ratio: ratio
+) -> color
+```
+
+==== `factor`: ratio (Required, Positional)
+
+The factor to lighten the color by.
+
+=== `darken`
+
+Darkens a color by a given factor.
+
+```
+darken(
+  ratio: ratio
+) -> color
+```
+
+==== `factor`: ratio (Required, Positional)
+
+The factor to darken the color by.
+
+=== `saturate`
+
+Increases the saturation of a color by a given factor.
+
+```
+saturate(
+  ratio: ratio
+) -> color
+```
+
+==== `factor`: ratio (Required, Positional)
+
+The factor to saturate the color by.
+
+=== `desaturate`
+
+Decreases the saturation of a color by a given factor.
+
+```
+desaturate(
+  ratio: ratio
+) -> color
+```
+
+==== `factor`: ratio (Required, Positional)
+
+The factor to desaturate the color by.
+
+=== `negate`
+
+Produces the complementary color using a provided color space. You can think of it as the opposite side on a color wheel.
+
+```
+negate(
+  space: any
+) -> color
+```
+
+```typst
+#square(fill: yellow)
+#square(fill: yellow.negate())
+#square(fill: yellow.negate(space: rgb))
+```
+
+==== `space`: any
+
+The color space used for the transformation. By default, a perceptual color space is used.
+
+Default: `oklab`
+
+=== `rotate`
+
+Rotates the hue of the color by a given angle.
+
+```
+rotate(
+  angle: angle,
+  space: any
+) -> color
+```
+
+==== `angle`: angle (Required, Positional)
+
+The angle to rotate the hue by.
+
+==== `space`: any
+
+The color space used to rotate. By default, this happens in a perceptual color space (#link("/docs/reference/visualize/color/#definitions-oklch")[oklch]).
+
+Default: `oklch`
+
+=== `mix`
+
+Create a color by mixing two or more colors.
+
+In color spaces with a hue component (hsl, hsv, oklch), only two colors can be mixed at once. Mixing more than two colors in such a space will result in an error!
+
+```
+mix(
+  ..: color | array,
+  space: any
+) -> color
+```
+
+```typst
+#set block(height: 20pt, width: 100%)
+#block(fill: red.mix(blue))
+#block(fill: red.mix(blue, space: rgb))
+#block(fill: color.mix(red, blue, white))
+#block(fill: color.mix((red, 70%), (blue, 30%)))
+```
+
+==== `colors`: color | array (Required, Positional, Variadic)
+
+The colors, optionally with weights, specified as a pair (array of length two) of color and weight (float or ratio).
+
+The weights do not need to add to `100%`, they are relative to the sum of all weights.
+
+==== `space`: any
+
+The color space to mix in. By default, this happens in a perceptual color space (#link("/docs/reference/visualize/color/#definitions-oklab")[oklab]).
+
+Default: `oklab`
+
+=== `transparentize`
+
+Makes a color more transparent by a given factor.
+
+This method is relative to the existing alpha value. If the scale is positive, calculates `alpha - alpha * scale`. Negative scales behave like `color.opacify(-scale)`.
+
+```
+transparentize(
+  ratio: ratio
+) -> color
+```
+
+```typst
+#block(fill: red)[opaque]
+#block(fill: red.transparentize(50%))[half red]
+#block(fill: red.transparentize(75%))[quarter red]
+```
+
+==== `scale`: ratio (Required, Positional)
+
+The factor to change the alpha value by.
+
+=== `opacify`
+
+Makes a color more opaque by a given scale.
+
+This method is relative to the existing alpha value. If the scale is positive, calculates `alpha + scale - alpha * scale`. Negative scales behave like `color.transparentize(-scale)`.
+
+```
+opacify(
+  ratio: ratio
+) -> color
+```
+
+```typst
+#let half-red = red.transparentize(50%)
+#block(fill: half-red.opacify(100%))[opaque]
+#block(fill: half-red.opacify(50%))[three quarters red]
+#block(fill: half-red.opacify(-50%))[one quarter red]
+```
+
+==== `scale`: ratio (Required, Positional)
+
+The scale to change the alpha value by.
+= curve
+
+A curve consisting of movements, lines, and Bézier segments.
+
+At any point in time, there is a conceptual pen or cursor.
+
+- Move elements move the cursor without drawing.
+- Line/Quadratic/Cubic elements draw a segment from the cursor to a new position, potentially with control point for a Bézier curve.
+- Close elements draw a straight or smooth line back to the start of the curve or the latest preceding move segment.
+
+For layout purposes, the bounding box of the curve is a tight rectangle containing all segments as well as the point `(0pt, 0pt)`.
+
+Positions may be specified absolutely (i.e. relatively to `(0pt, 0pt)`), or relative to the current pen/cursor position, that is, the position where the previous segment ended.
+
+Bézier curve control points can be skipped by passing `none` or automatically mirrored from the preceding segment by passing `auto`.
+
+== Example
+
+```typst
+#curve(
+  fill: blue.lighten(80%),
+  stroke: blue,
+  curve.move((0pt, 50pt)),
+  curve.line((100pt, 50pt)),
+  curve.cubic(none, (90pt, 0pt), (50pt, 0pt)),
+  curve.close(),
+)
+```
+
+== Parameters
+
+```
+curve(
+  fill: none | color | gradient | tiling,
+  fill-rule: str,
+  stroke: none | auto | length | color | gradient | stroke | tiling | dictionary,
+  ..: content
+) -> content
+```
+
+=== `fill`: none | color | gradient | tiling (Settable)
+
+How to fill the curve.
+
+When setting a fill, the default stroke disappears. To create a rectangle with both fill and stroke, you have to configure both.
+
+Default: `none`
+
+=== `fill-rule`: str (Settable)
+
+The drawing rule used to fill the curve.
+
+Default: `"non-zero"`
+
+*Example:*
+```typst
+// We use `.with` to get a new
+// function that has the common
+// arguments pre-applied.
+#let star = curve.with(
+  fill: red,
+  curve.move((25pt, 0pt)),
+  curve.line((10pt, 50pt)),
+  curve.line((50pt, 20pt)),
+  curve.line((0pt, 20pt)),
+  curve.line((40pt, 50pt)),
+  curve.close(),
+)
+
+#star(fill-rule: "non-zero")
+#star(fill-rule: "even-odd")
+```
+
+=== `stroke`: none | auto | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+How to #link("/docs/reference/visualize/stroke/")[stroke] the curve. This can be:
+
+Can be set to `none` to disable the stroke or to `auto` for a stroke of `1pt` black if and if only if no fill is given.
+
+Default: `auto`
+
+*Example:*
+```typst
+#let down = curve.line((40pt, 40pt), relative: true)
+#let up = curve.line((40pt, -40pt), relative: true)
+
+#curve(
+  stroke: 4pt + gradient.linear(red, blue),
+  down, up, down, up, down,
+)
+```
+
+=== `components`: content (Required, Positional, Variadic)
+
+The components of the curve, in the form of moves, line and Bézier segment, and closes.
+
+== Definitions
+
+=== `move`
+
+Starts a new curve component.
+
+If no `curve.move` element is passed, the curve will start at `(0pt, 0pt)`.
+
+```
+move(
+  array: array,
+  relative: bool
+) -> content
+```
+
+```typst
+#curve(
+  fill: blue.lighten(80%),
+  fill-rule: "even-odd",
+  stroke: blue,
+  curve.line((50pt, 0pt)),
+  curve.line((50pt, 50pt)),
+  curve.line((0pt, 50pt)),
+  curve.close(),
+  curve.move((10pt, 10pt)),
+  curve.line((40pt, 10pt)),
+  curve.line((40pt, 40pt)),
+  curve.line((10pt, 40pt)),
+  curve.close(),
+)
+```
+
+==== `start`: array (Required, Positional)
+
+The starting point for the new component.
+
+==== `relative`: bool (Settable)
+
+Whether the coordinates are relative to the previous point.
+
+Default: `false`
+
+=== `line`
+
+Adds a straight line from the current point to a following one.
+
+```
+line(
+  array: array,
+  relative: bool
+) -> content
+```
+
+```typst
+#curve(
+  stroke: blue,
+  curve.line((50pt, 0pt)),
+  curve.line((50pt, 50pt)),
+  curve.line((100pt, 50pt)),
+  curve.line((100pt, 0pt)),
+  curve.line((150pt, 0pt)),
+)
+```
+
+==== `end`: array (Required, Positional)
+
+The point at which the line shall end.
+
+==== `relative`: bool (Settable)
+
+Whether the coordinates are relative to the previous point.
+
+Default: `false`
+
+*Example:*
+```typst
+#curve(
+  stroke: blue,
+  curve.line((50pt, 0pt), relative: true),
+  curve.line((0pt, 50pt), relative: true),
+  curve.line((50pt, 0pt), relative: true),
+  curve.line((0pt, -50pt), relative: true),
+  curve.line((50pt, 0pt), relative: true),
+)
+```
+
+=== `quad`
+
+Adds a quadratic Bézier curve segment from the last point to `end`, using `control` as the control point.
+
+```
+quad(
+  none: none | auto | array,
+  array: array,
+  relative: bool
+) -> content
+```
+
+```typst
+// Function to illustrate where the control point is.
+#let mark((x, y)) = place(
+  dx: x - 1pt, dy: y - 1pt,
+  circle(fill: aqua, radius: 2pt),
+)
+
+#mark((20pt, 20pt))
+
+#curve(
+  stroke: blue,
+  curve.move((0pt, 100pt)),
+  curve.quad((20pt, 20pt), (100pt, 0pt)),
+)
+```
+
+==== `control`: none | auto | array (Required, Positional)
+
+The control point of the quadratic Bézier curve.
+
+- If `auto` and this segment follows another quadratic Bézier curve, the previous control point will be mirrored.
+- If `none`, the control point defaults to `end`, and the curve will be a straight line.
+
+*Example:*
+```typst
+#curve(
+  stroke: 2pt,
+  curve.quad((20pt, 40pt), (40pt, 40pt), relative: true),
+  curve.quad(auto, (40pt, -40pt), relative: true),
+)
+```
+
+==== `end`: array (Required, Positional)
+
+The point at which the segment shall end.
+
+==== `relative`: bool (Settable)
+
+Whether the `control` and `end` coordinates are relative to the previous point.
+
+Default: `false`
+
+=== `cubic`
+
+Adds a cubic Bézier curve segment from the last point to `end`, using `control-start` and `control-end` as the control points.
+
+```
+cubic(
+  none: none | auto | array,
+  none: none | array,
+  array: array,
+  relative: bool
+) -> content
+```
+
+```typst
+// Function to illustrate where the control points are.
+#let handle(start, end) = place(
+  line(stroke: red, start: start, end: end)
+)
+
+#handle((0pt, 80pt), (10pt, 20pt))
+#handle((90pt, 60pt), (100pt, 0pt))
+
+#curve(
+  stroke: blue,
+  curve.move((0pt, 80pt)),
+  curve.cubic((10pt, 20pt), (90pt, 60pt), (100pt, 0pt)),
+)
+```
+
+==== `control-start`: none | auto | array (Required, Positional)
+
+The control point going out from the start of the curve segment.
+
+- If auto and this element follows another curve.cubic element, the last control point will be mirrored. In SVG terms, this makes curve.cubic behave like the S operator instead of the C operator.
+- If none, the curve has no first control point, or equivalently, the control point defaults to the curve's starting point.
+
+*Example:*
+```typst
+#curve(
+  stroke: blue,
+  curve.move((0pt, 50pt)),
+  // - No start control point
+  // - End control point at `(20pt, 0pt)`
+  // - End point at `(50pt, 0pt)`
+  curve.cubic(none, (20pt, 0pt), (50pt, 0pt)),
+  // - No start control point
+  // - No end control point
+  // - End point at `(50pt, 0pt)`
+  curve.cubic(none, none, (100pt, 50pt)),
+)
+
+#curve(
+  stroke: blue,
+  curve.move((0pt, 50pt)),
+  curve.cubic(none, (20pt, 0pt), (50pt, 0pt)),
+  // Passing `auto` instead of `none` means the start control point
+  // mirrors the end control point of the previous curve. Mirror of
+  // `(20pt, 0pt)` w.r.t `(50pt, 0pt)` is `(80pt, 0pt)`.
+  curve.cubic(auto, none, (100pt, 50pt)),
+)
+
+#curve(
+  stroke: blue,
+  curve.move((0pt, 50pt)),
+  curve.cubic(none, (20pt, 0pt), (50pt, 0pt)),
+  // `(80pt, 0pt)` is the same as `auto` in this case.
+  curve.cubic((80pt, 0pt), none, (100pt, 50pt)),
+)
+```
+
+==== `control-end`: none | array (Required, Positional)
+
+The control point going into the end point of the curve segment.
+
+If set to `none`, the curve has no end control point, or equivalently, the control point defaults to the curve's end point.
+
+==== `end`: array (Required, Positional)
+
+The point at which the curve segment shall end.
+
+==== `relative`: bool (Settable)
+
+Whether the `control-start`, `control-end`, and `end` coordinates are relative to the previous point.
+
+Default: `false`
+
+=== `close`
+
+Closes the curve by adding a segment from the last point to the start of the curve (or the last preceding `curve.move` point).
+
+```
+close(
+  mode: str
+) -> content
+```
+
+```typst
+// We define a function to show the same shape with
+// both closing modes.
+#let shape(mode: "smooth") = curve(
+  fill: blue.lighten(80%),
+  stroke: blue,
+  curve.move((0pt, 50pt)),
+  curve.line((100pt, 50pt)),
+  curve.cubic(auto, (90pt, 0pt), (50pt, 0pt)),
+  curve.close(mode: mode),
+)
+
+#shape(mode: "smooth")
+#shape(mode: "straight")
+```
+
+==== `mode`: str (Settable)
+
+How to close the curve.
+
+Default: `"smooth"`
+= ellipse
+
+An ellipse with optional content.
+
+== Example
+
+```typst
+// Without content.
+#ellipse(width: 35%, height: 30pt)
+
+// With content.
+#ellipse[
+  #set align(center)
+  Automatically sized \
+  to fit the content.
+]
+```
+
+== Parameters
+
+```
+ellipse(
+  width: auto | relative,
+  height: auto | relative | fraction,
+  fill: none | color | gradient | tiling,
+  stroke: none | auto | length | color | gradient | stroke | tiling | dictionary,
+  inset: relative | dictionary,
+  outset: relative | dictionary,
+  body: none | content
+) -> content
+```
+
+=== `width`: auto | relative (Settable)
+
+The ellipse's width, relative to its parent container.
+
+Default: `auto`
+
+=== `height`: auto | relative | fraction (Settable)
+
+The ellipse's height, relative to its parent container.
+
+Default: `auto`
+
+=== `fill`: none | color | gradient | tiling (Settable)
+
+How to fill the ellipse. See the #link("/docs/reference/visualize/rect/#parameters-fill")[rectangle's documentation] for more details.
+
+Default: `none`
+
+=== `stroke`: none | auto | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+How to stroke the ellipse. See the #link("/docs/reference/visualize/rect/#parameters-stroke")[rectangle's documentation] for more details.
+
+Default: `auto`
+
+=== `inset`: relative | dictionary (Settable)
+
+How much to pad the ellipse's content. See the #link("/docs/reference/layout/box/#parameters-inset")[box's documentation] for more details.
+
+Default: `0% + 5pt`
+
+=== `outset`: relative | dictionary (Settable)
+
+How much to expand the ellipse's size without affecting the layout. See the #link("/docs/reference/layout/box/#parameters-outset")[box's documentation] for more details.
+
+Default: `(:)`
+
+=== `body`: none | content (Positional, Settable)
+
+The content to place into the ellipse.
+
+When this is omitted, the ellipse takes on a default size of at most `45pt` by `30pt`.
+
+Default: `none`
+= gradient
+
+A color gradient.
+
+Typst supports linear gradients through the #link("/docs/reference/visualize/gradient/#definitions-linear")[gradient.linear function], radial gradients through the #link("/docs/reference/visualize/gradient/#definitions-radial")[gradient.radial function], and conic gradients through the #link("/docs/reference/visualize/gradient/#definitions-conic")[gradient.conic function].
+
+A gradient can be used for the following purposes:
+
+- As a fill to paint the interior of a shape: `rect(fill: gradient.linear(..))`
+- As a stroke to paint the outline of a shape: `rect(stroke: 1pt + gradient.linear(..))`
+- As the fill of text: `set text(fill: gradient.linear(..))`
+- As a color map you can #link("/docs/reference/visualize/gradient/#definitions-sample")[sample] from: `gradient.linear(..).sample(50%)`
+
+== Examples
+
+```typst
+#stack(
+  dir: ltr,
+  spacing: 1fr,
+  square(fill: gradient.linear(..color.map.rainbow)),
+  square(fill: gradient.radial(..color.map.rainbow)),
+  square(fill: gradient.conic(..color.map.rainbow)),
+)
+```
+
+Gradients are also supported on text, but only when setting the #link("/docs/reference/visualize/gradient/#definitions-relative")[relativeness] to either `auto` (the default value) or `"parent"`. To create word-by-word or glyph-by-glyph gradients, you can wrap the words or characters of your text in #link("/docs/reference/layout/box/")[boxes] manually or through a #link("/docs/reference/styling/#show-rules")[show rule].
+
+```typst
+#set text(fill: gradient.linear(red, blue))
+#let rainbow(content) = {
+  set text(fill: gradient.linear(..color.map.rainbow))
+  box(content)
+}
+
+This is a gradient on text, but with a #rainbow[twist]!
+```
+
+== Stops
+
+A gradient is composed of a series of stops. Each of these stops has a color and an offset. The offset is a #link("/docs/reference/layout/ratio/")[ratio] between `0%` and `100%` or an angle between `0deg` and `360deg`. The offset is a relative position that determines how far along the gradient the stop is located. The stop's color is the color of the gradient at that position. You can choose to omit the offsets when defining a gradient. In this case, Typst will space all stops evenly.
+
+== Relativeness
+
+The location of the `0%` and `100%` stops depends on the dimensions of a container. This container can either be the shape that it is being painted on, or the closest surrounding container. This is controlled by the `relative` argument of a gradient constructor. By default, gradients are relative to the shape they are being painted on, unless the gradient is applied on text, in which case they are relative to the closest ancestor container.
+
+Typst determines the ancestor container as follows:
+
+- For shapes that are placed at the root/top level of the document, the closest ancestor is the page itself.
+- For other shapes, the ancestor is the innermost #link("/docs/reference/layout/block/")[block] or #link("/docs/reference/layout/box/")[box] that contains the shape. This includes the boxes and blocks that are implicitly created by show rules and elements. For example, a #link("/docs/reference/layout/rotate/")[rotate] will not affect the parent of a gradient, but a #link("/docs/reference/layout/grid/")[grid] will.
+
+== Color spaces and interpolation
+
+Gradients can be interpolated in any color space. By default, gradients are interpolated in the #link("/docs/reference/visualize/color/#definitions-oklab")[Oklab] color space, which is a #link("https://programmingdesignsystems.com/color/perceptually-uniform-color-spaces/index.html")[perceptually uniform] color space. This means that the gradient will be perceived as having a smooth progression of colors. This is particularly useful for data visualization.
+
+However, you can choose to interpolate the gradient in any supported color space you want, but beware that some color spaces are not suitable for perceptually interpolating between colors. Consult the table below when choosing an interpolation space.
+
+== Direction
+
+Some gradients are sensitive to direction. For example, a linear gradient has an angle that determines its direction. Typst uses a clockwise angle, with 0° being from left to right, 90° from top to bottom, 180° from right to left, and 270° from bottom to top.
+
+```typst
+#stack(
+  dir: ltr,
+  spacing: 1fr,
+  square(fill: gradient.linear(red, blue, angle: 0deg)),
+  square(fill: gradient.linear(red, blue, angle: 90deg)),
+  square(fill: gradient.linear(red, blue, angle: 180deg)),
+  square(fill: gradient.linear(red, blue, angle: 270deg)),
+)
+```
+
+== Presets
+
+Typst predefines color maps that you can use with your gradients. See the #link("/docs/reference/visualize/color/#predefined-color-maps")[color] documentation for more details.
+
+== Note on file sizes
+
+Gradients can be quite large, especially if they have many stops. This is because gradients are stored as a list of colors and offsets, which can take up a lot of space. If you are concerned about file sizes, you should consider the following:
+
+- SVG gradients are currently inefficiently encoded. This will be improved in the future.
+- PDF gradients in the #link("/docs/reference/visualize/color/#definitions-oklab")[color.oklab], #link("/docs/reference/visualize/color/#definitions-hsv")[color.hsv], #link("/docs/reference/visualize/color/#definitions-hsl")[color.hsl], and #link("/docs/reference/visualize/color/#definitions-oklch")[color.oklch] color spaces are stored as a list of #link("/docs/reference/visualize/color/#definitions-rgb")[color.rgb] colors with extra stops in between. This avoids needing to encode these color spaces in your PDF file, but it does add extra stops to your gradient, which can increase the file size.
+
+== Definitions
+
+=== `linear`
+
+Creates a new linear gradient, in which colors transition along a straight line.
+
+```
+linear(
+  ..: color | array,
+  space: any,
+  relative: auto | str,
+  direction: direction,
+  angle: angle
+) -> gradient
+```
+
+```typst
+#rect(
+  width: 100%,
+  height: 20pt,
+  fill: gradient.linear(
+    ..color.map.viridis,
+  ),
+)
+```
+
+==== `stops`: color | array (Required, Positional, Variadic)
+
+The color #link("#stops")[stops] of the gradient.
+
+==== `space`: any
+
+The color space in which to interpolate the gradient.
+
+Defaults to a perceptually uniform color space called #link("/docs/reference/visualize/color/#definitions-oklab")[Oklab].
+
+Default: `oklab`
+
+==== `relative`: auto | str
+
+The #link("#relativeness")[relative placement] of the gradient.
+
+For an element placed at the root/top level of the document, the parent is the page itself. For other elements, the parent is the innermost block, box, column, grid, or stack that contains the element.
+
+Default: `auto`
+
+==== `dir`: direction (Positional)
+
+The direction of the gradient.
+
+Default: `ltr`
+
+==== `angle`: angle (Required, Positional)
+
+The angle of the gradient.
+
+=== `radial`
+
+Creates a new radial gradient, in which colors radiate away from an origin.
+
+The gradient is defined by two circles: the focal circle and the end circle. The focal circle is a circle with center `focal-center` and radius `focal-radius`, that defines the points at which the gradient starts and has the color of the first stop. The end circle is a circle with center `center` and radius `radius`, that defines the points at which the gradient ends and has the color of the last stop. The gradient is then interpolated between these two circles.
+
+Using these four values, also called the focal point for the starting circle and the center and radius for the end circle, we can define a gradient with more interesting properties than a basic radial gradient.
+
+```
+radial(
+  ..: color | array,
+  space: any,
+  relative: auto | str,
+  center: array,
+  radius: ratio,
+  focal-center: auto | array,
+  focal-radius: ratio
+) -> gradient
+```
+
+```typst
+#stack(
+  dir: ltr,
+  spacing: 1fr,
+  circle(fill: gradient.radial(
+    ..color.map.viridis,
+  )),
+  circle(fill: gradient.radial(
+    ..color.map.viridis,
+    focal-center: (10%, 40%),
+    focal-radius: 5%,
+  )),
+)
+```
+
+==== `stops`: color | array (Required, Positional, Variadic)
+
+The color #link("#stops")[stops] of the gradient.
+
+==== `space`: any
+
+The color space in which to interpolate the gradient.
+
+Defaults to a perceptually uniform color space called #link("/docs/reference/visualize/color/#definitions-oklab")[Oklab].
+
+Default: `oklab`
+
+==== `relative`: auto | str
+
+The #link("#relativeness")[relative placement] of the gradient.
+
+For an element placed at the root/top level of the document, the parent is the page itself. For other elements, the parent is the innermost block, box, column, grid, or stack that contains the element.
+
+Default: `auto`
+
+==== `center`: array
+
+The center of the end circle of the gradient.
+
+A value of `(50%, 50%)` means that the end circle is centered inside of its container.
+
+Default: `(50%, 50%)`
+
+==== `radius`: ratio
+
+The radius of the end circle of the gradient.
+
+By default, it is set to `50%`. The ending radius must be bigger than the focal radius.
+
+Default: `50%`
+
+==== `focal-center`: auto | array
+
+The center of the focal circle of the gradient.
+
+The focal center must be inside of the end circle.
+
+A value of `(50%, 50%)` means that the focal circle is centered inside of its container.
+
+By default it is set to the same as the center of the last circle.
+
+Default: `auto`
+
+==== `focal-radius`: ratio
+
+The radius of the focal circle of the gradient.
+
+The focal center must be inside of the end circle.
+
+By default, it is set to `0%`. The focal radius must be smaller than the ending radius`.
+
+Default: `0%`
+
+=== `conic`
+
+Creates a new conic gradient, in which colors change radially around a center point.
+
+You can control the center point of the gradient by using the `center` argument. By default, the center point is the center of the shape.
+
+```
+conic(
+  ..: color | array,
+  angle: angle,
+  space: any,
+  relative: auto | str,
+  center: array
+) -> gradient
+```
+
+```typst
+#stack(
+  dir: ltr,
+  spacing: 1fr,
+  circle(fill: gradient.conic(
+    ..color.map.viridis,
+  )),
+  circle(fill: gradient.conic(
+    ..color.map.viridis,
+    center: (20%, 30%),
+  )),
+)
+```
+
+==== `stops`: color | array (Required, Positional, Variadic)
+
+The color #link("#stops")[stops] of the gradient.
+
+==== `angle`: angle
+
+The angle of the gradient.
+
+Default: `0deg`
+
+==== `space`: any
+
+The color space in which to interpolate the gradient.
+
+Defaults to a perceptually uniform color space called #link("/docs/reference/visualize/color/#definitions-oklab")[Oklab].
+
+Default: `oklab`
+
+==== `relative`: auto | str
+
+The #link("#relativeness")[relative placement] of the gradient.
+
+For an element placed at the root/top level of the document, the parent is the page itself. For other elements, the parent is the innermost block, box, column, grid, or stack that contains the element.
+
+Default: `auto`
+
+==== `center`: array
+
+The center of the last circle of the gradient.
+
+A value of `(50%, 50%)` means that the end circle is centered inside of its container.
+
+Default: `(50%, 50%)`
+
+=== `sharp`
+
+Creates a sharp version of this gradient.
+
+Sharp gradients have discrete jumps between colors, instead of a smooth transition. They are particularly useful for creating color lists for a preset gradient.
+
+```
+sharp(
+  int: int,
+  smoothness: ratio
+) -> gradient
+```
+
+```typst
+#set rect(width: 100%, height: 20pt)
+#let grad = gradient.linear(..color.map.rainbow)
+#rect(fill: grad)
+#rect(fill: grad.sharp(5))
+#rect(fill: grad.sharp(5, smoothness: 20%))
+```
+
+==== `steps`: int (Required, Positional)
+
+The number of stops in the gradient.
+
+==== `smoothness`: ratio
+
+How much to smooth the gradient.
+
+Default: `0%`
+
+=== `repeat`
+
+Repeats this gradient a given number of times, optionally mirroring it at each repetition.
+
+```
+repeat(
+  int: int,
+  mirror: bool
+) -> gradient
+```
+
+```typst
+#circle(
+  radius: 40pt,
+  fill: gradient
+    .radial(aqua, white)
+    .repeat(4),
+)
+```
+
+==== `repetitions`: int (Required, Positional)
+
+The number of times to repeat the gradient.
+
+==== `mirror`: bool
+
+Whether to mirror the gradient at each repetition.
+
+Default: `false`
+
+=== `kind`
+
+Returns the kind of this gradient.
+
+```
+kind(
+  
+) -> function
+```
+
+=== `stops`
+
+Returns the stops of this gradient.
+
+```
+stops(
+  
+) -> array
+```
+
+=== `space`
+
+Returns the mixing space of this gradient.
+
+```
+space(
+  
+) -> 
+```
+
+=== `relative`
+
+Returns the relative placement of this gradient.
+
+```
+relative(
+  
+) -> str
+```
+
+=== `angle`
+
+Returns the angle of this gradient.
+
+Returns `none` if the gradient is neither linear nor conic.
+
+```
+angle(
+  
+) -> angle
+```
+
+=== `center`
+
+Returns the center of this gradient.
+
+Returns `none` if the gradient is neither radial nor conic.
+
+```
+center(
+  
+) -> array
+```
+
+=== `radius`
+
+Returns the radius of this gradient.
+
+Returns `none` if the gradient is not radial.
+
+```
+radius(
+  
+) -> ratio
+```
+
+=== `focal-center`
+
+Returns the focal-center of this gradient.
+
+Returns `none` if the gradient is not radial.
+
+```
+focal-center(
+  
+) -> array
+```
+
+=== `focal-radius`
+
+Returns the focal-radius of this gradient.
+
+Returns `none` if the gradient is not radial.
+
+```
+focal-radius(
+  
+) -> ratio
+```
+
+=== `sample`
+
+Sample the gradient at a given position.
+
+The position is either a position along the gradient (a #link("/docs/reference/layout/ratio/")[ratio] between `0%` and `100%`) or an #link("/docs/reference/layout/angle/")[angle]. Any value outside of this range will be clamped.
+
+```
+sample(
+  angle: angle | ratio
+) -> color
+```
+
+==== `t`: angle | ratio (Required, Positional)
+
+The position at which to sample the gradient.
+
+=== `samples`
+
+Samples the gradient at multiple positions at once and returns the results as an array.
+
+```
+samples(
+  ..: angle | ratio
+) -> array
+```
+
+==== `ts`: angle | ratio (Required, Positional, Variadic)
+
+The positions at which to sample the gradient.
+= image
+
+A raster or vector graphic.
+
+You can wrap the image in a #link("/docs/reference/model/figure/")[figure] to give it a number and caption.
+
+Like most elements, images are _block-level_ by default and thus do not integrate themselves into adjacent paragraphs. To force an image to become inline, put it into a #link("/docs/reference/layout/box/")[box].
+
+== Example
+
+```typst
+#figure(
+  image("molecular.jpg", width: 80%),
+  caption: [
+    A step in the molecular testing
+    pipeline of our lab.
+  ],
+)
+```
+
+== Parameters
+
+```
+image(
+  str: str | bytes,
+  format: auto | str | dictionary,
+  width: auto | relative,
+  height: auto | relative | fraction,
+  alt: none | str,
+  fit: str,
+  scaling: auto | str,
+  icc: auto | str | bytes
+) -> content
+```
+
+=== `source`: str | bytes (Required, Positional)
+
+A #link("/docs/reference/syntax/#paths")[path] to an image file or raw bytes making up an image in one of the supported #link("/docs/reference/visualize/image/#parameters-format")[formats].
+
+Bytes can be used to specify raw pixel data in a row-major, left-to-right, top-to-bottom format.
+
+*Example:*
+```typst
+#let original = read("diagram.svg")
+#let changed = original.replace(
+  "#2B80FF", // blue
+  green.to-hex(),
+)
+
+#image(bytes(original))
+#image(bytes(changed))
+```
+
+=== `format`: auto | str | dictionary (Settable)
+
+The image's format.
+
+By default, the format is detected automatically. Typically, you thus only need to specify this when providing raw bytes as the #link("/docs/reference/visualize/image/#parameters-source")[source] (even then, Typst will try to figure out the format automatically, but that's not always possible).
+
+Supported formats are `"png"`, `"jpg"`, `"gif"`, `"svg"` as well as raw pixel data. Embedding PDFs as images is #link("https://github.com/typst/typst/issues/145")[not currently supported].
+
+When providing raw pixel data as the `source`, you must specify a dictionary with the following keys as the `format`:
+
+- `encoding` (#link("/docs/reference/foundations/str/")[str]): The encoding of the pixel data. One of: "rgb8" (three 8-bit channels: red, green, blue) "rgba8" (four 8-bit channels: red, green, blue, alpha) "luma8" (one 8-bit channel) "lumaa8" (two 8-bit channels: luma and alpha)
+- `width` (#link("/docs/reference/foundations/int/")[int]): The pixel width of the image.
+- `height` (#link("/docs/reference/foundations/int/")[int]): The pixel height of the image.
+
+The pixel width multiplied by the height multiplied by the channel count for the specified encoding must then match the `source` data.
+
+Default: `auto`
+
+*Example:*
+```typst
+#image(
+  read(
+    "tetrahedron.svg",
+    encoding: none,
+  ),
+  format: "svg",
+  width: 2cm,
+)
+
+#image(
+  bytes(range(16).map(x => x * 16)),
+  format: (
+    encoding: "luma8",
+    width: 4,
+    height: 4,
+  ),
+  width: 2cm,
+)
+```
+
+=== `width`: auto | relative (Settable)
+
+The width of the image.
+
+Default: `auto`
+
+=== `height`: auto | relative | fraction (Settable)
+
+The height of the image.
+
+Default: `auto`
+
+=== `alt`: none | str (Settable)
+
+A text describing the image.
+
+Default: `none`
+
+=== `fit`: str (Settable)
+
+How the image should adjust itself to a given area (the area is defined by the `width` and `height` fields). Note that `fit` doesn't visually change anything if the area's aspect ratio is the same as the image's one.
+
+Default: `"cover"`
+
+*Example:*
+```typst
+#set page(width: 300pt, height: 50pt, margin: 10pt)
+#image("tiger.jpg", width: 100%, fit: "cover")
+#image("tiger.jpg", width: 100%, fit: "contain")
+#image("tiger.jpg", width: 100%, fit: "stretch")
+```
+
+=== `scaling`: auto | str (Settable)
+
+A hint to viewers how they should scale the image.
+
+When set to `auto`, the default is left up to the viewer. For PNG export, Typst will default to smooth scaling, like most PDF and SVG viewers.
+
+_Note:_ The exact look may differ across PDF viewers.
+
+Default: `auto`
+
+=== `icc`: auto | str | bytes (Settable)
+
+An ICC profile for the image.
+
+ICC profiles define how to interpret the colors in an image. When set to `auto`, Typst will try to extract an ICC profile from the image.
+
+Default: `auto`
+
+== Definitions
+
+=== `decode`
+
+Decode a raster or vector graphic from bytes or a string.
+
+```
+decode(
+  str: str | bytes,
+  format: auto | str | dictionary,
+  width: auto | relative,
+  height: auto | relative | fraction,
+  alt: none | str,
+  fit: str,
+  scaling: auto | str
+) -> content
+```
+
+==== `data`: str | bytes (Required, Positional)
+
+The data to decode as an image. Can be a string for SVGs.
+
+==== `format`: auto | str | dictionary
+
+The image's format. Detected automatically by default.
+
+==== `width`: auto | relative
+
+The width of the image.
+
+==== `height`: auto | relative | fraction
+
+The height of the image.
+
+==== `alt`: none | str
+
+A text describing the image.
+
+==== `fit`: str
+
+How the image should adjust itself to a given area.
+
+==== `scaling`: auto | str
+
+A hint to viewers how they should scale the image.
+= line
+
+A line from one point to another.
+
+== Example
+
+```typst
+#set page(height: 100pt)
+
+#line(length: 100%)
+#line(end: (50%, 50%))
+#line(
+  length: 4cm,
+  stroke: 2pt + maroon,
+)
+```
+
+== Parameters
+
+```
+line(
+  start: array,
+  end: none | array,
+  length: relative,
+  angle: angle,
+  stroke: length | color | gradient | stroke | tiling | dictionary
+) -> content
+```
+
+=== `start`: array (Settable)
+
+The start point of the line.
+
+Must be an array of exactly two relative lengths.
+
+Default: `(0% + 0pt, 0% + 0pt)`
+
+=== `end`: none | array (Settable)
+
+The point where the line ends.
+
+Default: `none`
+
+=== `length`: relative (Settable)
+
+The line's length. This is only respected if `end` is `none`.
+
+Default: `0% + 30pt`
+
+=== `angle`: angle (Settable)
+
+The angle at which the line points away from the origin. This is only respected if `end` is `none`.
+
+Default: `0deg`
+
+=== `stroke`: length | color | gradient | stroke | tiling | dictionary (Settable)
+
+How to #link("/docs/reference/visualize/stroke/")[stroke] the line.
+
+Default: `1pt + black`
+
+*Example:*
+```typst
+#set line(length: 100%)
+#stack(
+  spacing: 1em,
+  line(stroke: 2pt + red),
+  line(stroke: (paint: blue, thickness: 4pt, cap: "round")),
+  line(stroke: (paint: blue, thickness: 1pt, dash: "dashed")),
+  line(stroke: (paint: blue, thickness: 1pt, dash: ("dot", 2pt, 4pt, 2pt))),
+)
+```
+= path
+
+A path through a list of points, connected by Bézier curves.
+
+== Example
+
+```typst
+#path(
+  fill: blue.lighten(80%),
+  stroke: blue,
+  closed: true,
+  (0pt, 50pt),
+  (100%, 50pt),
+  ((50%, 0pt), (40pt, 0pt)),
+)
+```
+
+== Parameters
+
+```
+path(
+  fill: none | color | gradient | tiling,
+  fill-rule: str,
+  stroke: none | auto | length | color | gradient | stroke | tiling | dictionary,
+  closed: bool,
+  ..: array
+) -> content
+```
+
+=== `fill`: none | color | gradient | tiling (Settable)
+
+How to fill the path.
+
+When setting a fill, the default stroke disappears. To create a rectangle with both fill and stroke, you have to configure both.
+
+Default: `none`
+
+=== `fill-rule`: str (Settable)
+
+The drawing rule used to fill the path.
+
+Default: `"non-zero"`
+
+*Example:*
+```typst
+// We use `.with` to get a new
+// function that has the common
+// arguments pre-applied.
+#let star = path.with(
+  fill: red,
+  closed: true,
+  (25pt, 0pt),
+  (10pt, 50pt),
+  (50pt, 20pt),
+  (0pt, 20pt),
+  (40pt, 50pt),
+)
+
+#star(fill-rule: "non-zero")
+#star(fill-rule: "even-odd")
+```
+
+=== `stroke`: none | auto | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+How to #link("/docs/reference/visualize/stroke/")[stroke] the path. This can be:
+
+Can be set to `none` to disable the stroke or to `auto` for a stroke of `1pt` black if and if only if no fill is given.
+
+Default: `auto`
+
+=== `closed`: bool (Settable)
+
+Whether to close this path with one last Bézier curve. This curve will take into account the adjacent control points. If you want to close with a straight line, simply add one last point that's the same as the start point.
+
+Default: `false`
+
+=== `vertices`: array (Required, Positional, Variadic)
+
+The vertices of the path.
+
+Each vertex can be defined in 3 ways:
+
+- A regular point, as given to the #link("/docs/reference/visualize/line/")[line] or #link("/docs/reference/visualize/polygon/")[polygon] function.
+- An array of two points, the first being the vertex and the second being the control point. The control point is expressed relative to the vertex and is mirrored to get the second control point. The given control point is the one that affects the curve coming _into_ this vertex (even for the first point). The mirrored control point affects the curve going out of this vertex.
+- An array of three points, the first being the vertex and the next being the control points (control point for curves coming in and out, respectively).
+= polygon
+
+A closed polygon.
+
+The polygon is defined by its corner points and is closed automatically.
+
+== Example
+
+```typst
+#polygon(
+  fill: blue.lighten(80%),
+  stroke: blue,
+  (20%, 0pt),
+  (60%, 0pt),
+  (80%, 2cm),
+  (0%,  2cm),
+)
+```
+
+== Parameters
+
+```
+polygon(
+  fill: none | color | gradient | tiling,
+  fill-rule: str,
+  stroke: none | auto | length | color | gradient | stroke | tiling | dictionary,
+  ..: array
+) -> content
+```
+
+=== `fill`: none | color | gradient | tiling (Settable)
+
+How to fill the polygon.
+
+When setting a fill, the default stroke disappears. To create a rectangle with both fill and stroke, you have to configure both.
+
+Default: `none`
+
+=== `fill-rule`: str (Settable)
+
+The drawing rule used to fill the polygon.
+
+See the #link("/docs/reference/visualize/curve/#parameters-fill-rule")[curve documentation] for an example.
+
+Default: `"non-zero"`
+
+=== `stroke`: none | auto | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+How to #link("/docs/reference/visualize/stroke/")[stroke] the polygon. This can be:
+
+Can be set to `none` to disable the stroke or to `auto` for a stroke of `1pt` black if and if only if no fill is given.
+
+Default: `auto`
+
+=== `vertices`: array (Required, Positional, Variadic)
+
+The vertices of the polygon. Each point is specified as an array of two #link("/docs/reference/layout/relative/")[relative lengths].
+
+== Definitions
+
+=== `regular`
+
+A regular polygon, defined by its size and number of vertices.
+
+```
+regular(
+  fill: none | color | gradient | tiling,
+  stroke: none | auto | length | color | gradient | stroke | tiling | dictionary,
+  size: length,
+  vertices: int
+) -> content
+```
+
+```typst
+#polygon.regular(
+  fill: blue.lighten(80%),
+  stroke: blue,
+  size: 30pt,
+  vertices: 3,
+)
+```
+
+==== `fill`: none | color | gradient | tiling
+
+How to fill the polygon. See the general #link("/docs/reference/visualize/polygon/#parameters-fill")[polygon's documentation] for more details.
+
+==== `stroke`: none | auto | length | color | gradient | stroke | tiling | dictionary
+
+How to stroke the polygon. See the general #link("/docs/reference/visualize/polygon/#parameters-stroke")[polygon's documentation] for more details.
+
+==== `size`: length
+
+The diameter of the #link("https://en.wikipedia.org/wiki/Circumcircle")[circumcircle] of the regular polygon.
+
+Default: `1em`
+
+==== `vertices`: int
+
+The number of vertices in the polygon.
+
+Default: `3`
+= rect
+
+A rectangle with optional content.
+
+== Example
+
+```typst
+// Without content.
+#rect(width: 35%, height: 30pt)
+
+// With content.
+#rect[
+  Automatically sized \
+  to fit the content.
+]
+```
+
+== Parameters
+
+```
+rect(
+  width: auto | relative,
+  height: auto | relative | fraction,
+  fill: none | color | gradient | tiling,
+  stroke: none | auto | length | color | gradient | stroke | tiling | dictionary,
+  radius: relative | dictionary,
+  inset: relative | dictionary,
+  outset: relative | dictionary,
+  body: none | content
+) -> content
+```
+
+=== `width`: auto | relative (Settable)
+
+The rectangle's width, relative to its parent container.
+
+Default: `auto`
+
+=== `height`: auto | relative | fraction (Settable)
+
+The rectangle's height, relative to its parent container.
+
+Default: `auto`
+
+=== `fill`: none | color | gradient | tiling (Settable)
+
+How to fill the rectangle.
+
+When setting a fill, the default stroke disappears. To create a rectangle with both fill and stroke, you have to configure both.
+
+Default: `none`
+
+*Example:*
+```typst
+#rect(fill: blue)
+```
+
+=== `stroke`: none | auto | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+How to stroke the rectangle. This can be:
+
+- `none` to disable stroking
+- `auto` for a stroke of `1pt + black` if and if only if no fill is given.
+- Any kind of #link("/docs/reference/visualize/stroke/")[stroke]
+- A dictionary describing the stroke for each side individually. The dictionary can contain the following keys in order of precedence: top: The top stroke. right: The right stroke. bottom: The bottom stroke. left: The left stroke. x: The horizontal stroke. y: The vertical stroke. rest: The stroke on all sides except those for which the dictionary explicitly sets a size.
+
+Default: `auto`
+
+*Example:*
+```typst
+#stack(
+  dir: ltr,
+  spacing: 1fr,
+  rect(stroke: red),
+  rect(stroke: 2pt),
+  rect(stroke: 2pt + red),
+)
+```
+
+=== `radius`: relative | dictionary (Settable)
+
+How much to round the rectangle's corners, relative to the minimum of the width and height divided by two. This can be:
+
+- A relative length for a uniform corner radius.
+- A dictionary: With a dictionary, the stroke for each side can be set individually. The dictionary can contain the following keys in order of precedence: top-left: The top-left corner radius. top-right: The top-right corner radius. bottom-right: The bottom-right corner radius. bottom-left: The bottom-left corner radius. left: The top-left and bottom-left corner radii. top: The top-left and top-right corner radii. right: The top-right and bottom-right corner radii. bottom: The bottom-left and bottom-right corner radii. rest: The radii for all corners except those for which the dictionary explicitly sets a size.
+
+Default: `(:)`
+
+*Example:*
+```typst
+#set rect(stroke: 4pt)
+#rect(
+  radius: (
+    left: 5pt,
+    top-right: 20pt,
+    bottom-right: 10pt,
+  ),
+  stroke: (
+    left: red,
+    top: yellow,
+    right: green,
+    bottom: blue,
+  ),
+)
+```
+
+=== `inset`: relative | dictionary (Settable)
+
+How much to pad the rectangle's content. See the #link("/docs/reference/layout/box/#parameters-outset")[box's documentation] for more details.
+
+Default: `0% + 5pt`
+
+=== `outset`: relative | dictionary (Settable)
+
+How much to expand the rectangle's size without affecting the layout. See the #link("/docs/reference/layout/box/#parameters-outset")[box's documentation] for more details.
+
+Default: `(:)`
+
+=== `body`: none | content (Positional, Settable)
+
+The content to place into the rectangle.
+
+When this is omitted, the rectangle takes on a default size of at most `45pt` by `30pt`.
+
+Default: `none`
+= square
+
+A square with optional content.
+
+== Example
+
+```typst
+// Without content.
+#square(size: 40pt)
+
+// With content.
+#square[
+  Automatically \
+  sized to fit.
+]
+```
+
+== Parameters
+
+```
+square(
+  size: auto | length,
+  width: auto | relative,
+  height: auto | relative | fraction,
+  fill: none | color | gradient | tiling,
+  stroke: none | auto | length | color | gradient | stroke | tiling | dictionary,
+  radius: relative | dictionary,
+  inset: relative | dictionary,
+  outset: relative | dictionary,
+  body: none | content
+) -> content
+```
+
+=== `size`: auto | length (Settable)
+
+The square's side length. This is mutually exclusive with `width` and `height`.
+
+Default: `auto`
+
+=== `width`: auto | relative (Settable)
+
+The square's width. This is mutually exclusive with `size` and `height`.
+
+In contrast to `size`, this can be relative to the parent container's width.
+
+Default: `auto`
+
+=== `height`: auto | relative | fraction (Settable)
+
+The square's height. This is mutually exclusive with `size` and `width`.
+
+In contrast to `size`, this can be relative to the parent container's height.
+
+Default: `auto`
+
+=== `fill`: none | color | gradient | tiling (Settable)
+
+How to fill the square. See the #link("/docs/reference/visualize/rect/#parameters-fill")[rectangle's documentation] for more details.
+
+Default: `none`
+
+=== `stroke`: none | auto | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+How to stroke the square. See the #link("/docs/reference/visualize/rect/#parameters-stroke")[rectangle's documentation] for more details.
+
+Default: `auto`
+
+=== `radius`: relative | dictionary (Settable)
+
+How much to round the square's corners. See the #link("/docs/reference/visualize/rect/#parameters-radius")[rectangle's documentation] for more details.
+
+Default: `(:)`
+
+=== `inset`: relative | dictionary (Settable)
+
+How much to pad the square's content. See the #link("/docs/reference/layout/box/#parameters-inset")[box's documentation] for more details.
+
+Default: `0% + 5pt`
+
+=== `outset`: relative | dictionary (Settable)
+
+How much to expand the square's size without affecting the layout. See the #link("/docs/reference/layout/box/#parameters-outset")[box's documentation] for more details.
+
+Default: `(:)`
+
+=== `body`: none | content (Positional, Settable)
+
+The content to place into the square. The square expands to fit this content, keeping the 1-1 aspect ratio.
+
+When this is omitted, the square takes on a default size of at most `30pt`.
+
+Default: `none`
+= stroke
+
+Defines how to draw a line.
+
+A stroke has a _paint_ (a solid color or gradient), a _thickness,_ a line _cap,_ a line _join,_ a _miter limit,_ and a _dash_ pattern. All of these values are optional and have sensible defaults.
+
+== Example
+
+```typst
+#set line(length: 100%)
+#stack(
+  spacing: 1em,
+  line(stroke: 2pt + red),
+  line(stroke: (paint: blue, thickness: 4pt, cap: "round")),
+  line(stroke: (paint: blue, thickness: 1pt, dash: "dashed")),
+  line(stroke: 2pt + gradient.linear(..color.map.rainbow)),
+)
+```
+
+== Simple strokes
+
+You can create a simple solid stroke from a color, a thickness, or a combination of the two. Specifically, wherever a stroke is expected you can pass any of the following values:
+
+- A length specifying the stroke's thickness. The color is inherited, defaulting to black.
+- A color to use for the stroke. The thickness is inherited, defaulting to `1pt`.
+- A stroke combined from color and thickness using the `+` operator as in `2pt + red`.
+
+For full control, you can also provide a #link("/docs/reference/foundations/dictionary/")[dictionary] or a `stroke` object to any function that expects a stroke. The dictionary's keys may include any of the parameters for the constructor function, shown below.
+
+== Fields
+
+On a stroke object, you can access any of the fields listed in the constructor function. For example, `(2pt + blue).thickness` is `2pt`. Meanwhile, `stroke(red).cap` is `auto` because it's unspecified. Fields set to `auto` are inherited.
+
+== Constructor
+
+Converts a value to a stroke or constructs a stroke with the given parameters.
+
+Note that in most cases you do not need to convert values to strokes in order to use them, as they will be converted automatically. However, this constructor can be useful to ensure a value has all the fields of a stroke.
+
+```
+stroke(
+  auto: auto | color | gradient | tiling,
+  auto: auto | length,
+  auto: auto | str,
+  auto: auto | str,
+  none: none | auto | str | array | dictionary,
+  auto: auto | float
+) -> stroke
+```
+
+```typst
+#let my-func(x) = {
+    x = stroke(x) // Convert to a stroke
+    [Stroke has thickness #x.thickness.]
+}
+#my-func(3pt) \
+#my-func(red) \
+#my-func(stroke(cap: "round", thickness: 1pt))
+```
+
+==== `paint`: auto | color | gradient | tiling (Required, Positional)
+
+The color or gradient to use for the stroke.
+
+If set to `auto`, the value is inherited, defaulting to `black`.
+
+==== `thickness`: auto | length (Required, Positional)
+
+The stroke's thickness.
+
+If set to `auto`, the value is inherited, defaulting to `1pt`.
+
+==== `cap`: auto | str (Required, Positional)
+
+How the ends of the stroke are rendered.
+
+If set to `auto`, the value is inherited, defaulting to `"butt"`.
+
+==== `join`: auto | str (Required, Positional)
+
+How sharp turns are rendered.
+
+If set to `auto`, the value is inherited, defaulting to `"miter"`.
+
+==== `dash`: none | auto | str | array | dictionary (Required, Positional)
+
+The dash pattern to use. This can be:
+
+- One of the predefined patterns: "solid" or none "dotted" "densely-dotted" "loosely-dotted" "dashed" "densely-dashed" "loosely-dashed" "dash-dotted" "densely-dash-dotted" "loosely-dash-dotted"
+- An #link("/docs/reference/foundations/array/")[array] with alternating lengths for dashes and gaps. You can also use the string `"dot"` for a length equal to the line thickness.
+- A #link("/docs/reference/foundations/dictionary/")[dictionary] with the keys `array` (same as the array above), and `phase` (of type #link("/docs/reference/layout/length/")[length]), which defines where in the pattern to start drawing.
+
+If set to `auto`, the value is inherited, defaulting to `none`.
+
+*Example:*
+```typst
+#set line(length: 100%, stroke: 2pt)
+#stack(
+  spacing: 1em,
+  line(stroke: (dash: "dashed")),
+  line(stroke: (dash: (10pt, 5pt, "dot", 5pt))),
+  line(stroke: (dash: (array: (10pt, 5pt, "dot", 5pt), phase: 10pt))),
+)
+```
+
+==== `miter-limit`: auto | float (Required, Positional)
+
+Number at which protruding sharp bends are rendered with a bevel instead or a miter join. The higher the number, the sharper an angle can be before it is bevelled. Only applicable if `join` is `"miter"`.
+
+Specifically, the miter limit is the maximum ratio between the corner's protrusion length and the stroke's thickness.
+
+If set to `auto`, the value is inherited, defaulting to `4.0`.
+
+*Example:*
+```typst
+#let items = (
+  curve.move((15pt, 0pt)),
+  curve.line((0pt, 30pt)),
+  curve.line((30pt, 30pt)),
+  curve.line((10pt, 20pt)),
+)
+
+#set curve(stroke: 6pt + blue)
+#stack(
+  dir: ltr,
+  spacing: 1cm,
+  curve(stroke: (miter-limit: 1), ..items),
+  curve(stroke: (miter-limit: 4), ..items),
+  curve(stroke: (miter-limit: 5), ..items),
+)
+```
+= tiling
+
+A repeating tiling fill.
+
+Typst supports the most common type of tilings, where a pattern is repeated in a grid-like fashion, covering the entire area of an element that is filled or stroked. The pattern is defined by a tile size and a body defining the content of each cell. You can also add horizontal or vertical spacing between the cells of the tiling.
+
+== Examples
+
+```typst
+#let pat = tiling(size: (30pt, 30pt))[
+  #place(line(start: (0%, 0%), end: (100%, 100%)))
+  #place(line(start: (0%, 100%), end: (100%, 0%)))
+]
+
+#rect(fill: pat, width: 100%, height: 60pt, stroke: 1pt)
+```
+
+Tilings are also supported on text, but only when setting the #link("/docs/reference/visualize/tiling/#parameters-relative")[relativeness] to either `auto` (the default value) or `"parent"`. To create word-by-word or glyph-by-glyph tilings, you can wrap the words or characters of your text in #link("/docs/reference/layout/box/")[boxes] manually or through a #link("/docs/reference/styling/#show-rules")[show rule].
+
+```typst
+#let pat = tiling(
+  size: (30pt, 30pt),
+  relative: "parent",
+  square(
+    size: 30pt,
+    fill: gradient
+      .conic(..color.map.rainbow),
+  )
+)
+
+#set text(fill: pat)
+#lorem(10)
+```
+
+You can also space the elements further or closer apart using the #link("/docs/reference/visualize/tiling/#parameters-spacing")[spacing] feature of the tiling. If the spacing is lower than the size of the tiling, the tiling will overlap. If it is higher, the tiling will have gaps of the same color as the background of the tiling.
+
+```typst
+#let pat = tiling(
+  size: (30pt, 30pt),
+  spacing: (10pt, 10pt),
+  relative: "parent",
+  square(
+    size: 30pt,
+    fill: gradient
+     .conic(..color.map.rainbow),
+  ),
+)
+
+#rect(
+  width: 100%,
+  height: 60pt,
+  fill: pat,
+)
+```
+
+== Relativeness
+
+The location of the starting point of the tiling is dependent on the dimensions of a container. This container can either be the shape that it is being painted on, or the closest surrounding container. This is controlled by the `relative` argument of a tiling constructor. By default, tilings are relative to the shape they are being painted on, unless the tiling is applied on text, in which case they are relative to the closest ancestor container.
+
+Typst determines the ancestor container as follows:
+
+- For shapes that are placed at the root/top level of the document, the closest ancestor is the page itself.
+- For other shapes, the ancestor is the innermost #link("/docs/reference/layout/block/")[block] or #link("/docs/reference/layout/box/")[box] that contains the shape. This includes the boxes and blocks that are implicitly created by show rules and elements. For example, a #link("/docs/reference/layout/rotate/")[rotate] will not affect the parent of a gradient, but a #link("/docs/reference/layout/grid/")[grid] will.
+
+== Compatibility
+
+This type used to be called `pattern`. The name remains as an alias, but is deprecated since Typst 0.13.
+
+== Constructor
+
+Construct a new tiling.
+
+```
+tiling(
+  size: auto | array,
+  spacing: array,
+  relative: auto | str,
+  content: content
+) -> tiling
+```
+
+```typst
+#let pat = tiling(
+  size: (20pt, 20pt),
+  relative: "parent",
+  place(
+    dx: 5pt,
+    dy: 5pt,
+    rotate(45deg, square(
+      size: 5pt,
+      fill: black,
+    )),
+  ),
+)
+
+#rect(width: 100%, height: 60pt, fill: pat)
+```
+
+==== `size`: auto | array
+
+The bounding box of each cell of the tiling.
+
+Default: `auto`
+
+==== `spacing`: array
+
+The spacing between cells of the tiling.
+
+Default: `(0pt, 0pt)`
+
+==== `relative`: auto | str
+
+The #link("#relativeness")[relative placement] of the tiling.
+
+For an element placed at the root/top level of the document, the parent is the page itself. For other elements, the parent is the innermost block, box, column, grid, or stack that contains the element.
+
+Default: `auto`
+
+==== `body`: content (Required, Positional)
+
+The content of each cell of the tiling.
+= arguments
+
+Captured arguments to a function.
+
+== Argument Sinks
+
+Like built-in functions, custom functions can also take a variable number of arguments. You can specify an _argument sink_ which collects all excess arguments as `..sink`. The resulting `sink` value is of the `arguments` type. It exposes methods to access the positional and named arguments.
+
+```typst
+#let format(title, ..authors) = {
+  let by = authors
+    .pos()
+    .join(", ", last: " and ")
+
+  [*#title* \ _Written by #by;_]
+}
+
+#format("ArtosFlow", "Jane", "Joe")
+```
+
+== Spreading
+
+Inversely to an argument sink, you can _spread_ arguments, arrays and dictionaries into a function call with the `..spread` operator:
+
+```typst
+#let array = (2, 3, 5)
+#calc.min(..array)
+#let dict = (fill: blue)
+#text(..dict)[Hello]
+```
+
+== Constructor
+
+Construct spreadable arguments in place.
+
+This function behaves like `let args(..sink) = sink`.
+
+```
+arguments(
+  ..: any
+) -> arguments
+```
+
+```typst
+#let args = arguments(stroke: red, inset: 1em, [Body])
+#box(..args)
+```
+
+==== `arguments`: any (Required, Positional, Variadic)
+
+The arguments to construct.
+
+== Definitions
+
+=== `at`
+
+Returns the positional argument at the specified index, or the named argument with the specified name.
+
+If the key is an #link("/docs/reference/foundations/int/")[integer], this is equivalent to first calling #link("/docs/reference/foundations/arguments/#definitions-pos")[pos] and then #link("/docs/reference/foundations/array/#definitions-at")[array.at]. If it is a #link("/docs/reference/foundations/str/")[string], this is equivalent to first calling #link("/docs/reference/foundations/arguments/#definitions-named")[named] and then #link("/docs/reference/foundations/dictionary/#definitions-at")[dictionary.at].
+
+```
+at(
+  int: int | str,
+  default: any
+) -> str
+```
+
+==== `key`: int | str (Required, Positional)
+
+The index or name of the argument to get.
+
+==== `default`: any
+
+A default value to return if the key is invalid.
+
+=== `pos`
+
+Returns the captured positional arguments as an array.
+
+```
+pos(
+  
+) -> array
+```
+
+=== `named`
+
+Returns the captured named arguments as a dictionary.
+
+```
+named(
+  
+) -> dictionary
+```
+= array
+
+A sequence of values.
+
+You can construct an array by enclosing a comma-separated sequence of values in parentheses. The values do not have to be of the same type.
+
+You can access and update array items with the `.at()` method. Indices are zero-based and negative indices wrap around to the end of the array. You can iterate over an array using a #link("/docs/reference/scripting/#loops")[for loop]. Arrays can be added together with the `+` operator, #link("/docs/reference/scripting/#blocks")[joined together] and multiplied with integers.
+
+*Note:* An array of length one needs a trailing comma, as in `(1,)`. This is to disambiguate from a simple parenthesized expressions like `(1 + 2) * 3`. An empty array is written as `()`.
+
+== Example
+
+```typst
+#let values = (1, 7, 4, -3, 2)
+
+#values.at(0) \
+#(values.at(0) = 3)
+#values.at(-1) \
+#values.find(calc.even) \
+#values.filter(calc.odd) \
+#values.map(calc.abs) \
+#values.rev() \
+#(1, (2, 3)).flatten() \
+#(("A", "B", "C")
+    .join(", ", last: " and "))
+```
+
+== Constructor
+
+Converts a value to an array.
+
+Note that this function is only intended for conversion of a collection-like value to an array, not for creation of an array from individual items. Use the array syntax `(1, 2, 3)` (or `(1,)` for a single-element array) instead.
+
+```
+array(
+  bytes: bytes | array | version
+) -> array
+```
+
+```typst
+#let hi = "Hello 😃"
+#array(bytes(hi))
+```
+
+==== `value`: bytes | array | version (Required, Positional)
+
+The value that should be converted to an array.
+
+== Definitions
+
+=== `len`
+
+The number of values in the array.
+
+```
+len(
+  
+) -> int
+```
+
+=== `first`
+
+Returns the first item in the array. May be used on the left-hand side of an assignment. Fails with an error if the array is empty.
+
+```
+first(
+  
+) -> 
+```
+
+=== `last`
+
+Returns the last item in the array. May be used on the left-hand side of an assignment. Fails with an error if the array is empty.
+
+```
+last(
+  
+) -> 
+```
+
+=== `at`
+
+Returns the item at the specified index in the array. May be used on the left-hand side of an assignment. Returns the default value if the index is out of bounds or fails with an error if no default value was specified.
+
+```
+at(
+  int: int,
+  default: any
+) -> int
+```
+
+==== `index`: int (Required, Positional)
+
+The index at which to retrieve the item. If negative, indexes from the back.
+
+==== `default`: any
+
+A default value to return if the index is out of bounds.
+
+=== `push`
+
+Adds a value to the end of the array.
+
+```
+push(
+  any
+) -> 
+```
+
+==== `value`: any (Required, Positional)
+
+The value to insert at the end of the array.
+
+=== `pop`
+
+Removes the last item from the array and returns it. Fails with an error if the array is empty.
+
+```
+pop(
+  
+) -> 
+```
+
+=== `insert`
+
+Inserts a value into the array at the specified index, shifting all subsequent elements to the right. Fails with an error if the index is out of bounds.
+
+To replace an element of an array, use #link("/docs/reference/foundations/array/#definitions-at")[at].
+
+```
+insert(
+  int: int,
+  any
+) -> int
+```
+
+==== `index`: int (Required, Positional)
+
+The index at which to insert the item. If negative, indexes from the back.
+
+==== `value`: any (Required, Positional)
+
+The value to insert into the array.
+
+=== `remove`
+
+Removes the value at the specified index from the array and return it.
+
+```
+remove(
+  int: int,
+  default: any
+) -> int
+```
+
+==== `index`: int (Required, Positional)
+
+The index at which to remove the item. If negative, indexes from the back.
+
+==== `default`: any
+
+A default value to return if the index is out of bounds.
+
+=== `slice`
+
+Extracts a subslice of the array. Fails with an error if the start or end index is out of bounds.
+
+```
+slice(
+  int: int,
+  none: none | int,
+  count: int
+) -> array
+```
+
+==== `start`: int (Required, Positional)
+
+The start index (inclusive). If negative, indexes from the back.
+
+==== `end`: none | int (Positional)
+
+The end index (exclusive). If omitted, the whole slice until the end of the array is extracted. If negative, indexes from the back.
+
+Default: `none`
+
+==== `count`: int
+
+The number of items to extract. This is equivalent to passing `start + count` as the `end` position. Mutually exclusive with `end`.
+
+=== `contains`
+
+Whether the array contains the specified value.
+
+This method also has dedicated syntax: You can write `2 in (1, 2, 3)` instead of `(1, 2, 3).contains(2)`.
+
+```
+contains(
+  any
+) -> bool
+```
+
+==== `value`: any (Required, Positional)
+
+The value to search for.
+
+=== `find`
+
+Searches for an item for which the given function returns `true` and returns the first match or `none` if there is no match.
+
+```
+find(
+  function: function
+) -> none
+```
+
+==== `searcher`: function (Required, Positional)
+
+The function to apply to each item. Must return a boolean.
+
+=== `position`
+
+Searches for an item for which the given function returns `true` and returns the index of the first match or `none` if there is no match.
+
+```
+position(
+  function: function
+) -> int
+```
+
+==== `searcher`: function (Required, Positional)
+
+The function to apply to each item. Must return a boolean.
+
+=== `range`
+
+Create an array consisting of a sequence of numbers.
+
+If you pass just one positional parameter, it is interpreted as the `end` of the range. If you pass two, they describe the `start` and `end` of the range.
+
+This function is available both in the array function's scope and globally.
+
+```
+range(
+  int: int,
+  int: int,
+  step: int
+) -> array
+```
+
+```typst
+#range(5) \
+#range(2, 5) \
+#range(20, step: 4) \
+#range(21, step: 4) \
+#range(5, 2, step: -1)
+```
+
+==== `start`: int (Positional)
+
+The start of the range (inclusive).
+
+Default: `0`
+
+==== `end`: int (Required, Positional)
+
+The end of the range (exclusive).
+
+==== `step`: int
+
+The distance between the generated numbers.
+
+Default: `1`
+
+=== `filter`
+
+Produces a new array with only the items from the original one for which the given function returns true.
+
+```
+filter(
+  function: function
+) -> array
+```
+
+==== `test`: function (Required, Positional)
+
+The function to apply to each item. Must return a boolean.
+
+=== `map`
+
+Produces a new array in which all items from the original one were transformed with the given function.
+
+```
+map(
+  function: function
+) -> array
+```
+
+==== `mapper`: function (Required, Positional)
+
+The function to apply to each item.
+
+=== `enumerate`
+
+Returns a new array with the values alongside their indices.
+
+The returned array consists of `(index, value)` pairs in the form of length-2 arrays. These can be #link("/docs/reference/scripting/#bindings")[destructured] with a let binding or for loop.
+
+```
+enumerate(
+  start: int
+) -> array
+```
+
+==== `start`: int
+
+The index returned for the first pair of the returned list.
+
+Default: `0`
+
+=== `zip`
+
+Zips the array with other arrays.
+
+Returns an array of arrays, where the `i`th inner array contains all the `i`th elements from each original array.
+
+If the arrays to be zipped have different lengths, they are zipped up to the last element of the shortest array and all remaining elements are ignored.
+
+This function is variadic, meaning that you can zip multiple arrays together at once: `(1, 2).zip(("A", "B"), (10, 20))` yields `((1, "A", 10), (2, "B", 20))`.
+
+```
+zip(
+  exact: bool,
+  ..: array
+) -> array
+```
+
+==== `exact`: bool
+
+Whether all arrays have to have the same length. For example, `(1, 2).zip((1, 2, 3), exact: true)` produces an error.
+
+Default: `false`
+
+==== `others`: array (Required, Positional, Variadic)
+
+The arrays to zip with.
+
+=== `fold`
+
+Folds all items into a single value using an accumulator function.
+
+```
+fold(
+  any,
+  function: function
+) -> function
+```
+
+==== `init`: any (Required, Positional)
+
+The initial value to start with.
+
+==== `folder`: function (Required, Positional)
+
+The folding function. Must have two parameters: One for the accumulated value and one for an item.
+
+=== `sum`
+
+Sums all items (works for all types that can be added).
+
+```
+sum(
+  default: any
+) -> 
+```
+
+==== `default`: any
+
+What to return if the array is empty. Must be set if the array can be empty.
+
+=== `product`
+
+Calculates the product all items (works for all types that can be multiplied).
+
+```
+product(
+  default: any
+) -> 
+```
+
+==== `default`: any
+
+What to return if the array is empty. Must be set if the array can be empty.
+
+=== `any`
+
+Whether the given function returns `true` for any item in the array.
+
+```
+any(
+  function: function
+) -> bool
+```
+
+==== `test`: function (Required, Positional)
+
+The function to apply to each item. Must return a boolean.
+
+=== `all`
+
+Whether the given function returns `true` for all items in the array.
+
+```
+all(
+  function: function
+) -> bool
+```
+
+==== `test`: function (Required, Positional)
+
+The function to apply to each item. Must return a boolean.
+
+=== `flatten`
+
+Combine all nested arrays into a single flat one.
+
+```
+flatten(
+  
+) -> array
+```
+
+=== `rev`
+
+Return a new array with the same items, but in reverse order.
+
+```
+rev(
+  
+) -> array
+```
+
+=== `split`
+
+Split the array at occurrences of the specified value.
+
+```
+split(
+  any
+) -> array
+```
+
+==== `at`: any (Required, Positional)
+
+The value to split at.
+
+=== `join`
+
+Combine all items in the array into one.
+
+```
+join(
+  none: any | none,
+  last: any
+) -> none
+```
+
+==== `separator`: any | none (Positional)
+
+A value to insert between each item of the array.
+
+Default: `none`
+
+==== `last`: any
+
+An alternative separator between the last two items.
+
+=== `intersperse`
+
+Returns an array with a copy of the separator value placed between adjacent elements.
+
+```
+intersperse(
+  any
+) -> array
+```
+
+==== `separator`: any (Required, Positional)
+
+The value that will be placed between each adjacent element.
+
+=== `chunks`
+
+Splits an array into non-overlapping chunks, starting at the beginning, ending with a single remainder chunk.
+
+All chunks but the last have `chunk-size` elements. If `exact` is set to `true`, the remainder is dropped if it contains less than `chunk-size` elements.
+
+```
+chunks(
+  int: int,
+  exact: bool
+) -> array
+```
+
+```typst
+#let array = (1, 2, 3, 4, 5, 6, 7, 8)
+#array.chunks(3) \
+#array.chunks(3, exact: true)
+```
+
+==== `chunk-size`: int (Required, Positional)
+
+How many elements each chunk may at most contain.
+
+==== `exact`: bool
+
+Whether to keep the remainder if its size is less than `chunk-size`.
+
+Default: `false`
+
+=== `windows`
+
+Returns sliding windows of `window-size` elements over an array.
+
+If the array length is less than `window-size`, this will return an empty array.
+
+```
+windows(
+  int: int
+) -> array
+```
+
+```typst
+#let array = (1, 2, 3, 4, 5, 6, 7, 8)
+#array.windows(5)
+```
+
+==== `window-size`: int (Required, Positional)
+
+How many elements each window will contain.
+
+=== `sorted`
+
+Return a sorted version of this array, optionally by a given key function. The sorting algorithm used is stable.
+
+Returns an error if two values could not be compared or if the key function (if given) yields an error.
+
+To sort according to multiple criteria at once, e.g. in case of equality between some criteria, the key function can return an array. The results are in lexicographic order.
+
+```
+sorted(
+  key: function
+) -> array
+```
+
+```typst
+#let array = (
+  (a: 2, b: 4),
+  (a: 1, b: 5),
+  (a: 2, b: 3),
+)
+#array.sorted(key: it => (it.a, it.b))
+```
+
+==== `key`: function
+
+If given, applies this function to the elements in the array to determine the keys to sort by.
+
+=== `dedup`
+
+Deduplicates all items in the array.
+
+Returns a new array with all duplicate items removed. Only the first element of each duplicate is kept.
+
+```
+dedup(
+  key: function
+) -> array
+```
+
+```typst
+#(1, 1, 2, 3, 1).dedup()
+```
+
+==== `key`: function
+
+If given, applies this function to the elements in the array to determine the keys to deduplicate by.
+
+=== `to-dict`
+
+Converts an array of pairs into a dictionary. The first value of each pair is the key, the second the value.
+
+If the same key occurs multiple times, the last value is selected.
+
+```
+to-dict(
+  
+) -> dictionary
+```
+
+```typst
+#(
+  ("apples", 2),
+  ("peaches", 3),
+  ("apples", 5),
+).to-dict()
+```
+
+=== `reduce`
+
+Reduces the elements to a single one, by repeatedly applying a reducing operation.
+
+If the array is empty, returns `none`, otherwise, returns the result of the reduction.
+
+The reducing function is a closure with two arguments: an "accumulator", and an element.
+
+For arrays with at least one element, this is the same as #link("/docs/reference/foundations/array/#definitions-fold")[array.fold] with the first element of the array as the initial accumulator value, folding every subsequent element into it.
+
+```
+reduce(
+  function: function
+) -> function
+```
+
+==== `reducer`: function (Required, Positional)
+
+The reducing function. Must have two parameters: One for the accumulated value and one for an item.
+= assert
+
+Ensures that a condition is fulfilled.
+
+Fails with an error if the condition is not fulfilled. Does not produce any output in the document.
+
+If you wish to test equality between two values, see #link("/docs/reference/foundations/assert/#definitions-eq")[assert.eq] and #link("/docs/reference/foundations/assert/#definitions-ne")[assert.ne].
+
+== Example
+
+== Parameters
+
+```
+assert(
+  bool: bool,
+  message: str
+) -> str
+```
+
+=== `condition`: bool (Required, Positional)
+
+The condition that must be true for the assertion to pass.
+
+=== `message`: str
+
+The error message when the assertion fails.
+
+== Definitions
+
+=== `eq`
+
+Ensures that two values are equal.
+
+Fails with an error if the first value is not equal to the second. Does not produce any output in the document.
+
+```
+eq(
+  any,
+  any,
+  message: str
+) -> str
+```
+
+==== `left`: any (Required, Positional)
+
+The first value to compare.
+
+==== `right`: any (Required, Positional)
+
+The second value to compare.
+
+==== `message`: str
+
+An optional message to display on error instead of the representations of the compared values.
+
+=== `ne`
+
+Ensures that two values are not equal.
+
+Fails with an error if the first value is equal to the second. Does not produce any output in the document.
+
+```
+ne(
+  any,
+  any,
+  message: str
+) -> str
+```
+
+==== `left`: any (Required, Positional)
+
+The first value to compare.
+
+==== `right`: any (Required, Positional)
+
+The second value to compare.
+
+==== `message`: str
+
+An optional message to display on error instead of the representations of the compared values.
+= auto
+
+A value that indicates a smart default.
+
+The auto type has exactly one value: `auto`.
+
+Parameters that support the `auto` value have some smart default or contextual behaviour. A good example is the #link("/docs/reference/text/text/#parameters-dir")[text direction] parameter. Setting it to `auto` lets Typst automatically determine the direction from the #link("/docs/reference/text/text/#parameters-lang")[text language].
+= bool
+
+A type with two states.
+
+The boolean type has two values: `true` and `false`. It denotes whether something is active or enabled.
+
+== Example
+
+```typst
+#false \
+#true \
+#(1 < 2)
+```
+= bytes
+
+A sequence of bytes.
+
+This is conceptually similar to an array of #link("/docs/reference/foundations/int/")[integers] between `0` and `255`, but represented much more efficiently. You can iterate over it using a #link("/docs/reference/scripting/#loops")[for loop].
+
+You can convert
+
+- a #link("/docs/reference/foundations/str/")[string] or an #link("/docs/reference/foundations/array/")[array] of integers to bytes with the #link("/docs/reference/foundations/bytes/")[bytes] constructor
+- bytes to a string with the #link("/docs/reference/foundations/str/")[str] constructor, with UTF-8 encoding
+- bytes to an array of integers with the #link("/docs/reference/foundations/array/")[array] constructor
+
+When #link("/docs/reference/data-loading/read/")[reading] data from a file, you can decide whether to load it as a string or as raw bytes.
+
+```typst
+#bytes((123, 160, 22, 0)) \
+#bytes("Hello 😃")
+
+#let data = read(
+  "rhino.png",
+  encoding: none,
+)
+
+// Magic bytes.
+#array(data.slice(0, 4)) \
+#str(data.slice(1, 4))
+```
+
+== Constructor
+
+Converts a value to bytes.
+
+- Strings are encoded in UTF-8.
+- Arrays of integers between `0` and `255` are converted directly. The dedicated byte representation is much more efficient than the array representation and thus typically used for large byte buffers (e.g. image data).
+
+```
+bytes(
+  str: str | bytes | array
+) -> bytes
+```
+
+```typst
+#bytes("Hello 😃") \
+#bytes((123, 160, 22, 0))
+```
+
+==== `value`: str | bytes | array (Required, Positional)
+
+The value that should be converted to bytes.
+
+== Definitions
+
+=== `len`
+
+The length in bytes.
+
+```
+len(
+  
+) -> int
+```
+
+=== `at`
+
+Returns the byte at the specified index. Returns the default value if the index is out of bounds or fails with an error if no default value was specified.
+
+```
+at(
+  int: int,
+  default: any
+) -> int
+```
+
+==== `index`: int (Required, Positional)
+
+The index at which to retrieve the byte.
+
+==== `default`: any
+
+A default value to return if the index is out of bounds.
+
+=== `slice`
+
+Extracts a subslice of the bytes. Fails with an error if the start or end index is out of bounds.
+
+```
+slice(
+  int: int,
+  none: none | int,
+  count: int
+) -> bytes
+```
+
+==== `start`: int (Required, Positional)
+
+The start index (inclusive).
+
+==== `end`: none | int (Positional)
+
+The end index (exclusive). If omitted, the whole slice until the end is extracted.
+
+Default: `none`
+
+==== `count`: int
+
+The number of items to extract. This is equivalent to passing `start + count` as the `end` position. Mutually exclusive with `end`.

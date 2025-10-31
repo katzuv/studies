@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1880,
+    "title": "Is it possible to #show ∂ₜ as ∂_t in math?",
+    "slug": "is-it-possible-to-show-as-t-in-math",
+    "posts_count": 3,
+    "created_at": "2024-11-25T13:13:27.157Z",
+    "last_posted_at": "2024-11-25T15:36:34.575Z",
+    "views": 103,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Eric",
+    "tags": [
+      "math",
+      "styling"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 155
+  },
+  "posts": [
+    {
+      "id": 6065,
+      "post_number": 1,
+      "username": "Y.D.X",
+      "name": "Y.D.X.",
+      "created_at": "2024-11-25T13:13:27.321Z",
+      "updated_at": "2024-11-25T13:14:48.619Z",
+      "cooked": "<p>Is it possible to <code>#show</code> <code>∂ₜ</code> as <code>∂_t</code>, and <code>a ₜ</code> as <code>a_t</code> in math?</p>\n<p>In the following matrix, I want to input as the second column, and display as the first column.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">$ mat(diff_t, ∂ₜ; a_t, a ₜ) $\n#repr[$ mat(diff_t, ∂ₜ; a_t, a ₜ) $]\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/6/6a85b10018d229a46c569df69cbfeee32651c883.png\" alt=\"\" data-base62-sha1=\"fcl2KCON3pqXEgGzCgM7AdJ3KG7\" width=\"128\" height=\"102\" role=\"presentation\"></p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">equation(\n  block: true,\n  body: mat(\n  rows: (\n      (\n        attach(base: [∂], b: [t]),\n        sequence([∂], [ₜ]),\n      ),\n      (\n        attach(base: [a], b: [t]),\n        sequence([a], [ ], [ₜ]),\n      ),\n    ),\n  ),\n)\n</code></pre>\n<p>I have tried some possibilities, but I have no idea how to turn <code>ₜ</code> into an argument of the <code>attach</code> function.</p>\n<p>Any explanation or help is appreciated. Thanks in advance.</p>",
+      "raw": "Is it possible to `#show` `∂ₜ` as `∂_t`, and `a ₜ` as `a_t` in math?\n\nIn the following matrix, I want to input as the second column, and display as the first column.\n\n```typst\n$ mat(diff_t, ∂ₜ; a_t, a ₜ) $\n#repr[$ mat(diff_t, ∂ₜ; a_t, a ₜ) $]\n```\n\n![|128x102](upload://fcl2KCON3pqXEgGzCgM7AdJ3KG7.png)\n\n```typc\nequation(\n  block: true,\n  body: mat(\n  rows: (\n      (\n        attach(base: [∂], b: [t]),\n        sequence([∂], [ₜ]),\n      ),\n      (\n        attach(base: [a], b: [t]),\n        sequence([a], [ ], [ₜ]),\n      ),\n    ),\n  ),\n)\n```\n\nI have tried some possibilities, but I have no idea how to turn `ₜ` into an argument of the `attach` function.\n\nAny explanation or help is appreciated. Thanks in advance.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 39,
+      "score": 32.8,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 292
+    },
+    {
+      "id": 6071,
+      "post_number": 2,
+      "username": "Eric",
+      "name": "Eric Biedert",
+      "created_at": "2024-11-25T14:52:34.565Z",
+      "updated_at": "2024-11-25T14:52:56.401Z",
+      "cooked": "<p>The <a href=\"https://typst.app/universe/package/super-suboptimal\">super-suboptimal</a> package seems to do what you want:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/super-suboptimal:0.1.0\": super-subscripts\n#show: super-subscripts\n\n$ mat(diff_t, ∂ₜ; a_t, a ₜ) $\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/0/0591fd204bfbc673e378eabf0accf606d70c2784.png\" alt=\"Output of example code\" data-base62-sha1=\"NhaloY1xX51XWswW4QYW3kvbko\" width=\"125\" height=\"90\"></p>",
+      "raw": "The [super-suboptimal](https://typst.app/universe/package/super-suboptimal) package seems to do what you want:\n\n```typ\n#import \"@preview/super-suboptimal:0.1.0\": super-subscripts\n#show: super-subscripts\n\n$ mat(diff_t, ∂ₜ; a_t, a ₜ) $\n```\n\n![Output of example code|125x90](upload://NhaloY1xX51XWswW4QYW3kvbko.png)",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 37,
+      "score": 27.4,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 88
+    },
+    {
+      "id": 6079,
+      "post_number": 3,
+      "username": "Y.D.X",
+      "name": "Y.D.X.",
+      "created_at": "2024-11-25T15:36:34.575Z",
+      "updated_at": "2024-11-25T15:36:34.575Z",
+      "cooked": "<p>Thank you! I underestimated how prosperous the community is.</p>",
+      "raw": "Thank you! I underestimated how prosperous the community is.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 33,
+      "score": 6.6,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 292
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:25.428352"
+}

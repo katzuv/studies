@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2702,
+    "title": "How to create dynamic reference and label?",
+    "slug": "how-to-create-dynamic-reference-and-label",
+    "posts_count": 2,
+    "created_at": "2025-02-06T20:46:43.856Z",
+    "last_posted_at": "2025-02-06T21:47:33.191Z",
+    "views": 193,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "referencing"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 227
+  },
+  "posts": [
+    {
+      "id": 8277,
+      "post_number": 1,
+      "username": "yss2611",
+      "name": "İsmail",
+      "created_at": "2025-02-06T20:46:43.968Z",
+      "updated_at": "2025-02-06T21:47:46.822Z",
+      "cooked": "<p>Hi,</p>\n<p>When I try to reference a label using <code>@test</code>, it’s not working properly. Here’s my code:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set heading(numbering: \"1.\")\n#outline(\n  indent: auto\n)\n#show link: underline\n#show ref: it =&gt; {\n  let el = it.element\n  if el != none and el.func() == heading {\n    let nums = counter(heading).at(el.label)\n    link(el.location(), numbering(el.numbering, ..nums) + el.body)\n  }\n}\n= T1\n== T2\n#let name = \"Test\"\n#let labelName = lower(name).replace(\" \",\":\")\n=== #name #label(labelName)\n#lorem(10)\n\\\n#name \\\n#labelName\n=== Test 2 &lt;test2&gt;\nThis is reference for @test . Missing!!!\n\\\n#lorem(10)\n</code></pre>\n<p>In my code, I’m trying to create a dynamic label using a variable <code>name</code> and then reference it with <code>@test</code>, but I get none in reference function. I have defined the label using <code>#label(labelName)</code> where <code>labelName</code> is created from the <code>name</code> variable.</p>\n<p>I’ve tried:</p>\n<ol>\n<li>Using <code>#ref(\"test\")</code> instead of <code>@test</code></li>\n<li>Checking if the label is properly created with <code>labelName</code></li>\n<li>Using an explicit label with <code>&lt;test&gt;</code></li>\n</ol>\n<p>But none of these approaches worked. What am I doing wrong? How can I make the reference work correctly?</p>",
+      "raw": "Hi,\n\nWhen I try to reference a label using `@test`, it's not working properly. Here's my code:\n\n```typ\n#set heading(numbering: \"1.\")\n#outline(\n  indent: auto\n)\n#show link: underline\n#show ref: it => {\n  let el = it.element\n  if el != none and el.func() == heading {\n    let nums = counter(heading).at(el.label)\n    link(el.location(), numbering(el.numbering, ..nums) + el.body)\n  }\n}\n= T1\n== T2\n#let name = \"Test\"\n#let labelName = lower(name).replace(\" \",\":\")\n=== #name #label(labelName)\n#lorem(10)\n\\\n#name \\\n#labelName\n=== Test 2 <test2>\nThis is reference for @test . Missing!!!\n\\\n#lorem(10)\n```\n\nIn my code, I'm trying to create a dynamic label using a variable `name` and then reference it with `@test`, but I get none in reference function. I have defined the label using `#label(labelName)` where `labelName` is created from the `name` variable.\n\nI've tried:\n\n1. Using `#ref(\"test\")` instead of `@test`\n2. Checking if the label is properly created with `labelName`\n3. Using an explicit label with `<test>`\n\nBut none of these approaches worked. What am I doing wrong? How can I make the reference work correctly?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 32,
+      "score": 801.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1148
+    },
+    {
+      "id": 8278,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-02-06T21:47:33.191Z",
+      "updated_at": "2025-02-06T21:47:33.191Z",
+      "cooked": "<p>This is an unfortunate instance of the wrong precedence being used here. The fix:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#[=== #name] #label(labelName)\n</code></pre>\n<p>Although I have to say, I’m a bit unsure why (without the show rule) the error you get is “label <code>&lt;test2&gt;</code> occurs multiple times in the document” – that <em>is</em> misleading.</p>",
+      "raw": "This is an unfortunate instance of the wrong precedence being used here. The fix:\n```typ\n#[=== #name] #label(labelName)\n```\nAlthough I have to say, I'm a bit unsure why (without the show rule) the error you get is \"label `<test2>` occurs multiple times in the document\" -- that _is_ misleading.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 50.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:58.951280"
+}

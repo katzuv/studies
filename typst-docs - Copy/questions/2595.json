@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2595,
+    "title": "Can I reset the slide counter in Polylux 0.4?",
+    "slug": "can-i-reset-the-slide-counter-in-polylux-0-4",
+    "posts_count": 2,
+    "created_at": "2025-01-29T15:26:32.717Z",
+    "last_posted_at": "2025-02-05T08:33:58.625Z",
+    "views": 89,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "joscha_krug",
+    "tags": [
+      "presentation",
+      "polylux"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 201
+  },
+  "posts": [
+    {
+      "id": 7996,
+      "post_number": 1,
+      "username": "talb",
+      "name": "talb",
+      "created_at": "2025-01-29T15:26:32.914Z",
+      "updated_at": "2025-01-29T22:20:36.186Z",
+      "cooked": "<p>In Polylux 0.3.2, it was possible to access <code>logic.logical-slide</code>, which is a logical counter for the slide number. For me, it was convenient to create a presentation appendix containing backup slides: the first slides until the conclusion had normal numbering (1, 2, 3…), but after that, the appendix slides had roman numbering (i, ii, iii…). To do that, I had to reset <code>logic.logical-slide</code> to 0 after the conclusion.</p>\n<p>However, that doesn’t seem possible in Polylux 0.4, because <code>logic.logical-slide</code> is no longer exposed in the API. Now, you have access to <code>toolbox.slide-number</code> and <code>toolbox.last-slide-number</code>, which respectively give the current and last slide numbers, but as far as I know, you cannot reset the logical slide counter.</p>\n<p>Is there a new method to do that in Polylux 0.4?</p>",
+      "raw": "In Polylux 0.3.2, it was possible to access `logic.logical-slide`, which is a logical counter for the slide number. For me, it was convenient to create a presentation appendix containing backup slides: the first slides until the conclusion had normal numbering (1, 2, 3...), but after that, the appendix slides had roman numbering (i, ii, iii...). To do that, I had to reset `logic.logical-slide` to 0 after the conclusion.\n\nHowever, that doesn't seem possible in Polylux 0.4, because `logic.logical-slide` is no longer exposed in the API. Now, you have access to `toolbox.slide-number` and `toolbox.last-slide-number`, which respectively give the current and last slide numbers, but as far as I know, you cannot reset the logical slide counter.\n\nIs there a new method to do that in Polylux 0.4?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 23,
+      "score": 209.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 341
+    },
+    {
+      "id": 8224,
+      "post_number": 2,
+      "username": "joscha_krug",
+      "name": "Joscha Krug",
+      "created_at": "2025-02-05T08:33:58.625Z",
+      "updated_at": "2025-02-05T08:33:58.625Z",
+      "cooked": "<p>It took me some time to figure out, but you can access the logical slide counter using</p>\n<pre><code class=\"lang-auto\">counter(\"logical-slide\")\n</code></pre>\n<p>(see <a href=\"https://github.com/polylux-typ/polylux/blob/main/src/logic.typ\" rel=\"noopener nofollow ugc\">here</a>).</p>\n<p>So <code>counter(\"logical-slide\").update(0)</code> should do the trick. It does not seem to be officially documented behaviour though, so might be prone to changes.</p>",
+      "raw": "It took me some time to figure out, but you can access the logical slide counter using\n\n```\ncounter(\"logical-slide\")\n```\n\n(see [here](https://github.com/polylux-typ/polylux/blob/main/src/logic.typ)). \n\nSo `counter(\"logical-slide\").update(0)` should do the trick. It does not seem to be officially documented behaviour though, so might be prone to changes.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 16,
+      "score": 33.2,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 1135
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:22.005853"
+}

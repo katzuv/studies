@@ -1,0 +1,61 @@
+{
+  "topic_metadata": {
+    "id": 1564,
+    "title": "How to put first-order headings start on odd-numbered pages?",
+    "slug": "how-to-put-first-order-headings-start-on-odd-numbered-pages",
+    "posts_count": 2,
+    "created_at": "2024-11-05T22:19:58.262Z",
+    "last_posted_at": "2024-11-06T00:28:07.345Z",
+    "views": 150,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Eric",
+    "tags": [],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 181
+  },
+  "posts": [
+    {
+      "id": 5179,
+      "post_number": 1,
+      "username": "Olaf",
+      "name": "Olaf",
+      "created_at": "2024-11-05T22:19:58.381Z",
+      "updated_at": "2024-11-05T22:19:58.381Z",
+      "cooked": "<p>I would like the first-order headings to start on a new page. If the new page is an even page, then a blank page should be inserted. The first-order headings should therefore always be on an odd-numbered page. In addition, I would like to have a vertical space above and below the heading.</p>",
+      "raw": "I would like the first-order headings to start on a new page. If the new page is an even page, then a blank page should be inserted. The first-order headings should therefore always be on an odd-numbered page. In addition, I would like to have a vertical space above and below the heading.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 35,
+      "score": 487.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 418
+    },
+    {
+      "id": 5183,
+      "post_number": 2,
+      "username": "Eric",
+      "name": "Eric Biedert",
+      "created_at": "2024-11-06T00:28:07.345Z",
+      "updated_at": "2024-11-06T00:28:07.345Z",
+      "cooked": "<p>You just need to put a weak page break before the heading in a show rule. This will insert a blank page, only if the current page even or not empty. For spacing above the heading, you can wrap it in a a <a href=\"https://typst.app/docs/reference/layout/pad/\">padding</a> element. For spacing below, you can either also put it in the padding, or use a separate show-set rule to set the block spacing. I would prefer the latter to ensure that it correctly interacts with other potential spacings between heading and content, but both are probably fine:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show heading.where(level: 1): set block(below: 1cm)\n#show heading.where(level: 1): it =&gt; {\n  pagebreak(to: \"odd\", weak: true)\n  pad(top: 2cm, it)\n}\n</code></pre>",
+      "raw": "You just need to put a weak page break before the heading in a show rule. This will insert a blank page, only if the current page even or not empty. For spacing above the heading, you can wrap it in a a [padding](https://typst.app/docs/reference/layout/pad/) element. For spacing below, you can either also put it in the padding, or use a separate show-set rule to set the block spacing. I would prefer the latter to ensure that it correctly interacts with other potential spacings between heading and content, but both are probably fine:\n\n```typ\n#show heading.where(level: 1): set block(below: 1cm)\n#show heading.where(level: 1): it => {\n  pagebreak(to: \"odd\", weak: true)\n  pad(top: 2cm, it)\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 35,
+      "score": 32.0,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 88
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:26.220957"
+}

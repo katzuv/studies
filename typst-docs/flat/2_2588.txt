@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2588,
+    "title": "How can I use special styling in headings without removing numbering",
+    "slug": "how-can-i-use-special-styling-in-headings-without-removing-numbering",
+    "posts_count": 3,
+    "created_at": "2025-01-28T22:25:07.103Z",
+    "last_posted_at": "2025-01-28T22:51:28.275Z",
+    "views": 167,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "AbandonedProjects",
+    "tags": [
+      "numbering",
+      "styling"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 540
+  },
+  "posts": [
+    {
+      "id": 7977,
+      "post_number": 1,
+      "username": "AbandonedProjects",
+      "name": "AbandonedProjects",
+      "created_at": "2025-01-28T22:25:07.253Z",
+      "updated_at": "2025-01-28T22:25:07.253Z",
+      "cooked": "<p>I am seeking to modify the format of headings to allow mixed styling. I’ll lead with the two main sections of code I’ve written for this purpose.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">// set up numbering\n#set heading(\n  numbering: (..n) =&gt; {\n    let n = n.pos()\n    // if this is a first-level heading, use higher font size\n    // and roman numerals\n    if n.len() == 1 {\n      text(\n        size: 10pt,\n        weight: \"regular\",\n        numbering(\"I.\", n.at(0)),\n      )\n    // otherwise, use A/B/C, smaller text size, and italics,\n    // omitting parent heading labels\n    } else {\n      text(\n        size: 8pt,\n        weight: \"regular\",\n        numbering(\"A.\", n.last()),\n      )\n    }\n  }\n)\n</code></pre>\n<p>The code above works as you would expect, until I try to style the rest of it.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">// set up styling inside the line\n#show heading =&gt; it {\n  // ISSUE #1 (and the main issue): `it.level` is always 1.\n  // I assume this is due in part to function purity?\n  // If this were not always 1, I could call `numbering` manually.\n  if it.level == 1 {\n    text(\n      size: 10pt,\n      weight: \"regular\",\n      // large capital first letter followed by 8pt smallcaps\n      [\n        // ISSUE #2: I can't find a way to extract numbering content\n       // from `it`, and using `it.body.text` strips the numbering away.\n        #upper(it.body.text.first())#text(\n          size: 8pt,\n          smallcaps(it.body.text.slice(1)),\n        )\n      ],\n    )\n  } else {\n     // ...\n  }\n}\n</code></pre>\n<p>I’ve denoted my two issues as comments in the second code block. I only need one of them to be worked around.</p>\n<p>To avoid an XY problem, I want to clarify that all I’m really looking for is a convenient way to create self-numbered blocks of text with mixed styles inside of said text, in such a way that headings like these can be styled with no extra thought put into it.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">= Introduction\n== Sub-Introduction\n= Conclusion\n</code></pre>\n<p>Thanks in advance.</p>",
+      "raw": "I am seeking to modify the format of headings to allow mixed styling. I'll lead with the two main sections of code I've written for this purpose.\n\n```typ\n// set up numbering\n#set heading(\n  numbering: (..n) => {\n    let n = n.pos()\n    // if this is a first-level heading, use higher font size\n    // and roman numerals\n    if n.len() == 1 {\n      text(\n        size: 10pt,\n        weight: \"regular\",\n        numbering(\"I.\", n.at(0)),\n      )\n    // otherwise, use A/B/C, smaller text size, and italics,\n    // omitting parent heading labels\n    } else {\n      text(\n        size: 8pt,\n        weight: \"regular\",\n        numbering(\"A.\", n.last()),\n      )\n    }\n  }\n)\n```\n\nThe code above works as you would expect, until I try to style the rest of it.\n\n```typ\n// set up styling inside the line\n#show heading => it {\n  // ISSUE #1 (and the main issue): `it.level` is always 1.\n  // I assume this is due in part to function purity?\n  // If this were not always 1, I could call `numbering` manually.\n  if it.level == 1 {\n    text(\n      size: 10pt,\n      weight: \"regular\",\n      // large capital first letter followed by 8pt smallcaps\n      [\n        // ISSUE #2: I can't find a way to extract numbering content\n       // from `it`, and using `it.body.text` strips the numbering away.\n        #upper(it.body.text.first())#text(\n          size: 8pt,\n          smallcaps(it.body.text.slice(1)),\n        )\n      ],\n    )\n  } else {\n     // ...\n  }\n}\n```\n\nI've denoted my two issues as comments in the second code block. I only need one of them to be worked around.\n\nTo avoid an XY problem, I want to clarify that all I'm really looking for is a convenient way to create self-numbered blocks of text with mixed styles inside of said text, in such a way that headings like these can be styled with no extra thought put into it.\n```typ\n= Introduction\n== Sub-Introduction\n= Conclusion\n```\n\nThanks in advance.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 580.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1107
+    },
+    {
+      "id": 7978,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-01-28T22:37:24.786Z",
+      "updated_at": "2025-01-28T22:37:24.786Z",
+      "cooked": "<p>You should use a set rule for the numbering style and then individual show rules to modify the font size etc…</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set heading(numbering: \"I.A\")\n#show heading.where(level: 1): it =&gt; {\n  set text(20pt)\n  it\n}\n#show heading.where(level: 2): it =&gt; {\n  set text(red)\n  it\n}\n</code></pre>\n<p>The nested set rules will only affect the scope of the show rule, which is the number and body of the heading. You can also add nested show rules if you want to further modify the heading, e.g. with the <code>smallcaps()</code> function.</p>\n<p>The flexibility of set rules and show rules is nicely explained in the styling section of the documentation <a href=\"https://typst.app/docs/reference/styling/\">here</a>. Since your initial approaches were way to complicated, you can probably benefit a lot from reading that section.</p>",
+      "raw": "You should use a set rule for the numbering style and then individual show rules to modify the font size etc...\n\n```typ\n#set heading(numbering: \"I.A\")\n#show heading.where(level: 1): it => {\n  set text(20pt)\n  it\n}\n#show heading.where(level: 2): it => {\n  set text(red)\n  it\n}\n```\n\nThe nested set rules will only affect the scope of the show rule, which is the number and body of the heading. You can also add nested show rules if you want to further modify the heading, e.g. with the `smallcaps()` function.\n\nThe flexibility of set rules and show rules is nicely explained in the styling section of the documentation [here](https://typst.app/docs/reference/styling/). Since your initial approaches were way to complicated, you can probably benefit a lot from reading that section.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 24,
+      "score": 39.8,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 69
+    },
+    {
+      "id": 7979,
+      "post_number": 3,
+      "username": "AbandonedProjects",
+      "name": "AbandonedProjects",
+      "created_at": "2025-01-28T22:51:28.275Z",
+      "updated_at": "2025-01-28T22:51:28.275Z",
+      "cooked": "<aside class=\"quote no-group\" data-username=\"janekfleper\" data-post=\"2\" data-topic=\"2588\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/letter_avatar_proxy/v4/letter/j/8F38B1/48.png\" class=\"avatar\"> janekfleper:</div>\n<blockquote>\n<p>your initial approaches were way to complicated</p>\n</blockquote>\n</aside>\n<p>And you haven’t even seen my real code. <img src=\"https://forum.typst.app/images/emoji/apple/wink.png?v=12\" title=\":wink:\" class=\"emoji\" alt=\":wink:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>\n<p>The solution I needed was mentioned on that page you linked. It’s the <a href=\"https://typst.app/docs/reference/introspection/counter/\"><code>counter</code></a> type.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show heading.where(level: 1): it =&gt; {\n  text(\n    size: 10pt,\n    weight: \"regular\",\n    [\n      #counter(heading).display(it.numbering)\\\n//     ^--------------\n      #h(15pt)\\\n      #upper(it.body.text.first())\\\n      #text(size: 8pt, it.body.text.slice(1))\n    ]\n}\n</code></pre>\n<p>I appreciate the help! I’m going to mark my own reply as the solution since it contained what I ended up needing, but feel free to call me out if I’m doing that backwards.<br>\nThanks again.</p>",
+      "raw": "[quote=\"janekfleper, post:2, topic:2588\"]\nyour initial approaches were way to complicated\n[/quote]\nAnd you haven't even seen my real code. :wink:\n\nThe solution I needed was mentioned on that page you linked. It's the [`counter`](https://typst.app/docs/reference/introspection/counter/) type.\n\n```typ\n#show heading.where(level: 1): it => {\n  text(\n    size: 10pt,\n    weight: \"regular\",\n    [\n      #counter(heading).display(it.numbering)\\\n//     ^--------------\n      #h(15pt)\\\n      #upper(it.body.text.first())\\\n      #text(size: 8pt, it.body.text.slice(1))\n    ]\n}\n```\n\nI appreciate the help! I'm going to mark my own reply as the solution since it contained what I ended up needing, but feel free to call me out if I'm doing that backwards.\nThanks again.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 0,
+      "reads": 25,
+      "score": 15.0,
+      "accepted_answer": true,
+      "trust_level": 0,
+      "user_id": 1107
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:24.239812"
+}

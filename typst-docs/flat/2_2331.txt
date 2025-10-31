@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2331,
+    "title": "How to display a outline in another outline",
+    "slug": "how-to-display-a-outline-in-another-outline",
+    "posts_count": 3,
+    "created_at": "2025-01-07T15:36:12.732Z",
+    "last_posted_at": "2025-01-07T15:48:04.701Z",
+    "views": 164,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "HPCesia",
+    "tags": [
+      "layout",
+      "outline"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 144
+  },
+  "posts": [
+    {
+      "id": 7271,
+      "post_number": 1,
+      "username": "JohnDough",
+      "name": "John Dough",
+      "created_at": "2025-01-07T15:36:12.994Z",
+      "updated_at": "2025-01-07T18:28:13.605Z",
+      "cooked": "<p>Hello,</p>\n<p>I am currently working on a template for my study works and I don’t know how to get one outline show up as content in another outline. So the thing is, I want one main outline, and also some outlines like list of figures and list of tables. I got the outlines working but I want to show the “List of figures”/“List of tables” in the main outline.</p>\n<p>Does anyone have an idea how to solve this?</p>\n<p>Many thanks in advance<br>\nJohn</p>",
+      "raw": "Hello, \n\n I am currently working on a template for my study works and I don't know how to get one outline show up as content in another outline. So the thing is, I want one main outline, and also some outlines like list of figures and list of tables. I got the outlines working but I want to show the \"List of figures\"/\"List of tables\" in the main outline.\n\nDoes anyone have an idea how to solve this?\n\nMany thanks in advance\nJohn",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 41,
+      "score": 658.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1021
+    },
+    {
+      "id": 7273,
+      "post_number": 2,
+      "username": "HPCesia",
+      "name": "HPCesia",
+      "created_at": "2025-01-07T15:43:18.671Z",
+      "updated_at": "2025-01-07T15:43:18.671Z",
+      "cooked": "<p>You can use <code>heading</code>’s <code>outlined: true</code> to show up your graph outline in main outline, for example:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let graph-outline(..args) = {\n  show outline: set heading(outlined: true)\n  outline(..args)\n}\n\n#outline()\n\n#graph-outline(title: \"Graphs\", target: figure.where(outlined: true))\n\n= Foo\n= Bar\n</code></pre>",
+      "raw": "You can use `heading`'s `outlined: true` to show up your graph outline in main outline, for example:\n```typst\n#let graph-outline(..args) = {\n  show outline: set heading(outlined: true)\n  outline(..args)\n}\n\n#outline()\n\n#graph-outline(title: \"Graphs\", target: figure.where(outlined: true))\n\n= Foo\n= Bar\n```",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 41,
+      "score": 53.2,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 1020
+    },
+    {
+      "id": 7274,
+      "post_number": 3,
+      "username": "JohnDough",
+      "name": "John Dough",
+      "created_at": "2025-01-07T15:48:04.701Z",
+      "updated_at": "2025-01-07T15:48:04.701Z",
+      "cooked": "<p>Thanks a lot, this was exactly what I’ve been looking for a long time :c</p>",
+      "raw": "Thanks a lot, this was exactly what I've been looking for a long time :c",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 38,
+      "score": 7.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1021
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:04.100580"
+}

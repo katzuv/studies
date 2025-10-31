@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3189,
+    "title": "How to change the size of headings?",
+    "slug": "how-to-change-the-size-of-headings",
+    "posts_count": 3,
+    "created_at": "2025-03-11T10:27:48.704Z",
+    "last_posted_at": "2025-03-11T12:44:43.511Z",
+    "views": 171,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "styling"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 132
+  },
+  "posts": [
+    {
+      "id": 9630,
+      "post_number": 1,
+      "username": "differentialprime",
+      "name": "differentialprime",
+      "created_at": "2025-03-11T10:27:48.862Z",
+      "updated_at": "2025-03-11T11:00:34.167Z",
+      "cooked": "<p>Hi there,</p>\n<p>I would like to change the size (e.g. to 14pt) for level 1 headings.<br>\nI couldn’t find an option for this.</p>\n<p>The heading function has no argument “size”.</p>\n<p>I would like to set this once at the top of the file.</p>\n<p>Thanks in advance.</p>",
+      "raw": "Hi there, \n\nI would like to change the size (e.g. to 14pt) for level 1 headings. \nI couldn't find an option for this. \n\nThe heading function has no argument \"size\".\n\nI would like to set this once at the top of the file.\n\nThanks in advance.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 790.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1329
+    },
+    {
+      "id": 9632,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-03-11T11:03:36.864Z",
+      "updated_at": "2025-03-11T11:03:36.864Z",
+      "cooked": "<p>Hi, welcome to the Typst forum! I suggest you have a look at the styling documentation: <a href=\"https://typst.app/docs/tutorial/formatting/\">basic tutorial</a>, <a href=\"https://typst.app/docs/tutorial/formatting/\">advanced tutorial</a> and <a href=\"https://typst.app/docs/reference/styling/\">reference</a>. For your problem the simplest is</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show heading.where(level: 1): set text(size: 14pt)\n</code></pre>\n<p>As you can see, the size is a property of text rather than of the heading itself.</p>",
+      "raw": "Hi, welcome to the Typst forum! I suggest you have a look at the styling documentation: [basic tutorial](https://typst.app/docs/tutorial/formatting/), [advanced tutorial](https://typst.app/docs/tutorial/formatting/) and [reference](https://typst.app/docs/reference/styling/). For your problem the simplest is\n\n```typ\n#show heading.where(level: 1): set text(size: 14pt)\n```\n\nAs you can see, the size is a property of text rather than of the heading itself.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 25,
+      "score": 30.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    },
+    {
+      "id": 9640,
+      "post_number": 3,
+      "username": "differentialprime",
+      "name": "differentialprime",
+      "created_at": "2025-03-11T12:44:43.511Z",
+      "updated_at": "2025-03-11T12:44:43.511Z",
+      "cooked": "<p>Thank you, that worked! I didn’t find this <code>.where</code> syntax.</p>",
+      "raw": "Thank you, that worked! I didn't find this `.where` syntax.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 23,
+      "score": 19.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1329
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:30.289865"
+}

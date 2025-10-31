@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 945,
+    "title": "Why does the use of #strike cause a linebreak?",
+    "slug": "why-does-the-use-of-strike-cause-a-linebreak",
+    "posts_count": 3,
+    "created_at": "2024-10-05T14:20:13.032Z",
+    "last_posted_at": "2024-10-05T15:27:06.469Z",
+    "views": 69,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 268
+  },
+  "posts": [
+    {
+      "id": 3449,
+      "post_number": 1,
+      "username": "Walter_H_Schreiber",
+      "name": "Walter H. Schreiber",
+      "created_at": "2024-10-05T14:20:13.176Z",
+      "updated_at": "2024-10-05T14:48:51.583Z",
+      "cooked": "<p>The following line causes a linebreak?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">  - #strike([09. Juni 2025]) Pfingstmontag \n</code></pre>\n<p>“Pfingstmontag” ist indented below the date, which is a list item.</p>",
+      "raw": "The following line causes a linebreak?\n```typ\n  - #strike([09. Juni 2025]) Pfingstmontag \n```\n\"Pfingstmontag\" ist indented below the date, which is a list item.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 90.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 429
+    },
+    {
+      "id": 3451,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-10-05T14:48:26.494Z",
+      "updated_at": "2024-10-10T14:50:20.289Z",
+      "cooked": "<p>An even more minimal reproduction is the following:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">- #[09. Juni 2025] Pfingstmontag\n</code></pre>\n<p>A hint that something’s wrong here is that the text says “9. Juni”, not “09. Juni”. Apparently, the content block <code>#[...]</code> or alternatively <code>strike()</code> causes the <code>09.</code> to be interpreted as the start of an enumerated list! Maybe someone from the team can comment on whether that is considered a bug or not.</p>\n<p>There are a few ways you can prevent this from happening:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">- #strike[\\09. Juni 2025] Pfingstmontag\n- #strike(\"09. Juni 2025\") Pfingstmontag\n</code></pre>\n<p>Personally, I would use the <code>datetime</code> type combined with the <code>datify</code> package to localize month names:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/datify:0.1.2\": custom-date-format\n#set text(lang: \"de\")\n\n#let format-date(date) = context custom-date-format(date, \"DD. Month YYYY\", text.lang)\n\n- #strike(format-date(datetime(year: 2025, month: 12, day: 9))) Pfingstmontag\n\n// or, if you type the dates manually and don't want to use the long datetime constructor:\n#let format-date(date) = {\n  let date = toml.decode(\"date = \" + date).date\n  context custom-date-format(date, \"DD. Month YYYY\", text.lang)\n}\n\n- #strike(format-date(\"2025-12-09\")) Pfingstmontag\n</code></pre>",
+      "raw": "An even more minimal reproduction is the following:\n```typ\n- #[09. Juni 2025] Pfingstmontag\n```\nA hint that something's wrong here is that the text says \"9. Juni\", not \"09. Juni\". Apparently, the content block `#[...]` or alternatively `strike()` causes the `09.` to be interpreted as the start of an enumerated list! Maybe someone from the team can comment on whether that is considered a bug or not.\n\nThere are a few ways you can prevent this from happening:\n```typ\n- #strike[\\09. Juni 2025] Pfingstmontag\n- #strike(\"09. Juni 2025\") Pfingstmontag\n```\nPersonally, I would use the `datetime` type combined with the `datify` package to localize month names:\n```typ\n#import \"@preview/datify:0.1.2\": custom-date-format\n#set text(lang: \"de\")\n\n#let format-date(date) = context custom-date-format(date, \"DD. Month YYYY\", text.lang)\n\n- #strike(format-date(datetime(year: 2025, month: 12, day: 9))) Pfingstmontag\n\n// or, if you type the dates manually and don't want to use the long datetime constructor:\n#let format-date(date) = {\n  let date = toml.decode(\"date = \" + date).date\n  context custom-date-format(date, \"DD. Month YYYY\", text.lang)\n}\n\n- #strike(format-date(\"2025-12-09\")) Pfingstmontag\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 20.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 3455,
+      "post_number": 3,
+      "username": "Walter_H_Schreiber",
+      "name": "Walter H. Schreiber",
+      "created_at": "2024-10-05T15:27:06.469Z",
+      "updated_at": "2024-10-05T15:27:06.469Z",
+      "cooked": "<p>Great answer. You got the eyes of an eagle! It did not occur to me that it could have been the start of an enumeration. In ‘regular’ markup I might have caught it but as typst uses ‘+’ I did not think of it. Although I had read at some time that enumerations could be skipped/restarted etc.</p>",
+      "raw": "Great answer. You got the eyes of an eagle! It did not occur to me that it could have been the start of an enumeration. In 'regular' markup I might have caught it but as typst uses '+' I did not think of it. Although I had read at some time that enumerations could be skipped/restarted etc.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 24,
+      "score": 49.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 429
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:20.533449"
+}

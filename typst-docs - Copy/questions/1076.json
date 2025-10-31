@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1076,
+    "title": "Aligning multiple matrices and vectors",
+    "slug": "aligning-multiple-matrices-and-vectors",
+    "posts_count": 2,
+    "created_at": "2024-10-14T07:29:36.280Z",
+    "last_posted_at": "2024-10-14T07:40:50.501Z",
+    "views": 105,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 237
+  },
+  "posts": [
+    {
+      "id": 3860,
+      "post_number": 1,
+      "username": "Steven",
+      "name": "Steven",
+      "created_at": "2024-10-14T07:29:36.477Z",
+      "updated_at": "2024-10-14T07:42:37.869Z",
+      "cooked": "<p>Hello, I would like to create two vectors or matrices, such that the rows of each vector/matrix line up horizontally. For example, consider the following</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">$ vec(f_a, f_b, f_c) = vec(a, b, c) $\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/1X/3051eea547d7dd41d9578f14d71610e58d95059b.png\" alt=\"Screenshot 2024-10-14 at 15.27.49\" data-base62-sha1=\"6TssmKoJFu9oJ4GmF9nLgfHwTa3\" width=\"212\" height=\"178\"></p>\n<p>I would instead like the right vector to have vertical padding in each cell, such that I can draw parallel lines from <code>$f_a$</code> to <code>$a$</code>, <code>$f_b$</code> to <code>$b$</code>, and so on.</p>\n<p>I tried to use the <code>gap</code> parameter, but this yields the following results:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set math.vec(gap: 2em)\n$ vec(f_a, f_b, f_c) = vec(a, b, c) $\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/1X/1b0136a5aafc420a49445e0fff17f6771c2e8ee8.png\" alt=\"Screenshot 2024-10-14 at 15.34.22\" data-base62-sha1=\"3QTuttGifOPbw1EmTG6mj4eYkys\" width=\"132\" height=\"168\"></p>\n<p>I can get closer using <code>grid</code>, but it requires manual tuning and the braces still differ.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">$ vec(#grid(columns: 1, gutter: 5pt, $ f_a $, $ f_b $, $ f_c $)) = vec(#grid(columns: 1, gutter: 10pt, $ a $, $ b $, $ c $)) $ \n</code></pre>\n<p>As a new user, I can only add two images so you will need to imagine the results.</p>",
+      "raw": "Hello, I would like to create two vectors or matrices, such that the rows of each vector/matrix line up horizontally. For example, consider the following\n\n```typst\n$ vec(f_a, f_b, f_c) = vec(a, b, c) $\n```\n\n![Screenshot 2024-10-14 at 15.27.49|212x178](upload://6TssmKoJFu9oJ4GmF9nLgfHwTa3.png)\n\nI would instead like the right vector to have vertical padding in each cell, such that I can draw parallel lines from `$f_a$` to `$a$`, `$f_b$` to `$b$`, and so on.\n\nI tried to use the `gap` parameter, but this yields the following results:\n```typst\n#set math.vec(gap: 2em)\n$ vec(f_a, f_b, f_c) = vec(a, b, c) $\n```\n\n![Screenshot 2024-10-14 at 15.34.22|132x168](upload://3QTuttGifOPbw1EmTG6mj4eYkys.png)\n\nI can get closer using `grid`, but it requires manual tuning and the braces still differ. \n\n```typst\n$ vec(#grid(columns: 1, gutter: 5pt, $ f_a $, $ f_b $, $ f_c $)) = vec(#grid(columns: 1, gutter: 10pt, $ a $, $ b $, $ c $)) $ \n```\n\nAs a new user, I can only add two images so you will need to imagine the results.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 31,
+      "score": 351.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 522
+    },
+    {
+      "id": 3863,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-10-14T07:40:50.501Z",
+      "updated_at": "2024-10-14T07:40:50.501Z",
+      "cooked": "<p>This is a layout issue that was fixed for 0.12. You can try out the effect using the release candidate (0.12.0-rc1) right now, following instructions <a href=\"https://forum.typst.app/t/typst-0-12-is-in-its-final-testing-period-your-help-is-wanted/916\">here</a> and/or <a href=\"https://forum.typst.app/t/how-to-install-typst-0-12-rc1-locally/980/3\">here</a>.</p>",
+      "raw": "This is a layout issue that was fixed for 0.12. You can try out the effect using the release candidate (0.12.0-rc1) right now, following instructions [here](https://forum.typst.app/t/typst-0-12-is-in-its-final-testing-period-your-help-is-wanted/916) and/or [here](https://forum.typst.app/t/how-to-install-typst-0-12-rc1-locally/980/3).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 25.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:54.993569"
+}

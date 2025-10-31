@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3666,
+    "title": "How to add spacing after an horizontal line in the footer?",
+    "slug": "how-to-add-spacing-after-an-horizontal-line-in-the-footer",
+    "posts_count": 3,
+    "created_at": "2025-04-15T17:26:05.769Z",
+    "last_posted_at": "2025-04-15T18:03:47.328Z",
+    "views": 67,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 385
+  },
+  "posts": [
+    {
+      "id": 11121,
+      "post_number": 1,
+      "username": "Mark_Pinsley",
+      "name": "Mark Pinsley",
+      "created_at": "2025-04-15T17:26:05.869Z",
+      "updated_at": "2025-04-17T04:48:50.752Z",
+      "cooked": "<p>Hi, I’m having trouble figuring out what I’m doing wrong—perhaps it’s something simple. I’m trying to create a footer that includes:</p>\n<ul>\n<li>A horizontal line at the top</li>\n<li>Left-aligned text</li>\n<li>Right-aligned page numbering</li>\n<li>Some vertical space between the horizontal line and the text below it</li>\n</ul>\n<p>The issue is that when I try to add spacing after the horizontal line, it throws off the left and right alignment of the footer content. I’ve tried adding the space before defining the columns, and I’ve also tried inserting it within the grid rows, but I haven’t been able to get it to work as intended.</p>\n<p>Any guidance would be appreciated.</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">footer: context [\n  #grid(\n    // Line above footer\n    grid.hline(stroke: 1pt + rgb(\"#C3A463\")),\n    columns: (1fr, 1fr),\n    align: (left, right),\n    //[#v(6pt),#v(6pt)],\n    // Two separate cells: left and right\n    [ Lehigh County, Office of the Controller ],  // left cell\n    [ #counter(page).display(\"1/1\", both: true) ], // right cell\n  \n  )\n</code></pre>",
+      "raw": "Hi, I'm having trouble figuring out what I’m doing wrong—perhaps it’s something simple. I'm trying to create a footer that includes:\n\n* A horizontal line at the top\n* Left-aligned text\n* Right-aligned page numbering\n* Some vertical space between the horizontal line and the text below it\n\nThe issue is that when I try to add spacing after the horizontal line, it throws off the left and right alignment of the footer content. I’ve tried adding the space before defining the columns, and I’ve also tried inserting it within the grid rows, but I haven’t been able to get it to work as intended.\n\nAny guidance would be appreciated. \n\n```typc\nfooter: context [\n  #grid(\n    // Line above footer\n    grid.hline(stroke: 1pt + rgb(\"#C3A463\")),\n    columns: (1fr, 1fr),\n    align: (left, right),\n    //[#v(6pt),#v(6pt)],\n    // Two separate cells: left and right\n    [ Lehigh County, Office of the Controller ],  // left cell\n    [ #counter(page).display(\"1/1\", both: true) ], // right cell\n  \n  )\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 19,
+      "score": 153.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1458
+    },
+    {
+      "id": 11122,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-04-15T17:36:41.806Z",
+      "updated_at": "2025-04-15T18:02:35.056Z",
+      "cooked": "<p>Is there a reason why you need/want to use a grid? If not, it would be much simpler to use a regular horizontal line, and then a horizontal spacing <code>h(1fr)</code> to make the text left-aligned and the page counter right-aligned.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(footer: context {\n  line(length: 100%)\n  \"Lehigh County, Office of the Controller\"\n  h(1fr)\n  counter(page).display(\"1/1\", both: true)\n})\n</code></pre>\n<p>This will automatically give you some vertical spacing between the line and the text below it. You could further adjust this by including a (negative) <code>v()</code> after the line.</p>\n<p>And two general things:</p>\n<ul>\n<li>Please use the <a class=\"hashtag-cooked\" href=\"/c/questions/5\" data-type=\"category\" data-slug=\"questions\" data-id=\"5\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>Questions</span></a> category for posts that are clearly questions. And the title should be something you would ask a friend, e.g. “How do I change the layout of text and page numbering in the footer?”</li>\n<li>If you include (Typst) code in your post, please wrap it in <code>```typ ... ```</code> to get syntax highlighting. This makes it much easier to read your code.</li>\n</ul>\n<p>For the official “how-to” on posting questions, please see the post below.</p><aside class=\"quote quote-modified\" data-post=\"1\" data-topic=\"11\">\n  <div class=\"title\">\n    <div class=\"quote-controls\"></div>\n    <img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/reknih/48/3_2.png\" class=\"avatar\">\n    <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">How to post in the Questions category</a> <a class=\"badge-category__wrapper \" href=\"/c/questions/5\"><span data-category-id=\"5\" style=\"--category-badge-color: #F7C000; --category-badge-text-color: #fdfdfd;\" data-drop-close=\"true\" class=\"badge-category \" title=\"Your questions about using Typst and the web app go in this category.\"><span class=\"badge-category__name\">Questions</span></span></a>\n  </div>\n  <blockquote>\n    Your questions about using Typst and the web app go in this category. \nThis category should be a useful resource for both those who post questions and those who later search it for answers. To get there, we ask you to keep in mind the following if you ask a question: \n<a name=\"p-29-the-basics-1\" class=\"anchor\" href=\"#p-29-the-basics-1\"></a>The Basics\nEach post should contain one distinct question on Typst. If you have multiple questions, do not hesitate to create multiple posts! Posts that are discussions or otherwise not questions looking for help should go into the…\n  </blockquote>\n</aside>\n",
+      "raw": "Is there a reason why you need/want to use a grid? If not, it would be much simpler to use a regular horizontal line, and then a horizontal spacing `h(1fr)` to make the text left-aligned and the page counter right-aligned.\n\n```typ\n#set page(footer: context {\n  line(length: 100%)\n  \"Lehigh County, Office of the Controller\"\n  h(1fr)\n  counter(page).display(\"1/1\", both: true)\n})\n```\n\nThis will automatically give you some vertical spacing between the line and the text below it. You could further adjust this by including a (negative) `v()` after the line.\n\nAnd two general things:\n- Please use the #questions category for posts that are clearly questions. And the title should be something you would ask a friend, e.g. \"How do I change the layout of text and page numbering in the footer?\"\n- If you include (Typst) code in your post, please wrap it in ` ```typ ... ``` ` to get syntax highlighting. This makes it much easier to read your code.\n\nFor the official \"how-to\" on posting questions, please see the post below.\nhttps://forum.typst.app/t/how-to-post-in-the-questions-category/11",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 18,
+      "score": 38.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    },
+    {
+      "id": 11125,
+      "post_number": 3,
+      "username": "Mark_Pinsley",
+      "name": "Mark Pinsley",
+      "created_at": "2025-04-15T18:03:47.328Z",
+      "updated_at": "2025-04-15T18:03:47.328Z",
+      "cooked": "<p>Thank you. That worked. I am still learning the Typst vocabulary :)  This works much better than what I did. I assumed I needed to cells. Thank you also for the How to post!</p>",
+      "raw": "Thank you. That worked. I am still learning the Typst vocabulary :)  This works much better than what I did. I assumed I needed to cells. Thank you also for the How to post!",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 17,
+      "score": 3.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1458
+    }
+  ],
+  "scraped_at": "2025-06-10T09:49:09.287883"
+}

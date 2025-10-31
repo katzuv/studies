@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 3128,
+    "title": "How can I ensure that the underbrace has no impact on the spacing of the elements above?",
+    "slug": "how-can-i-ensure-that-the-underbrace-has-no-impact-on-the-spacing-of-the-elements-above",
+    "posts_count": 2,
+    "created_at": "2025-03-06T13:25:08.163Z",
+    "last_posted_at": "2025-03-06T13:53:59.006Z",
+    "views": 58,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 176
+  },
+  "posts": [
+    {
+      "id": 9441,
+      "post_number": 1,
+      "username": "DreamerPhi",
+      "name": "",
+      "created_at": "2025-03-06T13:25:08.318Z",
+      "updated_at": "2025-03-06T13:25:08.318Z",
+      "cooked": "<p>Hi,<br>\nIs there a way to ensure that the underbrace doesn’t impact the spacing of the formula above?<br>\nFor instance, I would like to have no space after the <code>1</code> with :</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">$underbrace(0...0,k) 1 underbrace(0...0,n+m-k-1)$\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/4/4258cef0e0f6a837d287b6aeedd45b5f2a61ade9.png\" alt=\"Screenshot from 2025-03-06 14-24-25\" data-base62-sha1=\"9sVMC2zztrhRnko3UVHBhqpNdxL\" width=\"190\" height=\"76\"><br>\nThanks.</p>",
+      "raw": "Hi,\nIs there a way to ensure that the underbrace doesn't impact the spacing of the formula above?\nFor instance, I would like to have no space after the `1` with :\n```typ\n$underbrace(0...0,k) 1 underbrace(0...0,n+m-k-1)$\n```\n![Screenshot from 2025-03-06 14-24-25|190x76](upload://9sVMC2zztrhRnko3UVHBhqpNdxL.png)\nThanks.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 110.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1251
+    },
+    {
+      "id": 9442,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-03-06T13:53:59.006Z",
+      "updated_at": "2025-03-06T13:55:21.887Z",
+      "cooked": "<p>You can use the function <a href=\"https://typst.app/docs/reference/layout/place/\"><code>place()</code></a> for the annotation. The underbrace (or rather the content below) will then no longer affect the spacing of the formula above. If you want the annotation to be formatted as math, you need to reduce the font size since the equation inside the place function would otherwise use the same font size as your regular formula. I am not sure if the scaling factor is exactly 0.7 but it looked right at the first glance.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let annotation(body) = {\n  show math.equation: set text(size: 0.7em)\n  place(top + center, $body$)\n}\n\n$underbrace(0...0, k) 1 underbrace(0...0, annotation(n+m-k-1))$\n</code></pre>",
+      "raw": "You can use the function [`place()`](https://typst.app/docs/reference/layout/place/) for the annotation. The underbrace (or rather the content below) will then no longer affect the spacing of the formula above. If you want the annotation to be formatted as math, you need to reduce the font size since the equation inside the place function would otherwise use the same font size as your regular formula. I am not sure if the scaling factor is exactly 0.7 but it looked right at the first glance.\n\n```typ\n#let annotation(body) = {\n  show math.equation: set text(size: 0.7em)\n  place(top + center, $body$)\n}\n\n$underbrace(0...0, k) 1 underbrace(0...0, annotation(n+m-k-1))$\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 27,
+      "score": 25.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:38.617597"
+}

@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1607,
+    "title": "How to call external applications?",
+    "slug": "how-to-call-external-applications",
+    "posts_count": 3,
+    "created_at": "2024-11-08T13:57:57.812Z",
+    "last_posted_at": "2024-11-08T23:30:22.498Z",
+    "views": 330,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "PgBiel",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 449
+  },
+  "posts": [
+    {
+      "id": 5312,
+      "post_number": 1,
+      "username": "curious-m",
+      "name": "curious-m",
+      "created_at": "2024-11-08T13:57:58.021Z",
+      "updated_at": "2024-11-08T23:20:27.804Z",
+      "cooked": "<p>I consider installing a typest instance on my private server.<br>\nIs it possible to enable the interaction with other programs, ideally establishing socks connections to running deamons or making calls to an REST API or even call (whitelisted) programs on the server.</p>\n<p>While I understand that enabling such things (especially the last option) on a public server might lead to sever security issues, it would be great for many of my possible usecases, such as automatic report generation.</p>\n<p>Currently I mainly use knitr/overleaf or jupyter for such usecases. I guess, for those applications it is easier, as they compile everything at once. So for typest some mechanism would be necessary, to control possibly necessary reloads.</p>\n<p>The alternative, running scripts, creating outputs which I eventually import and display in typest just doesn’t feel to appealing.</p>",
+      "raw": "I consider installing a typest instance on my private server.\nIs it possible to enable the interaction with other programs, ideally establishing socks connections to running deamons or making calls to an REST API or even call (whitelisted) programs on the server.\n\nWhile I understand that enabling such things (especially the last option) on a public server might lead to sever security issues, it would be great for many of my possible usecases, such as automatic report generation.\n\nCurrently I mainly use knitr/overleaf or jupyter for such usecases. I guess, for those applications it is easier, as they compile everything at once. So for typest some mechanism would be necessary, to control possibly necessary reloads.\n\nThe alternative, running scripts, creating outputs which I eventually import and display in typest just doesn't feel to appealing.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 33,
+      "score": 1141.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 769
+    },
+    {
+      "id": 5361,
+      "post_number": 2,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-11-08T23:29:53.551Z",
+      "updated_at": "2024-11-08T23:29:53.551Z",
+      "cooked": "<p>Welcome to the forum <a class=\"mention\" href=\"/u/curious-m\">@curious-m</a> ! I’ve updated your post title to better suit our guidelines: <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\" class=\"inline-onebox\">How to post in the Questions category</a></p>\n<p>Make sure your title is a question you’d ask to a friend about Typst. <img src=\"https://forum.typst.app/images/emoji/apple/wink.png?v=12\" title=\":wink:\" class=\"emoji\" alt=\":wink:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Welcome to the forum @curious-m ! I've updated your post title to better suit our guidelines: https://forum.typst.app/t/how-to-post-in-the-questions-category/11\n\nMake sure your title is a question you'd ask to a friend about Typst. :wink:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 25.2,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    },
+    {
+      "id": 5362,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-11-08T23:30:22.498Z",
+      "updated_at": "2024-11-08T23:30:22.498Z",
+      "cooked": "<p>There has been extensive discussion about this in the past, but this functionality (often referred to as “shell escape” in reference to LaTeX’s equivalent functionality) unfortunately isn’t really compatible with several of Typst’s aspects, including portability (being able to compile the same document in different environments), purity (function calls in Typst must always produce the same result to make memoization possible), security (compiling a Typst document must not produce unexpected side-effects in your system) and others.</p>\n<p>However, you can still run non-Typst code within a Typst document through the usage of WASM plugins, which <em>are</em> portable. This allows you to run anything that can compile to WASM, including even languages like Python (<a href=\"https://typst.app/universe/package/pyrunner\" class=\"inline-onebox\">pyrunner – Typst Universe</a>) or JavaScript (<a href=\"https://typst.app/universe/package/jogs\" class=\"inline-onebox\">jogs – Typst Universe</a>). As a fun fact, this also made it possible to bring some tools from the JS ecosystem to Typst, such as charts with <code>echarts</code>: <a href=\"https://typst.app/universe/package/echarm\" class=\"inline-onebox\">echarm – Typst Universe</a></p>\n<p>For more information on how to create a plugin (if you’re a developer), you can check out this page: <a href=\"https://typst.app/docs/reference/foundations/plugin/\" class=\"inline-onebox\">Plugin Type – Typst Documentation</a></p>\n<p>Now, if you really do need to run an external command (because, say, your program can’t easily be compiled to WebAssembly), it will be necessary to run the command before compiling and using its output. However, you can make this process easier, and even determine which command to run from inside the Typst document, thanks to <code>typst query</code>, which allows fetching information from the document. Check out this package which may help: <a href=\"https://typst.app/universe/package/prequery\" class=\"inline-onebox\">prequery – Typst Universe</a></p>",
+      "raw": "There has been extensive discussion about this in the past, but this functionality (often referred to as \"shell escape\" in reference to LaTeX's equivalent functionality) unfortunately isn't really compatible with several of Typst's aspects, including portability (being able to compile the same document in different environments), purity (function calls in Typst must always produce the same result to make memoization possible), security (compiling a Typst document must not produce unexpected side-effects in your system) and others.\n\nHowever, you can still run non-Typst code within a Typst document through the usage of WASM plugins, which _are_ portable. This allows you to run anything that can compile to WASM, including even languages like Python (https://typst.app/universe/package/pyrunner) or JavaScript (https://typst.app/universe/package/jogs). As a fun fact, this also made it possible to bring some tools from the JS ecosystem to Typst, such as charts with `echarts`: https://typst.app/universe/package/echarm\n\nFor more information on how to create a plugin (if you're a developer), you can check out this page: https://typst.app/docs/reference/foundations/plugin/\n\nNow, if you really do need to run an external command (because, say, your program can't easily be compiled to WebAssembly), it will be necessary to run the command before compiling and using its output. However, you can make this process easier, and even determine which command to run from inside the Typst document, thanks to `typst query`, which allows fetching information from the document. Check out this package which may help: https://typst.app/universe/package/prequery",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 26,
+      "score": 270.2,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:18.241965"
+}

@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 3270,
+    "title": "How can I change the subscript to go right of <= instead of under it?",
+    "slug": "how-can-i-change-the-subscript-to-go-right-of-instead-of-under-it",
+    "posts_count": 3,
+    "created_at": "2025-03-15T12:11:50.443Z",
+    "last_posted_at": "2025-03-15T12:45:46.418Z",
+    "views": 93,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "math",
+      "styling"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 276
+  },
+  "posts": [
+    {
+      "id": 9828,
+      "post_number": 1,
+      "username": "Adrian_Weitkemper",
+      "name": "Adron",
+      "created_at": "2025-03-15T12:11:50.837Z",
+      "updated_at": "2025-03-18T18:08:58.392Z",
+      "cooked": "<p>I would like to write something like this:<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/8/83f9a61a2a7799959027aeb5d7c34f7e34e515de.png\" alt=\"grafik\" data-base62-sha1=\"iPvpXQww2YkYpO2WSgV7uJmuX8O\" width=\"65\" height=\"30\"><br>\nSo first I tried $L &lt;=_p A$, which results in the p going below the less or equal to. So the best solution I could come up with is &lt;=#sub[p], which works, although I don’t really like the distance to the less or equal to and the missing distance to the next letter:<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/0/0fd1d7dcaa0aaaf2d647600ffede16579537a4bc.png\" alt=\"grafik\" data-base62-sha1=\"2fWKroykvWvm9Brjswnlt2FNmIQ\" width=\"79\" height=\"30\"></p>\n<p>So <strong>in short,</strong> I would like to have a show rule, which replaces the &lt;=_p in math mode with L &lt;=#sub[p]. If there is a better solution to display the desired symbol that would of course be great!<br>\nI tried</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show \"&lt;=_p\": it =&gt; [\n  '&lt;=#sub[p]'\n]\n</code></pre>\n<p>which does not work. I think, it would have to be something like</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show sym.lt.eq: it =&gt; [\n  #it#sub[p]\n]\n</code></pre>\n<p>but because the “_p” of “&lt;=_p” is not included in the it, it results in this:<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/7/786fb23c856e3c719685a216986227e1e2534050.png\" alt=\"grafik\" data-base62-sha1=\"hbqBtPO46aOVX2dwunKblwdBkDC\" width=\"87\" height=\"27\"></p>\n<p>Any help is appreciated.<br>\nThank you in advance <img src=\"https://forum.typst.app/images/emoji/apple/slight_smile.png?v=12\" title=\":slight_smile:\" class=\"emoji\" alt=\":slight_smile:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "I would like to write something like this: \n![grafik|87x40, 75%](upload://iPvpXQww2YkYpO2WSgV7uJmuX8O.png)\nSo first I tried $L <=_p A$, which results in the p going below the less or equal to. So the best solution I could come up with is <=#sub[p], which works, although I don't really like the distance to the less or equal to and the missing distance to the next letter: \n![grafik|79x30](upload://2fWKroykvWvm9Brjswnlt2FNmIQ.png)\n\nSo **in short,** I would like to have a show rule, which replaces the <=_p in math mode with L <=#sub[p]. If there is a better solution to display the desired symbol that would of course be great!\nI tried\n```typst\n#show \"<=_p\": it => [\n  '<=#sub[p]'\n]\n```\nwhich does not work. I think, it would have to be something like \n```typst\n#show sym.lt.eq: it => [\n  #it#sub[p]\n]\n```\nbut because the \"_p\" of \"<=_p\" is not included in the it, it results in this: \n![grafik|87x27](upload://hbqBtPO46aOVX2dwunKblwdBkDC.png)\n\nAny help is appreciated. \nThank you in advance :slight_smile:",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 194.8,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 277
+    },
+    {
+      "id": 9830,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-03-15T12:24:51.954Z",
+      "updated_at": "2025-03-15T12:24:51.954Z",
+      "cooked": "<aside class=\"quote no-group\" data-username=\"Adrian_Weitkemper\" data-post=\"1\" data-topic=\"3270\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/letter_avatar_proxy/v4/letter/a/F7602B/48.png\" class=\"avatar\"> Adrian_Weitkemper:</div>\n<blockquote>\n<p>So first I tried $L &lt;=_p A$, which results in the p going below the less or equal to.</p>\n</blockquote>\n</aside>\n<p>You can change that <img src=\"https://forum.typst.app/images/emoji/apple/slight_smile.png?v=12\" title=\":slight_smile:\" class=\"emoji\" alt=\":slight_smile:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show sym.lt.eq: math.scripts\n\n$L &lt;=_p A$\n</code></pre>\n<p>The <a href=\"https://typst.app/docs/reference/math/attach#functions-scripts\">scripts</a> and <a href=\"https://typst.app/docs/reference/math/attach#functions-limits\">limits</a> functions change how sub- and superscripts attach to match content. Operators have a default for it, and with these functions you can change it.</p>",
+      "raw": "[quote=\"Adrian_Weitkemper, post:1, topic:3270\"]\nSo first I tried $L <=_p A$, which results in the p going below the less or equal to.\n[/quote]\n\nYou can change that :slight_smile: \n\n```typ\n#show sym.lt.eq: math.scripts\n\n$L <=_p A$\n```\n\nThe [scripts](https://typst.app/docs/reference/math/attach#functions-scripts) and [limits](https://typst.app/docs/reference/math/attach#functions-limits) functions change how sub- and superscripts attach to match content. Operators have a default for it, and with these functions you can change it.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 1,
+      "reads": 24,
+      "score": 64.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 9831,
+      "post_number": 3,
+      "username": "Adrian_Weitkemper",
+      "name": "Adron",
+      "created_at": "2025-03-15T12:45:46.418Z",
+      "updated_at": "2025-03-15T12:45:46.418Z",
+      "cooked": "<p>Thank you very much! This approach even fixes the spacing <img src=\"https://forum.typst.app/images/emoji/apple/+1.png?v=12\" title=\":+1:\" class=\"emoji\" alt=\":+1:\" loading=\"lazy\" width=\"20\" height=\"20\"><br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/e/ecf0c958c32a1466abed5b0852c345fe37e84458.png\" alt=\"grafik\" data-base62-sha1=\"xO4z4J4uYpGyurqJxUG4L7d8OFO\" width=\"79\" height=\"36\"></p>",
+      "raw": "Thank you very much! This approach even fixes the spacing :+1: \n![grafik|79x36](upload://xO4z4J4uYpGyurqJxUG4L7d8OFO.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 4.6,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 277
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:21.667639"
+}

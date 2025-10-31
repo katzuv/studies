@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1264,
+    "title": "What's the reason there is a mandatory trailing comma in table syntax?",
+    "slug": "whats-the-reason-there-is-a-mandatory-trailing-comma-in-table-syntax",
+    "posts_count": 2,
+    "created_at": "2024-10-21T15:15:32.532Z",
+    "last_posted_at": "2024-10-21T15:29:08.269Z",
+    "views": 71,
+    "like_count": 4,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "ParaN3xus",
+    "tags": [
+      "syntax"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 257
+  },
+  "posts": [
+    {
+      "id": 4417,
+      "post_number": 1,
+      "username": "jsx97",
+      "name": "jsx97",
+      "created_at": "2024-10-21T15:15:32.603Z",
+      "updated_at": "2024-10-21T15:26:34.059Z",
+      "cooked": "<p>The following example, with minor changes, is from <a href=\"https://typst.app/docs/guides/table-guide\">https://typst.app/docs/guides/table-guide</a>.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#rotate(\n  -90deg,\n  reflow: true,\n\n  table(\n    columns: (1fr,) + 5 * (auto,),\n    inset: (x: 0.6em),\n    stroke: (_, y) =&gt; (\n      x: 1pt,\n      top: if y &lt;= 1 { 1pt } else { 0pt },\n      bottom: 1pt\n    ),\n    align: (left, right, right, right, right, left),\n\n    table.header(\n      [Student Name],\n      [Assignment 1], [Assignment 2],\n      [Mid-term], [Final Exam],\n      [Total Grade]\n    ),\n    [Jane Smith], [78%], [82%], [75%], [80%], [B],\n    [Alex Johnson], [90%], [95%], [94%], [96%], [A+],\n    [John Doe], [85%], [90%], [88%], [92%], [A],\n    [Maria Garcia], [88%], [84%], [89%], [85%], [B+],\n    [Zhang Wei], [93%], [89%], [90%], [91%], [A-],\n    [Marina Musterfrau], [96%], [91%], [74%], [69%], [B-]\n  )\n)\n</code></pre>\n<p>What is the reason that if we remove a comma after <code>1fr</code> or after <code>auto</code>, there is an error? How to avoid it?</p>\n<pre data-code-wrap=\"none\"><code class=\"lang-none\">columns: (1fr,) + 5 * (auto,),  // ok\ncolumns: (1fr) + 5 * (auto),    // error\n</code></pre>",
+      "raw": "The following example, with minor changes, is from <https://typst.app/docs/guides/table-guide>.\n\n```typ\n#rotate(\n  -90deg,\n  reflow: true,\n\n  table(\n    columns: (1fr,) + 5 * (auto,),\n    inset: (x: 0.6em),\n    stroke: (_, y) => (\n      x: 1pt,\n      top: if y <= 1 { 1pt } else { 0pt },\n      bottom: 1pt\n    ),\n    align: (left, right, right, right, right, left),\n\n    table.header(\n      [Student Name],\n      [Assignment 1], [Assignment 2],\n      [Mid-term], [Final Exam],\n      [Total Grade]\n    ),\n    [Jane Smith], [78%], [82%], [75%], [80%], [B],\n    [Alex Johnson], [90%], [95%], [94%], [96%], [A+],\n    [John Doe], [85%], [90%], [88%], [92%], [A],\n    [Maria Garcia], [88%], [84%], [89%], [85%], [B+],\n    [Zhang Wei], [93%], [89%], [90%], [91%], [A-],\n    [Marina Musterfrau], [96%], [91%], [74%], [69%], [B-]\n  )\n)\n```\n\nWhat is the reason that if we remove a comma after `1fr` or after `auto`, there is an error? How to avoid it?\n\n```none\ncolumns: (1fr,) + 5 * (auto,),  // ok\ncolumns: (1fr) + 5 * (auto),    // error\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 85.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 477
+    },
+    {
+      "id": 4421,
+      "post_number": 2,
+      "username": "ParaN3xus",
+      "name": "ParaN3xus",
+      "created_at": "2024-10-21T15:29:08.269Z",
+      "updated_at": "2024-10-21T15:29:08.269Z",
+      "cooked": "<p>This is because parentheses have two functions in Typst.</p>\n<p>One is to change the order of operations, for example, the calculation order of <code>(a + b) * c</code> and <code>a + b * c</code> is altered by the parentheses.</p>\n<p>The other function is to represent a list, for example, <code>(a, b, c)</code>.</p>\n<p>The problem is, when you want to input <code>(a)</code>, Typst interprets it as changing the order of operations rather than a list. Therefore, <code>(1fr)</code> and <code>1fr</code> are exactly the same, and <code>(auto)</code> and <code>auto</code> are also exactly the same.</p>\n<p>Obviously, <code>5 * auto</code> is not valid, so it causes an error. In contrast, the purpose of the comma in <code>(1fr, )</code> is to indicate to Typst that this is a list.</p>",
+      "raw": "This is because parentheses have two functions in Typst. \n\nOne is to change the order of operations, for example, the calculation order of `(a + b) * c` and `a + b * c` is altered by the parentheses. \n\nThe other function is to represent a list, for example, `(a, b, c)`. \n\nThe problem is, when you want to input `(a)`, Typst interprets it as changing the order of operations rather than a list. Therefore, `(1fr)` and `1fr` are exactly the same, and `(auto)` and `auto` are also exactly the same. \n\nObviously, `5 * auto` is not valid, so it causes an error. In contrast, the purpose of the comma in `(1fr, )` is to indicate to Typst that this is a list.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 4,
+      "reads": 25,
+      "score": 65.0,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 14
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:16.362699"
+}

@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1601,
+    "title": "Is there a shorthand for Hardy's asymptotic notation symbol ≍?",
+    "slug": "is-there-a-shorthand-for-hardys-asymptotic-notation-symbol",
+    "posts_count": 3,
+    "created_at": "2024-11-08T04:00:52.591Z",
+    "last_posted_at": "2024-11-08T23:20:07.797Z",
+    "views": 111,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "math",
+      "symbols"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 134
+  },
+  "posts": [
+    {
+      "id": 5296,
+      "post_number": 1,
+      "username": "aaronmanning",
+      "name": "Aaron Manning",
+      "created_at": "2024-11-08T04:00:52.716Z",
+      "updated_at": "2024-11-08T23:19:24.491Z",
+      "cooked": "<p>Does anyone know if there is a shorthand in the symbols namespace for Hardy’s asymptotic notation?</p>\n<ul>\n<li>Unicode character: ≍</li>\n<li>LaTeX Command: \\asymp</li>\n</ul>\n<p>I can’t seem to find it. If not, it might be a worthwhile thing to add, as it is provided by LaTeX and frequently used in number theory and combinatorics.</p>",
+      "raw": "Does anyone know if there is a shorthand in the symbols namespace for Hardy's asymptotic notation?\n\n- Unicode character: ≍\n- LaTeX Command: \\asymp\n\nI can't seem to find it. If not, it might be a worthwhile thing to add, as it is provided by LaTeX and frequently used in number theory and combinatorics.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 33,
+      "score": 306.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 557
+    },
+    {
+      "id": 5301,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-11-08T07:48:45.487Z",
+      "updated_at": "2024-11-08T08:32:47.532Z",
+      "cooked": "<p>Hello and welcome! I don’t think so.<br>\nUntil it comes, you can use</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let hd = \"\\u{224D}\"\n#let nhd = \"\\u{226D}\"\n$\n  hd\\\n  nhd\n$\n</code></pre>\n<p>EDIT: opened a PR <a href=\"https://github.com/typst/typst/pull/5391\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">Add eq.equiv ≍ U+224D (equivalent to) and eq.nequiv ≭ U+226D (not equivalent to) to symbols by quachpas · Pull Request #5391 · typst/typst · GitHub</a></p>",
+      "raw": "Hello and welcome! I don't think so.\nUntil it comes, you can use \n```typ\n#let hd = \"\\u{224D}\"\n#let nhd = \"\\u{226D}\"\n$\n  hd\\\n  nhd\n$\n```\n\nEDIT: opened a PR https://github.com/typst/typst/pull/5391",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 35.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 5360,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-11-08T23:20:07.797Z",
+      "updated_at": "2024-11-08T23:20:07.797Z",
+      "cooked": "<p>Welcome to the forum <a class=\"mention\" href=\"/u/aaronmanning\">@aaronmanning</a> ! I’ve updated your post title to better suit our guidelines: <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\" class=\"inline-onebox\">How to post in the Questions category</a></p>\n<p>Make sure your title is a question you’d ask to a friend about Typst. <img src=\"https://forum.typst.app/images/emoji/apple/wink.png?v=12\" title=\":wink:\" class=\"emoji\" alt=\":wink:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Welcome to the forum @aaronmanning ! I've updated your post title to better suit our guidelines: https://forum.typst.app/t/how-to-post-in-the-questions-category/11\n\nMake sure your title is a question you'd ask to a friend about Typst. :wink:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 21,
+      "score": 9.0,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:19.671412"
+}

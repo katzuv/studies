@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2062,
+    "title": "How to remove label of an elements?",
+    "slug": "how-to-remove-label-of-an-elements",
+    "posts_count": 2,
+    "created_at": "2024-12-12T13:14:17.164Z",
+    "last_posted_at": "2024-12-30T14:14:19.886Z",
+    "views": 113,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "scripting",
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 477
+  },
+  "posts": [
+    {
+      "id": 6554,
+      "post_number": 1,
+      "username": "Pakorn",
+      "name": "Pakorn",
+      "created_at": "2024-12-12T13:14:17.399Z",
+      "updated_at": "2024-12-12T13:14:17.399Z",
+      "cooked": "<p>For example, I have an equation that is printed repeatedly on a presentation. When I want to reference it, the compiler says that the label occurs multiple times in the document.  This is understandable, since the presentation subslides must be printed repeatedly. So I want to remove all of the label after the first subslide is printed, how I can do that?<br>\nI have tried using <code>show math.equation: it =&gt; { .. }</code> but it cannot remove the label without reconstructing the equation. Is there any suggestion?</p>",
+      "raw": "For example, I have an equation that is printed repeatedly on a presentation. When I want to reference it, the compiler says that the label occurs multiple times in the document.  This is understandable, since the presentation subslides must be printed repeatedly. So I want to remove all of the label after the first subslide is printed, how I can do that? \nI have tried using `show math.equation: it => { .. }` but it cannot remove the label without reconstructing the equation. Is there any suggestion?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 28,
+      "score": 290.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 819
+    },
+    {
+      "id": 7063,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-12-30T14:14:19.886Z",
+      "updated_at": "2024-12-30T14:16:09.655Z",
+      "cooked": "<p>I just created a minimal example based on the <a href=\"https://touying-typ.github.io/docs/start\">Touying docs</a> and had no problem with an equation (or a reference to one) appearing more than once:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/touying:0.5.5\": *\n#import themes.simple: *\n\n#show: simple-theme.with(aspect-ratio: \"16-9\")\n\n#set math.equation(numbering: \"(1)\")\n\n= Title\n\n== First Slide\n\n$ a = b $ &lt;foo&gt;\n\n#pause\n\nHello @foo!\n\n#pause\n\nMore!\n</code></pre>\n<p>So I reproduced the problem manually:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set math.equation(numbering: \"(1)\")\n\n#let eq = [$ a = b $ &lt;foo&gt;]\n\n#eq\n#eq\n\nHello @foo!\n</code></pre>\n<p>When should an equation be labelled? If it is the first appearance of that label in the document, i.e. when there are no occurrences of the label earlier. We can write that like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let eq = context {\n  let raw-eq = $ a = b $\n  let lbl = &lt;foo&gt;\n\n  if query(selector(lbl).before(here())).len() == 0 {\n    [#raw-eq #lbl]\n  } else {\n    raw-eq\n  }\n}\n</code></pre>\n<p>Since you probably want that for multiple equations, it would be nice to put that in a function. In the course of that, I also solve the “it cannot remove the label without reconstructing the equation” problem:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let uniquify(body) = {\n  // content functions for validation\n  let sequence = [a ].func()\n  let space = [ ].func()\n\n  // validate the body to avoid misuse\n  assert.eq(type(body), content, message: \"body is not content but must be an equation\")\n  if body.func() == sequence {\n    // extract the single non-space child, if there is only one\n    let children = body.children.filter(it =&gt; it.func() != space)\n    assert.eq(children.len(), 1, message: \"body is a sequence but must be a single equation\")\n\n    body = children.first()\n  }\n  assert.eq(body.func(), math.equation, message: \"body is not an equation\")\n\n  let (body: eq-body, ..fields) = body.fields()\n  // not labelled, just return the original equation\n  if \"label\" not in fields {\n    return body\n  }\n\n  // we remove the label, so the rest of the fields\n  // can now be used to reconstruct the equation (if needed)\n  let lbl = fields.remove(\"label\")\n  context if query(selector(lbl).before(here())).len() == 0 {\n    // return the original labelled equation\n    body\n  } else {\n    // make a new equation with all the same settings, but without label\n    math.equation(eq-body, ..fields)\n  }\n}\n\n#let eq = uniquify[$ a = b $ &lt;foo&gt;]\n</code></pre>\n<p>This does not fix other issues with displaying the same equation multiple times (especially increasing equation numbers) which Touying also handles, but the narrow subject of the question is solved.</p>",
+      "raw": "I just created a minimal example based on the [Touying docs](https://touying-typ.github.io/docs/start) and had no problem with an equation (or a reference to one) appearing more than once:\n\n```typ\n#import \"@preview/touying:0.5.5\": *\n#import themes.simple: *\n\n#show: simple-theme.with(aspect-ratio: \"16-9\")\n\n#set math.equation(numbering: \"(1)\")\n\n= Title\n\n== First Slide\n\n$ a = b $ <foo>\n\n#pause\n\nHello @foo!\n\n#pause\n\nMore!\n```\n\nSo I reproduced the problem manually:\n\n```typ\n#set math.equation(numbering: \"(1)\")\n\n#let eq = [$ a = b $ <foo>]\n\n#eq\n#eq\n\nHello @foo!\n```\n\nWhen should an equation be labelled? If it is the first appearance of that label in the document, i.e. when there are no occurrences of the label earlier. We can write that like this:\n\n```typ\n#let eq = context {\n  let raw-eq = $ a = b $\n  let lbl = <foo>\n\n  if query(selector(lbl).before(here())).len() == 0 {\n    [#raw-eq #lbl]\n  } else {\n    raw-eq\n  }\n}\n```\n\nSince you probably want that for multiple equations, it would be nice to put that in a function. In the course of that, I also solve the \"it cannot remove the label without reconstructing the equation\" problem:\n\n```typ\n#let uniquify(body) = {\n  // content functions for validation\n  let sequence = [a ].func()\n  let space = [ ].func()\n\n  // validate the body to avoid misuse\n  assert.eq(type(body), content, message: \"body is not content but must be an equation\")\n  if body.func() == sequence {\n    // extract the single non-space child, if there is only one\n    let children = body.children.filter(it => it.func() != space)\n    assert.eq(children.len(), 1, message: \"body is a sequence but must be a single equation\")\n\n    body = children.first()\n  }\n  assert.eq(body.func(), math.equation, message: \"body is not an equation\")\n\n  let (body: eq-body, ..fields) = body.fields()\n  // not labelled, just return the original equation\n  if \"label\" not in fields {\n    return body\n  }\n\n  // we remove the label, so the rest of the fields\n  // can now be used to reconstruct the equation (if needed)\n  let lbl = fields.remove(\"label\")\n  context if query(selector(lbl).before(here())).len() == 0 {\n    // return the original labelled equation\n    body\n  } else {\n    // make a new equation with all the same settings, but without label\n    math.equation(eq-body, ..fields)\n  }\n}\n\n#let eq = uniquify[$ a = b $ <foo>]\n```\n\nThis does not fix other issues with displaying the same equation multiple times (especially increasing equation numbers) which Touying also handles, but the narrow subject of the question is solved.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 19,
+      "score": 23.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:42.530724"
+}

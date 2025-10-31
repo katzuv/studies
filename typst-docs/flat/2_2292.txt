@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2292,
+    "title": "How can I align to images side by side?",
+    "slug": "how-can-i-align-to-images-side-by-side",
+    "posts_count": 2,
+    "created_at": "2025-01-03T17:09:19.080Z",
+    "last_posted_at": "2025-01-03T17:38:31.827Z",
+    "views": 1469,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 293
+  },
+  "posts": [
+    {
+      "id": 7180,
+      "post_number": 1,
+      "username": "cailoma",
+      "name": "",
+      "created_at": "2025-01-03T17:09:19.212Z",
+      "updated_at": "2025-01-03T17:24:03.809Z",
+      "cooked": "<p>I’m trying to align 2 images side by side but can reach the objetive.<br>\nWhen I put the images, they appear vertically. I want to put them side by side and centered on the page.</p>\n<p>This is my code</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#figure(\n  image(\"image1.jpeg\", width: 30%),\n)\n#figure(\n   image(\"image2.jpeg\", width: 30%),\n)\n</code></pre>",
+      "raw": "I'm trying to align 2 images side by side but can reach the objetive.\nWhen I put the images, they appear vertically. I want to put them side by side and centered on the page.\n\nThis is my code\n```typ\n#figure(\n  image(\"image1.jpeg\", width: 30%),\n)\n#figure(\n   image(\"image2.jpeg\", width: 30%),\n)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 56,
+      "score": 8576.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 747
+    },
+    {
+      "id": 7181,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-03T17:38:31.827Z",
+      "updated_at": "2025-01-03T17:40:41.540Z",
+      "cooked": "<p>Images (and most other elements, e.g. paragraphs, headings, tables, as well as shapes like lines and rectangles) are <em>block level</em>, that means that they are laid out vertically under each other. The opposite is <em>inline</em>.</p>\n<p>There are a few ways to arrange block content horizontally.</p>\n<ul>\n<li>Here, I would suggest a <a href=\"https://typst.app/docs/reference/layout/grid/\">grid</a>. Grids put multiple things into cells, and you can of course have a grid with only one row. Since you have multiple images, a grid with two column will do the job.\n<ul>\n<li>Related is the <a href=\"https://typst.app/docs/reference/model/table/\">table</a>, but since you only care about the layout and not the display of tabular data, it is less appropriate.</li>\n</ul>\n</li>\n<li>Also somewhat related is the <a href=\"https://typst.app/docs/reference/layout/stack/\">stack</a>, but I would simply not recommend it since it sometimes behaves strangely and I’m not aware of anything you can’t do with a grid instead.</li>\n<li>The last option is to use <a href=\"https://typst.app/docs/reference/layout/box/\">box</a>, which simply wraps something in an inline element, even if it was normally a block-level element. This is more for cases where you put an element in the middle of a line of text or other content that is already inline; since you want to layout two things that are block-level and nothing else, I wouldn’t suggest it for your use case.</li>\n</ul>",
+      "raw": "Images (and most other elements, e.g. paragraphs, headings, tables, as well as shapes like lines and rectangles) are _block level_, that means that they are laid out vertically under each other. The opposite is _inline_.\n\nThere are a few ways to arrange block content horizontally.\n- Here, I would suggest a [grid](https://typst.app/docs/reference/layout/grid/). Grids put multiple things into cells, and you can of course have a grid with only one row. Since you have multiple images, a grid with two column will do the job.\n  - Related is the [table](https://typst.app/docs/reference/model/table/), but since you only care about the layout and not the display of tabular data, it is less appropriate.\n- Also somewhat related is the [stack](https://typst.app/docs/reference/layout/stack/), but I would simply not recommend it since it sometimes behaves strangely and I'm not aware of anything you can't do with a grid instead.\n- The last option is to use [box](https://typst.app/docs/reference/layout/box/), which simply wraps something in an inline element, even if it was normally a block-level element. This is more for cases where you put an element in the middle of a line of text or other content that is already inline; since you want to layout two things that are block-level and nothing else, I wouldn't suggest it for your use case.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 54,
+      "score": 420.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:10.359705"
+}

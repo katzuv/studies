@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2236,
+    "title": "Template : How to prevent linebreak?",
+    "slug": "template-how-to-prevent-linebreak",
+    "posts_count": 2,
+    "created_at": "2024-12-29T13:35:57.365Z",
+    "last_posted_at": "2024-12-29T14:07:24.467Z",
+    "views": 194,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "scripting",
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 250
+  },
+  "posts": [
+    {
+      "id": 7029,
+      "post_number": 1,
+      "username": "Alex",
+      "name": "Alex",
+      "created_at": "2024-12-29T13:35:57.749Z",
+      "updated_at": "2024-12-29T13:53:21.063Z",
+      "cooked": "<p>Hello,<br>\nI’ve this template “code” that just print defined text. If the user want to add an author, the author is shown surrounded with parenthesis.<br>\nHowever, since the text added has a line break at the end, the text and the author does not show on the same line. How to prevent this ?<br>\nThanks in advance for answers</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let header_tune(body, author: \"\") = [\n  #set text(size: 7pt, font : \"Molengo\")\n  \"Air : \"\n  #body  \n  #if (author != \"\") { \"(\"+ author +\")\"} else {\"\"}\n]\n\n#show: style.header_tune.with(author : \"Author\")\nMusique très connue\n</code></pre>\n<p>here’s the result :</p>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/6/6c32a60444fe120259827ac9518016d0b886bbba.png\" alt=\"Capture d'écran 2024-12-29 143449\" data-base62-sha1=\"fra50j17jijwLRCl9uClANgq0K6\" width=\"255\" height=\"131\"></p>\n<p>I want it rendered as :<br>\n“Air : Musique très connue (Author)”</p>\n<p>I know that i can use something like :</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#style.header_tune(\"Musique très connue\", author : \"Alex\")\n</code></pre>\n<p>But i think that it force the end user to either declare a valiable of type text() or set the parameter directly making it “less intuitive” and “less customisable”.</p>",
+      "raw": "Hello, \nI've this template \"code\" that just print defined text. If the user want to add an author, the author is shown surrounded with parenthesis. \nHowever, since the text added has a line break at the end, the text and the author does not show on the same line. How to prevent this ? \nThanks in advance for answers\n\n```typst\n#let header_tune(body, author: \"\") = [\n  #set text(size: 7pt, font : \"Molengo\")\n  \"Air : \"\n  #body  \n  #if (author != \"\") { \"(\"+ author +\")\"} else {\"\"}\n]\n\n#show: style.header_tune.with(author : \"Author\")\nMusique très connue\n```\n\nhere's the result : \n\n![Capture d'écran 2024-12-29 143449|255x131](upload://fra50j17jijwLRCl9uClANgq0K6.png)\n\nI want it rendered as : \n\"Air : Musique très connue (Author)\"\n\nI know that i can use something like :\n\n```typst\n#style.header_tune(\"Musique très connue\", author : \"Alex\")\n```\n\nBut i think that it force the end user to either declare a valiable of type text() or set the parameter directly making it \"less intuitive\" and \"less customisable\".",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 845.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 987
+    },
+    {
+      "id": 7030,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-12-29T14:07:24.467Z",
+      "updated_at": "2024-12-29T14:07:24.467Z",
+      "cooked": "<p>I suspect that you simply have an additional newline after “Musique très connue”. If I just copy your code and the file ends after that line, everything is on the same line.</p>\n<p>Regarding your readability concerns: I think it depends on what the document would contain overall, depending on that a normal function call could look very reasonable. Keep in mind that the function call could look like this, which is fairly customizable (you can style the body, it doesn’t need to be a plain string):</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#style.header_tune(author: \"Author\")[\n  Musique très connue\n]\n</code></pre>",
+      "raw": "I suspect that you simply have an additional newline after \"Musique très connue\". If I just copy your code and the file ends after that line, everything is on the same line.\n\nRegarding your readability concerns: I think it depends on what the document would contain overall, depending on that a normal function call could look very reasonable. Keep in mind that the function call could look like this, which is fairly customizable (you can style the body, it doesn't need to be a plain string):\n```typ\n#style.header_tune(author: \"Author\")[\n  Musique très connue\n]\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 19.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:21.987707"
+}

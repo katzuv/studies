@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3642,
+    "title": "How can I enumerate every element function in Typst?",
+    "slug": "how-can-i-enumerate-every-element-function-in-typst",
+    "posts_count": 3,
+    "created_at": "2025-04-14T05:15:47.987Z",
+    "last_posted_at": "2025-04-14T06:46:10.497Z",
+    "views": 57,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 114
+  },
+  "posts": [
+    {
+      "id": 11026,
+      "post_number": 1,
+      "username": "OrthoPole",
+      "name": "OrthoPole",
+      "created_at": "2025-04-14T05:15:48.114Z",
+      "updated_at": "2025-04-14T05:15:48.114Z",
+      "cooked": "<p>I want to list all element functions in Typst.</p>\n<p>There seems to be no details about the full list.</p>\n<p>Can anyone give me such a list or help me find one?</p>",
+      "raw": "I want to list all element functions in Typst.\n\nThere seems to be no details about the full list.\n\nCan anyone give me such a list or help me find one?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 135.0,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 889
+    },
+    {
+      "id": 11051,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-04-14T06:43:26.776Z",
+      "updated_at": "2025-04-14T06:43:58.899Z",
+      "cooked": "<p>Hello,<br>\nI think give or take all “elements” are listed in files like <a href=\"https://github.com/typst/typst/blob/c21c1c391b48f843c8671993a28eaf1fe0d40b89/crates/typst-library/src/model/mod.rs\">mod.rs</a>. Technically speaking, you can search for occurences of <code>define_elem</code> <a href=\"https://github.com/search?q=repo%3Atypst%2Ftypst+define_elem%3A%3A&amp;type=code\">like so</a> to find all elements.</p>",
+      "raw": "Hello,\nI think give or take all \"elements\" are listed in files like [mod.rs](https://github.com/typst/typst/blob/c21c1c391b48f843c8671993a28eaf1fe0d40b89/crates/typst-library/src/model/mod.rs). Technically speaking, you can search for occurences of `define_elem` [like so](https://github.com/search?q=repo%3Atypst%2Ftypst+define_elem%3A%3A&type=code) to find all elements.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 19.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 11052,
+      "post_number": 3,
+      "username": "OrthoPole",
+      "name": "OrthoPole",
+      "created_at": "2025-04-14T06:46:10.497Z",
+      "updated_at": "2025-04-14T06:46:10.497Z",
+      "cooked": "<p>Thank you. I found a <code>NativeElement</code> trait in the source code. So elements are structs that implement that trait. There is 129 element functions in total.</p>",
+      "raw": "Thank you. I found a `NativeElement` trait in the source code. So elements are structs that implement that trait. There is 129 element functions in total.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 24,
+      "score": 19.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 889
+    }
+  ],
+  "scraped_at": "2025-06-10T09:49:13.786281"
+}

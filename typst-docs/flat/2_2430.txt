@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2430,
+    "title": "Is it possible to link my personal account to my company account?",
+    "slug": "is-it-possible-to-link-my-personal-account-to-my-company-account",
+    "posts_count": 2,
+    "created_at": "2025-01-15T22:52:44.418Z",
+    "last_posted_at": "2025-01-18T19:55:02.530Z",
+    "views": 58,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "laurmaedje",
+    "tags": [
+      "web-app"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 104
+  },
+  "posts": [
+    {
+      "id": 7559,
+      "post_number": 1,
+      "username": "Thomas_Browne",
+      "name": "Delphos AI",
+      "created_at": "2025-01-15T22:52:44.523Z",
+      "updated_at": "2025-01-16T08:19:52.365Z",
+      "cooked": "<p>Hi I have just purchased a 5-person Pro pack for my company, but I have a personal account and I’d like to know if it’s possible to link my personal account to my company account so that I can access both personal and company projects from one login? On github for example I can create a paid-for “organisation” and be a member of that from my personal account.</p>",
+      "raw": "Hi I have just purchased a 5-person Pro pack for my company, but I have a personal account and I’d like to know if it’s possible to link my personal account to my company account so that I can access both personal and company projects from one login? On github for example I can create a paid-for “organisation” and be a member of that from my personal account.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 10.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1057
+    },
+    {
+      "id": 7635,
+      "post_number": 2,
+      "username": "laurmaedje",
+      "name": "Laurenz Mädje",
+      "created_at": "2025-01-18T19:55:02.530Z",
+      "updated_at": "2025-01-18T21:09:35.876Z",
+      "cooked": "<p>You cannot link two accounts in that way. But you can create a team and join it with your personal account and the effect should be similar to how GitHub organizations work.</p>",
+      "raw": "You cannot link two accounts in that way. But you can create a team and join it with your personal account and the effect should be similar to how GitHub organizations work.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 21,
+      "score": 4.2,
+      "accepted_answer": true,
+      "trust_level": 4,
+      "user_id": 2
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:48.040300"
+}

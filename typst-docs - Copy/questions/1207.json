@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1207,
+    "title": "How to adjust spacing between footnotes?",
+    "slug": "how-to-adjust-spacing-between-footnotes",
+    "posts_count": 2,
+    "created_at": "2024-10-19T13:12:15.922Z",
+    "last_posted_at": "2024-10-21T09:32:36.983Z",
+    "views": 190,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "jsx97",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 1,
+    "word_count": 308
+  },
+  "posts": [
+    {
+      "id": 4233,
+      "post_number": 1,
+      "username": "jsx97",
+      "name": "jsx97",
+      "created_at": "2024-10-19T13:12:16.027Z",
+      "updated_at": "2024-10-19T13:13:39.121Z",
+      "cooked": "<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set text(size: 10pt)\n#set par(first-line-indent: 1em, justify: true, leading: 1em, spacing: 1em)\n\n#show footnote.entry: set text(size: 30pt)\n#show footnote.entry: it =&gt; {set par(leading: 0.5em, spacing: 0.5em); it}\n#set footnote.entry(gap: 1em)\n\n#let fn1 = footnote[\n  #lorem(25)\n\n  #lorem(25)\n]\n\n#let fn2 = footnote[\n  #lorem(25)\n\n  #lorem(25)\n]\n\n// --\n\n#lorem(25)#fn1\n\n#lorem(50)#fn2\n</code></pre>\n<details>\n<summary>\nOutput</summary>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/1X/a0ea80ee67f0417a89f9162e6384b679d626dc06.png\" data-download-href=\"https://forum.typst.app/uploads/default/a0ea80ee67f0417a89f9162e6384b679d626dc06\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/a0ea80ee67f0417a89f9162e6384b679d626dc06_2_436x500.png\" alt=\"image\" data-base62-sha1=\"mXwOExEKS80aS9Vh6rgh5saN3Ui\" width=\"436\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/1X/a0ea80ee67f0417a89f9162e6384b679d626dc06_2_436x500.png, https://forum.typst.app/uploads/default/optimized/1X/a0ea80ee67f0417a89f9162e6384b679d626dc06_2_654x750.png 1.5x, https://forum.typst.app/uploads/default/original/1X/a0ea80ee67f0417a89f9162e6384b679d626dc06.png 2x\" data-dominant-color=\"DDDDDD\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">866×992 176 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n</details>\n<p>I’m trying to understand what is the proper way to adjust spacing between footnotes, so that, for example, they will be separated with a blank line.</p>\n<p>For this, I added <code>#set footnote.entry(gap: 1em)</code>. But it seems that the size of its “em” corresponds not to the 30-pt foootnote text but to the 10-pt body text. Is it really so? Is it a bug?</p>",
+      "raw": "```typ\n#set text(size: 10pt)\n#set par(first-line-indent: 1em, justify: true, leading: 1em, spacing: 1em)\n\n#show footnote.entry: set text(size: 30pt)\n#show footnote.entry: it => {set par(leading: 0.5em, spacing: 0.5em); it}\n#set footnote.entry(gap: 1em)\n\n#let fn1 = footnote[\n  #lorem(25)\n\n  #lorem(25)\n]\n\n#let fn2 = footnote[\n  #lorem(25)\n\n  #lorem(25)\n]\n\n// --\n\n#lorem(25)#fn1\n\n#lorem(50)#fn2\n```\n\n[details=\"Output\"]\n![image|436x500](upload://mXwOExEKS80aS9Vh6rgh5saN3Ui.png)\n[/details]\n\nI'm trying to understand what is the proper way to adjust spacing between footnotes, so that, for example, they will be separated with a blank line.\n\nFor this, I added `#set footnote.entry(gap: 1em)`. But it seems that the size of its \"em\" corresponds not to the 30-pt foootnote text but to the 10-pt body text. Is it really so? Is it a bug?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 37,
+      "score": 827.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 477
+    },
+    {
+      "id": 4387,
+      "post_number": 2,
+      "username": "jsx97",
+      "name": "jsx97",
+      "created_at": "2024-10-21T09:32:36.983Z",
+      "updated_at": "2024-10-21T10:05:42.105Z",
+      "cooked": "<p>Yesterday I also asked on GitHub, and Laurenz answered (by combining his answer to me and to Andrew in August):</p>\n<blockquote>\n<p>All footnote properties are resolved relative to the styles shared by the whole page run (run of pages with same properties). Because of the current limitations, there isn’t much we can reasonably change here.</p>\n</blockquote>\n<p><a href=\"https://github.com/typst/typst/issues/5265\" rel=\"noopener nofollow ugc\">https://github.com/typst/typst/issues/5265</a></p>\n<p>So my current workaround is to specify the gap in points (or using a variable).</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set text(size: 10pt)\n#set par(first-line-indent: 1em, justify: true, leading: 1em, spacing: 1em)\n\n#show footnote.entry: set text(size: 50pt)\n#show footnote.entry: it =&gt; {set par(leading: 1em, spacing: 1em); it}\n#set footnote.entry(gap: 50pt) // It's not possible to use 1em, see\n                               // https://github.com/typst/typst/issues/5265\n\n// --\n\n#let fn1 = footnote[\n  #lorem(5)\n\n  #lorem(5)\n]\n\n#let fn2 = footnote[\n  #lorem(5)\n\n  #lorem(5)\n]\n\n#lorem(25)#fn1\n\n#lorem(50)#fn2\n</code></pre>\n<p>Probably I missed something and there is a better way to solve it. If so, let me know :)</p>",
+      "raw": "Yesterday I also asked on GitHub, and Laurenz answered (by combining his answer to me and to Andrew in August):\n\n> All footnote properties are resolved relative to the styles shared by the whole page run (run of pages with same properties). Because of the current limitations, there isn't much we can reasonably change here.\n\n<https://github.com/typst/typst/issues/5265>\n\nSo my current workaround is to specify the gap in points (or using a variable).\n\n```typ\n#set text(size: 10pt)\n#set par(first-line-indent: 1em, justify: true, leading: 1em, spacing: 1em)\n\n#show footnote.entry: set text(size: 50pt)\n#show footnote.entry: it => {set par(leading: 1em, spacing: 1em); it}\n#set footnote.entry(gap: 50pt) // It's not possible to use 1em, see\n                               // https://github.com/typst/typst/issues/5265\n\n// --\n\n#let fn1 = footnote[\n  #lorem(5)\n\n  #lorem(5)\n]\n\n#let fn2 = footnote[\n  #lorem(5)\n\n  #lorem(5)\n]\n\n#lorem(25)#fn1\n\n#lorem(50)#fn2\n```\n\nProbably I missed something and there is a better way to solve it. If so, let me know :)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 20.2,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 477
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:25.272647"
+}

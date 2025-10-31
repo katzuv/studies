@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2776,
+    "title": "How to insert quotation marks in math mode?",
+    "slug": "how-to-insert-quotation-marks-in-math-mode",
+    "posts_count": 2,
+    "created_at": "2025-02-11T18:57:34.683Z",
+    "last_posted_at": "2025-02-12T07:16:04.850Z",
+    "views": 61,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 150
+  },
+  "posts": [
+    {
+      "id": 8478,
+      "post_number": 1,
+      "username": "twihno",
+      "name": "Thomas Schuster",
+      "created_at": "2025-02-11T18:57:34.817Z",
+      "updated_at": "2025-02-11T18:57:34.817Z",
+      "cooked": "<p>Hello everyone,</p>\n<p>I tried inserting (printed) quotation marks but couldn’t find a satisfying solution.<br>\n<code>\"\\\"test\\\"\"</code> “works” but doesn’t respect the document’s locale. E.g. in German the first pair is positioned at the bottom of the line.<br>\nHas anyone faced the same issue or has even found a solution?</p>\n<p>Thank you</p>",
+      "raw": "Hello everyone,\n\nI tried inserting (printed) quotation marks but couldn't find a satisfying solution.\n`\"\\\"test\\\"\"` \"works\" but doesn't respect the document's locale. E.g. in German the first pair is positioned at the bottom of the line.\nHas anyone faced the same issue or has even found a solution?\n\nThank you",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 19,
+      "score": 128.8,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 518
+    },
+    {
+      "id": 8491,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-02-12T07:16:04.850Z",
+      "updated_at": "2025-02-12T07:16:04.850Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/twihno\">@twihno</a>,</p>\n<p>it would help to understand your question if you provide an example of what works/doesn’t work.</p>\n<p>In math mode, you can go back to code by using <code>#</code>. It’s tricky to use <code>\"</code> in math mode, so here are a few examples to help you know what’s possible.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set text(lang: \"de\")\n\n\"This is a quote\".\n\n#quote($a + h$) // quote equation\n\n$#[\"a + b\"]$ // doesn't work\n\n$#\"a + b\"$ // string variable (no quotes)\n\n$#quote[a + b]$ // quote content in math\n\n$#quote($a + b$)$ // quote math in math\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/9/9ad26c46a6427e188bb44a758092d42634838dc0.png\" alt=\"image\" data-base62-sha1=\"m5Cmi64sheRIaNz5xnTh6jl35As\" width=\"154\" height=\"228\"></p>",
+      "raw": "Hello @twihno,\n\nit would help to understand your question if you provide an example of what works/doesn't work.\n\nIn math mode, you can go back to code by using `#`. It's tricky to use `\"` in math mode, so here are a few examples to help you know what's possible.\n\n```typ\n#set text(lang: \"de\")\n\n\"This is a quote\".\n\n#quote($a + h$) // quote equation\n\n$#[\"a + b\"]$ // doesn't work\n\n$#\"a + b\"$ // string variable (no quotes)\n\n$#quote[a + b]$ // quote content in math\n\n$#quote($a + b$)$ // quote math in math\n```\n![image|154x228](upload://m5Cmi64sheRIaNz5xnTh6jl35As.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 17,
+      "score": 3.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:47.472729"
+}

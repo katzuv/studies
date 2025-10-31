@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 4055,
+    "title": "How do I avoid splitting footnote on multiple pages?",
+    "slug": "how-do-i-avoid-splitting-footnote-on-multiple-pages",
+    "posts_count": 2,
+    "created_at": "2025-05-12T19:19:01.896Z",
+    "last_posted_at": "2025-05-13T03:32:01.580Z",
+    "views": 42,
+    "like_count": 4,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "PgBiel",
+    "tags": [
+      "layout",
+      "footnotes"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 362
+  },
+  "posts": [
+    {
+      "id": 12356,
+      "post_number": 1,
+      "username": "runemarholt",
+      "name": "Rune Marholt",
+      "created_at": "2025-05-12T19:19:02.048Z",
+      "updated_at": "2025-05-12T19:24:58.631Z",
+      "cooked": "<p>It appears, that the default behavior of footnotes are that they are split on multiple pages, if the other page content becomes to long. Here is a minimal example to reproduce it:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">= A\n#lorem(200)\n#footnote[#text(red)[#lorem(800)]]\n#lorem(200)\n= B\n#lorem(200)\n#lorem(200)\n#lorem(200)\n</code></pre>\n<p>In itself, there is room for the footnote to be displayed on a single page, but since the text prior to the display of the footnote together with the footnote itself takes up more than one page, the footnote is split over two pages. How do I delay the displaying of the footnote to the next page, such that it fits on one page and is not split into multiple pages?</p>",
+      "raw": "It appears, that the default behavior of footnotes are that they are split on multiple pages, if the other page content becomes to long. Here is a minimal example to reproduce it:\n```typ\n= A\n#lorem(200)\n#footnote[#text(red)[#lorem(800)]]\n#lorem(200)\n= B\n#lorem(200)\n#lorem(200)\n#lorem(200)\n```\nIn itself, there is room for the footnote to be displayed on a single page, but since the text prior to the display of the footnote together with the footnote itself takes up more than one page, the footnote is split over two pages. How do I delay the displaying of the footnote to the next page, such that it fits on one page and is not split into multiple pages?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 19,
+      "score": 53.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 267
+    },
+    {
+      "id": 12365,
+      "post_number": 2,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2025-05-13T03:32:01.580Z",
+      "updated_at": "2025-05-13T03:32:17.762Z",
+      "cooked": "<p>In principle, <code>block(breakable: false)[content]</code> prevents any content from being split, so the following would work…</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#footnote(block(breakable: false, text(red)[#lorem(800)]))\n</code></pre>\n<p>However, it would end up separating your text from the footnote number, as a block triggers a paragraph break. In the case of really long text, they can end up in separate pages. Using a <code>box</code> instead (which is unbreakable and stays in the same paragraph) helps:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#footnote(box(text(red)[#lorem(800)]))\n</code></pre>\n<p>But there will still be a linebreak between the footnote number and its body. If that would be undesirable, the best solution then is</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">// At the TOP of your document:\n#show footnote.entry: block.with(breakable: false)\n\n#footnote(text(red)[#lorem(800)])\n</code></pre>\n<p>which doesn’t affect the text in the entry and instead ensures the entry as a whole is unbreakable.</p>\n<hr>\n<p>Note that the solution above will force all entries to be unbreakable. Here’s one way to only pick a few of them.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show footnote.entry: it =&gt; if it.note.at(\"label\", default: none) == &lt;unbreakable&gt; { block(breakable: false, it) } else { it }\n\n= A\n#lorem(200)\n#footnote(text(red)[#lorem(800)])&lt;unbreakable&gt;\n#lorem(200)\n= B\n#lorem(200)\n// This one will be breakable\n#footnote(text(blue)[#lorem(800)])\n#lorem(200)\n</code></pre>\n<details>\n<summary><strong>Results</strong></summary>\n<p>\n</p><p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/1/1fc9f9c500480df76fcbfb9f58ab045252d7c87c.png\" data-download-href=\"https://forum.typst.app/uploads/default/1fc9f9c500480df76fcbfb9f58ab045252d7c87c\" title=\"unbreakable in red\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/1/1fc9f9c500480df76fcbfb9f58ab045252d7c87c_2_436x500.png\" alt=\"unbreakable in red\" data-base62-sha1=\"4xdx0IrDgHTJvpqi4SIWGphL0mM\" width=\"436\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/1/1fc9f9c500480df76fcbfb9f58ab045252d7c87c_2_436x500.png, https://forum.typst.app/uploads/default/optimized/2X/1/1fc9f9c500480df76fcbfb9f58ab045252d7c87c_2_654x750.png 1.5x, https://forum.typst.app/uploads/default/original/2X/1/1fc9f9c500480df76fcbfb9f58ab045252d7c87c.png 2x\" data-dominant-color=\"FEEBEA\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">unbreakable in red</span><span class=\"informations\">752×862 386 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/e/e65abdecb05a60b2f9e8444363f63d430c645f87.png\" data-download-href=\"https://forum.typst.app/uploads/default/e65abdecb05a60b2f9e8444363f63d430c645f87\" title=\"breakable in blue\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/e/e65abdecb05a60b2f9e8444363f63d430c645f87_2_588x500.png\" alt=\"breakable in blue\" data-base62-sha1=\"wROen5iPXqeOwRZZxR5Km0SWYmP\" width=\"588\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/e/e65abdecb05a60b2f9e8444363f63d430c645f87_2_588x500.png, https://forum.typst.app/uploads/default/original/2X/e/e65abdecb05a60b2f9e8444363f63d430c645f87.png 1.5x, https://forum.typst.app/uploads/default/original/2X/e/e65abdecb05a60b2f9e8444363f63d430c645f87.png 2x\" data-dominant-color=\"E2EFFA\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">breakable in blue</span><span class=\"informations\">706×600 327 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/3/3e2e258f6389d7a3785c48354c3c1d916d800d94.png\" data-download-href=\"https://forum.typst.app/uploads/default/3e2e258f6389d7a3785c48354c3c1d916d800d94\" title=\"breakable in blue 2\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/3/3e2e258f6389d7a3785c48354c3c1d916d800d94_2_452x500.png\" alt=\"breakable in blue 2\" data-base62-sha1=\"8S4tgAzAhqExZ6FROVPuDOEJTWk\" width=\"452\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/3/3e2e258f6389d7a3785c48354c3c1d916d800d94_2_452x500.png, https://forum.typst.app/uploads/default/optimized/2X/3/3e2e258f6389d7a3785c48354c3c1d916d800d94_2_678x750.png 1.5x, https://forum.typst.app/uploads/default/original/2X/3/3e2e258f6389d7a3785c48354c3c1d916d800d94.png 2x\" data-dominant-color=\"F7FAFD\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">breakable in blue 2</span><span class=\"informations\">716×791 140 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p></p>\n</details>",
+      "raw": "In principle, `block(breakable: false)[content]` prevents any content from being split, so the following would work...\n\n```typ\n#footnote(block(breakable: false, text(red)[#lorem(800)]))\n```\n\nHowever, it would end up separating your text from the footnote number, as a block triggers a paragraph break. In the case of really long text, they can end up in separate pages. Using a `box` instead (which is unbreakable and stays in the same paragraph) helps:\n\n```typ\n#footnote(box(text(red)[#lorem(800)]))\n```\n\nBut there will still be a linebreak between the footnote number and its body. If that would be undesirable, the best solution then is\n\n```typ\n// At the TOP of your document:\n#show footnote.entry: block.with(breakable: false)\n\n#footnote(text(red)[#lorem(800)])\n```\n\nwhich doesn't affect the text in the entry and instead ensures the entry as a whole is unbreakable.\n\n---\nNote that the solution above will force all entries to be unbreakable. Here's one way to only pick a few of them.\n\n```typ\n#show footnote.entry: it => if it.note.at(\"label\", default: none) == <unbreakable> { block(breakable: false, it) } else { it }\n\n= A\n#lorem(200)\n#footnote(text(red)[#lorem(800)])<unbreakable>\n#lorem(200)\n= B\n#lorem(200)\n// This one will be breakable\n#footnote(text(blue)[#lorem(800)])\n#lorem(200)\n```\n\n<details>\n<summary><strong>Results</strong></summary>\n<p>\n\n![unbreakable in red|436x500](upload://4xdx0IrDgHTJvpqi4SIWGphL0mM.png)\n\n![breakable in blue|588x500](upload://wROen5iPXqeOwRZZxR5Km0SWYmP.png)\n\n![breakable in blue 2|452x500](upload://8S4tgAzAhqExZ6FROVPuDOEJTWk.png)\n\n\n</p>\n</details>",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 4,
+      "reads": 16,
+      "score": 63.2,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:54.957414"
+}

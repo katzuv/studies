@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3420,
+    "title": "Why does cetz-plot.plot show only one function?",
+    "slug": "why-does-cetz-plot-plot-show-only-one-function",
+    "posts_count": 3,
+    "created_at": "2025-03-27T04:00:36.122Z",
+    "last_posted_at": "2025-03-27T22:15:51.603Z",
+    "views": 81,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "LordBaryhobal",
+    "tags": [
+      "cetz"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 279
+  },
+  "posts": [
+    {
+      "id": 10304,
+      "post_number": 1,
+      "username": "Chris1",
+      "name": "Chris",
+      "created_at": "2025-03-27T04:00:36.217Z",
+      "updated_at": "2025-03-27T09:18:28.953Z",
+      "cooked": "<p>My code is below.</p>\n<p>I would like for it to show both the y=x^2 function and the y=sqrt(x) function.</p>\n<p>However it is only showing one.</p>\n<p>Is there something I need to add.</p>\n<pre><code class=\"lang-auto\">\n#import \"@preview/cetz:0.3.4\"\n#import \"@preview/cetz-plot:0.1.1\"\n\n#cetz.canvas({\n\n  import cetz.draw: *\n  import cetz-plot: *\n  plot.plot(\n    size: (5,5),\n    x-tick-step:1,\n    y-tick-step:5,\n    axis-style: \"school-book\",\n\n    plot.add(\n     domain: (0,5),\n      x=&gt;calc.pow(x,2), \n  ),\n\n    plot.add(\n      domain: (0,5),\n      x=&gt;calc.root(x,2)  \n    )\n  )\n \n})\n</code></pre>\n<p>Also, after the 2 functions have been shown, is there a way to return the point of intersection?</p>\n<p>Thanks.</p>",
+      "raw": "My code is below.\n\nI would like for it to show both the y=x^2 function and the y=sqrt(x) function.\n\nHowever it is only showing one.\n\nIs there something I need to add.\n```\n\n#import \"@preview/cetz:0.3.4\"\n#import \"@preview/cetz-plot:0.1.1\"\n\n#cetz.canvas({\n\n  import cetz.draw: *\n  import cetz-plot: *\n  plot.plot(\n    size: (5,5),\n    x-tick-step:1,\n    y-tick-step:5,\n    axis-style: \"school-book\",\n\n    plot.add(\n     domain: (0,5),\n      x=>calc.pow(x,2), \n  ),\n\n    plot.add(\n      domain: (0,5),\n      x=>calc.root(x,2)  \n    )\n  )\n \n})\n```\nAlso, after the 2 functions have been shown, is there a way to return the point of intersection?\n\nThanks.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 36,
+      "score": 92.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1269
+    },
+    {
+      "id": 10307,
+      "post_number": 2,
+      "username": "LordBaryhobal",
+      "name": "Baryhobal",
+      "created_at": "2025-03-27T07:16:28.535Z",
+      "updated_at": "2025-03-27T07:18:23.679Z",
+      "cooked": "<p>First of all, you can format your code on the forum in a code block:</p>\n<pre><code class=\"lang-auto\">``​`typ\nyour code\n``​`\n</code></pre>\n<p>Regarding your issue, you have to wrap both <code>plot.add</code> calls in curly braces. This is because the function <code>plot.add</code> actually returns an array of draw functions. By wrapping them in braces, it joins the arrays into one</p>\n<p>This should work:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/cetz:0.3.4\"\n#import \"@preview/cetz-plot:0.1.1\"\n\n#cetz.canvas({\n  import cetz.draw: *\n  import cetz-plot: *\n  plot.plot(\n    size: (5,5),\n    x-tick-step:1,\n    y-tick-step:5,\n    axis-style: \"school-book\",\n    {\n      plot.add(\n       domain: (0,5),\n        x=&gt;calc.pow(x,2), \n      )\n      plot.add(\n        domain: (0,5),\n        x=&gt;calc.root(x,2)  \n      )\n    }\n  )\n})\n</code></pre>\n<p>For the intersection, I think the easiest is to compute it beforehand and plot it manually<br>\nEDIT: You might want to check this other post: <a href=\"https://forum.typst.app/t/is-it-possible-to-calculate-intersection-points-between-two-cetz-plots/1380\" class=\"inline-onebox\">Is it possible to calculate intersection points between two cetz plots?</a></p>",
+      "raw": "First of all, you can format your code on the forum in a code block:\n```\n``​`typ\nyour code\n``​`\n```\n\nRegarding your issue, you have to wrap both `plot.add` calls in curly braces. This is because the function `plot.add` actually returns an array of draw functions. By wrapping them in braces, it joins the arrays into one\n\nThis should work:\n```typ\n#import \"@preview/cetz:0.3.4\"\n#import \"@preview/cetz-plot:0.1.1\"\n\n#cetz.canvas({\n  import cetz.draw: *\n  import cetz-plot: *\n  plot.plot(\n    size: (5,5),\n    x-tick-step:1,\n    y-tick-step:5,\n    axis-style: \"school-book\",\n    {\n      plot.add(\n       domain: (0,5),\n        x=>calc.pow(x,2), \n      )\n      plot.add(\n        domain: (0,5),\n        x=>calc.root(x,2)  \n      )\n    }\n  )\n})\n```\n\nFor the intersection, I think the easiest is to compute it beforehand and plot it manually\nEDIT: You might want to check this other post: https://forum.typst.app/t/is-it-possible-to-calculate-intersection-points-between-two-cetz-plots/1380",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 33,
+      "score": 41.6,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 585
+    },
+    {
+      "id": 10342,
+      "post_number": 3,
+      "username": "Chris1",
+      "name": "Chris",
+      "created_at": "2025-03-27T22:15:51.603Z",
+      "updated_at": "2025-03-27T22:15:51.603Z",
+      "cooked": "<p>Thank you. That works well.</p>",
+      "raw": "Thank you. That works well.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 5.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1269
+    }
+  ],
+  "scraped_at": "2025-06-10T09:49:57.307206"
+}

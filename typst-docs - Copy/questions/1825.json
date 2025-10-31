@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1825,
+    "title": "How to get the current header depth?",
+    "slug": "how-to-get-the-current-header-depth",
+    "posts_count": 3,
+    "created_at": "2024-11-21T02:14:32.349Z",
+    "last_posted_at": "2024-11-21T03:05:35.304Z",
+    "views": 156,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "PgBiel",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 290
+  },
+  "posts": [
+    {
+      "id": 5953,
+      "post_number": 1,
+      "username": "kaimera",
+      "name": "",
+      "created_at": "2024-11-21T02:14:32.453Z",
+      "updated_at": "2024-11-21T03:01:52.622Z",
+      "cooked": "<p>I’m interested in creating a function that can insert a ‘template’, such that:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">= Hello\n#template()\n== there\n#template()\n</code></pre>\n<p>would ultimately act something like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">= Hello\n== template header\ntemplate content\n\n== there\n=== template header\ntemplate content\n</code></pre>\n<p>I thought about using <code>context</code> but ran into difficulties. I feel like I’m missing something obvious, so forgive my ignorance!</p>",
+      "raw": "I'm interested in creating a function that can insert a 'template', such that:\n\n```typ\n= Hello\n#template()\n== there\n#template()\n```\n\nwould ultimately act something like this:\n\n```typ\n= Hello\n== template header\ntemplate content\n\n== there\n=== template header\ntemplate content\n```\nI thought about using `context` but ran into difficulties. I feel like I'm missing something obvious, so forgive my ignorance!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 32,
+      "score": 711.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 837
+    },
+    {
+      "id": 5954,
+      "post_number": 2,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-11-21T03:02:39.804Z",
+      "updated_at": "2024-11-21T03:02:39.804Z",
+      "cooked": "<p>Hey <a class=\"mention\" href=\"/u/kaimera\">@kaimera</a>, welcome to the forum! I’ve changed your question post’s title to better fit our guidelines: <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\" class=\"inline-onebox\">How to post in the Questions category</a></p>\n<p>For future posts, please make sure your title is a question you’d ask to a friend about Typst. Also, don’t forget to add some tags related to your post! <img src=\"https://forum.typst.app/images/emoji/apple/wink.png?v=12\" title=\":wink:\" class=\"emoji\" alt=\":wink:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Hey @kaimera, welcome to the forum! I’ve changed your question post’s title to better fit our guidelines: https://forum.typst.app/t/how-to-post-in-the-questions-category/11\n\nFor future posts, please make sure your title is a question you’d ask to a friend about Typst. Also, don't forget to add some tags related to your post! :wink:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 15.4,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    },
+    {
+      "id": 5955,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-11-21T03:05:35.304Z",
+      "updated_at": "2024-11-21T03:05:35.304Z",
+      "cooked": "<p>You should be using <code>query()</code> to retrieve the latest heading. It does ultimately require being in a <code>context</code> block, but in general you will only add the context block around the code where you actually need that information, so no need to be too hasty with it. In other words, don’t write <code>let x = context { query() }; let y = func(x); y</code> as you wouldn’t be able to access what <code>query()</code> returns (This would be an error); write <code>context { let x = query(); let y = func(x); y }</code> instead.</p>\n<p>Here’s a full example:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let template() = context {\n  let headings = query(selector(heading).before(here()))\n  let level = if headings.len() &gt; 0 { headings.last().level } else { 0 }\n  heading(level: level + 1)[Template title]\n  [Some more stuff]\n}\n\n// Demo\n#set heading(numbering: \"1.\")\n\n#outline()\n\n= My heading\n#template()\n\n== Other heading\n#template()\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/6/64e4efd25c50f153ba2a30686ac40098c73ab713.png\" data-download-href=\"https://forum.typst.app/uploads/default/64e4efd25c50f153ba2a30686ac40098c73ab713\" title=\"output: template heading is one level below the latest\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/6/64e4efd25c50f153ba2a30686ac40098c73ab713_2_678x500.png\" alt=\"output: template heading is one level below the latest\" data-base62-sha1=\"eoyeZNQiqMRBO7aYQxvODVQB0KT\" width=\"678\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/6/64e4efd25c50f153ba2a30686ac40098c73ab713_2_678x500.png, https://forum.typst.app/uploads/default/optimized/2X/6/64e4efd25c50f153ba2a30686ac40098c73ab713_2_1017x750.png 1.5x, https://forum.typst.app/uploads/default/original/2X/6/64e4efd25c50f153ba2a30686ac40098c73ab713.png 2x\" data-dominant-color=\"F6F6F6\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">output: template heading is one level below the latest</span><span class=\"informations\">1165×858 108 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>(Note: you should set <code>heading(depth: ...)</code> instead of level if you’d like to use <code>#set heading(offset: ...)</code> later.)</p>",
+      "raw": "You should be using `query()` to retrieve the latest heading. It does ultimately require being in a `context` block, but in general you will only add the context block around the code where you actually need that information, so no need to be too hasty with it. In other words, don't write `let x = context { query() }; let y = func(x); y` as you wouldn't be able to access what `query()` returns (This would be an error); write `context { let x = query(); let y = func(x); y }` instead.\n\nHere's a full example:\n```typ\n#let template() = context {\n  let headings = query(selector(heading).before(here()))\n  let level = if headings.len() > 0 { headings.last().level } else { 0 }\n  heading(level: level + 1)[Template title]\n  [Some more stuff]\n}\n\n// Demo\n#set heading(numbering: \"1.\")\n\n#outline()\n\n= My heading\n#template()\n\n== Other heading\n#template()\n```\n![output: template heading is one level below the latest|678x500](upload://eoyeZNQiqMRBO7aYQxvODVQB0KT.png)\n\n(Note: you should set `heading(depth: ...)` instead of level if you'd like to use `#set heading(offset: ...)` later.)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 29,
+      "score": 25.8,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:35.241127"
+}

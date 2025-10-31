@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 4019,
+    "title": "How to avoid the space inserted after a function call?",
+    "slug": "how-to-avoid-the-space-inserted-after-a-function-call",
+    "posts_count": 2,
+    "created_at": "2025-05-10T19:38:22.485Z",
+    "last_posted_at": "2025-05-10T19:58:22.480Z",
+    "views": 39,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "scripting",
+      "syntax"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 110
+  },
+  "posts": [
+    {
+      "id": 12234,
+      "post_number": 1,
+      "username": "Olaf",
+      "name": "Olaf",
+      "created_at": "2025-05-10T19:38:22.603Z",
+      "updated_at": "2025-05-10T20:13:18.463Z",
+      "cooked": "<p>When I apply a function to a section, a space is inserted after the call. How do I get rid of this space?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let noop(content) = [\n  #content\n]\n\n\n// These two lines generate the same output:\n\n#noop[abc]def\n\n#noop[abc] def\n</code></pre>",
+      "raw": "When I apply a function to a section, a space is inserted after the call. How do I get rid of this space? \n\n\n```typ\n#let noop(content) = [\n  #content\n]\n\n\n// These two lines generate the same output:\n\n#noop[abc]def\n\n#noop[abc] def\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 21,
+      "score": 54.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 418
+    },
+    {
+      "id": 12235,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-05-10T19:58:22.480Z",
+      "updated_at": "2025-05-10T19:58:47.506Z",
+      "cooked": "<p>The space is inserted because of the newline characters that are part of your function. If you only want to show the content, you have to remove the newline characters (and spaces) around the content. Alternatively you could use curly braces to use the code mode in your function. Newline characters and spaces would be ignored in that case.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let noop(content) = [#content]\n// or\n#let noop(content) = {\n  content\n}\n</code></pre>",
+      "raw": "The space is inserted because of the newline characters that are part of your function. If you only want to show the content, you have to remove the newline characters (and spaces) around the content. Alternatively you could use curly braces to use the code mode in your function. Newline characters and spaces would be ignored in that case.\n\n```typ\n#let noop(content) = [#content]\n// or\n#let noop(content) = {\n  content\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 21,
+      "score": 19.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:05.325316"
+}

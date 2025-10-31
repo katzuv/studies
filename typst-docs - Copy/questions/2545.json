@@ -1,0 +1,61 @@
+{
+  "topic_metadata": {
+    "id": 2545,
+    "title": "How do I add information to my profile?",
+    "slug": "how-do-i-add-information-to-my-profile",
+    "posts_count": 2,
+    "created_at": "2025-01-26T15:15:22.994Z",
+    "last_posted_at": "2025-01-26T16:12:14.924Z",
+    "views": 30,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 63
+  },
+  "posts": [
+    {
+      "id": 7877,
+      "post_number": 1,
+      "username": "Andrew_van_der_Spuy",
+      "name": "Andrew van der Spuy",
+      "created_at": "2025-01-26T15:15:23.120Z",
+      "updated_at": "2025-01-26T15:15:23.120Z",
+      "cooked": "<p>“Introduce yourself by adding information about yourself to your profile”</p>\n<p>How do I do this? When I go to Settings, I cannot see any place for adding information to my profile.</p>",
+      "raw": "\"Introduce yourself by adding information about yourself to your profile\"\n\nHow do I do this? When I go to Settings, I cannot see any place for adding information to my profile.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 20,
+      "score": 19.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1093
+    },
+    {
+      "id": 7881,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-26T16:12:14.924Z",
+      "updated_at": "2025-01-26T16:12:14.924Z",
+      "cooked": "<p>On your account, there is “Preferences”, and then “Profile”:</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/0/036197b3442e162ffa0a691179aaee74bed5927d.png\" data-download-href=\"https://forum.typst.app/uploads/default/036197b3442e162ffa0a691179aaee74bed5927d\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/0/036197b3442e162ffa0a691179aaee74bed5927d_2_690x49.png\" alt=\"image\" data-base62-sha1=\"tUwsw6Ey5LQ3V1TnYzpQ3uZCnX\" width=\"690\" height=\"49\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/0/036197b3442e162ffa0a691179aaee74bed5927d_2_690x49.png, https://forum.typst.app/uploads/default/optimized/2X/0/036197b3442e162ffa0a691179aaee74bed5927d_2_1035x73.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/0/036197b3442e162ffa0a691179aaee74bed5927d_2_1380x98.png 2x\" data-dominant-color=\"F1F2F4\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">1600×114 32.6 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>The direct link there for you specifically should be this: <a href=\"https://forum.typst.app/u/Andrew_van_der_Spuy/preferences/profile\">https://forum.typst.app/u/Andrew_van_der_Spuy/preferences/profile</a></p>",
+      "raw": "On your account, there is \"Preferences\", and then \"Profile\":\n\n![image|690x49](upload://tUwsw6Ey5LQ3V1TnYzpQ3uZCnX.png)\n\nThe direct link there for you specifically should be this: https://forum.typst.app/u/Andrew_van_der_Spuy/preferences/profile",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 20,
+      "score": 4.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:28.708785"
+}

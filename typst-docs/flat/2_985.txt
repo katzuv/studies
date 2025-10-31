@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 985,
+    "title": "How to justify Gloassarium glossary with Typst 0.12-rc1?",
+    "slug": "how-to-justify-gloassarium-glossary-with-typst-0-12-rc1",
+    "posts_count": 2,
+    "created_at": "2024-10-08T15:55:11.363Z",
+    "last_posted_at": "2024-10-08T16:24:46.017Z",
+    "views": 62,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "fdekerm",
+    "tags": [
+      "glossarium"
+    ],
+    "category_id": 5,
+    "participant_count": 1,
+    "word_count": 98
+  },
+  "posts": [
+    {
+      "id": 3570,
+      "post_number": 1,
+      "username": "fdekerm",
+      "name": "François de Kermenguy",
+      "created_at": "2024-10-08T15:55:11.496Z",
+      "updated_at": "2024-10-10T16:15:22.150Z",
+      "cooked": "<p>Hello everyone,<br>\nSwitching to Typst 0.12, my glossary generated with <a href=\"https://typst.app/universe/package/glossarium\">GLoassarium</a> is no longer left-justified. I’ve had a look at the package code and modified a few things, but it’s impossible to do as in 0.11. Is there a method “external” to the packahe to justify the gloassaire?</p>\n<p>merci!<br>\nfdekerm</p>\n<p>With 0.11:<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/1X/8eca79d277122b47318e8714d21b2122f595d243.png\" data-download-href=\"https://forum.typst.app/uploads/default/8eca79d277122b47318e8714d21b2122f595d243\" title=\"374619367-9d59590c-8f7d-438b-bf00-a1406302b379\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/8eca79d277122b47318e8714d21b2122f595d243_2_690x404.png\" alt=\"374619367-9d59590c-8f7d-438b-bf00-a1406302b379\" data-base62-sha1=\"knbBph6JyTM4SmcdXtEedFqkeor\" width=\"690\" height=\"404\" srcset=\"https://forum.typst.app/uploads/default/optimized/1X/8eca79d277122b47318e8714d21b2122f595d243_2_690x404.png, https://forum.typst.app/uploads/default/original/1X/8eca79d277122b47318e8714d21b2122f595d243.png 1.5x, https://forum.typst.app/uploads/default/original/1X/8eca79d277122b47318e8714d21b2122f595d243.png 2x\" data-dominant-color=\"FBFBFB\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">374619367-9d59590c-8f7d-438b-bf00-a1406302b379</span><span class=\"informations\">765×449 39.7 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>With 0.12-rc1<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/1X/c9e79da150a00b5c806316e5fb66ab97d0d7238f.png\" data-download-href=\"https://forum.typst.app/uploads/default/c9e79da150a00b5c806316e5fb66ab97d0d7238f\" title=\"374619153-8a48809e-5d5f-42f2-8122-ef408def8f54\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/c9e79da150a00b5c806316e5fb66ab97d0d7238f_2_690x385.png\" alt=\"374619153-8a48809e-5d5f-42f2-8122-ef408def8f54\" data-base62-sha1=\"sO8cLRFzjUWWzNjr3q40uSPBKJF\" width=\"690\" height=\"385\" srcset=\"https://forum.typst.app/uploads/default/optimized/1X/c9e79da150a00b5c806316e5fb66ab97d0d7238f_2_690x385.png, https://forum.typst.app/uploads/default/optimized/1X/c9e79da150a00b5c806316e5fb66ab97d0d7238f_2_1035x577.png 1.5x, https://forum.typst.app/uploads/default/original/1X/c9e79da150a00b5c806316e5fb66ab97d0d7238f.png 2x\" data-dominant-color=\"FCFBFC\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">374619153-8a48809e-5d5f-42f2-8122-ef408def8f54</span><span class=\"informations\">1244×695 81.5 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "Hello everyone, \nSwitching to Typst 0.12, my glossary generated with [GLoassarium](https://typst.app/universe/package/glossarium) is no longer left-justified. I've had a look at the package code and modified a few things, but it's impossible to do as in 0.11. Is there a method “external” to the packahe to justify the gloassaire?\n\nmerci!\nfdekerm\n\nWith 0.11:\n![374619367-9d59590c-8f7d-438b-bf00-a1406302b379|690x404](upload://knbBph6JyTM4SmcdXtEedFqkeor.png)\n\nWith 0.12-rc1\n![374619153-8a48809e-5d5f-42f2-8122-ef408def8f54|690x385](upload://sO8cLRFzjUWWzNjr3q40uSPBKJF.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 80.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 136
+    },
+    {
+      "id": 3571,
+      "post_number": 2,
+      "username": "fdekerm",
+      "name": "François de Kermenguy",
+      "created_at": "2024-10-08T16:24:46.017Z",
+      "updated_at": "2024-10-08T16:24:46.017Z",
+      "cooked": "<p>solved here: <a href=\"https://github.com/typst-community/glossarium/issues/63\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">(0.12-rc1) Unjustified glossary · Issue #63 · typst-community/glossarium · GitHub</a></p>",
+      "raw": "solved here: https://github.com/typst-community/glossarium/issues/63",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 10.4,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 136
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:10.243662"
+}

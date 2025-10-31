@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 3958,
+    "title": "How to display a zero-level chapter (with figure) in the PDF outline?",
+    "slug": "how-to-display-a-zero-level-chapter-with-figure-in-the-pdf-outline",
+    "posts_count": 3,
+    "created_at": "2025-05-06T13:41:45.380Z",
+    "last_posted_at": "2025-05-06T15:55:13.070Z",
+    "views": 36,
+    "like_count": 0,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "scripting",
+      "figures"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 212
+  },
+  "posts": [
+    {
+      "id": 12046,
+      "post_number": 1,
+      "username": "bowentan",
+      "name": "Bowen",
+      "created_at": "2025-05-06T13:41:45.553Z",
+      "updated_at": "2025-05-06T13:41:45.553Z",
+      "cooked": "<p>I followed the guide book for <a href=\"https://sitandr.github.io/typst-examples-book/book/typstonomicon/chapters.html\" rel=\"noopener nofollow ugc\">zero-chapter</a>. But I found the chapter levels not expectedly listed in the outline of PDF viewer, which was like:<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/0/0b3fa6b94ed8a96e49da30a1c43cdb0a8b068816.png\" alt=\"CleanShot 2025-05-06 at 21.37.56@2x\" data-base62-sha1=\"1BvCI7zGwDDXK2vnbNE0cvg0sTQ\" width=\"664\" height=\"240\"></p>\n<p>Is there any way to list the chapter level as the first level in PDF outline? Like the following:</p>\n<pre data-code-wrap=\"txt\"><code class=\"lang-txt\">|- I Chapter\n|--- Chap Heading\n|----- Sub Heading\n|- II Chapter again\n|--- Chap Heading\n|--- Chap Heading\n|----- Sub Heading\n|------- Sub Sub Heading\n</code></pre>\n<p>according to the guide.</p>",
+      "raw": "I followed the guide book for [zero-chapter](https://sitandr.github.io/typst-examples-book/book/typstonomicon/chapters.html). But I found the chapter levels not expectedly listed in the outline of PDF viewer, which was like:\n![CleanShot 2025-05-06 at 21.37.56@2x|664x240](upload://1BvCI7zGwDDXK2vnbNE0cvg0sTQ.png)\n\nIs there any way to list the chapter level as the first level in PDF outline? Like the following:\n```txt\n|- I Chapter\n|--- Chap Heading\n|----- Sub Heading\n|- II Chapter again\n|--- Chap Heading\n|--- Chap Heading\n|----- Sub Heading\n|------- Sub Sub Heading\n```\naccording to the guide.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 19,
+      "score": 48.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1554
+    },
+    {
+      "id": 12054,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-05-06T15:31:25.356Z",
+      "updated_at": "2025-05-06T15:32:38.655Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/bowentan\">@bowentan</a>, there was just recently a showcase post about it here <a href=\"https://forum.typst.app/t/part-independent-section/3906\" class=\"inline-onebox\">Part independent section</a>. I personally use:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let chapter(body) = heading(level: 1, body)\n\n#set heading(\n  offset: 1,\n  numbering: (chap, ..nums) =&gt; {\n  if nums.pos().len() == 0 {\n    numbering(\"I\", chap)\n  } else {\n    numbering(\"1.1\", ..nums)\n  }\n})\n\n#outline()\n\n\n#chapter[Chapter One]\n= Section One\n== Subsection\n#chapter[Chapter Two]\n= Section One\n== Subsection\n= Section Two\n</code></pre>\n<p>Typst does currently not include the numbering in the PDF bookmarks, see <a href=\"https://github.com/typst/typst/issues/2416\">#2416</a>.</p>",
+      "raw": "Hi @bowentan, there was just recently a showcase post about it here https://forum.typst.app/t/part-independent-section/3906?u=flokl. I personally use:\n```typ\n#let chapter(body) = heading(level: 1, body)\n\n#set heading(\n  offset: 1,\n  numbering: (chap, ..nums) => {\n  if nums.pos().len() == 0 {\n    numbering(\"I\", chap)\n  } else {\n    numbering(\"1.1\", ..nums)\n  }\n})\n\n#outline()\n\n\n#chapter[Chapter One]\n= Section One\n== Subsection\n#chapter[Chapter Two]\n= Section One\n== Subsection\n= Section Two\n```\nTypst does currently not include the numbering in the PDF bookmarks, see [#2416](https://github.com/typst/typst/issues/2416).",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 18,
+      "score": 13.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    },
+    {
+      "id": 12057,
+      "post_number": 3,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-06T15:55:13.070Z",
+      "updated_at": "2025-05-06T15:55:13.070Z",
+      "cooked": "<p>You can post this variation in <a href=\"https://forum.typst.app/t/part-independent-section/3906\" class=\"inline-onebox\">Part independent section</a>, as closely related. Easier to find both under one topic. Some might prefer one or another.</p>",
+      "raw": "You can post this variation in https://forum.typst.app/t/part-independent-section/3906, as closely related. Easier to find both under one topic. Some might prefer one or another.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 16,
+      "score": 3.2,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:14.877158"
+}

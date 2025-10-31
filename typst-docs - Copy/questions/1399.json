@@ -1,0 +1,61 @@
+{
+  "topic_metadata": {
+    "id": 1399,
+    "title": "How to render the symbol underscore?",
+    "slug": "how-to-render-the-symbol-underscore",
+    "posts_count": 2,
+    "created_at": "2024-10-28T14:52:02.649Z",
+    "last_posted_at": "2024-10-28T15:02:43.936Z",
+    "views": 278,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "gezepi",
+    "tags": [],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 98
+  },
+  "posts": [
+    {
+      "id": 4772,
+      "post_number": 1,
+      "username": "Hans_Vinther-Larsen",
+      "name": "Hans Vinther-Larsen",
+      "created_at": "2024-10-28T14:52:02.773Z",
+      "updated_at": "2024-10-28T14:52:02.773Z",
+      "cooked": "<p>Is there a supported way to render an underscore other than using the utf encoding, ie. \\u{005F}?</p>\n<p>I haven’t been able to find a matching symbol in <a href=\"https://typst.app/docs/reference/symbols/sym/\" class=\"inline-onebox\">General Symbols – Typst Documentation</a> .</p>\n<p>Otherwise, is it perhaps possible to disable asterix for bold an underscore for italic such that the symbols are being rendered directly, and instead indicating bold and italic with some function calls?</p>",
+      "raw": "Is there a supported way to render an underscore other than using the utf encoding, ie. \\u{005F}?\n\nI haven't been able to find a matching symbol in https://typst.app/docs/reference/symbols/sym/ .\n\nOtherwise, is it perhaps possible to disable asterix for bold an underscore for italic such that the symbols are being rendered directly, and instead indicating bold and italic with some function calls?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 31,
+      "score": 1236.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 694
+    },
+    {
+      "id": 4773,
+      "post_number": 2,
+      "username": "gezepi",
+      "name": "",
+      "created_at": "2024-10-28T15:02:43.936Z",
+      "updated_at": "2024-10-28T15:02:43.936Z",
+      "cooked": "<p>Luckily it’s pretty simple.  You can escape the underscore character with a back slash (<code>\\</code>):</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">This is _italic_, this is an underscore:\\_\n</code></pre>\n<p>Output:<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/1/1af0fc794d71d9f5de4f7e5f2bb2fda1463042d6.png\" alt=\"image\" data-base62-sha1=\"3QkIWhyrM91CiJ86QmML8No9gFg\" width=\"341\" height=\"67\"></p>",
+      "raw": "Luckily it's pretty simple.  You can escape the underscore character with a back slash (`\\`):\n```typ\nThis is _italic_, this is an underscore:\\_\n```\nOutput:\n![image|341x67](upload://3QkIWhyrM91CiJ86QmML8No9gFg.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 31,
+      "score": 151.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 326
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:50.763009"
+}

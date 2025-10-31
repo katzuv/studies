@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 4419,
+    "title": "How to print bibliography without line breaks between references",
+    "slug": "how-to-print-bibliography-without-line-breaks-between-references",
+    "posts_count": 3,
+    "created_at": "2025-06-01T17:07:37.628Z",
+    "last_posted_at": "2025-06-05T13:26:18.191Z",
+    "views": 40,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "citation",
+      "csl"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 318
+  },
+  "posts": [
+    {
+      "id": 13541,
+      "post_number": 1,
+      "username": "Mathieu",
+      "name": "Mathieu",
+      "created_at": "2025-06-01T17:07:37.711Z",
+      "updated_at": "2025-06-01T17:07:37.711Z",
+      "cooked": "<p>I tweaked the IEEE csl so that my bibliography looks like this:</p>\n<p><strong>[1] Smith et al. (2020) 10.5194/acp-20-9591-2020a</strong><br>\n<strong>[2] Doe et al. (2021) 10.5194/acp-20-9591-2020xyz</strong><br>\n<strong>[3] Smith &amp; Wesson (2023) 10.5194/acp-20-9591-2020abc</strong></p>\n<p>How can I suppress line breaks between bibliographic items, as in:</p>\n<p><strong>[1] Smith et al. (2020) 10.5194/acp-20-9591-2020a [2] Doe et al. (2021) 10.5194/acp-20-9591-2020xyz [3] Smith &amp; Wesson (2023) 10.5194/acp-20-9591-2020abc</strong></p>\n<p>The objective is, obviously, to produce a more compact list of references.</p>\n<p>Should I tweak my csl file or do something within Typst?</p>",
+      "raw": "I tweaked the IEEE csl so that my bibliography looks like this:\n\n**[1] Smith et al. (2020) 10.5194/acp-20-9591-2020a**\n**[2] Doe et al. (2021) 10.5194/acp-20-9591-2020xyz**\n**[3] Smith & Wesson (2023) 10.5194/acp-20-9591-2020abc**\n\nHow can I suppress line breaks between bibliographic items, as in:\n\n**[1] Smith et al. (2020) 10.5194/acp-20-9591-2020a [2] Doe et al. (2021) 10.5194/acp-20-9591-2020xyz [3] Smith & Wesson (2023) 10.5194/acp-20-9591-2020abc**\n\nThe objective is, obviously, to produce a more compact list of references.\n\nShould I tweak my csl file or do something within Typst?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 19,
+      "score": 3.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1200
+    },
+    {
+      "id": 13751,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-06-05T12:55:46.765Z",
+      "updated_at": "2025-06-05T12:55:46.765Z",
+      "cooked": "<p>This is not possible because bibliography uses grid, and you can’t override <code>bibliography.entry</code>: <a href=\"https://github.com/typst/typst/pull/5932#issuecomment-2765710360\" class=\"inline-onebox\">Add `bibliography.entry` element by xkevio · Pull Request #5932 · typst/typst · GitHub</a>.</p>\n<p>Same goes to <a href=\"https://typst.app/universe/package/alexandria\" class=\"inline-onebox\">alexandria – Typst Universe</a>, but you can actually modify it:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let render-bibliography(...) = {\n  ...\n    for e in bib.references {\n      h(0.25em, weak: true)\n      [#metadata(none)#label(bib.prefix + e.key)]\n      if e.prefix != none {\n        hayagriva.render(e.prefix)\n      }\n      h(0.65em)\n      hayagriva.render(e.reference)\n    }\n  ...\n}\n</code></pre>\n<p>replacing</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let render-bibliography(...) = {\n  ...\n    grid(\n      columns: 2,\n      // rows: (),\n      column-gutter: 0.65em,\n      // row-gutter: 13.2pt,\n      row-gutter: par.spacing,\n      // fill: none,\n      // align: auto,\n      // stroke: (:),\n      // inset: (:),\n      ..for e in bib.references {\n        (\n          {\n            [#metadata(none)#label(bib.prefix + e.key)]\n            if e.prefix != none {\n              hayagriva.render(e.prefix)\n            }\n          },\n          hayagriva.render(e.reference),\n        )\n      },\n    )\n  ...\n}\n</code></pre>\n<br>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/alexandria:0.2.0\": *\n#show: alexandria(prefix: \"\", read: path =&gt; read(path))\n#bibliographyx(\"works.bib\", full: true, title: \"\")\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/2/29cc459b255cc3b9fc7685c44941d9fac800135b.png\" data-download-href=\"https://forum.typst.app/uploads/default/29cc459b255cc3b9fc7685c44941d9fac800135b\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/original/2X/2/29cc459b255cc3b9fc7685c44941d9fac800135b.png\" alt=\"image\" data-base62-sha1=\"5XLe3ROTXKn1TQy3pYyaT31LGYP\" width=\"583\" height=\"301\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">583×301 98.2 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>Cc <a class=\"mention\" href=\"/u/sillyfreak\">@SillyFreak</a></p>",
+      "raw": "This is not possible because bibliography uses grid, and you can't override `bibliography.entry`: https://github.com/typst/typst/pull/5932#issuecomment-2765710360.\n\nSame goes to https://typst.app/universe/package/alexandria, but you can actually modify it:\n\n```typ\n#let render-bibliography(...) = {\n  ...\n    for e in bib.references {\n      h(0.25em, weak: true)\n      [#metadata(none)#label(bib.prefix + e.key)]\n      if e.prefix != none {\n        hayagriva.render(e.prefix)\n      }\n      h(0.65em)\n      hayagriva.render(e.reference)\n    }\n  ...\n}\n```\n\nreplacing\n\n```typ\n#let render-bibliography(...) = {\n  ...\n    grid(\n      columns: 2,\n      // rows: (),\n      column-gutter: 0.65em,\n      // row-gutter: 13.2pt,\n      row-gutter: par.spacing,\n      // fill: none,\n      // align: auto,\n      // stroke: (:),\n      // inset: (:),\n      ..for e in bib.references {\n        (\n          {\n            [#metadata(none)#label(bib.prefix + e.key)]\n            if e.prefix != none {\n              hayagriva.render(e.prefix)\n            }\n          },\n          hayagriva.render(e.reference),\n        )\n      },\n    )\n  ...\n}\n```\n\n<br>\n\n```typ\n#import \"@preview/alexandria:0.2.0\": *\n#show: alexandria(prefix: \"\", read: path => read(path))\n#bibliographyx(\"works.bib\", full: true, title: \"\")\n```\n\n![image|583x301](upload://5XLe3ROTXKn1TQy3pYyaT31LGYP.png)\n\nCc @SillyFreak",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 13,
+      "score": 2.2,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 51
+    },
+    {
+      "id": 13756,
+      "post_number": 3,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-06-05T13:26:18.191Z",
+      "updated_at": "2025-06-05T13:30:31.678Z",
+      "cooked": "<p>You can transform the grid to something else:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show bibliography: bib =&gt; {\n  show grid: g =&gt; g.children.map(cell =&gt; cell.body).join(\" \")\n  bib\n}\n\n= Title\nText.@work1 @work2\n\n#bibliography(bytes(\"\n  @online{work1,\n  \ttitle = {Some Work},\n    author = {Some Author},\n  \tyear = 2024,\n  }\n  @online{work2,\n  \ttitle = {Another Work},\n    author = {Another Author},\n  \tyear = 2025,\n  }\n\"))\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/9/9e4f4f92e6cc18aef543aba0b88496576eb337fb.png\" data-download-href=\"https://forum.typst.app/uploads/default/9e4f4f92e6cc18aef543aba0b88496576eb337fb\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/original/2X/9/9e4f4f92e6cc18aef543aba0b88496576eb337fb.png\" alt=\"image\" data-base62-sha1=\"mAtmvpTz5YezFz3X3usQdaMWs1t\" width=\"493\" height=\"138\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">658×184 13.5 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "You can transform the grid to something else:\n\n```\n#show bibliography: bib => {\n  show grid: g => g.children.map(cell => cell.body).join(\" \")\n  bib\n}\n\n= Title\nText.@work1 @work2\n\n#bibliography(bytes(\"\n  @online{work1,\n  \ttitle = {Some Work},\n    author = {Some Author},\n  \tyear = 2024,\n  }\n  @online{work2,\n  \ttitle = {Another Work},\n    author = {Another Author},\n  \tyear = 2025,\n  }\n\"))\n```\n\n![image|658x184, 75%](upload://mAtmvpTz5YezFz3X3usQdaMWs1t.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 12,
+      "score": 47.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:46:55.351465"
+}

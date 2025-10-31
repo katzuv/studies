@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1992,
+    "title": "Touying Metropolis theme: What is the variable to define the color of titles in section slides?",
+    "slug": "touying-metropolis-theme-what-is-the-variable-to-define-the-color-of-titles-in-section-slides",
+    "posts_count": 3,
+    "created_at": "2024-12-05T10:42:32.571Z",
+    "last_posted_at": "2024-12-08T14:17:27.812Z",
+    "views": 260,
+    "like_count": 0,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "ParaN3xus",
+    "tags": [
+      "touying"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 440
+  },
+  "posts": [
+    {
+      "id": 6357,
+      "post_number": 1,
+      "username": "DrLoiseau",
+      "name": "LVG",
+      "created_at": "2024-12-05T10:42:32.705Z",
+      "updated_at": "2024-12-06T10:33:29.603Z",
+      "cooked": "<p>Hi,</p>\n<p>I’m having trouble trying to change metropolis theme colors in touying. I could set :</p>\n<ul>\n<li>the background color through neutral-lightest</li>\n<li>the title slide text color through neutral-darker</li>\n<li>the progress bar color through primary and primary-lightest, etc.</li>\n</ul>\n<p>However, nothing seems to correspond to the color of the title in section slides. Where is this color defined ? I didn’t find any clear reference explaining which color variable defines which element color.</p>\n<pre><code class=\"lang-auto\">#import \"@preview/touying:0.5.3\": *\n#import themes.metropolis: *\n#show: metropolis-theme.with(\n    aspect-ratio: \"16-9\",\n    // config-common(handout: true),\n    config-info(\n        title: [Kéfir et Kombucha],\n        subtitle: [Deux écosystèmes microbiens de boissons fermentées],\n        author: [Myxonautes],\n        date: datetime.today(),\n        // institution: [Institution],\n        logo: image(\"images/logo_myxonautes_noir.png\"),\n    ),\n    config-colors(\n        primary: rgb(129, 249, 14),\n        primary-light: rgb(199, 249, 150),\n        secondary: rgb(230, 255, 230),\n        neutral-lightest: rgb(8, 10, 8),\n        neutral-dark: rgb(230, 255, 230),\n        neutral-darkest: rgb(230, 255, 230),\n    )\n)\n\n#title-slide()\n= Kéfir et kombucha\nDeux écosystèmes microbiens de boissons fermentées\n\n= Microorganismes \n\n== test\nDu contenu\n</code></pre>\n<p>Everything is fine except the title colors in section slides in this example.</p>\n<p>Thanks for your help.</p>",
+      "raw": "Hi,\n\nI'm having trouble trying to change metropolis theme colors in touying. I could set : \n- the background color through neutral-lightest\n- the title slide text color through neutral-darker\n- the progress bar color through primary and primary-lightest, etc. \n\nHowever, nothing seems to correspond to the color of the title in section slides. Where is this color defined ? I didn't find any clear reference explaining which color variable defines which element color.\n\n```\n#import \"@preview/touying:0.5.3\": *\n#import themes.metropolis: *\n#show: metropolis-theme.with(\n    aspect-ratio: \"16-9\",\n    // config-common(handout: true),\n    config-info(\n        title: [Kéfir et Kombucha],\n        subtitle: [Deux écosystèmes microbiens de boissons fermentées],\n        author: [Myxonautes],\n        date: datetime.today(),\n        // institution: [Institution],\n        logo: image(\"images/logo_myxonautes_noir.png\"),\n    ),\n    config-colors(\n        primary: rgb(129, 249, 14),\n        primary-light: rgb(199, 249, 150),\n        secondary: rgb(230, 255, 230),\n        neutral-lightest: rgb(8, 10, 8),\n        neutral-dark: rgb(230, 255, 230),\n        neutral-darkest: rgb(230, 255, 230),\n    )\n)\n\n#title-slide()\n= Kéfir et kombucha\nDeux écosystèmes microbiens de boissons fermentées\n\n= Microorganismes \n\n== test\nDu contenu\n```\nEverything is fine except the title colors in section slides in this example.\n\nThanks for your help.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 41,
+      "score": 978.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 537
+    },
+    {
+      "id": 6388,
+      "post_number": 2,
+      "username": "ParaN3xus",
+      "name": "ParaN3xus",
+      "created_at": "2024-12-06T15:56:51.875Z",
+      "updated_at": "2024-12-06T15:56:51.875Z",
+      "cooked": "<p>I checked <code>metropolis.typ</code> and found the title and descriptions in <code>new-section-slide</code> doesn’t follow predefined color dict:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let new-section-slide(level: 1, numbered: true, body) = touying-slide-wrapper(self =&gt; {\n  let slide-body = {\n    set align(horizon)\n    show: pad.with(20%)\n    set text(size: 1.5em)\n    stack(\n      dir: ttb,\n      spacing: 1em,\n      // title\n      utils.display-current-heading(level: level, numbered: numbered),\n      block(\n        height: 2pt,\n        width: 100%,\n        spacing: 0pt,\n        components.progress-bar(height: 2pt, self.colors.primary, self.colors.primary-light),\n      ),\n    )\n    // descriptions\n    body\n  }\n  self = utils.merge-dicts(\n    self,\n    config-page(fill: self.colors.neutral-lightest),\n  )\n  touying-slide(self: self, slide-body)\n})\n</code></pre>\n<p>You can fix this temporarily by patch <code>new-section-slide</code> function in <code>[package dir]/preview/touying/[version]/themes/metropolis.typ</code> with the function below:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let new-section-slide(level: 1, numbered: true, body) = touying-slide-wrapper(self =&gt; {\n  let slide-body = {\n    set align(horizon)\n    show: pad.with(20%)\n    set text(size: 1.5em)\n    stack(\n      dir: ttb,\n      spacing: 1em,\n      text(self.colors.neutral-darkest, utils.display-current-heading(level: level, numbered: numbered)),\n      block(\n        height: 2pt,\n        width: 100%,\n        spacing: 0pt,\n        components.progress-bar(height: 2pt, self.colors.primary, self.colors.primary-light),\n      ),\n    )\n    text(self.colors.neutral-dark, body)\n  }\n  self = utils.merge-dicts(\n    self,\n    config-page(fill: self.colors.neutral-lightest),\n  )\n  touying-slide(self: self, slide-body)\n})\n</code></pre>\n<p>I just simply take colors dict into account.</p>\n<p>I will open a pull request and hopefully this will be fixed soon.</p>",
+      "raw": "I checked `metropolis.typ` and found the title and descriptions in `new-section-slide` doesn't follow predefined color dict:\n```typ\n#let new-section-slide(level: 1, numbered: true, body) = touying-slide-wrapper(self => {\n  let slide-body = {\n    set align(horizon)\n    show: pad.with(20%)\n    set text(size: 1.5em)\n    stack(\n      dir: ttb,\n      spacing: 1em,\n      // title\n      utils.display-current-heading(level: level, numbered: numbered),\n      block(\n        height: 2pt,\n        width: 100%,\n        spacing: 0pt,\n        components.progress-bar(height: 2pt, self.colors.primary, self.colors.primary-light),\n      ),\n    )\n    // descriptions\n    body\n  }\n  self = utils.merge-dicts(\n    self,\n    config-page(fill: self.colors.neutral-lightest),\n  )\n  touying-slide(self: self, slide-body)\n})\n```\nYou can fix this temporarily by patch `new-section-slide` function in `[package dir]/preview/touying/[version]/themes/metropolis.typ` with the function below:\n```typ\n#let new-section-slide(level: 1, numbered: true, body) = touying-slide-wrapper(self => {\n  let slide-body = {\n    set align(horizon)\n    show: pad.with(20%)\n    set text(size: 1.5em)\n    stack(\n      dir: ttb,\n      spacing: 1em,\n      text(self.colors.neutral-darkest, utils.display-current-heading(level: level, numbered: numbered)),\n      block(\n        height: 2pt,\n        width: 100%,\n        spacing: 0pt,\n        components.progress-bar(height: 2pt, self.colors.primary, self.colors.primary-light),\n      ),\n    )\n    text(self.colors.neutral-dark, body)\n  }\n  self = utils.merge-dicts(\n    self,\n    config-page(fill: self.colors.neutral-lightest),\n  )\n  touying-slide(self: self, slide-body)\n})\n```\nI just simply take colors dict into account.\n\nI will open a pull request and hopefully this will be fixed soon.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 31.0,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 14
+    },
+    {
+      "id": 6420,
+      "post_number": 3,
+      "username": "DrLoiseau",
+      "name": "LVG",
+      "created_at": "2024-12-08T14:17:27.812Z",
+      "updated_at": "2024-12-08T14:17:27.812Z",
+      "cooked": "<p>Thanks, I didn’t know where to check for the slides definitions, that’s great !</p>",
+      "raw": "Thanks, I didn't know where to check for the slides definitions, that's great !",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 5.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 537
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:52.980542"
+}

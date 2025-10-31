@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2499,
+    "title": "How to make a rule that increases tracking for uppercase text?",
+    "slug": "how-to-make-a-rule-that-increases-tracking-for-uppercase-text",
+    "posts_count": 3,
+    "created_at": "2025-01-21T13:32:18.949Z",
+    "last_posted_at": "2025-01-21T16:17:28.575Z",
+    "views": 70,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "scripting",
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 113
+  },
+  "posts": [
+    {
+      "id": 7743,
+      "post_number": 1,
+      "username": "bilel_betka",
+      "name": "",
+      "created_at": "2025-01-21T13:32:19.264Z",
+      "updated_at": "2025-01-21T15:33:46.773Z",
+      "cooked": "<p>I want Typst to automatically increase tracking for both uppercase and small caps text.<br>\nFor small caps I used this code:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">show smallcaps: set text(tracking: 0.5pt)\n</code></pre>\n<p>but when I do the same with the <code>upper</code> function I get the following error message: “only element functions can be used as selectors.”<br>\nCould someone help me bypass this (without creating a custom function to use for uppercase text)?</p>",
+      "raw": "I want Typst to automatically increase tracking for both uppercase and small caps text.\nFor small caps I used this code:\n```typ\nshow smallcaps: set text(tracking: 0.5pt)\n```\nbut when I do the same with the `upper` function I get the following error message: \"only element functions can be used as selectors.\"\nCould someone help me bypass this (without creating a custom function to use for uppercase text)?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 140.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 181
+    },
+    {
+      "id": 7746,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-01-21T13:55:38.695Z",
+      "updated_at": "2025-01-21T14:03:43.324Z",
+      "cooked": "<p>Hi, welcome to the Typst forum!</p>\n<p>For your question maybe you can use a regular expression?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show regex(\"[[:upper:]]+\"): set text(tracking: ...)\n</code></pre>\n<p>Replace <code>\"[[:upper:]]+\"</code> with <code>\"\\b[[:upper:]]+\\b\"</code> to affect only whole words made of upper charactres.</p>",
+      "raw": "Hi, welcome to the Typst forum!\n\nFor your question maybe you can use a regular expression?\n\n```typ\n#show regex(\"[[:upper:]]+\"): set text(tracking: ...)\n```\n\nReplace `\"[[:upper:]]+\"` with `\"\\b[[:upper:]]+\\b\"` to affect only whole words made of upper charactres.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 9.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    },
+    {
+      "id": 7747,
+      "post_number": 3,
+      "username": "bilel_betka",
+      "name": "",
+      "created_at": "2025-01-21T16:17:28.575Z",
+      "updated_at": "2025-01-21T16:17:28.575Z",
+      "cooked": "<p>Thanks for the reply!<br>\nIt works.</p>",
+      "raw": "Thanks for the reply!\nIt works.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 20,
+      "score": 19.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 181
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:35.982567"
+}

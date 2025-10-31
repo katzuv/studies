@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3054,
+    "title": "How to change heading numbering per level?",
+    "slug": "how-to-change-heading-numbering-per-level",
+    "posts_count": 3,
+    "created_at": "2025-02-28T21:08:54.531Z",
+    "last_posted_at": "2025-03-03T15:30:03.158Z",
+    "views": 75,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "numbering"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 145
+  },
+  "posts": [
+    {
+      "id": 9229,
+      "post_number": 1,
+      "username": "Konstantin_Vogler",
+      "name": "Konstantin Vogler",
+      "created_at": "2025-02-28T21:08:54.653Z",
+      "updated_at": "2025-03-03T15:27:42.912Z",
+      "cooked": "<pre><code class=\"lang-auto\">#set heading(numbering: \"I. a.\")\n= Heading 1\n== Heading 2\n== Heading 3\n</code></pre>\n<p>the output of this code is:<br>\nI. Heading 1<br>\nI. a. Heading 2<br>\nI. b. Heading 3</p>\n<p>is it possible to get this?:<br>\nI. Heading 1<br>\na. Heading 2<br>\nb. Heading 3</p>\n<p>P.S.: Sorry for my bad english</p>",
+      "raw": "```\n#set heading(numbering: \"I. a.\")\n= Heading 1\n== Heading 2\n== Heading 3\n```\nthe output of this code is:\nI. Heading 1\nI. a. Heading 2\nI. b. Heading 3\n\nis it possible to get this?:\nI. Heading 1\na. Heading 2\nb. Heading 3\n\nP.S.: Sorry for my bad english",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 125.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1285
+    },
+    {
+      "id": 9231,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-02-28T21:42:01.787Z",
+      "updated_at": "2025-02-28T21:42:01.787Z",
+      "cooked": "<p>Welcome <a class=\"mention\" href=\"/u/konstantin_vogler\">@Konstantin_Vogler</a>,</p>\n<p>The simplest option is to use the <a href=\"https://typst.app/universe/package/numbly\">numbly</a> package.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#import \"@preview/numbly:0.1.0\": numbly\n\n#set heading(numbering: numbly(\"{1:I}.\", \"{2:a}.\"))\n\n= Heading 1\n== Heading 2\n== Heading 3\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/8/88573c75a9c8d244c67c7ddb2f25db34a24ae36b.png\" alt=\"test\" data-base62-sha1=\"js7PZDeEOpFWilbcmLwlP8vXXBN\" width=\"283\" height=\"231\"></p>",
+      "raw": "Welcome @Konstantin_Vogler,\n\nThe simplest option is to use the [numbly](https://typst.app/universe/package/numbly) package.\n\n```typst\n#import \"@preview/numbly:0.1.0\": numbly\n\n#set heading(numbering: numbly(\"{1:I}.\", \"{2:a}.\"))\n\n= Heading 1\n== Heading 2\n== Heading 3\n```\n\n![test|283x231](upload://js7PZDeEOpFWilbcmLwlP8vXXBN.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 26,
+      "score": 45.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    },
+    {
+      "id": 9317,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2025-03-03T15:30:03.158Z",
+      "updated_at": "2025-03-03T15:30:03.158Z",
+      "cooked": "<p>Hey <a class=\"mention\" href=\"/u/konstantin_vogler\">@Konstantin_Vogler</a>, welcome to the forum! I’ve changed your question post’s title to better fit our guidelines: <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\" class=\"inline-onebox\">How to post in the Questions category</a></p>\n<p>For future posts, make sure your title is a question you’d ask to a friend about Typst. <img src=\"https://forum.typst.app/images/emoji/apple/wink.png?v=12\" title=\":wink:\" class=\"emoji\" alt=\":wink:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Hey @Konstantin_Vogler, welcome to the forum! I’ve changed your question post’s title to better fit our guidelines: https://forum.typst.app/t/how-to-post-in-the-questions-category/11\n\nFor future posts, make sure your title is a question you’d ask to a friend about Typst. :wink:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 9,
+      "score": 1.8,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:56.119595"
+}

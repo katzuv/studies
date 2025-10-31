@@ -1,0 +1,4770 @@
+= link
+
+Links to a URL or a location in the document.
+
+By default, links do not look any different from normal text. However, you can easily apply a style of your choice with a show rule.
+
+== Example
+
+```typst
+#show link: underline
+
+https://example.com \
+
+#link("https://example.com") \
+#link("https://example.com")[
+  See example.com
+]
+```
+
+== Hyphenation
+
+If you enable hyphenation or justification, by default, it will not apply to links to prevent unwanted hyphenation in URLs. You can opt out of this default via `show link: set text(hyphenate: true)`.
+
+== Syntax
+
+This function also has dedicated syntax: Text that starts with `http://` or `https://` is automatically turned into a link.
+
+== Parameters
+
+```
+link(
+  str: str | label | location | dictionary,
+  content: content
+) -> content
+```
+
+=== `dest`: str | label | location | dictionary (Required, Positional)
+
+The destination the link points to.
+
+- To link to web pages, dest should be a valid URL string. If the URL is in the mailto: or tel: scheme and the body parameter is omitted, the email address or phone number will be the link's body, without the scheme.
+- To link to another part of the document, dest can take one of three forms: A label attached to an element. If you also want automatic text for the link based on the element, consider using a reference instead. A location (typically retrieved from here, locate or query). A dictionary with a page key of type integer and x and y coordinates of type length. Pages are counted from one, and the coordinates are relative to the page's top left corner.
+
+*Example:*
+```typst
+= Introduction <intro>
+#link("mailto:hello@typst.app") \
+#link(<intro>)[Go to intro] \
+#link((page: 1, x: 0pt, y: 0pt))[
+  Go to top
+]
+```
+
+=== `body`: content (Required, Positional)
+
+The content that should become a link.
+
+If `dest` is an URL string, the parameter can be omitted. In this case, the URL will be shown as the link.
+= list
+
+A bullet list.
+
+Displays a sequence of items vertically, with each item introduced by a marker.
+
+== Example
+
+```typst
+Normal list.
+- Text
+- Math
+- Layout
+- ...
+
+Multiple lines.
+- This list item spans multiple
+  lines because it is indented.
+
+Function call.
+#list(
+  [Foundations],
+  [Calculate],
+  [Construct],
+  [Data Loading],
+)
+```
+
+== Syntax
+
+This functions also has dedicated syntax: Start a line with a hyphen, followed by a space to create a list item. A list item can contain multiple paragraphs and other block-level content. All content that is indented more than an item's marker becomes part of that item.
+
+== Parameters
+
+```
+list(
+  tight: bool,
+  marker: content | array | function,
+  indent: length,
+  body-indent: length,
+  spacing: auto | length,
+  ..: content
+) -> content
+```
+
+=== `tight`: bool (Settable)
+
+Defines the default #link("/docs/reference/model/list/#parameters-spacing")[spacing] of the list. If it is `false`, the items are spaced apart with #link("/docs/reference/model/par/#parameters-spacing")[paragraph spacing]. If it is `true`, they use #link("/docs/reference/model/par/#parameters-leading")[paragraph leading] instead. This makes the list more compact, which can look better if the items are short.
+
+In markup mode, the value of this parameter is determined based on whether items are separated with a blank line. If items directly follow each other, this is set to `true`; if items are separated by a blank line, this is set to `false`. The markup-defined tightness cannot be overridden with set rules.
+
+Default: `true`
+
+*Example:*
+```typst
+- If a list has a lot of text, and
+  maybe other inline content, it
+  should not be tight anymore.
+
+- To make a list wide, simply insert
+  a blank line between the items.
+```
+
+=== `marker`: content | array | function (Settable)
+
+The marker which introduces each item.
+
+Instead of plain content, you can also pass an array with multiple markers that should be used for nested lists. If the list nesting depth exceeds the number of markers, the markers are cycled. For total control, you may pass a function that maps the list's nesting depth (starting from `0`) to a desired marker.
+
+Default: `([•], [‣], [–])`
+
+*Example:*
+```typst
+#set list(marker: [--])
+- A more classic list
+- With en-dashes
+
+#set list(marker: ([•], [--]))
+- Top-level
+  - Nested
+  - Items
+- Items
+```
+
+=== `indent`: length (Settable)
+
+The indent of each item.
+
+Default: `0pt`
+
+=== `body-indent`: length (Settable)
+
+The spacing between the marker and the body of each item.
+
+Default: `0.5em`
+
+=== `spacing`: auto | length (Settable)
+
+The spacing between the items of the list.
+
+If set to `auto`, uses paragraph #link("/docs/reference/model/par/#parameters-leading")[leading] for tight lists and paragraph #link("/docs/reference/model/par/#parameters-spacing")[spacing] for wide (non-tight) lists.
+
+Default: `auto`
+
+=== `children`: content (Required, Positional, Variadic)
+
+The bullet list's children.
+
+When using the list syntax, adjacent items are automatically collected into lists, even through constructs like for loops.
+
+*Example:*
+```typst
+#for letter in "ABC" [
+  - Letter #letter
+]
+```
+
+== Definitions
+
+=== `item`
+
+A bullet list item.
+
+```
+item(
+  content: content
+) -> content
+```
+
+==== `body`: content (Required, Positional)
+
+The item's body.
+= numbering
+
+Applies a numbering to a sequence of numbers.
+
+A numbering defines how a sequence of numbers should be displayed as content. It is defined either through a pattern string or an arbitrary function.
+
+A numbering pattern consists of counting symbols, for which the actual number is substituted, their prefixes, and one suffix. The prefixes and the suffix are repeated as-is.
+
+== Example
+
+```typst
+#numbering("1.1)", 1, 2, 3) \
+#numbering("1.a.i", 1, 2) \
+#numbering("I – 1", 12, 2) \
+#numbering(
+  (..nums) => nums
+    .pos()
+    .map(str)
+    .join(".") + ")",
+  1, 2, 3,
+)
+```
+
+== Numbering patterns and numbering functions
+
+There are multiple instances where you can provide a numbering pattern or function in Typst. For example, when defining how to number #link("/docs/reference/model/heading/")[headings] or #link("/docs/reference/model/figure/")[figures]. Every time, the expected format is the same as the one described below for the #link("/docs/reference/model/numbering/#parameters-numbering")[numbering] parameter.
+
+The following example illustrates that a numbering function is just a regular #link("/docs/reference/foundations/function/")[function] that accepts numbers and returns #link("/docs/reference/foundations/content/")[content].
+
+```typst
+#let unary(.., last) = "|" * last
+#set heading(numbering: unary)
+= First heading
+= Second heading
+= Third heading
+```
+
+== Parameters
+
+```
+numbering(
+  str: str | function,
+  ..: int
+) -> int
+```
+
+=== `numbering`: str | function (Required, Positional)
+
+Defines how the numbering works.
+
+*Counting symbols* are `1`, `a`, `A`, `i`, `I`, `α`, `Α`, `一`, `壹`, `あ`, `い`, `ア`, `イ`, `א`, `가`, `ㄱ`, `*`, `١`, `۱`, `१`, `১`, `ক`, `①`, and `⓵`. They are replaced by the number in the sequence, preserving the original case.
+
+The `*` character means that symbols should be used to count, in the order of `*`, `†`, `‡`, `§`, `¶`, `‖`. If there are more than six items, the number is represented using repeated symbols.
+
+*Suffixes* are all characters after the last counting symbol. They are repeated as-is at the end of any rendered number.
+
+*Prefixes* are all characters that are neither counting symbols nor suffixes. They are repeated as-is at in front of their rendered equivalent of their counting symbol.
+
+This parameter can also be an arbitrary function that gets each number as an individual argument. When given a function, the `numbering` function just forwards the arguments to that function. While this is not particularly useful in itself, it means that you can just give arbitrary numberings to the `numbering` function without caring whether they are defined as a pattern or function.
+
+=== `numbers`: int (Required, Positional, Variadic)
+
+The numbers to apply the numbering to. Must be positive.
+
+If `numbering` is a pattern and more numbers than counting symbols are given, the last counting symbol with its prefix is repeated.
+= outline
+
+A table of contents, figures, or other elements.
+
+This function generates a list of all occurrences of an element in the document, up to a given #link("/docs/reference/model/outline/#parameters-depth")[depth]. The element's numbering and page number will be displayed in the outline alongside its title or caption.
+
+== Example
+
+```typst
+#set heading(numbering: "1.")
+#outline()
+
+= Introduction
+#lorem(5)
+
+= Methods
+== Setup
+#lorem(10)
+```
+
+== Alternative outlines
+
+In its default configuration, this function generates a table of contents. By setting the `target` parameter, the outline can be used to generate a list of other kinds of elements than headings.
+
+In the example below, we list all figures containing images by setting `target` to `figure.where(kind: image)`. Just the same, we could have set it to `figure.where(kind: table)` to generate a list of tables.
+
+We could also set it to just `figure`, without using a #link("/docs/reference/foundations/function/#definitions-where")[where] selector, but then the list would contain _all_ figures, be it ones containing images, tables, or other material.
+
+```typst
+#outline(
+  title: [List of Figures],
+  target: figure.where(kind: image),
+)
+
+#figure(
+  image("tiger.jpg"),
+  caption: [A nice figure!],
+)
+```
+
+== Styling the outline
+
+At the most basic level, you can style the outline by setting properties on it and its entries. This way, you can customize the outline's #link("/docs/reference/model/outline/#parameters-title")[title], how outline entries are #link("/docs/reference/model/outline/#parameters-indent")[indented], and how the space between an entry's text and its page number should be #link("/docs/reference/model/outline/#definitions-entry-fill")[filled].
+
+Richer customization is possible through configuration of the outline's #link("/docs/reference/model/outline/#definitions-entry")[entries]. The outline generates one entry for each outlined element.
+
+Outline entries are #link("/docs/reference/layout/block/")[blocks], so you can adjust the spacing between them with normal block-spacing rules:
+
+```typst
+#show outline.entry.where(
+  level: 1
+): set block(above: 1.2em)
+
+#outline()
+
+= About ACME Corp.
+== History
+=== Origins
+= Products
+== ACME Tools
+```
+
+For full control, you can also write a transformational show rule on `outline.entry`. However, the logic for properly formatting and indenting outline entries is quite complex and the outline entry itself only contains two fields: The level and the outlined element.
+
+For this reason, various helper functions are provided. You can mix and match these to compose an entry from just the parts you like.
+
+The default show rule for an outline entry looks like this1:
+
+- The indented function takes an optional prefix and inner content and automatically applies the proper indentation to it, such that different entries align nicely and long headings wrap properly.
+- The prefix function formats the element's numbering (if any). It also appends a supplement for certain elements.
+- The inner function combines the element's body, the filler, and the page number.
+
+You can use these individual functions to format the outline entry in different ways. Let's say, you'd like to fully remove the filler and page numbers. To achieve this, you could write a show rule like this:
+
+```typst
+#show outline.entry: it => link(
+  it.element.location(),
+  // Keep just the body, dropping
+  // the fill and the page.
+  it.indented(it.prefix(), it.body()),
+)
+
+#outline()
+
+= About ACME Corp.
+== History
+```
+
+== Parameters
+
+```
+outline(
+  title: none | auto | content,
+  target: label | selector | location | function,
+  depth: none | int,
+  indent: auto | relative | function
+) -> content
+```
+
+=== `title`: none | auto | content (Settable)
+
+The title of the outline.
+
+- When set to `auto`, an appropriate title for the #link("/docs/reference/text/text/#parameters-lang")[text language] will be used.
+- When set to `none`, the outline will not have a title.
+- A custom title can be set by passing content.
+
+The outline's heading will not be numbered by default, but you can force it to be with a show-set rule: `show outline: set heading(numbering: "1.")`
+
+Default: `auto`
+
+=== `target`: label | selector | location | function (Settable)
+
+The type of element to include in the outline.
+
+To list figures containing a specific kind of element, like an image or a table, you can specify the desired kind in a #link("/docs/reference/foundations/function/#definitions-where")[where] selector. See the section on #link("/docs/reference/model/outline/#alternative-outlines")[alternative outlines] for more details.
+
+Default: `heading`
+
+*Example:*
+```typst
+#outline(
+  title: [List of Tables],
+  target: figure.where(kind: table),
+)
+
+#figure(
+  table(
+    columns: 4,
+    [t], [1], [2], [3],
+    [y], [0.3], [0.7], [0.5],
+  ),
+  caption: [Experiment results],
+)
+```
+
+=== `depth`: none | int (Settable)
+
+The maximum level up to which elements are included in the outline. When this argument is `none`, all elements are included.
+
+Default: `none`
+
+*Example:*
+```typst
+#set heading(numbering: "1.")
+#outline(depth: 2)
+
+= Yes
+Top-level section.
+
+== Still
+Subsection.
+
+=== Nope
+Not included.
+```
+
+=== `indent`: auto | relative | function (Settable)
+
+How to indent the outline's entries.
+
+- auto: Indents the numbering/prefix of a nested entry with the title of its parent entry. If the entries are not numbered (e.g., via heading numbering), this instead simply inserts a fixed amount of 1.2em indent per level.
+- Relative length: Indents the entry by the specified length per nesting level. Specifying 2em, for instance, would indent top-level headings by 0em (not nested), second level headings by 2em (nested once), third-level headings by 4em (nested twice) and so on.
+- Function: You can further customize this setting with a function. That function receives the nesting level as a parameter (starting at 0 for top-level headings/elements) and should return a (relative) length. For example, n => n * 2em would be equivalent to just specifying 2em.
+
+Default: `auto`
+
+*Example:*
+```typst
+#set heading(numbering: "1.a.")
+
+#outline(
+  title: [Contents (Automatic)],
+  indent: auto,
+)
+
+#outline(
+  title: [Contents (Length)],
+  indent: 2em,
+)
+
+= About ACME Corp.
+== History
+=== Origins
+#lorem(10)
+
+== Products
+#lorem(10)
+```
+
+== Definitions
+
+=== `entry`
+
+Represents an entry line in an outline.
+
+With show-set and show rules on outline entries, you can richly customize the outline's appearance. See the #link("/docs/reference/model/outline/#styling-the-outline")[section on styling the outline] for details.
+
+```
+entry(
+  int: int,
+  content: content,
+  fill: none | content
+) -> content
+```
+
+==== `level`: int (Required, Positional)
+
+The nesting level of this outline entry. Starts at `1` for top-level entries.
+
+==== `element`: content (Required, Positional)
+
+The element this entry refers to. Its location will be available through the #link("/docs/reference/foundations/content/#definitions-location")[location] method on the content and can be #link("/docs/reference/model/link/")[linked] to.
+
+==== `fill`: none | content (Settable)
+
+Content to fill the space between the title and the page number. Can be set to `none` to disable filling.
+
+The `fill` will be placed into a fractionally sized box that spans the space between the entry's body and the page number. When using show rules to override outline entries, it is thus recommended to wrap the fill in a #link("/docs/reference/layout/box/")[box] with fractional width, i.e. `box(width: 1fr, it.fill`.
+
+When using #link("/docs/reference/layout/repeat/")[repeat], the #link("/docs/reference/layout/repeat/#parameters-gap")[gap] property can be useful to tweak the visual weight of the fill.
+
+Default: `repeat(body: [.], gap: 0.15em)`
+
+*Example:*
+```typst
+#set outline.entry(fill: line(length: 100%))
+#outline()
+
+= A New Beginning
+```
+
+== Definitions of entry
+
+=== `indented`
+
+A helper function for producing an indented entry layout: Lays out a prefix and the rest of the entry in an indent-aware way.
+
+If the parent outline's #link("/docs/reference/model/outline/#parameters-indent")[indent] is `auto`, the inner content of all entries at level `N` is aligned with the prefix of all entries at level `N + 1`, leaving at least `gap` space between the prefix and inner parts. Furthermore, the `inner` contents of all entries at the same level are aligned.
+
+If the outline's indent is a fixed value or a function, the prefixes are indented, but the inner contents are simply inset from the prefix by the specified `gap`, rather than aligning outline-wide.
+
+```
+indented(
+  none: none | content,
+  content: content,
+  gap: length
+) -> content
+```
+
+==== `prefix`: none | content (Required, Positional)
+
+The `prefix` is aligned with the `inner` content of entries that have level one less.
+
+In the default show rule, this is just `it.prefix()`, but it can be freely customized.
+
+==== `inner`: content (Required, Positional)
+
+The formatted inner content of the entry.
+
+In the default show rule, this is just `it.inner()`, but it can be freely customized.
+
+==== `gap`: length
+
+The gap between the prefix and the inner content.
+
+Default: `0.5em`
+
+=== `prefix`
+
+Formats the element's numbering (if any).
+
+This also appends the element's supplement in case of figures or equations. For instance, it would output `1.1` for a heading, but `Figure 1` for a figure, as is usual for outlines.
+
+```
+prefix(
+  
+) -> content
+```
+
+=== `inner`
+
+Creates the default inner content of the entry.
+
+This includes the body, the fill, and page number.
+
+```
+inner(
+  
+) -> content
+```
+
+=== `body`
+
+The content which is displayed in place of the referred element at its entry in the outline. For a heading, this is its #link("/docs/reference/model/heading/#parameters-body")[body]; for a figure a caption and for equations, it is empty.
+
+```
+body(
+  
+) -> content
+```
+
+=== `page`
+
+The page number of this entry's element, formatted with the numbering set for the referenced page.
+
+```
+page(
+  
+) -> content
+```
+= par
+
+A logical subdivison of textual content.
+
+Typst automatically collects _inline-level_ elements into paragraphs. Inline-level elements include #link("/docs/reference/text/text/")[text], #link("/docs/reference/layout/h/")[horizontal spacing], #link("/docs/reference/layout/box/")[boxes], and #link("/docs/reference/math/equation/")[inline equations].
+
+To separate paragraphs, use a blank line (or an explicit #link("/docs/reference/model/parbreak/")[parbreak]). Paragraphs are also automatically interrupted by any block-level element (like #link("/docs/reference/layout/block/")[block], #link("/docs/reference/layout/place/")[place], or anything that shows itself as one of these).
+
+The `par` element is primarily used in set rules to affect paragraph properties, but it can also be used to explicitly display its argument as a paragraph of its own. Then, the paragraph's body may not contain any block-level content.
+
+== Boxes and blocks
+
+As explained above, usually paragraphs only contain inline-level content. However, you can integrate any kind of block-level content into a paragraph by wrapping it in a #link("/docs/reference/layout/box/")[box].
+
+Conversely, you can separate inline-level content from a paragraph by wrapping it in a #link("/docs/reference/layout/block/")[block]. In this case, it will not become part of any paragraph at all. Read the following section for an explanation of why that matters and how it differs from just adding paragraph breaks around the content.
+
+== What becomes a paragraph?
+
+When you add inline-level content to your document, Typst will automatically wrap it in paragraphs. However, a typical document also contains some text that is not semantically part of a paragraph, for example in a heading or caption.
+
+The rules for when Typst wraps inline-level content in a paragraph are as follows:
+
+- All text at the root of a document is wrapped in paragraphs.
+- Text in a container (like a block) is only wrapped in a paragraph if the container holds any block-level content. If all of the contents are inline-level, no paragraph is created.
+
+In the laid-out document, it's not immediately visible whether text became part of a paragraph. However, it is still important for various reasons:
+
+- Certain paragraph styling like first-line-indent will only apply to proper paragraphs, not any text. Similarly, par show rules of course only trigger on paragraphs.
+- A proper distinction between paragraphs and other text helps people who rely on assistive technologies (such as screen readers) navigate and understand the document properly. Currently, this only applies to HTML export since Typst does not yet output accessible PDFs, but support for this is planned for the near future.
+- HTML export will generate a <p> tag only for paragraphs.
+
+When creating custom reusable components, you can and should take charge over whether Typst creates paragraphs. By wrapping text in a #link("/docs/reference/layout/block/")[block] instead of just adding paragraph breaks around it, you can force the absence of a paragraph. Conversely, by adding a #link("/docs/reference/model/parbreak/")[parbreak] after some content in a container, you can force it to become a paragraph even if it's just one word. This is, for example, what #link("/docs/reference/model/list/#parameters-tight")[non-tight] lists do to force their items to become paragraphs.
+
+== Example
+
+```typst
+#set par(
+  first-line-indent: 1em,
+  spacing: 0.65em,
+  justify: true,
+)
+
+We proceed by contradiction.
+Suppose that there exists a set
+of positive integers $a$, $b$, and
+$c$ that satisfies the equation
+$a^n + b^n = c^n$ for some
+integer value of $n > 2$.
+
+Without loss of generality,
+let $a$ be the smallest of the
+three integers. Then, we ...
+```
+
+== Parameters
+
+```
+par(
+  leading: length,
+  spacing: length,
+  justify: bool,
+  linebreaks: auto | str,
+  first-line-indent: length | dictionary,
+  hanging-indent: length,
+  content: content
+) -> content
+```
+
+=== `leading`: length (Settable)
+
+The spacing between lines.
+
+Leading defines the spacing between the #link("/docs/reference/text/text/#parameters-bottom-edge")[bottom edge] of one line and the #link("/docs/reference/text/text/#parameters-top-edge")[top edge] of the following line. By default, these two properties are up to the font, but they can also be configured manually with a text set rule.
+
+By setting top edge, bottom edge, and leading, you can also configure a consistent baseline-to-baseline distance. You could, for instance, set the leading to `1em`, the top-edge to `0.8em`, and the bottom-edge to `-0.2em` to get a baseline gap of exactly `2em`. The exact distribution of the top- and bottom-edge values affects the bounds of the first and last line.
+
+Default: `0.65em`
+
+=== `spacing`: length (Settable)
+
+The spacing between paragraphs.
+
+Just like leading, this defines the spacing between the bottom edge of a paragraph's last line and the top edge of the next paragraph's first line.
+
+When a paragraph is adjacent to a #link("/docs/reference/layout/block/")[block] that is not a paragraph, that block's #link("/docs/reference/layout/block/#parameters-above")[above] or #link("/docs/reference/layout/block/#parameters-below")[below] property takes precedence over the paragraph spacing. Headings, for instance, reduce the spacing below them by default for a better look.
+
+Default: `1.2em`
+
+=== `justify`: bool (Settable)
+
+Whether to justify text in its line.
+
+Hyphenation will be enabled for justified paragraphs if the #link("/docs/reference/text/text/#parameters-hyphenate")[text function's hyphenate property] is set to `auto` and the current language is known.
+
+Note that the current #link("/docs/reference/layout/align/#parameters-alignment")[alignment] still has an effect on the placement of the last line except if it ends with a #link("/docs/reference/text/linebreak/#parameters-justify")[justified line break].
+
+Default: `false`
+
+=== `linebreaks`: auto | str (Settable)
+
+How to determine line breaks.
+
+When this property is set to `auto`, its default value, optimized line breaks will be used for justified paragraphs. Enabling optimized line breaks for ragged paragraphs may also be worthwhile to improve the appearance of the text.
+
+Default: `auto`
+
+*Example:*
+```typst
+#set page(width: 207pt)
+#set par(linebreaks: "simple")
+Some texts feature many longer
+words. Those are often exceedingly
+challenging to break in a visually
+pleasing way.
+
+#set par(linebreaks: "optimized")
+Some texts feature many longer
+words. Those are often exceedingly
+challenging to break in a visually
+pleasing way.
+```
+
+=== `first-line-indent`: length | dictionary (Settable)
+
+The indent the first line of a paragraph should have.
+
+By default, only the first line of a consecutive paragraph will be indented (not the first one in the document or container, and not paragraphs immediately following other block-level elements).
+
+If you want to indent all paragraphs instead, you can pass a dictionary containing the `amount` of indent as a length and the pair `all: true`. When `all` is omitted from the dictionary, it defaults to `false`.
+
+By typographic convention, paragraph breaks are indicated either by some space between paragraphs or by indented first lines. Consider
+
+- reducing the #link("/docs/reference/model/par/#parameters-spacing")[paragraph spacing] to the #link("/docs/reference/model/par/#parameters-leading")[leading] using `set par(spacing: 0.65em)`
+- increasing the #link("/docs/reference/layout/block/#parameters-spacing")[block spacing] (which inherits the paragraph spacing by default) to the original paragraph spacing using `set block(spacing: 1.2em)`
+
+Default: `(amount: 0pt, all: false)`
+
+*Example:*
+```typst
+#set block(spacing: 1.2em)
+#set par(
+  first-line-indent: 1.5em,
+  spacing: 0.65em,
+)
+
+The first paragraph is not affected
+by the indent.
+
+But the second paragraph is.
+
+#line(length: 100%)
+
+#set par(first-line-indent: (
+  amount: 1.5em,
+  all: true,
+))
+
+Now all paragraphs are affected
+by the first line indent.
+
+Even the first one.
+```
+
+=== `hanging-indent`: length (Settable)
+
+The indent that all but the first line of a paragraph should have.
+
+Default: `0pt`
+
+*Example:*
+```typst
+#set par(hanging-indent: 1em)
+
+#lorem(15)
+```
+
+=== `body`: content (Required, Positional)
+
+The contents of the paragraph.
+
+== Definitions
+
+=== `line`
+
+A paragraph line.
+
+This element is exclusively used for line number configuration through set rules and cannot be placed.
+
+The #link("/docs/reference/model/par/#definitions-line-numbering")[numbering] option is used to enable line numbers by specifying a numbering format.
+
+```
+line(
+  numbering: none | str | function,
+  number-align: auto | alignment,
+  number-margin: alignment,
+  number-clearance: auto | length,
+  numbering-scope: str
+) -> content
+```
+
+```typst
+#set par.line(numbering: "1")
+
+Roses are red. \
+Violets are blue. \
+Typst is there for you.
+```
+
+The `numbering` option takes either a predefined #link("/docs/reference/model/numbering/")[numbering pattern] or a function returning styled content. You can disable line numbers for text inside certain elements by setting the numbering to `none` using show-set rules.
+
+```typst
+// Styled red line numbers.
+#set par.line(
+  numbering: n => text(red)[#n]
+)
+
+// Disable numbers inside figures.
+#show figure: set par.line(
+  numbering: none
+)
+
+Roses are red. \
+Violets are blue.
+
+#figure(
+  caption: [Without line numbers.]
+)[
+  Lorem ipsum \
+  dolor sit amet
+]
+
+The text above is a sample \
+originating from distant times.
+```
+
+This element exposes further options which may be used to control other aspects of line numbering, such as its #link("/docs/reference/model/par/#definitions-line-number-align")[alignment] or #link("/docs/reference/model/par/#definitions-line-number-margin")[margin]. In addition, you can control whether the numbering is reset on each page through the #link("/docs/reference/model/par/#definitions-line-numbering-scope")[numbering-scope] option.
+
+==== `numbering`: none | str | function (Settable)
+
+How to number each line. Accepts a #link("/docs/reference/model/numbering/")[numbering pattern or function].
+
+Default: `none`
+
+*Example:*
+```typst
+#set par.line(numbering: "I")
+
+Roses are red. \
+Violets are blue. \
+Typst is there for you.
+```
+
+==== `number-align`: auto | alignment (Settable)
+
+The alignment of line numbers associated with each line.
+
+The default of `auto` indicates a smart default where numbers grow horizontally away from the text, considering the margin they're in and the current text direction.
+
+Default: `auto`
+
+*Example:*
+```typst
+#set par.line(
+  numbering: "I",
+  number-align: left,
+)
+
+Hello world! \
+Today is a beautiful day \
+For exploring the world.
+```
+
+==== `number-margin`: alignment (Settable)
+
+The margin at which line numbers appear.
+
+_Note:_ In a multi-column document, the line numbers for paragraphs inside the last column will always appear on the `end` margin (right margin for left-to-right text and left margin for right-to-left), regardless of this configuration. That behavior cannot be changed at this moment.
+
+Default: `start`
+
+*Example:*
+```typst
+#set par.line(
+  numbering: "1",
+  number-margin: right,
+)
+
+= Report
+- Brightness: Dark, yet darker
+- Readings: Negative
+```
+
+==== `number-clearance`: auto | length (Settable)
+
+The distance between line numbers and text.
+
+The default value of `auto` results in a clearance that is adaptive to the page width and yields reasonable results in most cases.
+
+Default: `auto`
+
+*Example:*
+```typst
+#set par.line(
+  numbering: "1",
+  number-clearance: 4pt,
+)
+
+Typesetting \
+Styling \
+Layout
+```
+
+==== `numbering-scope`: str (Settable)
+
+Controls when to reset line numbering.
+
+_Note:_ The line numbering scope must be uniform across each page run (a page run is a sequence of pages without an explicit pagebreak in between). For this reason, set rules for it should be defined before any page content, typically at the very start of the document.
+
+Default: `"document"`
+
+*Example:*
+```typst
+#set par.line(
+  numbering: "1",
+  numbering-scope: "page",
+)
+
+First line \
+Second line
+#pagebreak()
+First line again \
+Second line again
+```
+= parbreak
+
+A paragraph break.
+
+This starts a new paragraph. Especially useful when used within code like #link("/docs/reference/scripting/#loops")[for loops]. Multiple consecutive paragraph breaks collapse into a single one.
+
+== Example
+
+```typst
+#for i in range(3) {
+  [Blind text #i: ]
+  lorem(5)
+  parbreak()
+}
+```
+
+== Syntax
+
+Instead of calling this function, you can insert a blank line into your markup to create a paragraph break.
+
+== Parameters
+
+```
+parbreak(
+  
+) -> content
+```
+= quote
+
+Displays a quote alongside an optional attribution.
+
+== Example
+
+```typst
+Plato is often misquoted as the author of #quote[I know that I know
+nothing], however, this is a derivation form his original quote:
+
+#set quote(block: true)
+
+#quote(attribution: [Plato])[
+  ... ἔοικα γοῦν τούτου γε σμικρῷ τινι αὐτῷ τούτῳ σοφώτερος εἶναι, ὅτι
+  ἃ μὴ οἶδα οὐδὲ οἴομαι εἰδέναι.
+]
+#quote(attribution: [from the Henry Cary literal translation of 1897])[
+  ... I seem, then, in just this little thing to be wiser than this man at
+  any rate, that what I do not know I do not think I know either.
+]
+```
+
+By default block quotes are padded left and right by `1em`, alignment and padding can be controlled with show rules:
+
+```typst
+#set quote(block: true)
+#show quote: set align(center)
+#show quote: set pad(x: 5em)
+
+#quote[
+  You cannot pass... I am a servant of the Secret Fire, wielder of the
+  flame of Anor. You cannot pass. The dark fire will not avail you,
+  flame of Udûn. Go back to the Shadow! You cannot pass.
+]
+```
+
+== Parameters
+
+```
+quote(
+  block: bool,
+  quotes: auto | bool,
+  attribution: none | label | content,
+  content: content
+) -> content
+```
+
+=== `block`: bool (Settable)
+
+Whether this is a block quote.
+
+Default: `false`
+
+*Example:*
+```typst
+An inline citation would look like
+this: #quote(
+  attribution: [René Descartes]
+)[
+  cogito, ergo sum
+], and a block equation like this:
+#quote(
+  block: true,
+  attribution: [JFK]
+)[
+  Ich bin ein Berliner.
+]
+```
+
+=== `quotes`: auto | bool (Settable)
+
+Whether double quotes should be added around this quote.
+
+The double quotes used are inferred from the `quotes` property on #link("/docs/reference/text/smartquote/")[smartquote], which is affected by the `lang` property on #link("/docs/reference/text/text/")[text].
+
+- `true`: Wrap this quote in double quotes.
+- `false`: Do not wrap this quote in double quotes.
+- `auto`: Infer whether to wrap this quote in double quotes based on the `block` property. If `block` is `false`, double quotes are automatically added.
+
+Default: `auto`
+
+*Example:*
+```typst
+#set text(lang: "de")
+
+Ein deutsch-sprechender Author
+zitiert unter umständen JFK:
+#quote[Ich bin ein Berliner.]
+
+#set text(lang: "en")
+
+And an english speaking one may
+translate the quote:
+#quote[I am a Berliner.]
+```
+
+=== `attribution`: none | label | content (Settable)
+
+The attribution of this quote, usually the author or source. Can be a label pointing to a bibliography entry or any content. By default only displayed for block quotes, but can be changed using a `show` rule.
+
+Default: `none`
+
+*Example:*
+```typst
+#quote(attribution: [René Descartes])[
+  cogito, ergo sum
+]
+
+#show quote.where(block: false): it => {
+  ["] + h(0pt, weak: true) + it.body + h(0pt, weak: true) + ["]
+  if it.attribution != none [ (#it.attribution)]
+}
+
+#quote(
+  attribution: link("https://typst.app/home")[typst.com]
+)[
+  Compose papers faster
+]
+
+#set quote(block: true)
+
+#quote(attribution: <tolkien54>)[
+  You cannot pass... I am a servant
+  of the Secret Fire, wielder of the
+  flame of Anor. You cannot pass. The
+  dark fire will not avail you, flame
+  of Udûn. Go back to the Shadow! You
+  cannot pass.
+]
+
+#bibliography("works.bib", style: "apa")
+```
+
+=== `body`: content (Required, Positional)
+
+The quote.
+= ref
+
+A reference to a label or bibliography.
+
+Takes a label and cross-references it. There are two kind of references, determined by its #link("/docs/reference/model/ref/#parameters-form")[form]: `"normal"` and `"page"`.
+
+The default, a `"normal"` reference, produces a textual reference to a label. For example, a reference to a heading will yield an appropriate string such as "Section 1" for a reference to the first heading. The references are also links to the respective element. Reference syntax can also be used to #link("/docs/reference/model/cite/")[cite] from a bibliography.
+
+As the default form requires a supplement and numbering, the label must be attached to a _referenceable element_. Referenceable elements include #link("/docs/reference/model/heading/")[headings], #link("/docs/reference/model/figure/")[figures], #link("/docs/reference/math/equation/")[equations], and #link("/docs/reference/model/footnote/")[footnotes]. To create a custom referenceable element like a theorem, you can create a figure of a custom #link("/docs/reference/model/figure/#parameters-kind")[kind] and write a show rule for it. In the future, there might be a more direct way to define a custom referenceable element.
+
+If you just want to link to a labelled element and not get an automatic textual reference, consider using the #link("/docs/reference/model/link/")[link] function instead.
+
+A `"page"` reference produces a page reference to a label, displaying the page number at its location. You can use the #link("/docs/reference/layout/page/#parameters-supplement")[page's supplement] to modify the text before the page number. Unlike a `"normal"` reference, the label can be attached to any element.
+
+== Example
+
+```typst
+#set page(numbering: "1")
+#set heading(numbering: "1.")
+#set math.equation(numbering: "(1)")
+
+= Introduction <intro>
+Recent developments in
+typesetting software have
+rekindled hope in previously
+frustrated researchers. @distress
+As shown in @results (see
+#ref(<results>, form: "page")),
+we ...
+
+= Results <results>
+We discuss our approach in
+comparison with others.
+
+== Performance <perf>
+@slow demonstrates what slow
+software looks like.
+$ T(n) = O(2^n) $ <slow>
+
+#bibliography("works.bib")
+```
+
+== Syntax
+
+This function also has dedicated syntax: A `"normal"` reference to a label can be created by typing an `@` followed by the name of the label (e.g. `= Introduction <intro>` can be referenced by typing `@intro`).
+
+To customize the supplement, add content in square brackets after the reference: `@intro[Chapter]`.
+
+== Customization
+
+If you write a show rule for references, you can access the referenced element through the `element` field of the reference. The `element` may be `none` even if it exists if Typst hasn't discovered it yet, so you always need to handle that case in your code.
+
+```typst
+#set heading(numbering: "1.")
+#set math.equation(numbering: "(1)")
+
+#show ref: it => {
+  let eq = math.equation
+  let el = it.element
+  if el != none and el.func() == eq {
+    // Override equation references.
+    link(el.location(),numbering(
+      el.numbering,
+      ..counter(eq).at(el.location())
+    ))
+  } else {
+    // Other references as usual.
+    it
+  }
+}
+
+= Beginnings <beginning>
+In @beginning we prove @pythagoras.
+$ a^2 + b^2 = c^2 $ <pythagoras>
+```
+
+== Parameters
+
+```
+ref(
+  label: label,
+  supplement: none | auto | content | function,
+  form: str
+) -> content
+```
+
+=== `target`: label (Required, Positional)
+
+The target label that should be referenced.
+
+Can be a label that is defined in the document or, if the #link("/docs/reference/model/ref/#parameters-form")[form] is set to `"normal"`, an entry from the #link("/docs/reference/model/bibliography/")[bibliography].
+
+=== `supplement`: none | auto | content | function (Settable)
+
+A supplement for the reference.
+
+If the #link("/docs/reference/model/ref/#parameters-form")[form] is set to `"normal"`:
+
+- For references to headings or figures, this is added before the referenced number.
+- For citations, this can be used to add a page number.
+
+If the #link("/docs/reference/model/ref/#parameters-form")[form] is set to `"page"`, then this is added before the page number of the label referenced.
+
+If a function is specified, it is passed the referenced element and should return content.
+
+Default: `auto`
+
+*Example:*
+```typst
+#set heading(numbering: "1.")
+#show ref.where(
+  form: "normal"
+): set ref(supplement: it => {
+  if it.func() == heading {
+    "Chapter"
+  } else {
+    "Thing"
+  }
+})
+
+= Introduction <intro>
+In @intro, we see how to turn
+Sections into Chapters. And
+in @intro[Part], it is done
+manually.
+```
+
+=== `form`: str (Settable)
+
+The kind of reference to produce.
+
+Default: `"normal"`
+
+*Example:*
+```typst
+#set page(numbering: "1")
+
+Here <here> we are on
+#ref(<here>, form: "page").
+```
+= strong
+
+Strongly emphasizes content by increasing the font weight.
+
+Increases the current font weight by a given `delta`.
+
+== Example
+
+```typst
+This is *strong.* \
+This is #strong[too.] \
+
+#show strong: set text(red)
+And this is *evermore.*
+```
+
+== Syntax
+
+This function also has dedicated syntax: To strongly emphasize content, simply enclose it in stars/asterisks (`*`). Note that this only works at word boundaries. To strongly emphasize part of a word, you have to use the function.
+
+== Parameters
+
+```
+strong(
+  delta: int,
+  content: content
+) -> content
+```
+
+=== `delta`: int (Settable)
+
+The delta to apply on the font weight.
+
+Default: `300`
+
+*Example:*
+```typst
+#set strong(delta: 0)
+No *effect!*
+```
+
+=== `body`: content (Required, Positional)
+
+The content to strongly emphasize.
+= table
+
+A table of items.
+
+Tables are used to arrange content in cells. Cells can contain arbitrary content, including multiple paragraphs and are specified in row-major order. For a hands-on explanation of all the ways you can use and customize tables in Typst, check out the #link("/docs/guides/table-guide/")[table guide].
+
+Because tables are just grids with different defaults for some cell properties (notably `stroke` and `inset`), refer to the #link("/docs/reference/layout/grid/")[grid documentation] for more information on how to size the table tracks and specify the cell appearance properties.
+
+If you are unsure whether you should be using a table or a grid, consider whether the content you are arranging semantically belongs together as a set of related data points or similar or whether you are just want to enhance your presentation by arranging unrelated content in a grid. In the former case, a table is the right choice, while in the latter case, a grid is more appropriate. Furthermore, Typst will annotate its output in the future such that screenreaders will announce content in `table` as tabular while a grid's content will be announced no different than multiple content blocks in the document flow.
+
+Note that, to override a particular cell's properties or apply show rules on table cells, you can use the #link("/docs/reference/model/table/#definitions-cell")[table.cell] element. See its documentation for more information.
+
+Although the `table` and the `grid` share most properties, set and show rules on one of them do not affect the other.
+
+To give a table a caption and make it #link("/docs/reference/model/ref/")[referenceable], put it into a #link("/docs/reference/model/figure/")[figure].
+
+== Example
+
+The example below demonstrates some of the most common table options.
+
+```typst
+#table(
+  columns: (1fr, auto, auto),
+  inset: 10pt,
+  align: horizon,
+  table.header(
+    [], [*Volume*], [*Parameters*],
+  ),
+  image("cylinder.svg"),
+  $ pi h (D^2 - d^2) / 4 $,
+  [
+    $h$: height \
+    $D$: outer radius \
+    $d$: inner radius
+  ],
+  image("tetrahedron.svg"),
+  $ sqrt(2) / 12 a^3 $,
+  [$a$: edge length]
+)
+```
+
+Much like with grids, you can use #link("/docs/reference/model/table/#definitions-cell")[table.cell] to customize the appearance and the position of each cell.
+
+```typst
+#set table(
+  stroke: none,
+  gutter: 0.2em,
+  fill: (x, y) =>
+    if x == 0 or y == 0 { gray },
+  inset: (right: 1.5em),
+)
+
+#show table.cell: it => {
+  if it.x == 0 or it.y == 0 {
+    set text(white)
+    strong(it)
+  } else if it.body == [] {
+    // Replace empty cells with 'N/A'
+    pad(..it.inset)[_N/A_]
+  } else {
+    it
+  }
+}
+
+#let a = table.cell(
+  fill: green.lighten(60%),
+)[A]
+#let b = table.cell(
+  fill: aqua.lighten(60%),
+)[B]
+
+#table(
+  columns: 4,
+  [], [Exam 1], [Exam 2], [Exam 3],
+
+  [John], [], a, [],
+  [Mary], [], a, a,
+  [Robert], b, a, b,
+)
+```
+
+== Parameters
+
+```
+table(
+  columns: auto | int | relative | fraction | array,
+  rows: auto | int | relative | fraction | array,
+  gutter: auto | int | relative | fraction | array,
+  column-gutter: auto | int | relative | fraction | array,
+  row-gutter: auto | int | relative | fraction | array,
+  fill: none | color | gradient | array | tiling | function,
+  align: auto | array | alignment | function,
+  stroke: none | length | color | gradient | array | stroke | tiling | dictionary | function,
+  inset: relative | array | dictionary | function,
+  ..: content
+) -> content
+```
+
+=== `columns`: auto | int | relative | fraction | array (Settable)
+
+The column sizes. See the #link("/docs/reference/layout/grid/")[grid documentation] for more information on track sizing.
+
+Default: `()`
+
+=== `rows`: auto | int | relative | fraction | array (Settable)
+
+The row sizes. See the #link("/docs/reference/layout/grid/")[grid documentation] for more information on track sizing.
+
+Default: `()`
+
+=== `gutter`: auto | int | relative | fraction | array (Settable)
+
+The gaps between rows and columns. This is a shorthand for setting `column-gutter` and `row-gutter` to the same value. See the #link("/docs/reference/layout/grid/")[grid documentation] for more information on gutters.
+
+Default: `()`
+
+=== `column-gutter`: auto | int | relative | fraction | array (Settable)
+
+The gaps between columns. Takes precedence over `gutter`. See the #link("/docs/reference/layout/grid/")[grid documentation] for more information on gutters.
+
+Default: `()`
+
+=== `row-gutter`: auto | int | relative | fraction | array (Settable)
+
+The gaps between rows. Takes precedence over `gutter`. See the #link("/docs/reference/layout/grid/")[grid documentation] for more information on gutters.
+
+Default: `()`
+
+=== `fill`: none | color | gradient | array | tiling | function (Settable)
+
+How to fill the cells.
+
+This can be a color or a function that returns a color. The function receives the cells' column and row indices, starting from zero. This can be used to implement striped tables.
+
+Default: `none`
+
+*Example:*
+```typst
+#table(
+  fill: (x, _) =>
+    if calc.odd(x) { luma(240) }
+    else { white },
+  align: (x, y) =>
+    if y == 0 { center }
+    else if x == 0 { left }
+    else { right },
+  columns: 4,
+  [], [*Q1*], [*Q2*], [*Q3*],
+  [Revenue:], [1000 €], [2000 €], [3000 €],
+  [Expenses:], [500 €], [1000 €], [1500 €],
+  [Profit:], [500 €], [1000 €], [1500 €],
+)
+```
+
+=== `align`: auto | array | alignment | function (Settable)
+
+How to align the cells' content.
+
+This can either be a single alignment, an array of alignments (corresponding to each column) or a function that returns an alignment. The function receives the cells' column and row indices, starting from zero. If set to `auto`, the outer alignment is used.
+
+Default: `auto`
+
+*Example:*
+```typst
+#table(
+  columns: 3,
+  align: (left, center, right),
+  [Hello], [Hello], [Hello],
+  [A], [B], [C],
+)
+```
+
+=== `stroke`: none | length | color | gradient | array | stroke | tiling | dictionary | function (Settable)
+
+How to #link("/docs/reference/visualize/stroke/")[stroke] the cells.
+
+Strokes can be disabled by setting this to `none`.
+
+If it is necessary to place lines which can cross spacing between cells produced by the `gutter` option, or to override the stroke between multiple specific cells, consider specifying one or more of #link("/docs/reference/model/table/#definitions-hline")[table.hline] and #link("/docs/reference/model/table/#definitions-vline")[table.vline] alongside your table cells.
+
+See the #link("/docs/reference/layout/grid/#parameters-stroke")[grid documentation] for more information on strokes.
+
+Default: `1pt + black`
+
+=== `inset`: relative | array | dictionary | function (Settable)
+
+How much to pad the cells' content.
+
+Default: `0% + 5pt`
+
+*Example:*
+```typst
+#table(
+  inset: 10pt,
+  [Hello],
+  [World],
+)
+
+#table(
+  columns: 2,
+  inset: (
+    x: 20pt,
+    y: 10pt,
+  ),
+  [Hello],
+  [World],
+)
+```
+
+=== `children`: content (Required, Positional, Variadic)
+
+The contents of the table cells, plus any extra table lines specified with the #link("/docs/reference/model/table/#definitions-hline")[table.hline] and #link("/docs/reference/model/table/#definitions-vline")[table.vline] elements.
+
+== Definitions
+
+=== `cell`
+
+A cell in the table. Use this to position a cell manually or to apply styling. To do the latter, you can either use the function to override the properties for a particular cell, or use it in show rules to apply certain styles to multiple cells at once.
+
+Perhaps the most important use case of `table.cell` is to make a cell span multiple columns and/or rows with the `colspan` and `rowspan` fields.
+
+```
+cell(
+  content: content,
+  x: auto | int,
+  y: auto | int,
+  colspan: int,
+  rowspan: int,
+  fill: none | auto | color | gradient | tiling,
+  align: auto | alignment,
+  inset: auto | relative | dictionary,
+  stroke: none | length | color | gradient | stroke | tiling | dictionary,
+  breakable: auto | bool
+) -> content
+```
+
+```typst
+#show table.cell.where(y: 0): strong
+#set table(
+  stroke: (x, y) => if y == 0 {
+    (bottom: 0.7pt + black)
+  },
+  align: (x, y) => (
+    if x > 0 { center }
+    else { left }
+  )
+)
+
+#table(
+  columns: 3,
+  table.header(
+    [Substance],
+    [Subcritical °C],
+    [Supercritical °C],
+  ),
+  [Hydrochloric Acid],
+  [12.0], [92.1],
+  [Sodium Myreth Sulfate],
+  [16.6], [104],
+  [Potassium Hydroxide],
+  table.cell(colspan: 2)[24.7],
+)
+```
+
+For example, you can override the fill, alignment or inset for a single cell:
+
+```typst
+// You can also import those.
+#import table: cell, header
+
+#table(
+  columns: 2,
+  align: center,
+  header(
+    [*Trip progress*],
+    [*Itinerary*],
+  ),
+  cell(
+    align: right,
+    fill: fuchsia.lighten(80%),
+    [🚗],
+  ),
+  [Get in, folks!],
+  [🚗], [Eat curbside hotdog],
+  cell(align: left)[🌴🚗],
+  cell(
+    inset: 0.06em,
+    text(1.62em)[🛖🌅🌊],
+  ),
+)
+```
+
+You may also apply a show rule on `table.cell` to style all cells at once. Combined with selectors, this allows you to apply styles based on a cell's position:
+
+```typst
+#show table.cell.where(x: 0): strong
+
+#table(
+  columns: 3,
+  gutter: 3pt,
+  [Name], [Age], [Strength],
+  [Hannes], [36], [Grace],
+  [Irma], [50], [Resourcefulness],
+  [Vikram], [49], [Perseverance],
+)
+```
+
+==== `body`: content (Required, Positional)
+
+The cell's body.
+
+==== `x`: auto | int (Settable)
+
+The cell's column (zero-indexed). Functions identically to the `x` field in #link("/docs/reference/layout/grid/#definitions-cell")[grid.cell].
+
+Default: `auto`
+
+==== `y`: auto | int (Settable)
+
+The cell's row (zero-indexed). Functions identically to the `y` field in #link("/docs/reference/layout/grid/#definitions-cell")[grid.cell].
+
+Default: `auto`
+
+==== `colspan`: int (Settable)
+
+The amount of columns spanned by this cell.
+
+Default: `1`
+
+==== `rowspan`: int (Settable)
+
+The amount of rows spanned by this cell.
+
+Default: `1`
+
+==== `fill`: none | auto | color | gradient | tiling (Settable)
+
+The cell's #link("/docs/reference/model/table/#parameters-fill")[fill] override.
+
+Default: `auto`
+
+==== `align`: auto | alignment (Settable)
+
+The cell's #link("/docs/reference/model/table/#parameters-align")[alignment] override.
+
+Default: `auto`
+
+==== `inset`: auto | relative | dictionary (Settable)
+
+The cell's #link("/docs/reference/model/table/#parameters-inset")[inset] override.
+
+Default: `auto`
+
+==== `stroke`: none | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+The cell's #link("/docs/reference/model/table/#parameters-stroke")[stroke] override.
+
+Default: `(:)`
+
+==== `breakable`: auto | bool (Settable)
+
+Whether rows spanned by this cell can be placed in different pages. When equal to `auto`, a cell spanning only fixed-size rows is unbreakable, while a cell spanning at least one `auto`-sized row is breakable.
+
+Default: `auto`
+
+=== `hline`
+
+A horizontal line in the table.
+
+Overrides any per-cell stroke, including stroke specified through the table's `stroke` field. Can cross spacing between cells created through the table's #link("/docs/reference/model/table/#parameters-column-gutter")[column-gutter] option.
+
+Use this function instead of the table's `stroke` field if you want to manually place a horizontal line at a specific position in a single table. Consider using #link("/docs/reference/model/table/#parameters-stroke")[table's stroke] field or #link("/docs/reference/model/table/#definitions-cell-stroke")[table.cell's stroke] field instead if the line you want to place is part of all your tables' designs.
+
+```
+hline(
+  y: auto | int,
+  start: int,
+  end: none | int,
+  stroke: none | length | color | gradient | stroke | tiling | dictionary,
+  position: alignment
+) -> content
+```
+
+```typst
+#set table.hline(stroke: .6pt)
+
+#table(
+  stroke: none,
+  columns: (auto, 1fr),
+  [09:00], [Badge pick up],
+  [09:45], [Opening Keynote],
+  [10:30], [Talk: Typst's Future],
+  [11:15], [Session: Good PRs],
+  table.hline(start: 1),
+  [Noon], [_Lunch break_],
+  table.hline(start: 1),
+  [14:00], [Talk: Tracked Layout],
+  [15:00], [Talk: Automations],
+  [16:00], [Workshop: Tables],
+  table.hline(),
+  [19:00], [Day 1 Attendee Mixer],
+)
+```
+
+==== `y`: auto | int (Settable)
+
+The row above which the horizontal line is placed (zero-indexed). Functions identically to the `y` field in #link("/docs/reference/layout/grid/#definitions-hline-y")[grid.hline].
+
+Default: `auto`
+
+==== `start`: int (Settable)
+
+The column at which the horizontal line starts (zero-indexed, inclusive).
+
+Default: `0`
+
+==== `end`: none | int (Settable)
+
+The column before which the horizontal line ends (zero-indexed, exclusive).
+
+Default: `none`
+
+==== `stroke`: none | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+The line's stroke.
+
+Specifying `none` removes any lines previously placed across this line's range, including hlines or per-cell stroke below it.
+
+Default: `1pt + black`
+
+==== `position`: alignment (Settable)
+
+The position at which the line is placed, given its row (`y`) - either `top` to draw above it or `bottom` to draw below it.
+
+This setting is only relevant when row gutter is enabled (and shouldn't be used otherwise - prefer just increasing the `y` field by one instead), since then the position below a row becomes different from the position above the next row due to the spacing between both.
+
+Default: `top`
+
+=== `vline`
+
+A vertical line in the table. See the docs for #link("/docs/reference/layout/grid/#definitions-vline")[grid.vline] for more information regarding how to use this element's fields.
+
+Overrides any per-cell stroke, including stroke specified through the table's `stroke` field. Can cross spacing between cells created through the table's #link("/docs/reference/model/table/#parameters-row-gutter")[row-gutter] option.
+
+Similar to #link("/docs/reference/model/table/#definitions-hline")[table.hline], use this function if you want to manually place a vertical line at a specific position in a single table and use the #link("/docs/reference/model/table/#parameters-stroke")[table's stroke] field or #link("/docs/reference/model/table/#definitions-cell-stroke")[table.cell's stroke] field instead if the line you want to place is part of all your tables' designs.
+
+```
+vline(
+  x: auto | int,
+  start: int,
+  end: none | int,
+  stroke: none | length | color | gradient | stroke | tiling | dictionary,
+  position: alignment
+) -> content
+```
+
+==== `x`: auto | int (Settable)
+
+The column before which the horizontal line is placed (zero-indexed). Functions identically to the `x` field in #link("/docs/reference/layout/grid/#definitions-vline")[grid.vline].
+
+Default: `auto`
+
+==== `start`: int (Settable)
+
+The row at which the vertical line starts (zero-indexed, inclusive).
+
+Default: `0`
+
+==== `end`: none | int (Settable)
+
+The row on top of which the vertical line ends (zero-indexed, exclusive).
+
+Default: `none`
+
+==== `stroke`: none | length | color | gradient | stroke | tiling | dictionary (Settable)
+
+The line's stroke.
+
+Specifying `none` removes any lines previously placed across this line's range, including vlines or per-cell stroke below it.
+
+Default: `1pt + black`
+
+==== `position`: alignment (Settable)
+
+The position at which the line is placed, given its column (`x`) - either `start` to draw before it or `end` to draw after it.
+
+The values `left` and `right` are also accepted, but discouraged as they cause your table to be inconsistent between left-to-right and right-to-left documents.
+
+This setting is only relevant when column gutter is enabled (and shouldn't be used otherwise - prefer just increasing the `x` field by one instead), since then the position after a column becomes different from the position before the next column due to the spacing between both.
+
+Default: `start`
+
+=== `header`
+
+A repeatable table header.
+
+You should wrap your tables' heading rows in this function even if you do not plan to wrap your table across pages because Typst will use this function to attach accessibility metadata to tables in the future and ensure universal access to your document.
+
+You can use the `repeat` parameter to control whether your table's header will be repeated across pages.
+
+```
+header(
+  repeat: bool,
+  ..: content
+) -> content
+```
+
+```typst
+#set page(height: 11.5em)
+#set table(
+  fill: (x, y) =>
+    if x == 0 or y == 0 {
+      gray.lighten(40%)
+    },
+  align: right,
+)
+
+#show table.cell.where(x: 0): strong
+#show table.cell.where(y: 0): strong
+
+#table(
+  columns: 4,
+  table.header(
+    [], [Blue chip],
+    [Fresh IPO], [Penny st'k],
+  ),
+  table.cell(
+    rowspan: 6,
+    align: horizon,
+    rotate(-90deg, reflow: true)[
+      *USD / day*
+    ],
+  ),
+  [0.20], [104], [5],
+  [3.17], [108], [4],
+  [1.59], [84],  [1],
+  [0.26], [98],  [15],
+  [0.01], [195], [4],
+  [7.34], [57],  [2],
+)
+```
+
+==== `repeat`: bool (Settable)
+
+Whether this header should be repeated across pages.
+
+Default: `true`
+
+==== `children`: content (Required, Positional, Variadic)
+
+The cells and lines within the header.
+
+=== `footer`
+
+A repeatable table footer.
+
+Just like the #link("/docs/reference/model/table/#definitions-header")[table.header] element, the footer can repeat itself on every page of the table. This is useful for improving legibility by adding the column labels in both the header and footer of a large table, totals, or other information that should be visible on every page.
+
+No other table cells may be placed after the footer.
+
+```
+footer(
+  repeat: bool,
+  ..: content
+) -> content
+```
+
+==== `repeat`: bool (Settable)
+
+Whether this footer should be repeated across pages.
+
+Default: `true`
+
+==== `children`: content (Required, Positional, Variadic)
+
+The cells and lines within the footer.
+= terms
+
+A list of terms and their descriptions.
+
+Displays a sequence of terms and their descriptions vertically. When the descriptions span over multiple lines, they use hanging indent to communicate the visual hierarchy.
+
+== Example
+
+```typst
+/ Ligature: A merged glyph.
+/ Kerning: A spacing adjustment
+  between two adjacent letters.
+```
+
+== Syntax
+
+This function also has dedicated syntax: Starting a line with a slash, followed by a term, a colon and a description creates a term list item.
+
+== Parameters
+
+```
+terms(
+  tight: bool,
+  separator: content,
+  indent: length,
+  hanging-indent: length,
+  spacing: auto | length,
+  ..: content | array
+) -> content
+```
+
+=== `tight`: bool (Settable)
+
+Defines the default #link("/docs/reference/model/terms/#parameters-spacing")[spacing] of the term list. If it is `false`, the items are spaced apart with #link("/docs/reference/model/par/#parameters-spacing")[paragraph spacing]. If it is `true`, they use #link("/docs/reference/model/par/#parameters-leading")[paragraph leading] instead. This makes the list more compact, which can look better if the items are short.
+
+In markup mode, the value of this parameter is determined based on whether items are separated with a blank line. If items directly follow each other, this is set to `true`; if items are separated by a blank line, this is set to `false`. The markup-defined tightness cannot be overridden with set rules.
+
+Default: `true`
+
+*Example:*
+```typst
+/ Fact: If a term list has a lot
+  of text, and maybe other inline
+  content, it should not be tight
+  anymore.
+
+/ Tip: To make it wide, simply
+  insert a blank line between the
+  items.
+```
+
+=== `separator`: content (Settable)
+
+The separator between the item and the description.
+
+If you want to just separate them with a certain amount of space, use `h(2cm, weak: true)` as the separator and replace `2cm` with your desired amount of space.
+
+Default: `h(amount: 0.6em, weak: true)`
+
+*Example:*
+```typst
+#set terms(separator: [: ])
+
+/ Colon: A nice separator symbol.
+```
+
+=== `indent`: length (Settable)
+
+The indentation of each item.
+
+Default: `0pt`
+
+=== `hanging-indent`: length (Settable)
+
+The hanging indent of the description.
+
+This is in addition to the whole item's `indent`.
+
+Default: `2em`
+
+*Example:*
+```typst
+#set terms(hanging-indent: 0pt)
+/ Term: This term list does not
+  make use of hanging indents.
+```
+
+=== `spacing`: auto | length (Settable)
+
+The spacing between the items of the term list.
+
+If set to `auto`, uses paragraph #link("/docs/reference/model/par/#parameters-leading")[leading] for tight term lists and paragraph #link("/docs/reference/model/par/#parameters-spacing")[spacing] for wide (non-tight) term lists.
+
+Default: `auto`
+
+=== `children`: content | array (Required, Positional, Variadic)
+
+The term list's children.
+
+When using the term list syntax, adjacent items are automatically collected into term lists, even through constructs like for loops.
+
+*Example:*
+```typst
+#for (year, product) in (
+  "1978": "TeX",
+  "1984": "LaTeX",
+  "2019": "Typst",
+) [/ #product: Born in #year.]
+```
+
+== Definitions
+
+=== `item`
+
+A term list item.
+
+```
+item(
+  content: content,
+  content: content
+) -> content
+```
+
+==== `term`: content (Required, Positional)
+
+The term described by the list item.
+
+==== `description`: content (Required, Positional)
+
+The description of the term.
+= embed
+
+A file that will be embedded into the output PDF.
+
+This can be used to distribute additional files that are related to the PDF within it. PDF readers will display the files in a file listing.
+
+Some international standards use this mechanism to embed machine-readable data (e.g., ZUGFeRD/Factur-X for invoices) that mirrors the visual content of the PDF.
+
+== Example
+
+== Notes
+
+- This element is ignored if exporting to a format other than PDF.
+- File embeddings are not currently supported for PDF/A-2, even if the embedded file conforms to PDF/A-1 or PDF/A-2.
+
+== Parameters
+
+```
+embed(
+  str: str,
+  bytes: bytes,
+  relationship: none | str,
+  mime-type: none | str,
+  description: none | str
+) -> content
+```
+
+=== `path`: str (Required, Positional)
+
+The #link("/docs/reference/syntax/#paths")[path] of the file to be embedded.
+
+Must always be specified, but is only read from if no data is provided in the following argument.
+
+=== `data`: bytes (Required, Positional)
+
+Raw file data, optionally.
+
+If omitted, the data is read from the specified path.
+
+=== `relationship`: none | str (Settable)
+
+The relationship of the embedded file to the document.
+
+Ignored if export doesn't target PDF/A-3.
+
+Default: `none`
+
+=== `mime-type`: none | str (Settable)
+
+The MIME type of the embedded file.
+
+Default: `none`
+
+=== `description`: none | str (Settable)
+
+A description for the embedded file.
+
+Default: `none`
+= emoji
+
+Named emoji.
+
+For example, `#emoji.face` produces the 😀 emoji. If you frequently use certain emojis, you can also import them from the `emoji` module (`#import emoji: face`) to use them without the `#emoji.` prefix.
+
+- 🔠ABCD
+- 🅰a
+- 🆎ab
+- 🧮abacus
+- 🔤abc
+- 🔡abcd
+- 🪗accordion
+- ⚕aesculapius
+- ✈airplane
+- 🛬airplane.landing
+- 🛩airplane.small
+- 🛫airplane.takeoff
+- ⚗alembic
+- 👽alien
+- 👾alien.monster
+- 🚑ambulance
+- 🏺amphora
+- ⚓anchor
+- 💢anger
+- 🐜ant
+- 🍏apple.green
+- 🍎apple.red
+- 🦾arm.mech
+- 💪arm.muscle
+- 🤳arm.selfie
+- ➡arrow.r.filled
+- ↪arrow.r.hook
+- 🔜arrow.r.soon
+- ⬅arrow.l.filled
+- ↩arrow.l.hook
+- 🔙arrow.l.back
+- 🔚arrow.l.end
+- ⬆arrow.t.filled
+- ⤴arrow.t.curve
+- 🔝arrow.t.top
+- ⬇arrow.b.filled
+- ⤵arrow.b.curve
+- ↔arrow.l.r
+- 🔛arrow.l.r.on
+- ↕arrow.t.b
+- ↙arrow.bl
+- ↘arrow.br
+- ↖arrow.tl
+- ↗arrow.tr
+- 🔄arrows.cycle
+- *ast
+- ✳ast.box
+- 🏧atm
+- ⚛atom
+- 🍆aubergine
+- 🥑avocado
+- 🪓axe
+- 🅱b
+- 👶baby
+- 👼baby.angel
+- 🚼baby.box
+- 🍼babybottle
+- 🎒backpack
+- 🥓bacon
+- 🦡badger
+- 🏸badminton
+- 🥯bagel
+- 🛄baggageclaim
+- 🥖baguette
+- 🎈balloon
+- ☑ballot.check
+- 🗳ballotbox
+- 🍌banana
+- 🪕banjo
+- 🏦bank
+- 💈barberpole
+- ⚾baseball
+- 🧢basecap
+- 🧺basket
+- ⛹basketball
+- 🏀basketball.ball
+- 🦇bat
+- 🛀bathtub
+- 🛁bathtub.foam
+- 🔋battery
+- 🪫battery.low
+- 🏝beach.palm
+- 🏖beach.umbrella
+- 📿beads
+- 🫘beans
+- 🐻bear
+- 🦫beaver
+- 🛏bed
+- 🛌bed.person
+- 🐝bee
+- 🍺beer
+- 🍻beer.clink
+- 🫜beet
+- 🪲beetle
+- 🐞beetle.lady
+- 🔔bell
+- 🛎bell.ding
+- 🔕bell.not
+- 🍱bento
+- 🚴bicyclist
+- 🚵bicyclist.mountain
+- 🚲bike
+- 🚳bike.not
+- 👙bikini
+- 🎱billiards
+- 🗑bin
+- ☣biohazard
+- 🐦bird
+- 🦬bison
+- 🩸blood
+- 👚blouse
+- 🐡blowfish
+- 🫐blueberries
+- 🐗boar
+- ⛵boat.sail
+- 🚣boat.row
+- 🛥boat.motor
+- 🚤boat.speed
+- 🛶boat.canoe
+- 🔩bolt
+- 💣bomb
+- 🦴bone
+- 📕book.red
+- 📘book.blue
+- 📗book.green
+- 📙book.orange
+- 📒book.spiral
+- 📖book.open
+- 🔖bookmark
+- 📚books
+- 🪃boomerang
+- 🛂bordercontrol
+- 💐bouquet
+- 🏹bow
+- 🥣bowl.spoon
+- 🍜bowl.steam
+- 🎳bowling
+- 🥊boxing
+- 👦boy
+- 🧠brain
+- 🍞bread
+- 🧱brick
+- 👰bride
+- 🌁bridge.fog
+- 🌉bridge.night
+- 💼briefcase
+- 🩲briefs
+- 🔆brightness.high
+- 🔅brightness.low
+- 🥦broccoli
+- 🧹broom
+- 🖌brush
+- 💬bubble.speech.r
+- 🗨bubble.speech.l
+- 💭bubble.thought
+- 🗯bubble.anger.r
+- 🫧bubbles
+- 🧋bubbletea
+- 🪣bucket
+- 🐃buffalo.water
+- 🐛bug
+- 👷builder
+- 🍔burger
+- 🌯burrito
+- 🚌bus
+- 🚍bus.front
+- 🚐bus.small
+- 🚏bus.stop
+- 🚎bus.trolley
+- 🧈butter
+- 🦋butterfly
+- 🔲button
+- 🔳button.alt
+- 🔘button.radio
+- 🗄cabinet.file
+- 🚠cablecar
+- 🚡cablecar.small
+- 🌵cactus
+- 🎂cake
+- 🍥cake.fish
+- 🥮cake.moon
+- 🍰cake.slice
+- 📅calendar
+- 🗓calendar.spiral
+- 📆calendar.tearoff
+- 🐫camel
+- 🐪camel.dromedar
+- 📷camera
+- 📸camera.flash
+- 🎥camera.movie
+- 🎦camera.movie.box
+- 📹camera.video
+- 🏕camping
+- 🥫can
+- 🕯candle
+- 🍬candy
+- 🦯cane
+- 🚗car
+- 🚘car.front
+- 🛻car.pickup
+- 🚓car.police
+- 🚔car.police.front
+- 🏎car.racing
+- 🛺car.rickshaw
+- 🚙car.suv
+- 💳card.credit
+- 🪪card.id
+- 📇cardindex
+- 🥕carrot
+- 🛒cart
+- 📼cassette
+- 🏰castle.eu
+- 🏯castle.jp
+- 🐈cat
+- 🐱cat.face
+- 😾cat.face.angry
+- 😿cat.face.cry
+- 😻cat.face.heart
+- 😹cat.face.joy
+- 😽cat.face.kiss
+- 😸cat.face.laugh
+- 🙀cat.face.shock
+- 😺cat.face.smile
+- 😼cat.face.smirk
+- 🔗chain
+- ⛓chains
+- 🪑chair
+- 🍾champagne
+- 📊chart.bar
+- 📈chart.up
+- 📉chart.down
+- 💹chart.yen.up
+- ✔checkmark.heavy
+- ✅checkmark.box
+- 🧀cheese
+- 🍒cherries
+- ♟chess
+- 🌰chestnut
+- 🐔chicken
+- 🐥chicken.baby
+- 🐣chicken.baby.egg
+- 🐤chicken.baby.head
+- 🍗chicken.leg
+- 🐓chicken.male
+- 🧒child
+- 🐿chipmunk
+- 🍫chocolate
+- 🥢chopsticks
+- ⛪church
+- 💒church.love
+- 🚬cigarette
+- 🚭cigarette.not
+- ⚫circle.black
+- 🔵circle.blue
+- 🟤circle.brown
+- 🟢circle.green
+- 🟠circle.orange
+- 🟣circle.purple
+- ⚪circle.white
+- 🔴circle.red
+- 🟡circle.yellow
+- ⭕circle.stroked
+- 🎪circus
+- 🏙city
+- 🌆city.dusk
+- 🌃city.night
+- 🌇city.sunset
+- 🆑cl
+- 🗜clamp
+- 🎬clapperboard
+- 🧗climbing
+- 📎clip
+- 📋clipboard
+- 🖇clips
+- 🕐clock.one
+- 🕜clock.one.thirty
+- 🕑clock.two
+- 🕝clock.two.thirty
+- 🕒clock.three
+- 🕞clock.three.thirty
+- 🕓clock.four
+- 🕟clock.four.thirty
+- 🕔clock.five
+- 🕠clock.five.thirty
+- 🕕clock.six
+- 🕡clock.six.thirty
+- 🕖clock.seven
+- 🕢clock.seven.thirty
+- 🕗clock.eight
+- 🕣clock.eight.thirty
+- 🕘clock.nine
+- 🕤clock.nine.thirty
+- 🕙clock.ten
+- 🕥clock.ten.thirty
+- 🕚clock.eleven
+- 🕦clock.eleven.thirty
+- 🕛clock.twelve
+- 🕧clock.twelve.thirty
+- ⏰clock.alarm
+- 🕰clock.old
+- ⏲clock.timer
+- ☁cloud
+- 💨cloud.dust
+- 🌧cloud.rain
+- 🌨cloud.snow
+- ⛈cloud.storm
+- ⛅cloud.sun
+- 🌥cloud.sun.hidden
+- 🌦cloud.sun.rain
+- 🌩cloud.thunder
+- 🧥coat
+- 🥼coat.lab
+- 🪳cockroach
+- 🍸cocktail.martini
+- 🍹cocktail.tropical
+- 🥥coconut
+- ☕coffee
+- ⚰coffin
+- 🪙coin
+- ☄comet
+- 🧭compass
+- 🖥computer
+- 🖱computermouse
+- 🎊confetti
+- 🚧construction
+- 🎮controller
+- 🍪cookie
+- 🥠cookie.fortune
+- 🍳cooking
+- 🆒cool
+- ©copyright
+- 🪸coral
+- 🌽corn
+- 🛋couch
+- 💑couple
+- 🐄cow
+- 🐮cow.face
+- 🦀crab
+- 🏗crane
+- 🖍crayon
+- 🦗cricket
+- 🏏cricketbat
+- 🐊crocodile
+- 🥐croissant
+- ❌crossmark
+- ❎crossmark.box
+- 👑crown
+- 🩼crutch
+- 🔮crystal
+- 🥒cucumber
+- 🥤cup.straw
+- 🧁cupcake
+- 🥌curling
+- 🍛curry
+- 🍮custard
+- 🛃customs
+- 🍴cutlery
+- 🌀cyclone
+- 🕺dancing.man
+- 💃dancing.woman
+- 👯dancing.women.bunny
+- 🎯darts
+- 〰dash.wave.double
+- 🦌deer
+- 🏜desert
+- 🕵detective
+- 🔷diamond.blue
+- 🔹diamond.blue.small
+- 🔶diamond.orange
+- 🔸diamond.orange.small
+- 💠diamond.dot
+- 🎲die
+- 🦕dino.pod
+- 🦖dino.rex
+- 💿disc.cd
+- 📀disc.dvd
+- 💽disc.mini
+- 🪩discoball
+- 🤿diving
+- 🦤dodo
+- 🐕dog
+- 🐶dog.face
+- 🦮dog.guide
+- 🐩dog.poodle
+- 💲dollar
+- 🐬dolphin
+- 🍩donut
+- 🚪door
+- 🕊dove.peace
+- 🐉dragon
+- 🐲dragon.face
+- 👗dress
+- 👘dress.kimono
+- 🥻dress.sari
+- 💧drop
+- 💦drops
+- 🥁drum
+- 🪘drum.big
+- 🦆duck
+- 🥟dumpling
+- 🦅eagle
+- 👂ear
+- 🦻ear.aid
+- 🥚egg
+- 🔞eighteen.not
+- 🐘elephant
+- 🛗elevator
+- 🧝elf
+- 📧email
+- ❗excl
+- ❕excl.white
+- ‼excl.double
+- ⁉excl.quest
+- 💥explosion
+- 🧯extinguisher
+- 👁eye
+- 👀eyes
+- 😀face.grin
+- 😠face.angry
+- 😡face.angry.red
+- 😧face.anguish
+- 😲face.astonish
+- 🤕face.bandage
+- 😁face.beam
+- 😶face.blank
+- 🤡face.clown
+- 🥶face.cold
+- 😦face.concern
+- 😎face.cool
+- 🤭face.cover
+- 🤠face.cowboy
+- 😭face.cry
+- 😈face.devil.smile
+- 👿face.devil.frown
+- 🫤face.diagonal
+- 🥸face.disguise
+- 😫face.distress
+- 😵face.dizzy
+- 🫥face.dotted
+- 😞face.down
+- 😓face.down.sweat
+- 🤤face.drool
+- 🤯face.explode
+- 🙄face.eyeroll
+- ☺face.friendly
+- 😨face.fear
+- 😰face.fear.sweat
+- 🤒face.fever
+- 😳face.flush
+- ☹face.frown
+- 🙁face.frown.slight
+- 😣face.frust
+- 🤪face.goofy
+- 😇face.halo
+- 😊face.happy
+- 😍face.heart
+- 🥰face.hearts
+- 🥵face.heat
+- 🤗face.hug
+- 🙃face.inv
+- 😂face.joy
+- 😗face.kiss
+- 😙face.kiss.smile
+- 😘face.kiss.heart
+- 😚face.kiss.blush
+- 😋face.lick
+- 🤥face.lie
+- 😷face.mask
+- 😒face.meh
+- 🫠face.melt
+- 🤑face.money
+- 🧐face.monocle
+- 🤢face.nausea
+- 🤓face.nerd
+- 😐face.neutral
+- 😃face.open
+- 🥳face.party
+- 🫣face.peek
+- 🥺face.plead
+- 😌face.relief
+- 🤣face.rofl
+- 😔face.sad
+- 🫡face.salute
+- 😱face.shock
+- 🤫face.shush
+- 🤨face.skeptic
+- 😴face.sleep
+- 😪face.sleepy
+- 😄face.smile
+- 🙂face.smile.slight
+- 😅face.smile.sweat
+- 🥲face.smile.tear
+- 😏face.smirk
+- 🤧face.sneeze
+- 🫢face.speak.not
+- 😆face.squint
+- 🤩face.stars
+- 😑face.straight
+- 😖face.suffer
+- 😯face.surprise
+- 🤬face.symbols
+- 😢face.tear
+- 😥face.tear.relief
+- 🥹face.tear.withheld
+- 😬face.teeth
+- 🤔face.think
+- 🫩face.tired
+- 😛face.tongue
+- 😝face.tongue.squint
+- 😜face.tongue.wink
+- 😤face.triumph
+- 😕face.unhappy
+- 🤮face.vomit
+- 😩face.weary
+- 😉face.wink
+- 🥴face.woozy
+- 😟face.worry
+- 😮face.wow
+- 🥱face.yawn
+- 🤐face.zip
+- 🏭factory
+- 🧚fairy
+- ✝faith.christ
+- ☸faith.dharma
+- ☪faith.islam
+- ✡faith.judaism
+- 🕎faith.menorah
+- 🕉faith.om
+- ☦faith.orthodox
+- ☮faith.peace
+- 🔯faith.star.dot
+- 🛐faith.worship
+- ☯faith.yinyang
+- 🧆falafel
+- 👪family
+- 📠fax
+- 🪶feather
+- 🤱feeding.breast
+- 🤺fencing
+- 🎡ferriswheel
+- 🗃filebox
+- 🗂filedividers
+- 🎞film
+- 👉finger.r
+- 👈finger.l
+- 👆finger.t
+- ☝finger.t.alt
+- 👇finger.b
+- 🫵finger.front
+- 🖕finger.m
+- 🫆fingerprint
+- 🤞fingers.cross
+- 🤌fingers.pinch
+- 🫰fingers.snap
+- 🔥fire
+- 🧨firecracker
+- 🚒fireengine
+- 🎆fireworks
+- 🐟fish
+- 🐠fish.tropical
+- 🎣fishing
+- 👊fist.front
+- 🤜fist.r
+- 🤛fist.l
+- ✊fist.raised
+- 🏴flag.black
+- 🏳flag.white
+- 🏁flag.goal
+- ⛳flag.golf
+- 🚩flag.red
+- 🎌flags.jp.crossed
+- 🦩flamingo
+- 🔦flashlight
+- 🫓flatbread
+- ⚜fleur
+- 💾floppy
+- 🌺flower.hibiscus
+- 🪷flower.lotus
+- 🌸flower.pink
+- 🌹flower.rose
+- 🌻flower.sun
+- 🌷flower.tulip
+- 💮flower.white
+- 🥀flower.wilted
+- 🌼flower.yellow
+- 🪰fly
+- 🌫fog
+- 📁folder
+- 📂folder.open
+- 🫕fondue
+- 🦶foot
+- ⚽football
+- 🏈football.am
+- 💱forex
+- ⛲fountain
+- 🦊fox
+- 🆓free
+- 🍟fries
+- 🥏frisbee
+- 🐸frog.face
+- ⛽fuelpump
+- 🈷gachi
+- 🧄garlic
+- ⚙gear
+- 💎gem
+- 🧞genie
+- 👻ghost
+- 🦒giraffe
+- 👧girl
+- 🥂glass.clink
+- 🥛glass.milk
+- 🫗glass.pour
+- 🥃glass.tumbler
+- 👓glasses
+- 🕶glasses.sun
+- 🌎globe.am
+- 🌏globe.as.au
+- 🌍globe.eu.af
+- 🌐globe.meridian
+- 🧤gloves
+- 🈴go
+- 🥅goal
+- 🐐goat
+- 🥽goggles
+- 🏌golfing
+- 🦍gorilla
+- 🍇grapes
+- 💂guard.man
+- 🎸guitar
+- 🤸gymnastics
+- 💇haircut
+- 🔨hammer
+- ⚒hammer.pick
+- 🛠hammer.wrench
+- 🪬hamsa
+- 🐹hamster.face
+- ✋hand.raised
+- 🤚hand.raised.alt
+- 🫱hand.r
+- 🫲hand.l
+- 🫴hand.t
+- 🫳hand.b
+- 👌hand.ok
+- 🤙hand.call
+- 🤟hand.love
+- 🖖hand.part
+- ✌hand.peace
+- 🤏hand.pinch
+- 🤘hand.rock
+- 🖐hand.splay
+- 👋hand.wave
+- ✍hand.write
+- 👜handbag
+- 🤾handball
+- 👬handholding.man.man
+- 👫handholding.woman.man
+- 👭handholding.woman.woman
+- 🙏hands.folded
+- 🤲hands.palms
+- 👏hands.clap
+- 🫶hands.heart
+- 👐hands.open
+- 🙌hands.raised
+- 🤝hands.shake
+- 🪉harp
+- #hash
+- 👒hat.ribbon
+- 🎩hat.top
+- 🎧headphone
+- ❤heart
+- 💘heart.arrow
+- 💓heart.beat
+- 🖤heart.black
+- 💙heart.blue
+- 💟heart.box
+- 💔heart.broken
+- 🤎heart.brown
+- 💕heart.double
+- ❣heart.excl
+- 💚heart.green
+- 💗heart.grow
+- 🧡heart.orange
+- 💜heart.purple
+- 🫀heart.real
+- 💞heart.revolve
+- 💝heart.ribbon
+- 💖heart.spark
+- 🤍heart.white
+- 💛heart.yellow
+- 🦔hedgehog
+- 🚁helicopter
+- 🧬helix
+- ⛑helmet.cross
+- 🪖helmet.military
+- ㊙hi
+- 🦛hippo
+- 🏑hockey
+- 🕳hole
+- 🍯honey
+- 🧧hongbao
+- 🪝hook
+- 📯horn.postal
+- 🐎horse
+- 🎠horse.carousel
+- 🐴horse.face
+- 🏇horse.race
+- 🏥hospital
+- 🌭hotdog
+- 🏨hotel
+- 🏩hotel.love
+- ♨hotspring
+- ⌛hourglass
+- ⏳hourglass.flow
+- 🏠house
+- 🏚house.derelict
+- 🏡house.garden
+- 🏘house.multiple
+- 💯hundred
+- 🛖hut
+- 🧊ice
+- 🍨icecream
+- 🍧icecream.shaved
+- 🍦icecream.soft
+- 🏒icehockey
+- 🆔id
+- ℹinfo
+- 🏮izakaya
+- 🫙jar
+- 👖jeans
+- 🧩jigsaw
+- 🕹joystick
+- 🤹juggling
+- 🧃juice
+- 🉑ka
+- 🕋kaaba
+- 🈹kachi
+- 🎍kadomatsu
+- 🦘kangaroo
+- 🈳kara
+- 🥙kebab
+- 🔑key
+- 🗝key.old
+- ⌨keyboard
+- 💏kiss
+- 💋kissmark
+- 🪁kite
+- 🥝kiwi
+- 🔪knife
+- 🗡knife.dagger
+- 🪢knot
+- 🐨koala
+- 🎏koinobori
+- 🈁koko
+- 🈲kon
+- 🏷label
+- 🥍lacrosse
+- 🪜ladder
+- 🪔lamp.diya
+- 💻laptop
+- ☘leaf.clover.three
+- 🍀leaf.clover.four
+- 🍂leaf.fall
+- 🌿leaf.herb
+- 🍁leaf.maple
+- 🍃leaf.wind
+- 🛅leftluggage
+- 🦵leg
+- 🦿leg.mech
+- 🍋lemon
+- 🐆leopard
+- 💌letter.love
+- 🗽liberty
+- 💡lightbulb
+- ⚡lightning
+- 🦁lion
+- 💄lipstick
+- 🚮litter
+- 🚯litter.not
+- 🦎lizard
+- 🦙llama
+- 🦞lobster
+- 🔒lock
+- 🔐lock.key
+- 🔓lock.open
+- 🔏lock.pen
+- 🍭lollipop
+- 🧴lotion
+- 🧳luggage
+- 🫁lungs
+- 🧙mage
+- 🧲magnet
+- 🔎magnify.r
+- 🔍magnify.l
+- 🀄mahjong.dragon.red
+- ✉mail
+- 📩mail.arrow
+- 📪mailbox.closed.empty
+- 📫mailbox.closed.full
+- 📭mailbox.open.empty
+- 📬mailbox.open.full
+- 🦣mammoth
+- 👨man
+- 🚹man.box
+- 🤴man.crown
+- 👲man.guapimao
+- 🕴man.levitate
+- 👴man.old
+- 🫃man.pregnant
+- 👳man.turban
+- 🤵man.tuxedo
+- 🥭mango
+- 🗺map.world
+- 🗾map.jp
+- 🥋martialarts
+- 🎭masks
+- 🧉mate
+- 🪆matryoshka
+- 🥩meat
+- 🍖meat.bone
+- 🥇medal.first
+- 🥈medal.second
+- 🥉medal.third
+- 🏅medal.sports
+- 🎖medal.military
+- 📢megaphone
+- 📣megaphone.simple
+- 🍈melon
+- 🧜merperson
+- Ⓜmetro
+- 🦠microbe
+- 🎤microphone
+- 🎙microphone.studio
+- 🔬microscope
+- 🌌milkyway
+- 🪞mirror
+- 🎛mixer
+- 💰money.bag
+- 💵money.dollar
+- 💶money.euro
+- 💷money.pound
+- 💴money.yen
+- 💸money.wings
+- 🐒monkey
+- 🐵monkey.face
+- 🙉monkey.hear.not
+- 🙈monkey.see.not
+- 🙊monkey.speak.not
+- 🌙moon.crescent
+- 🌕moon.full
+- 🌝moon.full.face
+- 🌑moon.new
+- 🌚moon.new.face
+- 🌖moon.wane.one
+- 🌗moon.wane.two
+- 🌜moon.wane.three.face
+- 🌘moon.wane.three
+- 🌒moon.wax.one
+- 🌓moon.wax.two
+- 🌛moon.wax.two.face
+- 🌔moon.wax.three
+- 🎓mortarboard
+- 🕌mosque
+- 🦟mosquito
+- 🏍motorcycle
+- 🛣motorway
+- ⛰mountain
+- 🗻mountain.fuji
+- 🏔mountain.snow
+- 🌄mountain.sunrise
+- 🐁mouse
+- 🐭mouse.face
+- 🪤mousetrap
+- 👄mouth
+- 🫦mouth.bite
+- 🗿moyai
+- 🈚muryo
+- 🏛museum
+- 🍄mushroom
+- 🎼musicalscore
+- 💅nails.polish
+- 📛namebadge
+- 🧿nazar
+- 👔necktie
+- 🪡needle
+- 🪹nest.empty
+- 🪺nest.eggs
+- 🆕new
+- 📰newspaper
+- 🗞newspaper.rolled
+- 🆖ng
+- 🎎ningyo
+- 🥷ninja
+- ⛔noentry
+- 👃nose
+- 📓notebook
+- 📔notebook.deco
+- 🗒notepad
+- 🎵notes
+- 🎶notes.triple
+- 🔢numbers
+- 🅾o
+- 🐙octopus
+- 🏢office
+- 🛢oil
+- 🆗ok
+- 🫒olive
+- 👹oni
+- 🧅onion
+- 🦧orangutan
+- 🦦otter
+- 🦉owl
+- 🐂ox
+- 🦪oyster
+- 📦package
+- 🥘paella
+- 📄page
+- 📃page.curl
+- 📝page.pencil
+- 📟pager
+- 📑pages.tabs
+- 🖼painting
+- 🎨palette
+- 🥞pancakes
+- 🐼panda
+- 🪂parachute
+- 🏞park
+- 🅿parking
+- 🦜parrot
+- 〽partalteration
+- 🎉party
+- 🍑peach
+- 🦚peacock
+- 🥜peanuts
+- 🍐pear
+- 🚶pedestrian
+- 🚷pedestrian.not
+- 🖊pen.ball
+- 🖋pen.fountain
+- ✏pencil
+- 🐧penguin
+- 🫑pepper
+- 🌶pepper.hot
+- 🧑person
+- 🙎person.angry
+- 🧔person.beard
+- 👱person.blonde
+- 🙇person.bow
+- 🫅person.crown
+- 🧏person.deaf
+- 🤦person.facepalm
+- 🙍person.frown
+- 🧕person.hijab
+- 🧎person.kneel
+- 🧘person.lotus
+- 💆person.massage
+- 🙅person.no
+- 🙆person.ok
+- 🧓person.old
+- 🫄person.pregnant
+- 🙋person.raise
+- 💁person.sassy
+- 🤷person.shrug
+- 🧍person.stand
+- 🧖person.steam
+- 🧫petri
+- 📱phone
+- 📲phone.arrow
+- ☎phone.classic
+- 📵phone.not
+- 📴phone.off
+- 📞phone.receiver
+- 📶phone.signal
+- 📳phone.vibrate
+- 🎹piano
+- ⛏pick
+- 🥧pie
+- 🐖pig
+- 🐷pig.face
+- 🐽pig.nose
+- 💊pill
+- 📌pin
+- 📍pin.round
+- 🪅pinata
+- 🍍pineapple
+- 🏓pingpong
+- 🔫pistol
+- 🍕pizza
+- 🪧placard
+- 🪐planet
+- 🪴plant
+- 🩹plaster
+- 🍽plate.cutlery
+- ⏬playback.down
+- ⏏playback.eject
+- ⏩playback.forward
+- ⏸playback.pause
+- ⏺playback.record
+- 🔁playback.repeat
+- 🔂playback.repeat.once
+- 🔃playback.repeat.v
+- ⏮playback.restart
+- ⏪playback.rewind
+- 🔀playback.shuffle
+- ⏭playback.skip
+- ⏹playback.stop
+- ⏯playback.toggle
+- ⏫playback.up
+- 🎴playingcard.flower
+- 🃏playingcard.joker
+- 🪠plunger
+- 👮policeofficer
+- 💩poo
+- 🍿popcorn
+- 🏤post.eu
+- 🏣post.jp
+- 📮postbox
+- 🥔potato
+- 🍠potato.sweet
+- 👝pouch
+- 🔌powerplug
+- 🎁present
+- 🥨pretzel
+- 🖨printer
+- 👣prints.foot
+- 🐾prints.paw
+- 🚫prohibited
+- 📽projector
+- 🎃pumpkin.lantern
+- 👛purse
+- ❓quest
+- ❔quest.white
+- 🐇rabbit
+- 🐰rabbit.face
+- 🦝raccoon
+- 📻radio
+- ☢radioactive
+- 🛤railway
+- 🌈rainbow
+- 🐏ram
+- 🐀rat
+- 🪒razor
+- 🧾receipt
+- ♻recycling
+- ®reg
+- 🚻restroom
+- 🦏rhino
+- 🎀ribbon
+- 🎗ribbon.remind
+- 🍚rice
+- 🍘rice.cracker
+- 🌾rice.ear
+- 🍙rice.onigiri
+- 💍ring
+- 🛟ringbuoy
+- 🤖robot
+- 🪨rock
+- 🚀rocket
+- 🎢rollercoaster
+- 🏵rosette
+- 🏉rugby
+- 📏ruler
+- 📐ruler.triangle
+- 🏃running
+- 🈂sa
+- 🧷safetypin
+- 🦺safetyvest
+- 🍶sake
+- 🥗salad
+- 🧂salt
+- 🥪sandwich
+- 🎅santa.man
+- 🤶santa.woman
+- 📡satdish
+- 🛰satellite
+- 🪚saw
+- 🎷saxophone
+- ⚖scales
+- 🧣scarf
+- 🏫school
+- ✂scissors
+- 🛴scooter
+- 🛵scooter.motor
+- 🦂scorpion
+- 🪛screwdriver
+- 📜scroll
+- 🦭seal
+- 💺seat
+- 🌱seedling
+- 🦈shark
+- 🐑sheep
+- 🐚shell.spiral
+- 🛡shield
+- 🈸shin
+- 🚢ship
+- 🛳ship.cruise
+- ⛴ship.ferry
+- 🎽shirt.sports
+- 👕shirt.t
+- 👞shoe
+- 🩰shoe.ballet
+- 🥿shoe.flat
+- 👠shoe.heel
+- 🥾shoe.hike
+- ⛸shoe.ice
+- 🛼shoe.roller
+- 👡shoe.sandal.heel
+- 🎿shoe.ski
+- 👟shoe.sneaker
+- 👢shoe.tall
+- 🩴shoe.thong
+- 🛍shopping
+- 🩳shorts
+- 🔰shoshinsha
+- 🪏shovel
+- 🚿shower
+- 🦐shrimp
+- 🍤shrimp.fried
+- ⛩shrine
+- ㊗shuku
+- 🚸sign.crossing
+- 🛑sign.stop
+- 👤silhouette
+- 👥silhouette.double
+- 🫂silhouette.hug
+- 🗣silhouette.speak
+- 🚨siren
+- 🛹skateboard
+- 🍡skewer.dango
+- 🍢skewer.oden
+- ⛷skiing
+- 💀skull
+- ☠skull.bones
+- 🦨skunk
+- 🛷sled
+- 🛝slide
+- 🎚slider
+- 🦥sloth
+- 🎰slots
+- 🐌snail
+- 🐍snake
+- 🏂snowboarding
+- ❄snowflake
+- ⛄snowman
+- ☃snowman.snow
+- 🧼soap
+- 🧦socks
+- 🥎softball
+- 🆘sos
+- 🍲soup
+- 🍝spaghetti
+- ❇sparkle.box
+- 🎇sparkler
+- ✨sparkles
+- 🔈speaker
+- 🔇speaker.not
+- 🔉speaker.wave
+- 🔊speaker.waves
+- 🕷spider
+- 🕸spiderweb
+- 🥬spinach
+- 🫟splatter
+- 🧽sponge
+- 🥄spoon
+- ⬛square.black
+- ▪square.black.tiny
+- ◾square.black.small
+- ◼square.black.medium
+- ⬜square.white
+- ▫square.white.tiny
+- ◽square.white.small
+- ◻square.white.medium
+- 🟦square.blue
+- 🟫square.brown
+- 🟩square.green
+- 🟧square.orange
+- 🟪square.purple
+- 🟥square.red
+- 🟨square.yellow
+- 🦑squid
+- 🏟stadium
+- ⭐star
+- 💫star.arc
+- ✴star.box
+- 🌟star.glow
+- 🌠star.shoot
+- 🩺stethoscope
+- 🏬store.big
+- 🏪store.small
+- 🍓strawberry
+- ♣suit.club
+- ♦suit.diamond
+- ♥suit.heart
+- ♠suit.spade
+- ☀sun
+- 🌤sun.cloud
+- 🌞sun.face
+- 🌅sunrise
+- 🦸superhero
+- 🦹supervillain
+- 🏄surfing
+- 🍣sushi
+- 🦢swan
+- 🏊swimming
+- 🩱swimsuit
+- ⚔swords
+- 🔣symbols
+- 🕍synagogue
+- 💉syringe
+- 🌮taco
+- 🥡takeout
+- 🫔tamale
+- 🎋tanabata
+- 🍊tangerine
+- 🚰tap
+- 🚱tap.not
+- 🚕taxi
+- 🚖taxi.front
+- 🍵teacup
+- 🫖teapot
+- 🧸teddy
+- 🔭telescope
+- 🛕temple
+- 🔟ten
+- 👺tengu
+- 🎾tennis
+- ⛺tent
+- 🧪testtube
+- 🌡thermometer
+- 🧵thread
+- 👍thumb.up
+- 👎thumb.down
+- 🎟ticket.event
+- 🎫ticket.travel
+- 🐅tiger
+- 🐯tiger.face
+- ™tm
+- 🚽toilet
+- 🧻toiletpaper
+- 🉐toku
+- 🍅tomato
+- 🪦tombstone
+- 👅tongue
+- 🧰toolbox
+- 🦷tooth
+- 🪥toothbrush
+- 🌪tornado
+- 🗼tower.tokyo
+- 🖲trackball
+- 🚜tractor
+- 🚦trafficlight.v
+- 🚥trafficlight.h
+- 🚆train
+- 🚃train.car
+- 🚈train.light
+- 🚇train.metro
+- 🚝train.mono
+- 🚞train.mountain
+- 🚄train.speed
+- 🚅train.speed.bullet
+- 🚂train.steam
+- 🚉train.stop
+- 🚟train.suspend
+- 🚊train.tram
+- 🚋train.tram.car
+- ⚧transgender
+- 📥tray.inbox
+- 📨tray.mail
+- 📤tray.outbox
+- 🌳tree.deciduous
+- 🌲tree.evergreen
+- 🪾tree.leafless
+- 🌴tree.palm
+- 🎄tree.xmas
+- ▶triangle.r
+- ◀triangle.l
+- 🔼triangle.t
+- 🔽triangle.b
+- 🔺triangle.t.red
+- 🔻triangle.b.red
+- 🔱trident
+- 🧌troll
+- 🏆trophy
+- 🚚truck
+- 🚛truck.trailer
+- 🎺trumpet
+- 🎑tsukimi
+- 🦃turkey
+- 🐢turtle
+- 📺tv
+- 🛸ufo
+- ☂umbrella.open
+- 🌂umbrella.closed
+- ☔umbrella.rain
+- ⛱umbrella.sun
+- 🦄unicorn
+- 🦳unknown
+- 🆙up
+- ⚱urn
+- 🧛vampire
+- 🎻violin
+- 🌋volcano
+- 🏐volleyball
+- 🆚vs
+- 🧇waffle
+- 🪄wand
+- ⚠warning
+- ⌚watch
+- ⏱watch.stop
+- 🍉watermelon
+- 🤽waterpolo
+- 🌊wave
+- 🚾wc
+- 🏋weightlifting
+- 🐋whale
+- 🐳whale.spout
+- 🛞wheel
+- 🦽wheelchair
+- ♿wheelchair.box
+- 🦼wheelchair.motor
+- 🌬wind
+- 🎐windchime
+- 🪟window
+- 🍷wine
+- 🐺wolf
+- 👩woman
+- 🚺woman.box
+- 👸woman.crown
+- 👵woman.old
+- 🤰woman.pregnant
+- 🪵wood
+- 🪱worm
+- 🔧wrench
+- 🤼wrestling
+- 🩻xray
+- 🧶yarn
+- 🈺yo
+- 🪀yoyo
+- 🈯yubi
+- 🈶yuryo
+- 🦓zebra
+- ♒zodiac.aquarius
+- ♈zodiac.aries
+- ♋zodiac.cancer
+- ♑zodiac.capri
+- ♊zodiac.gemini
+- ♌zodiac.leo
+- ♎zodiac.libra
+- ⛎zodiac.ophi
+- ♓zodiac.pisces
+- ♐zodiac.sagit
+- ♏zodiac.scorpio
+- ♉zodiac.taurus
+- ♍zodiac.virgo
+- 🧟zombie
+- 💤zzz
+= sym
+
+Named general symbols.
+
+For example, `#sym.arrow` produces the → symbol. Within #link("/docs/reference/math/")[formulas], these symbols can be used without the `#sym.` prefix.
+
+The `d` in an integral's `dx` can be written as `$dif x$`. Outside math formulas, `dif` can be accessed as `math.dif`.
+
+- 𝔸AA
+- ΑAlpha
+- 𝔹BB
+- ΒBeta
+- ℂCC
+- ΧChi
+- 𝔻DD
+- ΔDelta
+- 𝔼EE
+- ΕEpsilon
+- ΗEta
+- 𝔽FF
+- 𝔾GG
+- ΓGamma
+- ℍHH
+- 𝕀II
+- ℑIm
+- ΙIota
+- 𝕁JJ
+- 𝕂KK
+- ϏKai
+- ΚKappa
+- 𝕃LL
+- ΛLambda
+- 𝕄MM
+- ΜMu
+- ℕNN
+- ΝNu
+- 𝕆OO
+- ΩOmega
+- ℧Omega.inv
+- ΟOmicron
+- ℙPP
+- ΦPhi
+- ΠPi
+- ΨPsi
+- ℚQQ
+- ℝRR
+- ℜRe
+- ΡRho
+- 𝕊SS
+- ΣSigma
+- 𝕋TT
+- ΤTau
+- ΘTheta
+- 𝕌UU
+- ΥUpsilon
+- 𝕍VV
+- 𝕎WW
+- 𝕏XX
+- ΞXi
+- 𝕐YY
+- ℤZZ
+- ΖZeta
+- ´acute
+- ˝acute.double
+- אalef
+- אaleph
+- αalpha
+- &amp
+- ⅋amp.inv
+- ∧and
+- ⋀and.big
+- ⋏and.curly
+- ⟑and.dot
+- ⩓and.double
+- ∠angle
+- ⟨angle.l
+- ⧼angle.l.curly
+- ⦑angle.l.dot
+- ⟪angle.l.double
+- ⟩angle.r
+- ⧽angle.r.curly
+- ⦒angle.r.dot
+- ⟫angle.r.double
+- ⦟angle.acute
+- ∡angle.arc
+- ⦛angle.arc.rev
+- ⦦angle.oblique
+- ⦣angle.rev
+- ∟angle.right
+- ⯾angle.right.rev
+- ⊾angle.right.arc
+- ⦝angle.right.dot
+- ⦜angle.right.sq
+- ⦞angle.s
+- ⟀angle.spatial
+- ∢angle.spheric
+- ⦠angle.spheric.rev
+- ⦡angle.spheric.top
+- Åangstrom
+- ≈approx
+- ≊approx.eq
+- ≉approx.not
+- →arrow.r
+- ⟼arrow.r.long.bar
+- ↦arrow.r.bar
+- ⤷arrow.r.curve
+- ⮎arrow.r.turn
+- ⇢arrow.r.dashed
+- ⤑arrow.r.dotted
+- ⇒arrow.r.double
+- ⤇arrow.r.double.bar
+- ⟹arrow.r.double.long
+- ⟾arrow.r.double.long.bar
+- ⇏arrow.r.double.not
+- ➡arrow.r.filled
+- ↪arrow.r.hook
+- ⟶arrow.r.long
+- ⟿arrow.r.long.squiggly
+- ↬arrow.r.loop
+- ↛arrow.r.not
+- ⭆arrow.r.quad
+- ⇝arrow.r.squiggly
+- ⇥arrow.r.stop
+- ⇨arrow.r.stroked
+- ↣arrow.r.tail
+- ⥲arrow.r.tilde
+- ⇛arrow.r.triple
+- ⤅arrow.r.twohead.bar
+- ↠arrow.r.twohead
+- ↝arrow.r.wave
+- ←arrow.l
+- ↤arrow.l.bar
+- ⤶arrow.l.curve
+- ⮌arrow.l.turn
+- ⇠arrow.l.dashed
+- ⬸arrow.l.dotted
+- ⇐arrow.l.double
+- ⤆arrow.l.double.bar
+- ⟸arrow.l.double.long
+- ⟽arrow.l.double.long.bar
+- ⇍arrow.l.double.not
+- ⬅arrow.l.filled
+- ↩arrow.l.hook
+- ⟵arrow.l.long
+- ⟻arrow.l.long.bar
+- ⬳arrow.l.long.squiggly
+- ↫arrow.l.loop
+- ↚arrow.l.not
+- ⭅arrow.l.quad
+- ⇜arrow.l.squiggly
+- ⇤arrow.l.stop
+- ⇦arrow.l.stroked
+- ↢arrow.l.tail
+- ⭉arrow.l.tilde
+- ⇚arrow.l.triple
+- ⬶arrow.l.twohead.bar
+- ↞arrow.l.twohead
+- ↜arrow.l.wave
+- ↑arrow.t
+- ↥arrow.t.bar
+- ⤴arrow.t.curve
+- ⮍arrow.t.turn
+- ⇡arrow.t.dashed
+- ⇑arrow.t.double
+- ⬆arrow.t.filled
+- ⟰arrow.t.quad
+- ⤒arrow.t.stop
+- ⇧arrow.t.stroked
+- ⤊arrow.t.triple
+- ↟arrow.t.twohead
+- ↓arrow.b
+- ↧arrow.b.bar
+- ⤵arrow.b.curve
+- ⮏arrow.b.turn
+- ⇣arrow.b.dashed
+- ⇓arrow.b.double
+- ⬇arrow.b.filled
+- ⟱arrow.b.quad
+- ⤓arrow.b.stop
+- ⇩arrow.b.stroked
+- ⤋arrow.b.triple
+- ↡arrow.b.twohead
+- ↔arrow.l.r
+- ⇔arrow.l.r.double
+- ⟺arrow.l.r.double.long
+- ⇎arrow.l.r.double.not
+- ⬌arrow.l.r.filled
+- ⟷arrow.l.r.long
+- ↮arrow.l.r.not
+- ⬄arrow.l.r.stroked
+- ↭arrow.l.r.wave
+- ↕arrow.t.b
+- ⇕arrow.t.b.double
+- ⬍arrow.t.b.filled
+- ⇳arrow.t.b.stroked
+- ↗arrow.tr
+- ⇗arrow.tr.double
+- ⬈arrow.tr.filled
+- ⤤arrow.tr.hook
+- ⬀arrow.tr.stroked
+- ↘arrow.br
+- ⇘arrow.br.double
+- ⬊arrow.br.filled
+- ⤥arrow.br.hook
+- ⬂arrow.br.stroked
+- ↖arrow.tl
+- ⇖arrow.tl.double
+- ⬉arrow.tl.filled
+- ⤣arrow.tl.hook
+- ⬁arrow.tl.stroked
+- ↙arrow.bl
+- ⇙arrow.bl.double
+- ⬋arrow.bl.filled
+- ⤦arrow.bl.hook
+- ⬃arrow.bl.stroked
+- ⤡arrow.tl.br
+- ⤢arrow.tr.bl
+- ↺arrow.ccw
+- ↶arrow.ccw.half
+- ↻arrow.cw
+- ↷arrow.cw.half
+- ↯arrow.zigzag
+- ⌃arrowhead.t
+- ⌄arrowhead.b
+- ⇉arrows.rr
+- ⇇arrows.ll
+- ⇈arrows.tt
+- ⇊arrows.bb
+- ⇆arrows.lr
+- ↹arrows.lr.stop
+- ⇄arrows.rl
+- ⇅arrows.tb
+- ⇵arrows.bt
+- ⇶arrows.rrr
+- ⬱arrows.lll
+- ∗ast.op
+- *ast.basic
+- ⁎ast.low
+- ⁑ast.double
+- ⁂ast.triple
+- ﹡ast.small
+- ⊛ast.circle
+- ⧆ast.square
+- ≍asymp
+- ≭asymp.not
+- @at
+- \backslash
+- ⦸backslash.circle
+- ⧷backslash.not
+- ☐ballot
+- ☒ballot.cross
+- ☑ballot.check
+- 🗹ballot.check.heavy
+- |bar.v
+- ‖bar.v.double
+- ⦀bar.v.triple
+- ¦bar.v.broken
+- ⦶bar.v.circle
+- ―bar.h
+- ∵because
+- בbet
+- βbeta
+- ϐbeta.alt
+- בbeth
+- ₿bitcoin
+- ⊥bot
+- {brace.l
+- ⦃brace.l.double
+- }brace.r
+- ⦄brace.r.double
+- ⏞brace.t
+- ⏟brace.b
+- [bracket.l
+- ⟦bracket.l.double
+- ]bracket.r
+- ⟧bracket.r.double
+- ⎴bracket.t
+- ⎵bracket.b
+- ˘breve
+- •bullet
+- ‸caret
+- ˇcaron
+- ⌈ceil.l
+- ⌉ceil.r
+- ✓checkmark
+- 🗸checkmark.light
+- ✔checkmark.heavy
+- χchi
+- ○circle.stroked
+- ∘circle.stroked.tiny
+- ⚬circle.stroked.small
+- ◯circle.stroked.big
+- ●circle.filled
+- ⦁circle.filled.tiny
+- ∙circle.filled.small
+- ⬤circle.filled.big
+- ◌circle.dotted
+- ⊚circle.nested
+- ℅co
+- :colon
+- ∷colon.double
+- ⁝colon.tri
+- ⫶colon.tri.op
+- ≔colon.eq
+- ⩴colon.double.eq
+- ,comma
+- ∁complement
+- ∘compose
+- ∗convolve
+- 🄯copyleft
+- ©copyright
+- ℗copyright.sound
+- ✗crossmark
+- ✘crossmark.heavy
+- †dagger
+- ‡dagger.double
+- ⹋dagger.triple
+- ⸶dagger.l
+- ⸷dagger.r
+- ⸸dagger.inv
+- דdalet
+- דdaleth
+- –dash.en
+- —dash.em
+- ⸺dash.em.two
+- ⸻dash.em.three
+- ‒dash.fig
+- 〜dash.wave
+- ∹dash.colon
+- ⊝dash.circle
+- 〰dash.wave.double
+- °degree
+- δdelta
+- ¨diaer
+- ⌀diameter
+- ◇diamond.stroked
+- ⋄diamond.stroked.small
+- ⬦diamond.stroked.medium
+- ⟐diamond.stroked.dot
+- ◆diamond.filled
+- ⬥diamond.filled.medium
+- ⬩diamond.filled.small
+- ⚅die.six
+- ⚄die.five
+- ⚃die.four
+- ⚂die.three
+- ⚁die.two
+- ⚀die.one
+- ∂diff
+- ÷div
+- ⨸div.circle
+- ∣divides
+- ∤divides.not
+- ⫮divides.not.rev
+- ⟊divides.struck
+- $dollar
+- ⋅dot.op
+- .dot.basic
+- ·dot.c
+- ⊙dot.circle
+- ⨀dot.circle.big
+- ⊡dot.square
+- ¨dot.double
+- ⃛dot.triple
+- ⃜dot.quad
+- ıdotless.i
+- ȷdotless.j
+- ⋯dots.h.c
+- …dots.h
+- ⋮dots.v
+- ⋱dots.down
+- ⋰dots.up
+- ℓell
+- ⬭ellipse.stroked.h
+- ⬯ellipse.stroked.v
+- ⬬ellipse.filled.h
+- ⬮ellipse.filled.v
+- ∅emptyset
+- ⦳emptyset.arrow.r
+- ⦴emptyset.arrow.l
+- ⦱emptyset.bar
+- ⦲emptyset.circle
+- ⦰emptyset.rev
+- εepsilon
+- ϵepsilon.alt
+- =eq
+- ≛eq.star
+- ⊜eq.circle
+- ≕eq.colon
+- ≑eq.dots
+- ≒eq.dots.down
+- ≓eq.dots.up
+- ≝eq.def
+- ≜eq.delta
+- ≚eq.equi
+- ≙eq.est
+- ⋝eq.gt
+- ⋜eq.lt
+- ≞eq.m
+- ≠eq.not
+- ⋞eq.prec
+- ≟eq.quest
+- ﹦eq.small
+- ⋟eq.succ
+- ≡eq.triple
+- ≢eq.triple.not
+- ≣eq.quad
+- ≡equiv
+- ≢equiv.not
+- ⧮errorbar.square.stroked
+- ⧯errorbar.square.filled
+- ⧰errorbar.diamond.stroked
+- ⧱errorbar.diamond.filled
+- ⧲errorbar.circle.stroked
+- ⧳errorbar.circle.filled
+- ηeta
+- €euro
+- !excl
+- ‼excl.double
+- ¡excl.inv
+- ⁉excl.quest
+- ∃exists
+- ∄exists.not
+- ⧘fence.l
+- ⧚fence.l.double
+- ⧙fence.r
+- ⧛fence.r.double
+- ⦙fence.dotted
+- ♭flat
+- 𝄬flat.t
+- 𝄭flat.b
+- 𝄫flat.double
+- 𝄳flat.quarter
+- ⌊floor.l
+- ⌋floor.r
+- ❦floral
+- ☙floral.l
+- ❧floral.r
+- ∀forall
+- ⊩forces
+- ⊮forces.not
+- ₣franc
+- γgamma
+- גgimel
+- גgimmel
+- ∇gradient
+- `grave
+- >gt
+- ⧁gt.circle
+- ⋗gt.dot
+- ⪆gt.approx
+- ≫gt.double
+- ≥gt.eq
+- ⩾gt.eq.slant
+- ⋛gt.eq.lt
+- ≱gt.eq.not
+- ≧gt.equiv
+- ≷gt.lt
+- ≹gt.lt.not
+- ⪈gt.neq
+- ⪊gt.napprox
+- ≩gt.nequiv
+- ≯gt.not
+- ⋧gt.ntilde
+- ﹥gt.small
+- ≳gt.tilde
+- ≵gt.tilde.not
+- ⊳gt.tri
+- ⊵gt.tri.eq
+- ⋭gt.tri.eq.not
+- ⋫gt.tri.not
+- ⋙gt.triple
+- ⫸gt.triple.nested
+- ⇀harpoon.rt
+- ⥛harpoon.rt.bar
+- ⥓harpoon.rt.stop
+- ⇁harpoon.rb
+- ⥟harpoon.rb.bar
+- ⥗harpoon.rb.stop
+- ↼harpoon.lt
+- ⥚harpoon.lt.bar
+- ⥒harpoon.lt.stop
+- ↽harpoon.lb
+- ⥞harpoon.lb.bar
+- ⥖harpoon.lb.stop
+- ↿harpoon.tl
+- ⥠harpoon.tl.bar
+- ⥘harpoon.tl.stop
+- ↾harpoon.tr
+- ⥜harpoon.tr.bar
+- ⥔harpoon.tr.stop
+- ⇃harpoon.bl
+- ⥡harpoon.bl.bar
+- ⥙harpoon.bl.stop
+- ⇂harpoon.br
+- ⥝harpoon.br.bar
+- ⥕harpoon.br.stop
+- ⥎harpoon.lt.rt
+- ⥐harpoon.lb.rb
+- ⥋harpoon.lb.rt
+- ⥊harpoon.lt.rb
+- ⥑harpoon.tl.bl
+- ⥏harpoon.tr.br
+- ⥍harpoon.tl.br
+- ⥌harpoon.tr.bl
+- ⥤harpoons.rtrb
+- ⥥harpoons.blbr
+- ⥯harpoons.bltr
+- ⥧harpoons.lbrb
+- ⥢harpoons.ltlb
+- ⇋harpoons.ltrb
+- ⥦harpoons.ltrt
+- ⥩harpoons.rblb
+- ⇌harpoons.rtlb
+- ⥨harpoons.rtlt
+- ⥮harpoons.tlbr
+- ⥣harpoons.tltr
+- #hash
+- ^hat
+- ⬡hexa.stroked
+- ⬢hexa.filled
+- ⧖hourglass.stroked
+- ⧗hourglass.filled
+- ‐hyph
+- -hyph.minus
+- ‑hyph.nobreak
+- ‧hyph.point
+- shyhyph.soft
+- ⊷image
+- ∈in
+- ∉in.not
+- ∋in.rev
+- ∌in.rev.not
+- ∍in.rev.small
+- ∊in.small
+- ∞infinity
+- ⧞infinity.bar
+- ⧜infinity.incomplete
+- ⧝infinity.tie
+- ∫integral
+- ⨗integral.arrow.hook
+- ⨑integral.ccw
+- ∮integral.cont
+- ∳integral.cont.ccw
+- ∲integral.cont.cw
+- ∱integral.cw
+- ⨍integral.dash
+- ⨎integral.dash.double
+- ∬integral.double
+- ⨌integral.quad
+- ⨙integral.inter
+- ⨙integral.sect
+- ⨏integral.slash
+- ⨖integral.square
+- ∯integral.surf
+- ⨘integral.times
+- ∭integral.triple
+- ⨚integral.union
+- ∰integral.vol
+- ∩inter
+- ⩄inter.and
+- ⋂inter.big
+- ⩀inter.dot
+- ⋒inter.double
+- ⊓inter.sq
+- ⨅inter.sq.big
+- ⩎inter.sq.double
+- ⫴interleave
+- ⫼interleave.big
+- ⫵interleave.struck
+- ‽interrobang
+- ιiota
+- ⨝join
+- ⟖join.r
+- ⟕join.l
+- ⟗join.l.r
+- ϗkai
+- κkappa
+- ϰkappa.alt
+- λlambda
+- ∆laplace
+- ⪫lat
+- ⪭lat.eq
+- ₺lira
+- ◊lozenge.stroked
+- ⬫lozenge.stroked.small
+- ⬨lozenge.stroked.medium
+- ⧫lozenge.filled
+- ⬪lozenge.filled.small
+- ⬧lozenge.filled.medium
+- ‎lrm
+- <lt
+- ⧀lt.circle
+- ⋖lt.dot
+- ⪅lt.approx
+- ≪lt.double
+- ≤lt.eq
+- ⩽lt.eq.slant
+- ⋚lt.eq.gt
+- ≰lt.eq.not
+- ≦lt.equiv
+- ≶lt.gt
+- ≸lt.gt.not
+- ⪇lt.neq
+- ⪉lt.napprox
+- ≨lt.nequiv
+- ≮lt.not
+- ⋦lt.ntilde
+- ﹤lt.small
+- ≲lt.tilde
+- ≴lt.tilde.not
+- ⊲lt.tri
+- ⊴lt.tri.eq
+- ⋬lt.tri.eq.not
+- ⋪lt.tri.not
+- ⋘lt.triple
+- ⫷lt.triple.nested
+- ¯macron
+- ✠maltese
+- ↦mapsto
+- ⟼mapsto.long
+- −minus
+- ⊖minus.circle
+- ∸minus.dot
+- ∓minus.plus
+- ⊟minus.square
+- ≂minus.tilde
+- ⨺minus.triangle
+- ⧿miny
+- ⊧models
+- μmu
+- ⊸multimap
+- ⧟multimap.double
+- ∇nabla
+- ♮natural
+- 𝄮natural.t
+- 𝄯natural.b
+- ¬not
+- 🎜note.up
+- 🎝note.down
+- 𝅝note.whole
+- 𝅗𝅥note.half
+- 𝅘𝅥note.quarter
+- ♩note.quarter.alt
+- 𝅘𝅥𝅮note.eighth
+- ♪note.eighth.alt
+- ♫note.eighth.beamed
+- 𝅘𝅥𝅯note.sixteenth
+- ♬note.sixteenth.beamed
+- 𝆕note.grace
+- 𝆔note.grace.slash
+- ∅nothing
+- ⦳nothing.arrow.r
+- ⦴nothing.arrow.l
+- ⦱nothing.bar
+- ⦲nothing.circle
+- ⦰nothing.rev
+- νnu
+- №numero
+- ωomega
+- οomicron
+- ∞oo
+- ∨or
+- ⋁or.big
+- ⋎or.curly
+- ⟇or.dot
+- ⩔or.double
+- ⊶original
+- ∥parallel
+- ⫲parallel.struck
+- ⦷parallel.circle
+- ⋕parallel.eq
+- ⩨parallel.equiv
+- ∦parallel.not
+- ⧣parallel.slanted.eq
+- ⧤parallel.slanted.eq.tilde
+- ⧥parallel.slanted.equiv
+- ⫳parallel.tilde
+- ▱parallelogram.stroked
+- ▰parallelogram.filled
+- (paren.l
+- ⦅paren.l.double
+- )paren.r
+- ⦆paren.r.double
+- ⏜paren.t
+- ⏝paren.b
+- ∂partial
+- ⬠penta.stroked
+- ⬟penta.filled
+- %percent
+- ‰permille
+- ⟂perp
+- ⦹perp.circle
+- ₱peso
+- φphi
+- ϕphi.alt
+- πpi
+- ϖpi.alt
+- ¶pilcrow
+- ⁋pilcrow.rev
+- ℎplanck
+- ℏplanck.reduce
+- +plus
+- ⊕plus.circle
+- ⟴plus.circle.arrow
+- ⨁plus.circle.big
+- ∔plus.dot
+- ⧺plus.double
+- ±plus.minus
+- ﹢plus.small
+- ⊞plus.square
+- ⨹plus.triangle
+- ⧻plus.triple
+- £pound
+- ≺prec
+- ⪷prec.approx
+- ≼prec.curly.eq
+- ⋠prec.curly.eq.not
+- ⪻prec.double
+- ⪯prec.eq
+- ⪳prec.equiv
+- ⪹prec.napprox
+- ⪱prec.neq
+- ⪵prec.nequiv
+- ⊀prec.not
+- ⋨prec.ntilde
+- ≾prec.tilde
+- ′prime
+- ‵prime.rev
+- ″prime.double
+- ‶prime.double.rev
+- ‴prime.triple
+- ‷prime.triple.rev
+- ⁗prime.quad
+- ∏product
+- ∐product.co
+- ∝prop
+- ψpsi
+- ∎qed
+- ?quest
+- ⁇quest.double
+- ⁈quest.excl
+- ¿quest.inv
+- "quote.double
+- 'quote.single
+- “quote.l.double
+- ‘quote.l.single
+- ”quote.r.double
+- ’quote.r.single
+- «quote.angle.l.double
+- ‹quote.angle.l.single
+- »quote.angle.r.double
+- ›quote.angle.r.single
+- ‟quote.high.double
+- ‛quote.high.single
+- „quote.low.double
+- ‚quote.low.single
+- ∶ratio
+- ▭rect.stroked.h
+- ▯rect.stroked.v
+- ▬rect.filled.h
+- ▮rect.filled.v
+- ※refmark
+- 𝄻rest.whole
+- 𝄺rest.multiple
+- 𝄩rest.multiple.measure
+- 𝄼rest.half
+- 𝄽rest.quarter
+- 𝄾rest.eighth
+- 𝄿rest.sixteenth
+- ρrho
+- ϱrho.alt
+- ‏rlm
+- ₽ruble
+- ₹rupee
+- ∩sect
+- ⩄sect.and
+- ⋂sect.big
+- ⩀sect.dot
+- ⋒sect.double
+- ⊓sect.sq
+- ⨅sect.sq.big
+- ⩎sect.sq.double
+- §section
+- ;semi
+- ⁏semi.rev
+- ♯sharp
+- 𝄰sharp.t
+- 𝄱sharp.b
+- 𝄪sharp.double
+- 𝄲sharp.quarter
+- ❲shell.l
+- ⟬shell.l.double
+- ❳shell.r
+- ⟭shell.r.double
+- ⏠shell.t
+- ⏡shell.b
+- שshin
+- σsigma
+- ςsigma.alt
+- /slash
+- ⫽slash.double
+- ⫻slash.triple
+- ⧸slash.big
+- ⨳smash
+- ⪪smt
+- ⪬smt.eq
+- ␣space
+- nbspspace.nobreak
+- space.nobreak.narrow
+- enspspace.en
+- emspspace.quad
+- ⅓emspspace.third
+- ¼emspspace.quarter
+- ⅙emspspace.sixth
+- mmspspace.med
+- numspspace.fig
+- puncspspace.punct
+- thinspspace.thin
+- hairspspace.hair
+- □square.stroked
+- ▫square.stroked.tiny
+- ◽square.stroked.small
+- ◻square.stroked.medium
+- ⬜square.stroked.big
+- ⬚square.stroked.dotted
+- ▢square.stroked.rounded
+- ■square.filled
+- ▪square.filled.tiny
+- ◾square.filled.small
+- ◼square.filled.medium
+- ⬛square.filled.big
+- ⋆star.op
+- ☆star.stroked
+- ★star.filled
+- ⊂subset
+- ⪽subset.dot
+- ⋐subset.double
+- ⊆subset.eq
+- ⊈subset.eq.not
+- ⊑subset.eq.sq
+- ⋢subset.eq.sq.not
+- ⊊subset.neq
+- ⊄subset.not
+- ⊏subset.sq
+- ⋤subset.sq.neq
+- ≻succ
+- ⪸succ.approx
+- ≽succ.curly.eq
+- ⋡succ.curly.eq.not
+- ⪼succ.double
+- ⪰succ.eq
+- ⪴succ.equiv
+- ⪺succ.napprox
+- ⪲succ.neq
+- ⪶succ.nequiv
+- ⊁succ.not
+- ⋩succ.ntilde
+- ≿succ.tilde
+- ♣suit.club.filled
+- ♧suit.club.stroked
+- ♦suit.diamond.filled
+- ♢suit.diamond.stroked
+- ♥suit.heart.filled
+- ♡suit.heart.stroked
+- ♠suit.spade.filled
+- ♤suit.spade.stroked
+- ∑sum
+- ⨋sum.integral
+- ⊃supset
+- ⪾supset.dot
+- ⋑supset.double
+- ⊇supset.eq
+- ⊉supset.eq.not
+- ⊒supset.eq.sq
+- ⋣supset.eq.sq.not
+- ⊋supset.neq
+- ⊅supset.not
+- ⊐supset.sq
+- ⋥supset.sq.neq
+- ⊢tack.r
+- ⊬tack.r.not
+- ⟝tack.r.long
+- ⊦tack.r.short
+- ⊨tack.r.double
+- ⊭tack.r.double.not
+- ⊣tack.l
+- ⟞tack.l.long
+- ⫞tack.l.short
+- ⫤tack.l.double
+- ⊥tack.t
+- ⟘tack.t.big
+- ⫫tack.t.double
+- ⫠tack.t.short
+- ⊤tack.b
+- ⟙tack.b.big
+- ⫪tack.b.double
+- ⫟tack.b.short
+- ⟛tack.l.r
+- τtau
+- ∴therefore
+- θtheta
+- ϑtheta.alt
+- ∼tilde.op
+- ~tilde.basic
+- ⩪tilde.dot
+- ≃tilde.eq
+- ≄tilde.eq.not
+- ⋍tilde.eq.rev
+- ≅tilde.equiv
+- ≇tilde.equiv.not
+- ≆tilde.nequiv
+- ≁tilde.not
+- ∽tilde.rev
+- ≌tilde.rev.equiv
+- ≋tilde.triple
+- ×times
+- ⨉times.big
+- ⊗times.circle
+- ⨂times.circle.big
+- ⋇times.div
+- ⋋times.three.l
+- ⋌times.three.r
+- ⋉times.l
+- ⋊times.r
+- ⊠times.square
+- ⨻times.triangle
+- ⧾tiny
+- ⊤top
+- ™trademark
+- ®trademark.registered
+- ℠trademark.service
+- △triangle.stroked.t
+- ▽triangle.stroked.b
+- ▷triangle.stroked.r
+- ◁triangle.stroked.l
+- ◺triangle.stroked.bl
+- ◿triangle.stroked.br
+- ◸triangle.stroked.tl
+- ◹triangle.stroked.tr
+- ▵triangle.stroked.small.t
+- ▿triangle.stroked.small.b
+- ▹triangle.stroked.small.r
+- ◃triangle.stroked.small.l
+- 🛆triangle.stroked.rounded
+- ⟁triangle.stroked.nested
+- ◬triangle.stroked.dot
+- ▲triangle.filled.t
+- ▼triangle.filled.b
+- ▶triangle.filled.r
+- ◀triangle.filled.l
+- ◣triangle.filled.bl
+- ◢triangle.filled.br
+- ◤triangle.filled.tl
+- ◥triangle.filled.tr
+- ▴triangle.filled.small.t
+- ▾triangle.filled.small.b
+- ▸triangle.filled.small.r
+- ◂triangle.filled.small.l
+- ∪union
+- ⊌union.arrow
+- ⋃union.big
+- ⊍union.dot
+- ⨃union.dot.big
+- ⋓union.double
+- ⩁union.minus
+- ⩅union.or
+- ⊎union.plus
+- ⨄union.plus.big
+- ⊔union.sq
+- ⨆union.sq.big
+- ⩏union.sq.double
+- υupsilon
+- ∖without
+- wjoinwj
+- ₩won
+- ≀wreath
+- ξxi
+- ⊕xor
+- ⨁xor.big
+- ¥yen
+- ζzeta
+- zwjzwj
+- zwnjzwnj
+- zwspzws
+= Context
+
+Sometimes, we want to create content that reacts to its location in the document. This could be a localized phrase that depends on the configured text language or something as simple as a heading number which prints the right value based on how many headings came before it. However, Typst code isn't directly aware of its location in the document. Some code at the beginning of the source text could yield content that ends up at the back of the document.
+
+To produce content that is reactive to its surroundings, we must thus specifically instruct Typst: We do this with the `context` keyword, which precedes an expression and ensures that it is computed with knowledge of its environment. In return, the context expression itself ends up opaque. We cannot directly access whatever results from it in our code, precisely because it is contextual: There is no one correct result, there may be multiple results in different places of the document. For this reason, everything that depends on the contextual data must happen inside of the context expression.
+
+Aside from explicit context expressions, context is also established implicitly in some places that are also aware of their location in the document: #link("/docs/reference/styling/#show-rules")[Show rules] provide context1 and numberings in the outline, for instance, also provide the proper context to resolve counters.
+
+== Style context
+
+With set rules, we can adjust style properties for parts or the whole of our document. We cannot access these without a known context, as they may change throughout the course of the document. When context is available, we can retrieve them simply by accessing them as fields on the respective element function.
+
+```typst
+#set text(lang: "de")
+#context text.lang
+```
+
+As explained above, a context expression is reactive to the different environments it is placed into. In the example below, we create a single context expression, store it in the `value` variable and use it multiple times. Each use properly reacts to the current surroundings.
+
+```typst
+#let value = context text.lang
+#value
+
+#set text(lang: "de")
+#value
+
+#set text(lang: "fr")
+#value
+```
+
+Crucially, upon creation, `value` becomes opaque #link("/docs/reference/foundations/content/")[content] that we cannot peek into. It can only be resolved when placed somewhere because only then the context is known. The body of a context expression may be evaluated zero, one, or multiple times, depending on how many different places it is put into.
+
+== Location context
+
+We've already seen that context gives us access to set rule values. But it can do more: It also lets us know _where_ in the document we currently are, relative to other elements, and absolutely on the pages. We can use this information to create very flexible interactions between different document parts. This underpins features like heading numbering, the table of contents, or page headers dependent on section headings.
+
+Some functions like #link("/docs/reference/introspection/counter/#definitions-get")[counter.get] implicitly access the current location. In the example below, we want to retrieve the value of the heading counter. Since it changes throughout the document, we need to first enter a context expression. Then, we use `get` to retrieve the counter's current value. This function accesses the current location from the context to resolve the counter value. Counters have multiple levels and `get` returns an array with the resolved numbers. Thus, we get the following result:
+
+```typst
+#set heading(numbering: "1.")
+
+= Introduction
+#lorem(5)
+
+#context counter(heading).get()
+
+= Background
+#lorem(5)
+
+#context counter(heading).get()
+```
+
+For more flexibility, we can also use the #link("/docs/reference/introspection/here/")[here] function to directly extract the current #link("/docs/reference/introspection/location/")[location] from the context. The example below demonstrates this:
+
+- We first have `counter(heading).get()`, which resolves to `(2,)` as before.
+- We then use the more powerful #link("/docs/reference/introspection/counter/#definitions-at")[counter.at] with #link("/docs/reference/introspection/here/")[here], which in combination is equivalent to `get`, and thus get `(2,)`.
+- Finally, we use `at` with a #link("/docs/reference/foundations/label/")[label] to retrieve the value of the counter at a _different_ location in the document, in our case that of the introduction heading. This yields `(1,)`. Typst's context system gives us time travel abilities and lets us retrieve the values of any counters and states at _any_ location in the document.
+
+```typst
+#set heading(numbering: "1.")
+
+= Introduction <intro>
+#lorem(5)
+
+= Background <back>
+#lorem(5)
+
+#context [
+  #counter(heading).get() \
+  #counter(heading).at(here()) \
+  #counter(heading).at(<intro>)
+]
+```
+
+As mentioned before, we can also use context to get the physical position of elements on the pages. We do this with the #link("/docs/reference/introspection/locate/")[locate] function, which works similarly to `counter.at`: It takes a location or other #link("/docs/reference/foundations/selector/")[selector] that resolves to a unique element (could also be a label) and returns the position on the pages for that element.
+
+```typst
+Background is at: \
+#context locate(<back>).position()
+
+= Introduction <intro>
+#lorem(5)
+#pagebreak()
+
+= Background <back>
+#lorem(5)
+```
+
+There are other functions that make use of the location context, most prominently #link("/docs/reference/introspection/query/")[query]. Take a look at the #link("/docs/reference/introspection/")[introspection] category for more details on those.
+
+== Nested contexts
+
+Context is also accessible from within function calls nested in context blocks. In the example below, `foo` itself becomes a contextual function, just like #link("/docs/reference/layout/length/#definitions-to-absolute")[to-absolute] is.
+
+```typst
+#let foo() = 1em.to-absolute()
+#context {
+  foo() == text.size
+}
+```
+
+Context blocks can be nested. Contextual code will then always access the innermost context. The example below demonstrates this: The first `text.lang` will access the outer context block's styles and as such, it will *not* see the effect of `set text(lang: "fr")`. The nested context block around the second `text.lang`, however, starts after the set rule and will thus show its effect.
+
+```typst
+#set text(lang: "de")
+#context [
+  #set text(lang: "fr")
+  #text.lang \
+  #context text.lang
+]
+```
+
+You might wonder why Typst ignores the French set rule when computing the first `text.lang` in the example above. The reason is that, in the general case, Typst cannot know all the styles that will apply as set rules can be applied to content after it has been constructed. Below, `text.lang` is already computed when the template function is applied. As such, it cannot possibly be aware of the language change to French in the template.
+
+```typst
+#let template(body) = {
+  set text(lang: "fr")
+  upper(body)
+}
+
+#set text(lang: "de")
+#context [
+  #show: template
+  #text.lang \
+  #context text.lang
+]
+```
+
+The second `text.lang`, however, _does_ react to the language change because evaluation of its surrounding context block is deferred until the styles for it are known. This illustrates the importance of picking the right insertion point for a context to get access to precisely the right styles.
+
+The same also holds true for the location context. Below, the first `c.display()` call will access the outer context block and will thus not see the effect of `c.update(2)` while the second `c.display()` accesses the inner context and will thus see it.
+
+```typst
+#let c = counter("mycounter")
+#c.update(1)
+#context [
+  #c.update(2)
+  #c.display() \
+  #context c.display()
+]
+```
+
+== Compiler iterations
+
+To resolve contextual interactions, the Typst compiler processes your document multiple times. For instance, to resolve a `locate` call, Typst first provides a placeholder position, layouts your document and then recompiles with the known position from the finished layout. The same approach is taken to resolve counters, states, and queries. In certain cases, Typst may even need more than two iterations to resolve everything. While that's sometimes a necessity, it may also be a sign of misuse of contextual functions (e.g. of #link("/docs/reference/introspection/state/#caution")[state]). If Typst cannot resolve everything within five attempts, it will stop and output the warning "layout did not converge within 5 attempts."
+
+A very careful reader might have noticed that not all of the functions presented above actually make use of the current location. While `counter(heading).get()` definitely depends on it, `counter(heading).at(<intro>)`, for instance, does not. However, it still requires context. While its value is always the same _within_ one compilation iteration, it may change over the course of multiple compiler iterations. If one could call it directly at the top level of a module, the whole module and its exports could change over the course of multiple compiler iterations, which would not be desirable.
+= Data Loading
+
+Data loading from external files.
+
+These functions help you with loading and embedding data, for example from the results of an experiment.
+
+== Definitions
+
+- #link("/docs/reference/data-loading/cbor/")[cbor]Reads structured data from a CBOR file.
+- #link("/docs/reference/data-loading/csv/")[csv]Reads structured data from a CSV file.
+- #link("/docs/reference/data-loading/json/")[json]Reads structured data from a JSON file.
+- #link("/docs/reference/data-loading/read/")[read]Reads plain text or data from a file.
+- #link("/docs/reference/data-loading/toml/")[toml]Reads structured data from a TOML file.
+- #link("/docs/reference/data-loading/xml/")[xml]Reads structured data from an XML file.
+- #link("/docs/reference/data-loading/yaml/")[yaml]Reads structured data from a YAML file.
+= Foundations
+
+Foundational types and functions.
+
+Here, you'll find documentation for basic data types like #link("/docs/reference/foundations/int/")[integers] and #link("/docs/reference/foundations/str/")[strings] as well as details about core computational functions.
+
+== Definitions
+
+- #link("/docs/reference/foundations/arguments/")[arguments]Captured arguments to a function.
+- #link("/docs/reference/foundations/array/")[array]A sequence of values.
+- #link("/docs/reference/foundations/assert/")[assert]Ensures that a condition is fulfilled.
+- #link("/docs/reference/foundations/auto/")[auto]A value that indicates a smart default.
+- #link("/docs/reference/foundations/bool/")[bool]A type with two states.
+- #link("/docs/reference/foundations/bytes/")[bytes]A sequence of bytes.
+- #link("/docs/reference/foundations/calc")[calc]Module for calculations and processing of numeric values.
+- #link("/docs/reference/foundations/content/")[content]A piece of document content.
+- #link("/docs/reference/foundations/datetime/")[datetime]Represents a date, a time, or a combination of both.
+- #link("/docs/reference/foundations/decimal/")[decimal]A fixed-point decimal number type.
+- #link("/docs/reference/foundations/dictionary/")[dictionary]A map from string keys to values.
+- #link("/docs/reference/foundations/duration/")[duration]Represents a positive or negative span of time.
+- #link("/docs/reference/foundations/eval/")[eval]Evaluates a string as Typst code.
+- #link("/docs/reference/foundations/float/")[float]A floating-point number.
+- #link("/docs/reference/foundations/function/")[function]A mapping from argument values to a return value.
+- #link("/docs/reference/foundations/int/")[int]A whole number.
+- #link("/docs/reference/foundations/label/")[label]A label for an element.
+- #link("/docs/reference/foundations/module/")[module]An module of definitions.
+- #link("/docs/reference/foundations/none/")[none]A value that indicates the absence of any other value.
+- #link("/docs/reference/foundations/panic/")[panic]Fails with an error.
+- #link("/docs/reference/foundations/plugin/")[plugin]Loads a WebAssembly module.
+- #link("/docs/reference/foundations/regex/")[regex]A regular expression.
+- #link("/docs/reference/foundations/repr/")[repr]Returns the string representation of a value.
+- #link("/docs/reference/foundations/selector/")[selector]A filter for selecting elements within the document.
+- #link("/docs/reference/foundations/str/")[str]A sequence of Unicode codepoints.
+- #link("/docs/reference/foundations/symbol/")[symbol]A Unicode symbol.
+- #link("/docs/reference/foundations/sys")[sys]Module for system interactions.
+- #link("/docs/reference/foundations/target/")[target]Returns the current export target.
+- #link("/docs/reference/foundations/type/")[type]Describes a kind of value.
+- #link("/docs/reference/foundations/version/")[version]A version with an arbitrary number of components.
+= HTML
+
+HTML files describe a document structurally. The aim of Typst's HTML export is to capture the structure of an input document and produce semantically rich HTML that retains this structure. The resulting HTML should be accessible, human-readable, and editable by hand and downstream tools.
+
+PDF, PNG, and SVG export, in contrast, all produce _visual_ representations of a fully-laid out document. This divergence in the formats' intents means that Typst cannot simply produce perfect HTML for your existing Typst documents. It cannot always know what the best semantic HTML representation of your content is.
+
+Instead, it gives _you_ full control: You can check the current export format through the #link("/docs/reference/foundations/target/")[target] function and when it is set to HTML, generate #link("/docs/reference/html/elem/")[raw HTML elements]. The primary intended use of these elements is in templates and show rules. This way, the document's contents can be fully agnostic to the export target and content can be shared between PDF and HTML export.
+
+Currently, Typst will always output a single HTML file. Support for outputting directories with multiple HTML documents and assets, as well as support for outputting fragments that can be integrated into other HTML documents is planned.
+
+Typst currently does not output CSS style sheets, instead focussing on emitting semantic markup. You can of course write your own CSS styles and still benefit from sharing your _content_ between PDF and HTML. For the future, we plan to give you the option of automatically emitting CSS, taking more of your existing set rules into account.
+
+== Exporting as HTML
+
+Pass `--format html` to the `compile` or `watch` subcommand or provide an output file name that ends with `.html`. Note that you must also pass `--features html` or set `TYPST_FEATURES=html` to enable this experimental export target.
+
+When using `typst watch`, Typst will spin up a live-reloading HTTP server. You can configure it as follows:
+
+- Pass `--port` to change the port. (Defaults to the first free port in the range 3000-3005.)
+- Pass `--no-reload` to disable injection of a live reload script. (The HTML that is written to disk isn't affected either way.)
+- Pass `--no-serve` to disable the server altogether.
+
+Not currently available.
+
+== HTML-specific functionality
+
+Typst exposes HTML-specific functionality in the global `html` module. See below for the definitions it contains.
+
+== Definitions
+
+- #link("/docs/reference/html/elem/")[elem]An HTML element that can contain Typst content.
+- #link("/docs/reference/html/frame/")[frame]An element that lays out its content as an inline SVG.
+= Introspection
+
+Interactions between document parts.
+
+This category is home to Typst's introspection capabilities: With the `counter` function, you can access and manipulate page, section, figure, and equation counters or create custom ones. Meanwhile, the `query` function lets you search for elements in the document to construct things like a list of figures or headers which show the current chapter title.
+
+Most of the functions are _contextual._ It is recommended to read the chapter on #link("/docs/reference/context/")[context] before continuing here.
+
+== Definitions
+
+- #link("/docs/reference/introspection/counter/")[counter]Counts through pages, elements, and more.
+- #link("/docs/reference/introspection/here/")[here]Provides the current location in the document.
+- #link("/docs/reference/introspection/locate/")[locate]Determines the location of an element in the document.
+- #link("/docs/reference/introspection/location/")[location]Identifies an element in the document.
+- #link("/docs/reference/introspection/metadata/")[metadata]Exposes a value to the query system without producing visible content.
+- #link("/docs/reference/introspection/query/")[query]Finds elements in the document.
+- #link("/docs/reference/introspection/state/")[state]Manages stateful parts of your document.
+= Layout
+
+Arranging elements on the page in different ways.
+
+By combining layout functions, you can create complex and automatic layouts.
+
+== Definitions
+
+- #link("/docs/reference/layout/align/")[align]Aligns content horizontally and vertically.
+- #link("/docs/reference/layout/alignment/")[alignment]Where to [align] something along an axis.
+- #link("/docs/reference/layout/angle/")[angle]An angle describing a rotation.
+- #link("/docs/reference/layout/block/")[block]A block-level container.
+- #link("/docs/reference/layout/box/")[box]An inline-level container that sizes content.
+- #link("/docs/reference/layout/colbreak/")[colbreak]Forces a column break.
+- #link("/docs/reference/layout/columns/")[columns]Separates a region into multiple equally sized columns.
+- #link("/docs/reference/layout/direction/")[direction]The four directions into which content can be laid out.
+- #link("/docs/reference/layout/fraction/")[fraction]Defines how the remaining space in a layout is distributed.
+- #link("/docs/reference/layout/grid/")[grid]Arranges content in a grid.
+- #link("/docs/reference/layout/h/")[h]Inserts horizontal spacing into a paragraph.
+- #link("/docs/reference/layout/hide/")[hide]Hides content without affecting layout.
+- #link("/docs/reference/layout/layout/")[layout]Provides access to the current outer container's (or page's, if none)
+- #link("/docs/reference/layout/length/")[length]A size or distance, possibly expressed with contextual units.
+- #link("/docs/reference/layout/measure/")[measure]Measures the layouted size of content.
+- #link("/docs/reference/layout/move/")[move]Moves content without affecting layout.
+- #link("/docs/reference/layout/pad/")[pad]Adds spacing around content.
+- #link("/docs/reference/layout/page/")[page]Layouts its child onto one or multiple pages.
+- #link("/docs/reference/layout/pagebreak/")[pagebreak]A manual page break.
+- #link("/docs/reference/layout/place/")[place]Places content relatively to its parent container.
+- #link("/docs/reference/layout/ratio/")[ratio]A ratio of a whole.
+- #link("/docs/reference/layout/relative/")[relative]A length in relation to some known length.
+- #link("/docs/reference/layout/repeat/")[repeat]Repeats content to the available space.
+- #link("/docs/reference/layout/rotate/")[rotate]Rotates content without affecting layout.
+- #link("/docs/reference/layout/scale/")[scale]Scales content without affecting layout.
+- #link("/docs/reference/layout/skew/")[skew]Skews content.
+- #link("/docs/reference/layout/stack/")[stack]Arranges content and spacing horizontally or vertically.
+- #link("/docs/reference/layout/v/")[v]Inserts vertical spacing into a flow of blocks.
+= Math
+
+Typst has special #link("/docs/reference/syntax/#math")[syntax] and library functions to typeset mathematical formulas. Math formulas can be displayed inline with text or as separate blocks. They will be typeset into their own block if they start and end with at least one space (e.g. `$ x^2 $`).
+
+== Variables
+
+In math, single letters are always displayed as is. Multiple letters, however, are interpreted as variables and functions. To display multiple letters verbatim, you can place them into quotes and to access single letter variables, you can use the #link("/docs/reference/scripting/#expressions")[hash syntax].
+
+```typst
+$ A = pi r^2 $
+$ "area" = pi dot "radius"^2 $
+$ cal(A) :=
+    { x in RR | x "is natural" } $
+#let x = 5
+$ #x < 17 $
+```
+
+== Symbols
+
+Math mode makes a wide selection of #link("/docs/reference/symbols/sym/")[symbols] like `pi`, `dot`, or `RR` available. Many mathematical symbols are available in different variants. You can select between different variants by applying #link("/docs/reference/foundations/symbol/")[modifiers] to the symbol. Typst further recognizes a number of shorthand sequences like `=>` that approximate a symbol. When such a shorthand exists, the symbol's documentation lists it.
+
+```typst
+$ x < y => x gt.eq.not y $
+```
+
+== Line Breaks
+
+Formulas can also contain line breaks. Each line can contain one or multiple _alignment points_ (`&`) which are then aligned.
+
+```typst
+$ sum_(k=0)^n k
+    &= 1 + ... + n \
+    &= (n(n+1)) / 2 $
+```
+
+== Function calls
+
+Math mode supports special function calls without the hash prefix. In these "math calls", the argument list works a little differently than in code:
+
+- Within them, Typst is still in "math mode". Thus, you can write math directly into them, but need to use hash syntax to pass code expressions (except for strings, which are available in the math syntax).
+- They support positional and named arguments, as well as argument spreading.
+- They don't support trailing content blocks.
+- They provide additional syntax for 2-dimensional argument lists. The semicolon (`;`) merges preceding arguments separated by commas into an array argument.
+
+```typst
+$ frac(a^2, 2) $
+$ vec(1, 2, delim: "[") $
+$ mat(1, 2; 3, 4) $
+$ mat(..#range(1, 5).chunks(2)) $
+$ lim_x =
+    op("lim", limits: #true)_x $
+```
+
+To write a verbatim comma or semicolon in a math call, escape it with a backslash. The colon on the other hand is only recognized in a special way if directly preceded by an identifier, so to display it verbatim in those cases, you can just insert a space before it.
+
+Functions calls preceded by a hash are normal code function calls and not affected by these rules.
+
+== Alignment
+
+When equations include multiple _alignment points_ (`&`), this creates blocks of alternatingly right- and left-aligned columns. In the example below, the expression `(3x + y) / 7` is right-aligned and `= 9` is left-aligned. The word "given" is also left-aligned because `&&` creates two alignment points in a row, alternating the alignment twice. `& &` and `&&` behave exactly the same way. Meanwhile, "multiply by 7" is right-aligned because just one `&` precedes it. Each alignment point simply alternates between right-aligned/left-aligned.
+
+```typst
+$ (3x + y) / 7 &= 9 && "given" \
+  3x + y &= 63 & "multiply by 7" \
+  3x &= 63 - y && "subtract y" \
+  x &= 21 - y/3 & "divide by 3" $
+```
+
+== Math fonts
+
+You can set the math font by with a #link("/docs/reference/styling/#show-rules")[show-set rule] as demonstrated below. Note that only special OpenType math fonts are suitable for typesetting maths.
+
+```typst
+#show math.equation: set text(font: "Fira Math")
+$ sum_(i in NN) 1 + i $
+```
+
+== Math module
+
+All math functions are part of the `math` #link("/docs/reference/scripting/#modules")[module], which is available by default in equations. Outside of equations, they can be accessed with the `math.` prefix.
+
+== Definitions
+
+- #link("/docs/reference/math/accent/")[accent]Attaches an accent to a base.
+- #link("/docs/reference/math/attach")[attach]Subscript, superscripts, and limits.
+- #link("/docs/reference/math/binom/")[binom]A binomial expression.
+- #link("/docs/reference/math/cancel/")[cancel]Displays a diagonal line over a part of an equation.
+- #link("/docs/reference/math/cases/")[cases]A case distinction.
+- #link("/docs/reference/math/class/")[class]Forced use of a certain math class.
+- #link("/docs/reference/math/equation/")[equation]A mathematical equation.
+- #link("/docs/reference/math/frac/")[frac]A mathematical fraction.
+- #link("/docs/reference/math/lr")[lr]Delimiter matching.
+- #link("/docs/reference/math/mat/")[mat]A matrix.
+- #link("/docs/reference/math/op/")[op]A text operator in an equation.
+- #link("/docs/reference/math/primes/")[primes]Grouped primes.
+- #link("/docs/reference/math/roots")[roots]Square and non-square roots.
+- #link("/docs/reference/math/sizes")[sizes]Forced size styles for expressions within formulas.
+- #link("/docs/reference/math/stretch/")[stretch]Stretches a glyph.
+- #link("/docs/reference/math/styles")[styles]Alternate letterforms within formulas.
+- #link("/docs/reference/math/underover")[underover]Delimiters above or below parts of an equation.
+- #link("/docs/reference/math/variants")[variants]Alternate typefaces within formulas.
+- #link("/docs/reference/math/vec/")[vec]A column vector.
+= Model
+
+Document structuring.
+
+Here, you can find functions to structure your document and interact with that structure. This includes section headings, figures, bibliography management, cross-referencing and more.
+
+== Definitions
+
+- #link("/docs/reference/model/bibliography/")[bibliography]A bibliography / reference listing.
+- #link("/docs/reference/model/cite/")[cite]Cite a work from the bibliography.
+- #link("/docs/reference/model/document/")[document]The root element of a document and its metadata.
+- #link("/docs/reference/model/emph/")[emph]Emphasizes content by toggling italics.
+- #link("/docs/reference/model/enum/")[enum]A numbered list.
+- #link("/docs/reference/model/figure/")[figure]A figure with an optional caption.
+- #link("/docs/reference/model/footnote/")[footnote]A footnote.
+- #link("/docs/reference/model/heading/")[heading]A section heading.
+- #link("/docs/reference/model/link/")[link]Links to a URL or a location in the document.
+- #link("/docs/reference/model/list/")[list]A bullet list.
+- #link("/docs/reference/model/numbering/")[numbering]Applies a numbering to a sequence of numbers.
+- #link("/docs/reference/model/outline/")[outline]A table of contents, figures, or other elements.
+- #link("/docs/reference/model/par/")[par]A logical subdivison of textual content.
+- #link("/docs/reference/model/parbreak/")[parbreak]A paragraph break.
+- #link("/docs/reference/model/quote/")[quote]Displays a quote alongside an optional attribution.
+- #link("/docs/reference/model/ref/")[ref]A reference to a label or bibliography.
+- #link("/docs/reference/model/strong/")[strong]Strongly emphasizes content by increasing the font weight.
+- #link("/docs/reference/model/table/")[table]A table of items.
+- #link("/docs/reference/model/terms/")[terms]A list of terms and their descriptions.

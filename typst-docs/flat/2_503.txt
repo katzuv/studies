@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 503,
+    "title": "How can I underbrace only part of a matrix?",
+    "slug": "how-can-i-underbrace-only-part-of-a-matrix",
+    "posts_count": 3,
+    "created_at": "2024-09-19T19:27:40.399Z",
+    "last_posted_at": "2024-09-20T14:27:50.223Z",
+    "views": 282,
+    "like_count": 5,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "xkevio",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 405
+  },
+  "posts": [
+    {
+      "id": 1948,
+      "post_number": 1,
+      "username": "Netzwerk2",
+      "name": "",
+      "created_at": "2024-09-19T19:27:40.504Z",
+      "updated_at": "2024-09-19T20:10:15.001Z",
+      "cooked": "<p>How would I underbrace a part of a matrix like in this image?<br>\n<img src=\"https://forum.typst.app/uploads/default/original/1X/583699d0e65d3203496bcc00a641d440953ce1c6.png\" alt=\"image\" data-base62-sha1=\"cAmZWNG42KiVKO9JXEpQMylI1gO\" width=\"552\" height=\"163\"></p>",
+      "raw": "How would I underbrace a part of a matrix like in this image?\n![image|552x163](upload://cAmZWNG42KiVKO9JXEpQMylI1gO.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 56,
+      "score": 836.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 394
+    },
+    {
+      "id": 1952,
+      "post_number": 2,
+      "username": "xkevio",
+      "name": "Kevio",
+      "created_at": "2024-09-19T20:06:48.934Z",
+      "updated_at": "2024-09-19T20:44:11.973Z",
+      "cooked": "<p>There is no nice way to mix multiple <code>underbrace</code>s together, so you will have to get creative with <code>stack</code> or <code>grid</code>. Here is one such PoC (for matrices with the same width each side, <strong>edit:</strong> see below for a more complete approach):</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let under-mat(matrix, left, right) = context {\n  let width = measure(matrix).width / 2 - 10pt\n  let lspace = math.underbrace(h(width), left)\n  let rspace = math.underbrace(h(width), right)\n  \n  $\n    #stack(\n      spacing: -0.75em,\n      matrix,\n      grid(columns: 2, lspace, rspace)\n    )\n  $\n}\n\n\n#under-mat(\n  $ mat(augment: #3, 2, 3, 1, 1, 0, 0; 1, 0, 1, 0, 1, 0; 5, 4, 6, 0, 0, 0) $,\n  $ A $, $ I $\n)\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/1X/ebedcbd731ea4db05c971d1c4e56603484aa8ed8.png\" alt=\"image\" data-base62-sha1=\"xF7GgmBBtCZPatKpuu6dfyGQyyk\" width=\"202\" height=\"133\"></p>\n<p><strong>EDIT:</strong> This will modify the baseline of the matrix which might look odd next to matrices without an underbrace or with an overbrace. You can manually adjust it with <code>#move()</code>. I have also made an <code>over-mat</code>-function just for completeness now with <strong>automatic measuring even for matrices where one side is visually bigger</strong>.</p>\n<details>\n<summary>\nCode and Result</summary>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/xarrow:0.3.1\": xarrow\n\n#let under-mat(matrix, left, right) = context {\n  let augment-row = math.mat(matrix.body.rows.first().slice(0, matrix.body.augment))\n  let aug-width = measure(augment-row).width\n  let rest-width = measure(matrix).width - aug-width - 15pt\n  \n  let lspace = math.underbrace(h(aug-width), left)\n  let rspace = math.underbrace(h(rest-width), right)\n  \n  $\n    #stack(\n      spacing: -0.75em,\n      matrix,\n      grid(columns: 2, lspace, rspace)\n    )\n  $\n}\n\n#let over-mat(matrix, left, right) = context {\n  let augment-row = math.mat(matrix.body.rows.first().slice(0, matrix.body.augment))\n  let aug-width = measure(augment-row).width\n  let rest-width = measure(matrix).width - aug-width - 15pt\n  \n  let lspace = math.overbrace(h(aug-width), left)\n  let rspace = math.overbrace(h(rest-width), right)\n  \n  $\n    #stack(\n      grid(columns: 2, lspace, rspace),\n      matrix,\n    )\n  $\n}\n\n\n$\n  #under-mat(\n    $ mat(augment: #3, 2, 3, 1, 1, 0, 0; 1, 0, 1, 0, 1, 0; 5, 4, 6, 0, 0, 0) $,\n    $ A $, $ I $\n  ) \n  xarrow(\"Gauss\", opposite: \"Jordan\")\n  #move(dy: -0.75em,\n    over-mat(\n      $ mat(\n        augment: #3, 1, 0, 0, 4 slash 7, 2, -3 slash 7; \n        0, 1, 0, 1 slash 7, -1, 1 slash 7; \n        0, 0, 1, -4 slash 7, -1, 3 slash 7) $,\n      $ I $, $ A^(-1) $\n    ) \n  )\n$\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/1X/1c829e73d4a11b4d1148094141618b676458d5c8.png\" alt=\"image\" data-base62-sha1=\"44ddzO8bqmNjQS9T2UlByjUIyPC\" width=\"507\" height=\"174\"></p>\n</details>",
+      "raw": "There is no nice way to mix multiple `underbrace`s together, so you will have to get creative with `stack` or `grid`. Here is one such PoC (for matrices with the same width each side, **edit:** see below for a more complete approach):\n```typ\n#let under-mat(matrix, left, right) = context {\n  let width = measure(matrix).width / 2 - 10pt\n  let lspace = math.underbrace(h(width), left)\n  let rspace = math.underbrace(h(width), right)\n  \n  $\n    #stack(\n      spacing: -0.75em,\n      matrix,\n      grid(columns: 2, lspace, rspace)\n    )\n  $\n}\n\n\n#under-mat(\n  $ mat(augment: #3, 2, 3, 1, 1, 0, 0; 1, 0, 1, 0, 1, 0; 5, 4, 6, 0, 0, 0) $,\n  $ A $, $ I $\n)\n```\n![image|202x133](upload://xF7GgmBBtCZPatKpuu6dfyGQyyk.png)\n\n**EDIT:** This will modify the baseline of the matrix which might look odd next to matrices without an underbrace or with an overbrace. You can manually adjust it with `#move()`. I have also made an `over-mat`-function just for completeness now with **automatic measuring even for matrices where one side is visually bigger**.\n[details=\"Code and Result\"]\n```typ\n#import \"@preview/xarrow:0.3.1\": xarrow\n\n#let under-mat(matrix, left, right) = context {\n  let augment-row = math.mat(matrix.body.rows.first().slice(0, matrix.body.augment))\n  let aug-width = measure(augment-row).width\n  let rest-width = measure(matrix).width - aug-width - 15pt\n  \n  let lspace = math.underbrace(h(aug-width), left)\n  let rspace = math.underbrace(h(rest-width), right)\n  \n  $\n    #stack(\n      spacing: -0.75em,\n      matrix,\n      grid(columns: 2, lspace, rspace)\n    )\n  $\n}\n\n#let over-mat(matrix, left, right) = context {\n  let augment-row = math.mat(matrix.body.rows.first().slice(0, matrix.body.augment))\n  let aug-width = measure(augment-row).width\n  let rest-width = measure(matrix).width - aug-width - 15pt\n  \n  let lspace = math.overbrace(h(aug-width), left)\n  let rspace = math.overbrace(h(rest-width), right)\n  \n  $\n    #stack(\n      grid(columns: 2, lspace, rspace),\n      matrix,\n    )\n  $\n}\n\n\n$\n  #under-mat(\n    $ mat(augment: #3, 2, 3, 1, 1, 0, 0; 1, 0, 1, 0, 1, 0; 5, 4, 6, 0, 0, 0) $,\n    $ A $, $ I $\n  ) \n  xarrow(\"Gauss\", opposite: \"Jordan\")\n  #move(dy: -0.75em,\n    over-mat(\n      $ mat(\n        augment: #3, 1, 0, 0, 4 slash 7, 2, -3 slash 7; \n        0, 1, 0, 1 slash 7, -1, 1 slash 7; \n        0, 0, 1, -4 slash 7, -1, 3 slash 7) $,\n      $ I $, $ A^(-1) $\n    ) \n  )\n$\n```\n![image|507x174](upload://44ddzO8bqmNjQS9T2UlByjUIyPC.png)\n\n[/details]",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 4,
+      "reads": 55,
+      "score": 116.0,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 21
+    },
+    {
+      "id": 2048,
+      "post_number": 4,
+      "username": "Netzwerk2",
+      "name": "",
+      "created_at": "2024-09-20T14:27:50.223Z",
+      "updated_at": "2024-09-20T14:27:50.223Z",
+      "cooked": "<p>Thanks so much. That’s exactly what I need</p>",
+      "raw": "Thanks so much. That's exactly what I need",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 43,
+      "score": 8.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 394
+    }
+  ],
+  "scraped_at": "2025-06-10T09:58:37.356906"
+}

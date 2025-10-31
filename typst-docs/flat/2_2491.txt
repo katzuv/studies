@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2491,
+    "title": "Why are my GitHub Organizations not showing in Typst App's GitHub integration?",
+    "slug": "why-are-my-github-organizations-not-showing-in-typst-apps-github-integration",
+    "posts_count": 2,
+    "created_at": "2025-01-21T03:40:52.006Z",
+    "last_posted_at": "2025-01-21T07:30:16.048Z",
+    "views": 73,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "laurmaedje",
+    "tags": [
+      "web-app",
+      "git-sync"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 219
+  },
+  "posts": [
+    {
+      "id": 7730,
+      "post_number": 1,
+      "username": "Vincent_Massi",
+      "name": "Vincent Massi",
+      "created_at": "2025-01-21T03:40:52.132Z",
+      "updated_at": "2025-01-21T17:05:43.595Z",
+      "cooked": "<p>I’m experiencing an issue with Typst’s GitHub integration where I can’t connect to my organization’s repositories. When using the GitHub integration in Typst’s web app, the dropdown menu labeled “Organizations” only displays my personal account, despite me owning and belonging to several organizations. I created these organizations using the same GitHub account that I’m using for Typst. I’ve tried disconnecting and reconnecting the GitHub integration, but the organizations still don’t appear in the dropdown. Is this a known limitation of the integration, or is there perhaps a permissions issue I need to resolve? Any guidance on how to connect Typst to a GitHub organization would be greatly appreciated.</p>",
+      "raw": "I'm experiencing an issue with Typst's GitHub integration where I can't connect to my organization's repositories. When using the GitHub integration in Typst's web app, the dropdown menu labeled \"Organizations\" only displays my personal account, despite me owning and belonging to several organizations. I created these organizations using the same GitHub account that I'm using for Typst. I've tried disconnecting and reconnecting the GitHub integration, but the organizations still don't appear in the dropdown. Is this a known limitation of the integration, or is there perhaps a permissions issue I need to resolve? Any guidance on how to connect Typst to a GitHub organization would be greatly appreciated.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 210.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1077
+    },
+    {
+      "id": 7732,
+      "post_number": 2,
+      "username": "laurmaedje",
+      "name": "Laurenz Mädje",
+      "created_at": "2025-01-21T07:30:16.048Z",
+      "updated_at": "2025-01-21T07:30:16.048Z",
+      "cooked": "<p>During initial connection, it will ask you about organizations, but it’s easy to miss. To fix it after the fact, go to your GitHub account settings, click “Applications” in the left sidebar, then go the “Authorized OAuth Apps” tab, click on “Typst”, and then click “Grant” next to your org in “Organization access”. If you don’t have the necessary permissions on the organization, then you’ll need to request access from an organization admin there.</p>\n<p>Unfortunately, GitHub’s OAuth authorization system is not fine-grained enough to distinguish individual repositories, so Typst will need to have access to the full organization.</p>",
+      "raw": "During initial connection, it will ask you about organizations, but it's easy to miss. To fix it after the fact, go to your GitHub account settings, click \"Applications\" in the left sidebar, then go the \"Authorized OAuth Apps\" tab, click on \"Typst\", and then click \"Grant\" next to your org in \"Organization access\". If you don't have the necessary permissions on the organization, then you'll need to request access from an organization admin there. \n\nUnfortunately, GitHub's OAuth authorization system is not fine-grained enough to distinguish individual repositories, so Typst will need to have access to the full organization.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 4.6,
+      "accepted_answer": true,
+      "trust_level": 4,
+      "user_id": 2
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:38.091959"
+}

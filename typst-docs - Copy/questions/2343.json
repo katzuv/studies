@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2343,
+    "title": "Why do I get error messages with template function arguments?",
+    "slug": "why-do-i-get-error-messages-with-template-function-arguments",
+    "posts_count": 3,
+    "created_at": "2025-01-08T17:19:10.592Z",
+    "last_posted_at": "2025-01-17T14:04:35.480Z",
+    "views": 189,
+    "like_count": 0,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "scripting",
+      "templates"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 437
+  },
+  "posts": [
+    {
+      "id": 7297,
+      "post_number": 1,
+      "username": "mezzogallium",
+      "name": "André Santos",
+      "created_at": "2025-01-08T17:19:10.764Z",
+      "updated_at": "2025-01-17T14:02:55.326Z",
+      "cooked": "<p>Hello fellow Typst users!</p>\n<p>I’m in the process of replicating my faculty’s Master thesis template from overleaf in Typst (I plan to use it and make it available to colleagues).</p>\n<p>I’m trying to wrap the document in a template function as suggested in <a href=\"https://typst.app/docs/tutorial/making-a-template/\">Making a Template</a>. This would be in a separate file, with multiple arguments for the fill-in info:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let template(\n  thesis_title: [Insert the title of the dissertation],\n  thesis_author: [Author’s name, Arial Plain, 18],\n  //course_name: [Course’s Name, Arial Plain, 12],\n  department: [Department, Arial Plain, 10],\n  faculty: [Faculty, Arial Plain, 10],\n  year: [Year],\n  thesis_type: [Dissertation carried out as part of\nthe [course's name], Arial Plain, 12],\n  supervisor: [Supervisor’s Name, Category, Institution],\n  co-supervisor: [Supervisor’s Name, Category, Institution],\n  ext-supervisor: [Name, Professional status, Company’s name],\n  doc\n) = {\n//function\ndoc \n}\n</code></pre>\n<p>And I’m importing the file and calling the function as:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show: template.with(\n  thesis_title: [title],\n  …\n  ext-supervisor: [name])\n</code></pre>\n<p>at the top of the document. However, no matter what argument order or type (named/positional) I use, the compiler cycles through errors like “Unexpected argument”, “[argument] is positional”, etc.</p>\n<p>If I remove all arguments from the function call, sometimes it starts working again, but as soon as I have 4 or 5 in, it begins again.</p>\n<p>Am I doing something wrong?</p>",
+      "raw": "Hello fellow Typst users!\n\nI'm in the process of replicating my faculty's Master thesis template from overleaf in Typst (I plan to use it and make it available to colleagues).\n\nI'm trying to wrap the document in a template function as suggested in [Making a Template](https://typst.app/docs/tutorial/making-a-template/). This would be in a separate file, with multiple arguments for the fill-in info:\n```typst\n#let template(\n  thesis_title: [Insert the title of the dissertation],\n  thesis_author: [Author’s name, Arial Plain, 18],\n  //course_name: [Course’s Name, Arial Plain, 12],\n  department: [Department, Arial Plain, 10],\n  faculty: [Faculty, Arial Plain, 10],\n  year: [Year],\n  thesis_type: [Dissertation carried out as part of\nthe [course's name], Arial Plain, 12],\n  supervisor: [Supervisor’s Name, Category, Institution],\n  co-supervisor: [Supervisor’s Name, Category, Institution],\n  ext-supervisor: [Name, Professional status, Company’s name],\n  doc\n) = {\n//function\ndoc \n}\n```\nAnd I'm importing the file and calling the function as:\n```typst\n#show: template.with(\n  thesis_title: [title],\n  …\n  ext-supervisor: [name])\n```\nat the top of the document. However, no matter what argument order or type (named/positional) I use, the compiler cycles through errors like \"Unexpected argument\", \"[argument] is positional\", etc.\n\nIf I remove all arguments from the function call, sometimes it starts working again, but as soon as I have 4 or 5 in, it begins again.\n\nAm I doing something wrong?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 33,
+      "score": 696.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 372
+    },
+    {
+      "id": 7299,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-08T18:01:16.618Z",
+      "updated_at": "2025-01-08T18:01:16.618Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/mezzogallium\">@mezzogallium</a>, could you maybe try to revise your post’s title to be a complete question as per the <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">question guidelines</a>:</p>\n<blockquote>\n<p><strong>Good titles are questions you would ask your friend about Typst.</strong></p>\n</blockquote>\n<p>We hope by adhering to this, we make the information in this forum easy to find in the future. Thanks!</p>\n<hr>\n<p>Now to the question; I pasted your code into a new Typst documents (same file, but that shouldn’t make a difference) and didn’t get any errors, even, when adding named arguments (the ones that your template expects) to the call. So the error is likely with the specific parameters you provided or in the template function.</p>\n<p>You should try to minify your problem until before it disappears: what parameters can you remove so that the error remains? What parts of the template function can you remove without the error disappearing?</p>\n<p>As a last resort, you can just post the code with errors present, but the less code is necessary to demonstrate the problem, the better.</p>",
+      "raw": "Hi @mezzogallium, could you maybe try to revise your post’s title to be a complete question as per the [question guidelines](https://forum.typst.app/t/how-to-post-in-the-questions-category/11):\n\n> **Good titles are questions you would ask your friend about Typst.**\n\nWe hope by adhering to this, we make the information in this forum easy to find in the future. Thanks!\n\n---\n\nNow to the question; I pasted your code into a new Typst documents (same file, but that shouldn't make a difference) and didn't get any errors, even, when adding named arguments (the ones that your template expects) to the call. So the error is likely with the specific parameters you provided or in the template function.\n\nYou should try to minify your problem until before it disappears: what parameters can you remove so that the error remains? What parts of the template function can you remove without the error disappearing?\n\nAs a last resort, you can just post the code with errors present, but the less code is necessary to demonstrate the problem, the better.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 32,
+      "score": 31.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 7608,
+      "post_number": 3,
+      "username": "mezzogallium",
+      "name": "André Santos",
+      "created_at": "2025-01-17T14:04:35.480Z",
+      "updated_at": "2025-01-17T14:05:16.706Z",
+      "cooked": "<p>Thank you for the tips. I removed all the arguments and re-added them one by one and the errors stopped, so now everything’s working.</p>",
+      "raw": "Thank you for the tips. I removed all the arguments and re-added them one by one and the errors stopped, so now everything's working.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 10.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 372
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:59.728047"
+}

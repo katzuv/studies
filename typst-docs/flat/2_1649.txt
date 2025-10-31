@@ -1,0 +1,61 @@
+{
+  "topic_metadata": {
+    "id": 1649,
+    "title": "How to indent code blocks by default",
+    "slug": "how-to-indent-code-blocks-by-default",
+    "posts_count": 2,
+    "created_at": "2024-11-10T09:19:43.676Z",
+    "last_posted_at": "2024-11-10T09:49:32.394Z",
+    "views": 127,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 97
+  },
+  "posts": [
+    {
+      "id": 5445,
+      "post_number": 1,
+      "username": "fxn",
+      "name": "Xavier Noria",
+      "created_at": "2024-11-10T09:19:43.808Z",
+      "updated_at": "2024-11-10T09:19:43.808Z",
+      "cooked": "<p>Absolute newbie here. Is there a way to configure a document so that all code blocks (triple backquotes) are indented by a certain amount? Like they do in O’Reilly books, for example.</p>",
+      "raw": "Absolute newbie here. Is there a way to configure a document so that all code blocks (triple backquotes) are indented by a certain amount? Like they do in O'Reilly books, for example.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 33,
+      "score": 486.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 784
+    },
+    {
+      "id": 5446,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2024-11-10T09:49:32.394Z",
+      "updated_at": "2024-11-10T09:49:32.394Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/fxn\">@fxn</a>,</p>\n<p>you can use a show rule to get all <code>raw</code> elements, and use <code>pad</code> to indent them. With the option <code>block: true</code> only the triple backquotes get affected.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show raw.where(block: true): it =&gt; pad(left: 2em, it)\n\n#lorem(30)\n```\nif (right &lt; left) {\ntmp = right;\nright = left;\nleft = tmp;\n}\n```\nTest `test`. #lorem(30) \n</code></pre>\n<details>\n<summary>\nResult</summary>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/d/d7fed9bff8266f6000e6d1d0e894adbd652250ab.png\" alt=\"test\" data-base62-sha1=\"uOMFBlVybtR5wI5beelnsWDslar\" width=\"595\" height=\"296\"></p>\n</details>",
+      "raw": "Hello @fxn,\n\nyou can use a show rule to get all `raw` elements, and use `pad` to indent them. With the option `block: true` only the triple backquotes get affected. \n````typst\n#show raw.where(block: true): it => pad(left: 2em, it)\n\n#lorem(30)\n```\nif (right < left) {\ntmp = right;\nright = left;\nleft = tmp;\n}\n```\nTest `test`. #lorem(30) \n````\n[details=\"Result\"]\n![test|595x296](upload://uOMFBlVybtR5wI5beelnsWDslar.png)\n[/details]",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 33,
+      "score": 26.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:13.891703"
+}

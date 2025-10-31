@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3587,
+    "title": "How can I make uppercase letters upright by default in math mode, but selectively italic?",
+    "slug": "how-can-i-make-uppercase-letters-upright-by-default-in-math-mode-but-selectively-italic",
+    "posts_count": 3,
+    "created_at": "2025-04-09T14:28:30.329Z",
+    "last_posted_at": "2025-04-09T15:19:25.911Z",
+    "views": 62,
+    "like_count": 5,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 377
+  },
+  "posts": [
+    {
+      "id": 10849,
+      "post_number": 1,
+      "username": "Kyok",
+      "name": "Kyok",
+      "created_at": "2025-04-09T14:28:30.444Z",
+      "updated_at": "2025-04-18T15:21:59.107Z",
+      "cooked": "<p>Hello everyone,</p>\n<p>I’m trying to implement a specific formatting rule in my Typst document where uppercase letters in math mode should be upright by default (instead of the default italic style), but I still want to be able to selectively make some of them italic when needed.</p>\n<p>Here’s what I’ve tried:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show math.equation: eq =&gt; {\n  show regex(\"[A-Z]\"): it =&gt; math.upright(it.text)\n  eq\n}\n\n$A = B + C + italic(A)$\n</code></pre>\n<p>The problem is that while this successfully makes all uppercase letters upright by default (A, B, C), the <code>italic(A)</code> still appears upright, ignoring the <code>italic()</code> function.</p>\n<p>I understand this happens because the regex rule is applied after other styling, effectively “overriding” any <code>italic()</code> commands.</p>\n<p>Is there a way to achieve what I’m trying to do? Ideally, I’d like:</p>\n<ol>\n<li>All uppercase letters to be upright by default in math mode</li>\n<li>The ability to use something like <code>italic(A)</code> or a custom function to selectively make specific uppercase letters italic when needed</li>\n</ol>\n<p>I don’t want to use “A” (quoted text) in math mode to get upright letters, as this would require changing too much of my existing document. I’m looking for a solution that works with regular uppercase letters and math syntax.</p>\n<p>Any suggestions would be greatly appreciated!</p>\n<p>Thank you!</p>",
+      "raw": "Hello everyone,\n\nI'm trying to implement a specific formatting rule in my Typst document where uppercase letters in math mode should be upright by default (instead of the default italic style), but I still want to be able to selectively make some of them italic when needed.\n\nHere's what I've tried:\n\n```typst\n#show math.equation: eq => {\n  show regex(\"[A-Z]\"): it => math.upright(it.text)\n  eq\n}\n\n$A = B + C + italic(A)$\n```\n\nThe problem is that while this successfully makes all uppercase letters upright by default (A, B, C), the `italic(A)` still appears upright, ignoring the `italic()` function.\n\nI understand this happens because the regex rule is applied after other styling, effectively \"overriding\" any `italic()` commands.\n\nIs there a way to achieve what I'm trying to do? Ideally, I'd like:\n1. All uppercase letters to be upright by default in math mode\n2. The ability to use something like `italic(A)` or a custom function to selectively make specific uppercase letters italic when needed\n\nI don't want to use \"A\" (quoted text) in math mode to get upright letters, as this would require changing too much of my existing document. I'm looking for a solution that works with regular uppercase letters and math syntax.\n\nAny suggestions would be greatly appreciated!\n\nThank you!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 24,
+      "score": 164.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1437
+    },
+    {
+      "id": 10850,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-04-09T14:51:43.522Z",
+      "updated_at": "2025-04-09T14:52:08.952Z",
+      "cooked": "<p>The regex show rule only matches the “raw” content without the <code>math.italic()</code> style. The style <code>math.upright()</code> is therefore added first and the “custom” style <code>math.italic()</code> is ignored. You could work around this (or even use this behavior) by applying a general show rule that applies <code>math.upright()</code> and a regex show rule matching everything <em>but</em> uppercase characters that applies <code>math.italic()</code>.</p>\n<p>I don’t know if there are any special cases where this approach fails. The few examples below work exactly according to your specifications.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show math.equation: eq =&gt; {\n  show: math.upright\n  show regex(\"[^A-Z]\"): math.italic\n  eq\n}\n\n$A = B + C + italic(A)$ \\\n$a = b + c + d$ \\\n$1 + 2$\n</code></pre>",
+      "raw": "The regex show rule only matches the \"raw\" content without the `math.italic()` style. The style `math.upright()` is therefore added first and the \"custom\" style `math.italic()` is ignored. You could work around this (or even use this behavior) by applying a general show rule that applies `math.upright()` and a regex show rule matching everything _but_ uppercase characters that applies `math.italic()`.\n\nI don't know if there are any special cases where this approach fails. The few examples below work exactly according to your specifications.\n\n```typ\n#show math.equation: eq => {\n  show: math.upright\n  show regex(\"[^A-Z]\"): math.italic\n  eq\n}\n\n$A = B + C + italic(A)$ \\\n$a = b + c + d$ \\\n$1 + 2$\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 24,
+      "score": 39.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    },
+    {
+      "id": 10852,
+      "post_number": 3,
+      "username": "Kyok",
+      "name": "Kyok",
+      "created_at": "2025-04-09T15:19:25.911Z",
+      "updated_at": "2025-04-09T15:19:25.911Z",
+      "cooked": "<p>Thank you for your solution! This works perfectly and helped me understand how Typst handles style application. I appreciate you taking the time to explain the underlying mechanism with the regex matching only raw content. Your approach is elegant and exactly what I needed.</p>",
+      "raw": "Thank you for your solution! This works perfectly and helped me understand how Typst handles style application. I appreciate you taking the time to explain the underlying mechanism with the regex matching only raw content. Your approach is elegant and exactly what I needed.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 24,
+      "score": 19.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1437
+    }
+  ],
+  "scraped_at": "2025-06-10T09:49:27.598046"
+}

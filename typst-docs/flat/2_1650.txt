@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1650,
+    "title": "Cetz plot - How can I hide the shared-zero in school-book axis style?",
+    "slug": "cetz-plot-how-can-i-hide-the-shared-zero-in-school-book-axis-style",
+    "posts_count": 3,
+    "created_at": "2024-11-10T10:14:22.870Z",
+    "last_posted_at": "2024-11-10T18:46:10.626Z",
+    "views": 145,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Gaweringo",
+    "tags": [
+      "graphics",
+      "cetz"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 121
+  },
+  "posts": [
+    {
+      "id": 5447,
+      "post_number": 1,
+      "username": "Flavio",
+      "name": "Flavio",
+      "created_at": "2024-11-10T10:14:22.955Z",
+      "updated_at": "2024-11-10T15:13:47.480Z",
+      "cooked": "<p>I’ve seen in the source code this comment. But i don’t find a way to set this parameter to false and hide the “0” in the axis.<br>\nThanks a lot!</p>\n<blockquote>\n<p>/// <span class=\"hashtag-raw\">#show-parameter-block</span>(“shared-zero”, (“bool”, “content”), default: “$0$”, [School-book style axes only: Content to display at the plots origin (0,0). If set to <code>false</code>, nothing is shown. Having this set, suppresses auto-generated ticks for $0$!])</p>\n</blockquote>",
+      "raw": "I've seen in the source code this comment. But i don't find a way to set this parameter to false and hide the \"0\" in the axis.\nThanks a lot!\n\n> /// #show-parameter-block(\"shared-zero\", (\"bool\", \"content\"), default: \"$0$\", [School-book style axes only: Content to display at the plots origin (0,0). If set to `false`, nothing is shown. Having this set, suppresses auto-generated ticks for $0$!])",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 34,
+      "score": 471.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 622
+    },
+    {
+      "id": 5455,
+      "post_number": 2,
+      "username": "Gaweringo",
+      "name": "Gaweringo",
+      "created_at": "2024-11-10T14:26:08.420Z",
+      "updated_at": "2024-11-10T14:26:08.420Z",
+      "cooked": "<p>Seems like <code>set-style(axes: (shared-zero: false))</code> is how you set the <code>shared-zero</code> parameter.</p>\n<p>Found it here:</p><aside class=\"onebox githubblob\" data-onebox-src=\"https://github.com/mariunaise/HDA-Thesis/blob/80a1eca011db268ba52728eeb352c6d145fc177e/graphics/quantizers/two-bit-enroll.typ#L7\">\n  <header class=\"source\">\n\n      <a href=\"https://github.com/mariunaise/HDA-Thesis/blob/80a1eca011db268ba52728eeb352c6d145fc177e/graphics/quantizers/two-bit-enroll.typ#L7\" target=\"_blank\" rel=\"noopener nofollow ugc\">github.com</a>\n  </header>\n\n  <article class=\"onebox-body\">\n    <h4><a href=\"https://github.com/mariunaise/HDA-Thesis/blob/80a1eca011db268ba52728eeb352c6d145fc177e/graphics/quantizers/two-bit-enroll.typ#L7\" target=\"_blank\" rel=\"noopener nofollow ugc\">mariunaise/HDA-Thesis/blob/80a1eca011db268ba52728eeb352c6d145fc177e/graphics/quantizers/two-bit-enroll.typ#L7</a></h4>\n\n\n\n    <pre class=\"onebox\"><code class=\"lang-typ\">\n      <ol class=\"start lines\" start=\"1\" style=\"counter-reset: li-counter 0 ;\">\n          <li>#import \"@preview/cetz:0.2.2\": canvas, plot, draw, palette</li>\n          <li></li>\n          <li>#let line_style = (stroke: (paint: black, thickness: 2pt))</li>\n          <li>#let dashed = (stroke: (dash: \"dashed\"))</li>\n          <li>#canvas({</li>\n          <li>  import draw: *</li>\n          <li class=\"selected\">  set-style(axes: (shared-zero: false))</li>\n          <li>  plot.plot(size: (8,6),</li>\n          <li>    x-tick-step: 0.25,</li>\n          <li>    y-label: $cal(Q)(2, 1, tilde(x))$,</li>\n          <li>    x-label: $tilde(x)$,</li>\n          <li>    y-tick-step: none,</li>\n          <li>    y-ticks: ((0.25, [00]), (0.5, [01]), (0.75, [10]), (1, [11])),</li>\n          <li>    axis-style: \"left\",</li>\n          <li>    //x-min: 0,</li>\n          <li>    x-max: 1,</li>\n          <li>    y-min: 0,</li>\n      </ol>\n    </code></pre>\n\n\n\n  </article>\n\n  <div class=\"onebox-metadata\">\n    \n    \n  </div>\n\n  <div style=\"clear: both\"></div>\n</aside>\n",
+      "raw": "Seems like `set-style(axes: (shared-zero: false))` is how you set the `shared-zero` parameter.\n\nFound it here:\nhttps://github.com/mariunaise/HDA-Thesis/blob/80a1eca011db268ba52728eeb352c6d145fc177e/graphics/quantizers/two-bit-enroll.typ#L7",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 32,
+      "score": 86.4,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 770
+    },
+    {
+      "id": 5468,
+      "post_number": 3,
+      "username": "Flavio",
+      "name": "Flavio",
+      "created_at": "2024-11-10T18:46:10.626Z",
+      "updated_at": "2024-11-10T18:46:10.626Z",
+      "cooked": "<aside class=\"quote no-group\" data-username=\"Gaweringo\" data-post=\"2\" data-topic=\"1650\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/gaweringo/48/1181_2.png\" class=\"avatar\"> Gaweringo:</div>\n<blockquote>\n<p><code>canvas, plot, draw, palette</code></p>\n</blockquote>\n</aside>\n<p>Works perfectly, thanks a lot!!!</p>",
+      "raw": "[quote=\"Gaweringo, post:2, topic:1650\"]\n`canvas, plot, draw, palette`\n[/quote]\n\nWorks perfectly, thanks a lot!!!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 0,
+      "reads": 29,
+      "score": 5.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 622
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:13.181733"
+}

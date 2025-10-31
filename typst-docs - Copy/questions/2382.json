@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2382,
+    "title": "How to stretch an image over the entire page?",
+    "slug": "how-to-stretch-an-image-over-the-entire-page",
+    "posts_count": 2,
+    "created_at": "2025-01-12T19:48:02.346Z",
+    "last_posted_at": "2025-01-12T20:03:20.252Z",
+    "views": 195,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "layout",
+      "images"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 113
+  },
+  "posts": [
+    {
+      "id": 7422,
+      "post_number": 1,
+      "username": "Olaf",
+      "name": "Olaf",
+      "created_at": "2025-01-12T19:48:02.562Z",
+      "updated_at": "2025-01-12T19:48:26.229Z",
+      "cooked": "<p>I would like to fill a page completely with an image, borderless if possible. It should not be a background image. And no header or footer should be displayed. But the page should be included in the numbering.</p>\n<p>I have achieved the extension of the image into the margin with pad(). But I’m not sure if this is the right solution.</p>\n<p>How can I now suppress the header and footer on this page only?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#pagebreak()\n\n#pad(\n  x: -72pt,\n  y: -82pt,\n  image(\"image.jpeg\", width: 100%),\n)\n\n#pagebreak()\n</code></pre>",
+      "raw": "I would like to fill a page completely with an image, borderless if possible. It should not be a background image. And no header or footer should be displayed. But the page should be included in the numbering. \n\nI have achieved the extension of the image into the margin with pad(). But I'm not sure if this is the right solution.\n\nHow can I now suppress the header and footer on this page only?\n\n\n```typ\n#pagebreak()\n\n#pad(\n  x: -72pt,\n  y: -82pt,\n  image(\"image.jpeg\", width: 100%),\n)\n\n#pagebreak()\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 38,
+      "score": 677.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 418
+    },
+    {
+      "id": 7423,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-01-12T20:03:20.252Z",
+      "updated_at": "2025-01-12T20:05:51.536Z",
+      "cooked": "<p>You can create a new page with zero margin and no header or footer.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#page(margin: 0pt, image(width: 100%, height: 100%, \"image.png\"))\n</code></pre>",
+      "raw": "You can create a new page with zero margin and no header or footer.\n```typ\n#page(margin: 0pt, image(width: 100%, height: 100%, \"image.png\"))\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 37,
+      "score": 12.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:53.099285"
+}

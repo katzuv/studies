@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2667,
+    "title": "How can I make Typst automatically line wrap long arbitrary words?",
+    "slug": "how-can-i-make-typst-automatically-line-wrap-long-arbitrary-words",
+    "posts_count": 3,
+    "created_at": "2025-02-04T13:33:42.640Z",
+    "last_posted_at": "2025-02-04T16:11:46.612Z",
+    "views": 195,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "layout",
+      "text"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 139
+  },
+  "posts": [
+    {
+      "id": 8199,
+      "post_number": 1,
+      "username": "tyilo",
+      "name": "Asger Hautop Drewsen",
+      "created_at": "2025-02-04T13:33:42.942Z",
+      "updated_at": "2025-02-06T09:39:04.064Z",
+      "cooked": "<p>I have a document used for generating a PDF from some user input.</p>\n<p>Something like:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">Here is the user's message: #sys.inputs.at(\"message\")\n</code></pre>\n<p>This works fine except when the user’s message contains a very long word such as 1000 <code>A</code>’s:</p>\n<pre data-code-wrap=\"sh\"><code class=\"lang-sh\">typst compile test.typ --input message=\"$(python -c 'print(\"A\" * 1000)')\"\n</code></pre>\n<p>Is there a way to get typst to automatically insert line breaks when a single word is longer than the current line?</p>",
+      "raw": "I have a document used for generating a PDF from some user input.\n\nSomething like:\n```typ\nHere is the user's message: #sys.inputs.at(\"message\")\n```\n\nThis works fine except when the user's message contains a very long word such as 1000 `A`'s:\n\n```sh\ntypst compile test.typ --input message=\"$(python -c 'print(\"A\" * 1000)')\"\n```\n\nIs there a way to get typst to automatically insert line breaks when a single word is longer than the current line?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 32,
+      "score": 831.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1133
+    },
+    {
+      "id": 8204,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-02-04T15:16:06.078Z",
+      "updated_at": "2025-02-04T15:16:13.280Z",
+      "cooked": "<p>The simplest way is probably to <a href=\"https://typst.app/docs/reference/text/text/#parameters-hyphenate\">enable hyphenation</a> for exactly the input. That will also allow breaking a word if it’s shorter than an <em>entire</em> line, though, just in case that’s a problem.</p>",
+      "raw": "The simplest way is probably to [enable hyphenation](https://typst.app/docs/reference/text/text/#parameters-hyphenate) for exactly the input. That will also allow breaking a word if it's shorter than an _entire_ line, though, just in case that's a problem.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 32,
+      "score": 96.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 8206,
+      "post_number": 3,
+      "username": "tyilo",
+      "name": "Asger Hautop Drewsen",
+      "created_at": "2025-02-04T16:11:46.612Z",
+      "updated_at": "2025-02-04T16:11:46.612Z",
+      "cooked": "<p>I thought I already tried this without it working, but it works for me now. Thanks!</p>",
+      "raw": "I thought I already tried this without it working, but it works for me now. Thanks!",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 20.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1133
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:04.268793"
+}

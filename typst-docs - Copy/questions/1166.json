@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1166,
+    "title": "How to use 'regex' to remove excessive newlines and spaces?",
+    "slug": "how-to-use-regex-to-remove-excessive-newlines-and-spaces",
+    "posts_count": 2,
+    "created_at": "2024-10-17T12:40:28.678Z",
+    "last_posted_at": "2024-10-17T13:42:19.046Z",
+    "views": 134,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "syntax"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 298
+  },
+  "posts": [
+    {
+      "id": 4098,
+      "post_number": 1,
+      "username": "jsx97",
+      "name": "jsx97",
+      "created_at": "2024-10-17T12:40:28.766Z",
+      "updated_at": "2024-10-17T12:40:42.231Z",
+      "cooked": "<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set smartquote(enabled: false)\n#show sym.dash.en: \"--\"\n#show sym.dash.em: \"---\"\n\n#show quote.where(block: true): it =&gt; {\n  let attribution = if it.attribution != none {\n    align(end, [--- #it.attribution])\n  }\n  block(\n    inset: 1em,\n    width: 100%,\n    if it.quotes == true [\n      \"#it.body\"\n      #attribution\n    ] else [\n      #it.body\n      #attribution\n    ]\n  )\n}\n\n// --\n\n#strong[Test 1]\n\nLorem ipsum --- dolor \"sit\" amet.\n\n#strong[Test 2]\n\n#quote(attribution: \"John Doe\", block: true)[\n  Lorem ipsum dolor sit amet.\n]\n\n#strong[Test 3]\n\n#quote(attribution: \"John Doe\", block: true, quotes: true)[\n  Lorem ipsum dolor sit amet.\n]\n</code></pre>\n<p>The example above is my attempt to disable typographic substitutions.</p>\n<p>It almost works, but there is one minor issue: as you can see from the output of Test 3, there are excessive space characters near quotation marks:</p>\n<pre data-code-wrap=\"none\"><code class=\"lang-none\">\" Lorem ipsum dolor sit amet. \"\n                                    --- John Doe\n</code></pre>\n<p>How to get rid of them? My guess is that the line</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">\"#it.body\"\n</code></pre>\n<p>should be changed to something like</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#regex(\"(\\\")\\n+\", $1)#it.body#regex(\"\\n+(\\\")\", $1)\n</code></pre>\n<p>but I haven’t succeeded to make it work.</p>",
+      "raw": "```typ\n#set smartquote(enabled: false)\n#show sym.dash.en: \"--\"\n#show sym.dash.em: \"---\"\n\n#show quote.where(block: true): it => {\n  let attribution = if it.attribution != none {\n    align(end, [--- #it.attribution])\n  }\n  block(\n    inset: 1em,\n    width: 100%,\n    if it.quotes == true [\n      \"#it.body\"\n      #attribution\n    ] else [\n      #it.body\n      #attribution\n    ]\n  )\n}\n\n// --\n\n#strong[Test 1]\n\nLorem ipsum --- dolor \"sit\" amet.\n\n#strong[Test 2]\n\n#quote(attribution: \"John Doe\", block: true)[\n  Lorem ipsum dolor sit amet.\n]\n\n#strong[Test 3]\n\n#quote(attribution: \"John Doe\", block: true, quotes: true)[\n  Lorem ipsum dolor sit amet.\n]\n```\n\nThe example above is my attempt to disable typographic substitutions.\n\nIt almost works, but there is one minor issue: as you can see from the output of Test 3, there are excessive space characters near quotation marks:\n\n```none\n\" Lorem ipsum dolor sit amet. \"\n                                    --- John Doe\n```\n\nHow to get rid of them? My guess is that the line\n\n```typ\n\"#it.body\"\n```\n\nshould be changed to something like\n\n```typ\n#regex(\"(\\\")\\n+\", $1)#it.body#regex(\"\\n+(\\\")\", $1)\n```\n\nbut I haven't succeeded to make it work.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 461.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 477
+    },
+    {
+      "id": 4103,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2024-10-17T13:42:19.046Z",
+      "updated_at": "2024-10-17T13:45:30.302Z",
+      "cooked": "<p>If you show <code>repr(it)</code> in your <code>quote.where</code> show rule you will see that the body is parsed with leading and trailing whitespace: <code>([], [Lorem ipsum dolor sit amet.], [])</code>.</p>\n<p>It’s because of the spaces you have in markup: if you write instead <code>#quote(...)[Lorem ipsum dolor sit amet.]</code> these spaces in the body will disappear.</p>\n<p>Of course you want to keep the spaces in markup. You can use a weak horizontal spacing to collapse these spurious spaces:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">if it.quotes == true {\n [\"] + h(0pt, weak: true) + it.body + h(0pt, weak: true) + [\"]\n  attribution\n} else {\n  it.body\n  attribution\n}\n</code></pre>\n<p>I think that’s actually what typst does internally, and it’s also a trick shown in the documentation in the example for <a href=\"https://typst.app/docs/reference/model/quote/#parameters-attribution\"><code>attribution</code></a>.</p>",
+      "raw": "If you show `repr(it)` in your `quote.where` show rule you will see that the body is parsed with leading and trailing whitespace: `([], [Lorem ipsum dolor sit amet.], [])`.\n\nIt's because of the spaces you have in markup: if you write instead `#quote(...)[Lorem ipsum dolor sit amet.]` these spaces in the body will disappear.\n\nOf course you want to keep the spaces in markup. You can use a weak horizontal spacing to collapse these spurious spaces:\n\n```typ\nif it.quotes == true {\n [\"] + h(0pt, weak: true) + it.body + h(0pt, weak: true) + [\"]\n  attribution\n} else {\n  it.body\n  attribution\n}\n```\n\nI think that's actually what typst does internally, and it's also a trick shown in the documentation in the example for [`attribution`](https://typst.app/docs/reference/model/quote/#parameters-attribution).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 27,
+      "score": 65.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:37.141372"
+}

@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2672,
+    "title": "How to add a `lorem(50)` after every heading?",
+    "slug": "how-to-add-a-lorem-50-after-every-heading",
+    "posts_count": 3,
+    "created_at": "2025-02-04T21:13:58.334Z",
+    "last_posted_at": "2025-02-05T19:24:41.650Z",
+    "views": 91,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "aarnent",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 250
+  },
+  "posts": [
+    {
+      "id": 8218,
+      "post_number": 1,
+      "username": "filchristou",
+      "name": "filchristou",
+      "created_at": "2025-02-04T21:13:58.518Z",
+      "updated_at": "2025-02-04T21:13:58.518Z",
+      "cooked": "<p>How can I add a <code>lorem(50)</code> after every heading ?</p>\n<p>I tried</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">show heading: it =&gt; {\n  it\n  lorem(50)\n}\n</code></pre>\n<p>But this prints the <code>lorem</code> in heading style.</p>\n<p>I also tried something like</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">let add-lorem(elem) = {\n  if type(elem) == heading {\n    elem + lorem(50)\n  } else {\n    elem\n  }\n}\n\nshow: add-lorem\n\n= Intro\n\n== ...\n===....\n</code></pre>\n<p>but also didn’t work.</p>",
+      "raw": "How can I add a `lorem(50)` after every heading ?\n\nI tried\n```typst\nshow heading: it => {\n  it\n  lorem(50)\n}\n```\n\nBut this prints the `lorem` in heading style.\n\nI also tried something like\n```typst\nlet add-lorem(elem) = {\n  if type(elem) == heading {\n    elem + lorem(50)\n  } else {\n    elem\n  }\n}\n\nshow: add-lorem\n\n= Intro\n\n== ...\n===....\n```\nbut also didn't work.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 32,
+      "score": 66.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1134
+    },
+    {
+      "id": 8229,
+      "post_number": 2,
+      "username": "aarnent",
+      "name": "",
+      "created_at": "2025-02-05T10:30:54.716Z",
+      "updated_at": "2025-02-05T10:30:54.716Z",
+      "cooked": "<p>Hi and welcome to the forums!</p>\n<p>The way I’d do it is indeed to add a catch-all <code>show</code> rule, though the implementation is a bit convoluted:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">// Element function for sequences\n#let sequence = [].func()\n\n// Convert content to an array of its children\n#let to-children(cnt) = {\n  let inner(content) = {\n    if type(content) in (str, symbol) {\n      str(content).clusters().map(char =&gt; [#char])\n    } else if content.func() == sequence {\n      content.children.map(inner)\n    } else if content.func() == text {\n      inner(content.text)\n    } else if content.func() == math.equation {\n      inner(content.body)\n    } else {\n      (content,)\n    }\n  }\n  return inner(cnt).flatten()\n}\n\n\n#show: it =&gt; {\n  let temp = to-children(it)\n  temp = temp.map(i =&gt; {\n    let test = i.func()\n    if i.func() == heading {\n      return (i, lorem(50))\n    }\n    return i\n  }).flatten()\n  \n  sequence(temp)\n  \n}\n\n\n= one\n\n= two\n\n#[\n  also works for a nested heading\n  = three\n]\n</code></pre>\n<p>If you have a large document there might be some performance issues, but I didn’t run into any issues while testing.</p>\n<p>I do aknowledge that this solution is quite ugly, so if anyone knows a better way i’d be happy to hear about it</p>",
+      "raw": "Hi and welcome to the forums!\n\nThe way I'd do it is indeed to add a catch-all `show` rule, though the implementation is a bit convoluted:\n\n```typst\n// Element function for sequences\n#let sequence = [].func()\n\n// Convert content to an array of its children\n#let to-children(cnt) = {\n  let inner(content) = {\n    if type(content) in (str, symbol) {\n      str(content).clusters().map(char => [#char])\n    } else if content.func() == sequence {\n      content.children.map(inner)\n    } else if content.func() == text {\n      inner(content.text)\n    } else if content.func() == math.equation {\n      inner(content.body)\n    } else {\n      (content,)\n    }\n  }\n  return inner(cnt).flatten()\n}\n\n\n#show: it => {\n  let temp = to-children(it)\n  temp = temp.map(i => {\n    let test = i.func()\n    if i.func() == heading {\n      return (i, lorem(50))\n    }\n    return i\n  }).flatten()\n  \n  sequence(temp)\n  \n}\n\n\n= one\n\n= two\n\n#[\n  also works for a nested heading\n  = three\n]\n```\n\nIf you have a large document there might be some performance issues, but I didn't run into any issues while testing.\n\nI do aknowledge that this solution is quite ugly, so if anyone knows a better way i'd be happy to hear about it",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 30,
+      "score": 21.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 501
+    },
+    {
+      "id": 8244,
+      "post_number": 3,
+      "username": "filchristou",
+      "name": "filchristou",
+      "created_at": "2025-02-05T19:24:41.650Z",
+      "updated_at": "2025-02-05T19:24:55.490Z",
+      "cooked": "<p>Well, as a newby, I am struggling to fully understand the solution but I confirm it works.</p>",
+      "raw": "Well, as a newby, I am struggling to fully understand the solution but I confirm it works.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 5.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1134
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:02.749572"
+}

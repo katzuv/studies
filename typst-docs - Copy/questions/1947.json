@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1947,
+    "title": "How can I edit the appearance of a citation?",
+    "slug": "how-can-i-edit-the-appearance-of-a-citation",
+    "posts_count": 2,
+    "created_at": "2024-12-02T09:57:41.775Z",
+    "last_posted_at": "2024-12-02T14:06:27.660Z",
+    "views": 171,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "miles-1",
+    "tags": [
+      "styling"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 132
+  },
+  "posts": [
+    {
+      "id": 6233,
+      "post_number": 1,
+      "username": "Mr_study",
+      "name": "Mr study",
+      "created_at": "2024-12-02T09:57:41.999Z",
+      "updated_at": "2024-12-02T21:16:17.109Z",
+      "cooked": "<p>Hi there,</p>\n<p>How can I colour my citation to have separate colours for the year separately from the author?<br>\n.<br>\n.<br>\nExample image of desired effect:<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/d/d3f116f0d3d6950045c093bd5ae6e3f37ac8b94b.png\" alt=\"image\" data-base62-sha1=\"ueVhg4YjP24LIAdnMMtIhVmVRbl\" width=\"674\" height=\"97\"></p>\n<p>.</p>\n<p>.</p>\n<p><strong>Currently</strong> I colour the citation by adding the following code at the beginning of my document: <span class=\"hashtag-raw\">#show</span> cite: set text(blue)<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/0/08e25d864e33b97acf00343706b58d6a87e2f5bd.png\" alt=\"image\" data-base62-sha1=\"1gANVn3QdyVZgORdeOJxxKkRELz\" width=\"320\" height=\"95\"></p>\n<p>Thanks for your help.</p>",
+      "raw": "Hi there,\n\nHow can I colour my citation to have separate colours for the year separately from the author?\n.\n.\nExample image of desired effect:\n![image|674x97](upload://ueVhg4YjP24LIAdnMMtIhVmVRbl.png)\n\n\n\n.\n\n.\n\n**Currently** I colour the citation by adding the following code at the beginning of my document: #show cite: set text(blue) \n![image|320x95](upload://1gANVn3QdyVZgORdeOJxxKkRELz.png)\n\n\nThanks for your help.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 33,
+      "score": 691.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 789
+    },
+    {
+      "id": 6242,
+      "post_number": 2,
+      "username": "miles-1",
+      "name": "miles",
+      "created_at": "2024-12-02T14:06:27.660Z",
+      "updated_at": "2024-12-02T14:06:27.660Z",
+      "cooked": "<p>You’re on the right track. Using a <code>show</code> rule is the way to go here.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show cite: it =&gt; {\n    show regex(\"\\d{4}\"): set text(blue)\n    it\n}\n</code></pre>\n<p>In case you’re unfamiliar, you can read about <code>regex</code>, or “regular expressions”, <a href=\"https://typst.app/docs/reference/foundations/regex/\">here</a>. <code>regex(\"\\d{4}\")</code> means “match four-digit numbers”.</p>\n<p>Note that there will still be a hyperlink for the whole citation, not just the year.</p>",
+      "raw": "You're on the right track. Using a `show` rule is the way to go here.\n\n```typst\n#show cite: it => {\n    show regex(\"\\d{4}\"): set text(blue)\n    it\n}\n```\nIn case you're unfamiliar, you can read about `regex`, or \"regular expressions\", [here](https://typst.app/docs/reference/foundations/regex/). `regex(\"\\d{4}\")` means \"match four-digit numbers\".\n\nNote that there will still be a hyperlink for the whole citation, not just the year.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 30,
+      "score": 76.0,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 177
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:12.350767"
+}

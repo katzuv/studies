@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1392,
+    "title": "How can i cite without paranthesis",
+    "slug": "how-can-i-cite-without-paranthesis",
+    "posts_count": 2,
+    "created_at": "2024-10-28T10:19:42.821Z",
+    "last_posted_at": "2024-10-28T10:38:46.264Z",
+    "views": 62,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "citation"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 119
+  },
+  "posts": [
+    {
+      "id": 4756,
+      "post_number": 1,
+      "username": "toIhr",
+      "name": "",
+      "created_at": "2024-10-28T10:19:43.001Z",
+      "updated_at": "2024-10-28T10:19:43.001Z",
+      "cooked": "<p>So I am a heavy user of the apa citatitation style because that is basically standard in my field.  But I cannot seem to figure out how to cite within a text and as such without paranthesis.</p>\n<p>I am super confused this should be an option but I honestly don’t understand the Documentation on this.<br>\nCan someone help me and point out the way this is supposed to be done?</p>",
+      "raw": "So I am a heavy user of the apa citatitation style because that is basically standard in my field.  But I cannot seem to figure out how to cite within a text and as such without paranthesis.\n\nI am super confused this should be an option but I honestly don't understand the Documentation on this.\nCan someone help me and point out the way this is supposed to be done?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 65.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 693
+    },
+    {
+      "id": 4758,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-10-28T10:38:46.264Z",
+      "updated_at": "2024-10-28T10:38:46.264Z",
+      "cooked": "<p>Hello and welcome <a class=\"mention\" href=\"/u/toihr\">@toIhr</a>!<br>\nWould using <code>form: \"prose\"</code> work for you?<br>\nYou can take a look at the docs <a href=\"https://typst.app/docs/reference/model/cite/#:~:text=%23cite(%3Cnetwok%3E%2C%20form%3A%20%22prose%22)%0Ashow%20the%20outsized%20effects%20of%0Apirate%20life%20on%20the%20human%20psyche.\">here</a>.</p>",
+      "raw": "Hello and welcome @toIhr!\nWould using `form: \"prose\"` work for you?\nYou can take a look at the docs [here](https://typst.app/docs/reference/model/cite/#:~:text=%23cite(%3Cnetwok%3E%2C%20form%3A%20%22prose%22)%0Ashow%20the%20outsized%20effects%20of%0Apirate%20life%20on%20the%20human%20psyche.).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 10.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:51.642464"
+}

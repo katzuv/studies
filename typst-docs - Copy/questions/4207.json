@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 4207,
+    "title": "How do I add a supplement for a alphanumerical citation?",
+    "slug": "how-do-i-add-a-supplement-for-a-alphanumerical-citation",
+    "posts_count": 3,
+    "created_at": "2025-05-21T12:16:14.957Z",
+    "last_posted_at": "2025-05-21T18:33:37.187Z",
+    "views": 28,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Eric",
+    "tags": [
+      "citation"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 142
+  },
+  "posts": [
+    {
+      "id": 12860,
+      "post_number": 1,
+      "username": "jenny",
+      "name": "jenny",
+      "created_at": "2025-05-21T12:16:15.063Z",
+      "updated_at": "2025-05-21T12:16:15.063Z",
+      "cooked": "<p>As title says: I’m lost. I found a GitHub Thread where they claimed that it’s fixed but it just will not work for me. Is “<span class=\"mention\">@Book</span>[p.~5]” the wrong form? I’m on version 0.13.1 in the webapp</p>",
+      "raw": "As title says: I'm lost. I found a GitHub Thread where they claimed that it's fixed but it just will not work for me. Is \"@Book[p.~5]\" the wrong form? I'm on version 0.13.1 in the webapp",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 13,
+      "score": 37.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1633
+    },
+    {
+      "id": 12870,
+      "post_number": 2,
+      "username": "Eric",
+      "name": "Eric Biedert",
+      "created_at": "2025-05-21T13:33:59.887Z",
+      "updated_at": "2025-05-21T13:33:59.887Z",
+      "cooked": "<p>The <a href=\"https://github.com/typst/hayagriva/issues/48\" rel=\"noopener nofollow ugc\">issue</a> is indeed fixed; however, the fix has not been released yet, so you will need to wait for Typst 0.14.</p>\n<p>In the meantime, you can get a copy of the style’s fixed version from <a href=\"https://github.com/typst/hayagriva/blob/main/styles/alphanumeric.csl\" rel=\"noopener nofollow ugc\">GitHub</a> and upload it to your project on the Typst web app. There, you then just need to set the style to that file, as in</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set cite(style: \"alphanumeric.csl\")\n</code></pre>",
+      "raw": "The [issue](https://github.com/typst/hayagriva/issues/48) is indeed fixed; however, the fix has not been released yet, so you will need to wait for Typst 0.14.\n\nIn the meantime, you can get a copy of the style's fixed version from [GitHub](https://github.com/typst/hayagriva/blob/main/styles/alphanumeric.csl) and upload it to your project on the Typst web app. There, you then just need to set the style to that file, as in\n```typ\n#set cite(style: \"alphanumeric.csl\")\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 11,
+      "score": 32.2,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 88
+    },
+    {
+      "id": 12903,
+      "post_number": 3,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-21T18:33:37.187Z",
+      "updated_at": "2025-05-21T18:33:37.187Z",
+      "cooked": "<p>Hello. Please use backticks when referencing code snippets, and update your post.</p>",
+      "raw": "Hello. Please use backticks when referencing code snippets, and update your post.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 10,
+      "score": 2.0,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:30.679930"
+}

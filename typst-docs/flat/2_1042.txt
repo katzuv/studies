@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1042,
+    "title": "Why is the template function I wrote not working properly?",
+    "slug": "why-is-the-template-function-i-wrote-not-working-properly",
+    "posts_count": 3,
+    "created_at": "2024-10-12T03:46:17.890Z",
+    "last_posted_at": "2024-10-13T20:54:10.283Z",
+    "views": 284,
+    "like_count": 8,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "ParaN3xus",
+    "tags": [
+      "scripting",
+      "templates"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 498
+  },
+  "posts": [
+    {
+      "id": 3734,
+      "post_number": 1,
+      "username": "lukejanicke",
+      "name": "Luke Janicke",
+      "created_at": "2024-10-12T03:46:18.053Z",
+      "updated_at": "2024-10-13T20:54:06.165Z",
+      "cooked": "<p>I am trying to put all my style and <code>ctheorem</code> customisations in a separate template file. I want to call a single <code>#show all</code> in my document. The code below works, except that I can’t seem to call two functions within <code>#all()</code> that both take and return <code>#doc</code>. As per my comments within the code, the theorems are formatting perfectly, but the styles are not applying. I am new and don’t (yet) properly understand how Typst is processing everything. Also, if I call styles first and then theorems, styles work but theorems get a bit messed up. So, I infer that you can’t do work on <code>#doc</code> twice like this. Is there another way to keep styles and theorems separate in the template and call them both together from a single function?</p>\n<p>So, my document starts like this and then gets straight into the content. Nice.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"template.typ\": *\n#show: all\n</code></pre>\n<p>The template starts like this currently.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/ctheorems:1.1.2\": *\n\n#let styles(doc) = [\n  #set page(margin: 2cm)\n  #set par(justify: true)\n  #set heading(numbering: \"1.1\")\n  #doc\n]\n\n#let theorems(doc) = [\n  #show: thmrules\n  #doc\n]\n\n#let all(doc) = [\n  //#show: thmrules // WHEN SET DIRECTLY HERE, THE STYLES() WORK\n  #theorems(doc) // WHEN SET IN THIS FUNCTION, THE STYLES() DON'T WORK\n  #styles(doc)\n  #doc\n]\n\n#let theorem = thmbox(\n  \"theorem\",\n  \"Theorem\",\n  base_level: 1,\n  namefmt: name =&gt; strong(sym.paren.l + name + sym.paren.r),\n  bodyfmt: body =&gt; emph(body),\n  separator: strong(\".\"),\n  inset: 8pt,\n  radius: 4pt,\n  fill: rgb(\"#BBDEFB\")\n)\n</code></pre>",
+      "raw": "I am trying to put all my style and `ctheorem` customisations in a separate template file. I want to call a single `#show all` in my document. The code below works, except that I can't seem to call two functions within `#all()` that both take and return `#doc`. As per my comments within the code, the theorems are formatting perfectly, but the styles are not applying. I am new and don't (yet) properly understand how Typst is processing everything. Also, if I call styles first and then theorems, styles work but theorems get a bit messed up. So, I infer that you can't do work on `#doc` twice like this. Is there another way to keep styles and theorems separate in the template and call them both together from a single function?\n\nSo, my document starts like this and then gets straight into the content. Nice.\n\n```typ\n#import \"template.typ\": *\n#show: all\n```\n\nThe template starts like this currently.\n\n```typ\n#import \"@preview/ctheorems:1.1.2\": *\n\n#let styles(doc) = [\n  #set page(margin: 2cm)\n  #set par(justify: true)\n  #set heading(numbering: \"1.1\")\n  #doc\n]\n\n#let theorems(doc) = [\n  #show: thmrules\n  #doc\n]\n\n#let all(doc) = [\n  //#show: thmrules // WHEN SET DIRECTLY HERE, THE STYLES() WORK\n  #theorems(doc) // WHEN SET IN THIS FUNCTION, THE STYLES() DON'T WORK\n  #styles(doc)\n  #doc\n]\n\n#let theorem = thmbox(\n  \"theorem\",\n  \"Theorem\",\n  base_level: 1,\n  namefmt: name => strong(sym.paren.l + name + sym.paren.r),\n  bodyfmt: body => emph(body),\n  separator: strong(\".\"),\n  inset: 8pt,\n  radius: 4pt,\n  fill: rgb(\"#BBDEFB\")\n)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 48,
+      "score": 414.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 544
+    },
+    {
+      "id": 3746,
+      "post_number": 2,
+      "username": "ParaN3xus",
+      "name": "ParaN3xus",
+      "created_at": "2024-10-12T15:33:46.186Z",
+      "updated_at": "2024-10-12T15:33:46.186Z",
+      "cooked": "<p>Basically, <code>show</code> will take everything below it and process it using the function you specify. For example:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show: style\ncontent\n</code></pre>\n<p>is equivalent to:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#style[content]\n</code></pre>\n<p>Based on this rule, let’s take a look at your code.</p>\n<p>Firstly,</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let theorems(doc) = [\n  #show: thmrules\n  #doc\n]\n</code></pre>\n<p>is equivalent to:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let theorems(doc) = [\n  #thmrules(doc)\n]\n</code></pre>\n<p>So, in reality, <code>thmrules</code> and <code>theorems</code> are exactly the same.</p>\n<p>Secondly, when you call <code>show: all</code>, your <code>doc</code> (which, in this case, refers to your entire document) is replaced by:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#theorems(doc)   // the document with theorem styles\n#styles(doc)     // the document with other styles\n#doc             // the original document\n</code></pre>\n<p>This means your document will be repeated three times, each with different styles.</p>\n<p>If you want to apply both styles to your document simultaneously (i.e., you want the result to be):</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#theorems(styles(doc))\n</code></pre>\n<p>you can simply define <code>all</code> as:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let all(doc) = thmrules(styles(doc))\n</code></pre>\n<p>Or, if you prefer a more readable and neat approach:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let all(doc) = [\n  #show: thmrules\n  #show: styles\n  #doc\n]\n</code></pre>",
+      "raw": "Basically, `show` will take everything below it and process it using the function you specify. For example:\n\n```typ\n#show: style\ncontent\n```\n\nis equivalent to:\n\n```typ\n#style[content]\n```\n\nBased on this rule, let's take a look at your code.\n\nFirstly,\n\n```typ\n#let theorems(doc) = [\n  #show: thmrules\n  #doc\n]\n```\n\nis equivalent to:\n\n```typ\n#let theorems(doc) = [\n  #thmrules(doc)\n]\n```\n\nSo, in reality, `thmrules` and `theorems` are exactly the same.\n\nSecondly, when you call `show: all`, your `doc` (which, in this case, refers to your entire document) is replaced by:\n\n```typ\n#theorems(doc)   // the document with theorem styles\n#styles(doc)     // the document with other styles\n#doc             // the original document\n```\n\nThis means your document will be repeated three times, each with different styles.\n\nIf you want to apply both styles to your document simultaneously (i.e., you want the result to be):\n\n```typ\n#theorems(styles(doc))\n```\n\nyou can simply define `all` as:\n\n```typ\n#let all(doc) = thmrules(styles(doc))\n```\n\nOr, if you prefer a more readable and neat approach:\n\n```typ\n#let all(doc) = [\n  #show: thmrules\n  #show: styles\n  #doc\n]\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 5,
+      "reads": 41,
+      "score": 158.2,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 14
+    },
+    {
+      "id": 3836,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-10-13T20:54:10.283Z",
+      "updated_at": "2024-10-13T20:54:10.283Z",
+      "cooked": "<p>Hi, thank you for your question! I have changed your post’s title from “Trying to understand functions and templates” to “Why is the template function I wrote not working properly?” as the <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">question guidelines</a> recommend this:</p>\n<blockquote>\n<p><strong>Good titles are questions you would ask your friend about Typst.</strong></p>\n</blockquote>\n<p>I also added the <a class=\"hashtag-cooked\" href=\"/tag/templates\" data-type=\"tag\" data-slug=\"templates\" data-id=\"51\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>templates</span></a> and <a class=\"hashtag-cooked\" href=\"/tag/scripting\" data-type=\"tag\" data-slug=\"scripting\" data-id=\"84\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>scripting</span></a> tag, as it makes your question easier to find.</p>",
+      "raw": "Hi, thank you for your question! I have changed your post’s title from \"Trying to understand functions and templates\" to \"Why is the template function I wrote not working properly?\" as the [question guidelines](https://forum.typst.app/t/how-to-post-in-the-questions-category/11) recommend this:\n\n> **Good titles are questions you would ask your friend about Typst.**\n\nI also added the #templates and #scripting tag, as it makes your question easier to find.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 31,
+      "score": 26.2,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:02.334475"
+}

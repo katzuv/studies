@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1930,
+    "title": "Can I make citations appear as footnotes?",
+    "slug": "can-i-make-citations-appear-as-footnotes",
+    "posts_count": 3,
+    "created_at": "2024-11-29T12:39:46.951Z",
+    "last_posted_at": "2024-11-30T15:29:00.315Z",
+    "views": 492,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "layout",
+      "citation"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 386
+  },
+  "posts": [
+    {
+      "id": 6202,
+      "post_number": 1,
+      "username": "Christopher_Marcotte",
+      "name": "Christopher Marcotte",
+      "created_at": "2024-11-29T12:39:47.152Z",
+      "updated_at": "2024-11-29T12:39:47.152Z",
+      "cooked": "<p>Hello,</p>\n<p>On slides, it is helpful to have the citations appear on the same slide in full format, instead of collected at the end. Ideally, these are shown with a non-numeric symbol (like fa-book or something).</p>\n<p>I can’t quite figure out how to make the citations (with <code>@citation</code> syntax) appear as footnotes. With the hayagriva demo citations in refs.yaml, I can put</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(paper: \"a8\")\n#show cite: it =&gt; {\n  footnote()[#it.fields() /*#cite(it.key(), form: \"full\", style: \"nature\")*/]\n}\nHere, I have text with a @harry citation.\n#pagebreak()\nAnd more text with @electronic citation.\n#bibliography(\"refs.yaml\")\n</code></pre>\n<p>Produce the usual endnote citations, with footnotes on each page repeating the reference index value. In the commented out attempt, you can see I am trying to access the key <code>it.key</code> (which does not exist, though the <code>#it.fields()</code> call in the content makes it seem so). Is this because the <code>cite</code> command returns content so I would need to intercept this earlier in the process to get the key and manually construct the <code>#footnote[#cite(key, ..)]</code>?</p>\n<p>Trying a <code>#it.at.(\"key\")</code> crashes the web app compiler, which is perhaps concerning, too.</p>",
+      "raw": "Hello,\n\nOn slides, it is helpful to have the citations appear on the same slide in full format, instead of collected at the end. Ideally, these are shown with a non-numeric symbol (like fa-book or something).\n\nI can't quite figure out how to make the citations (with `@citation` syntax) appear as footnotes. With the hayagriva demo citations in refs.yaml, I can put\n```typ\n#set page(paper: \"a8\")\n#show cite: it => {\n  footnote()[#it.fields() /*#cite(it.key(), form: \"full\", style: \"nature\")*/]\n}\nHere, I have text with a @harry citation.\n#pagebreak()\nAnd more text with @electronic citation.\n#bibliography(\"refs.yaml\")\n```\nProduce the usual endnote citations, with footnotes on each page repeating the reference index value. In the commented out attempt, you can see I am trying to access the key `it.key` (which does not exist, though the `#it.fields()` call in the content makes it seem so). Is this because the `cite` command returns content so I would need to intercept this earlier in the process to get the key and manually construct the `#footnote[#cite(key, ..)]`?\n\nTrying a `#it.at.(\"key\")` crashes the web app compiler, which is perhaps concerning, too.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 52,
+      "score": 2185.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 270
+    },
+    {
+      "id": 6203,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-11-29T12:46:41.821Z",
+      "updated_at": "2024-11-29T12:46:41.821Z",
+      "cooked": "<p>The <code>@citation</code> syntax is actually a <code>ref</code>.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show ref: footnote\n</code></pre>\n<p>will make all references as footnotes, including references to labels.</p>\n<p>The documentation gives a more detailed example<br>\nhere: <a href=\"https://typst.app/docs/reference/model/ref/#:~:text=Chapter%5D.-,Customization,-If%20you%20write\" class=\"inline-onebox\">Reference Function – Typst Documentation</a><br>\nwhich you can adapt to result in</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show ref: it =&gt; {\n  let cite = ref\n  let el = it.element\n  if el == none {\n    footnote(it)\n  } else {\n    it\n  }\n}\n#set heading(numbering: \"1\")\n= Heading &lt;label&gt;\n\nCitation: @citation\n\nLabel: @label\n\n#bibliography(\"bibliography.bib\")\n</code></pre>\n<p>In most IDEs, you can inspect the value of <code>it</code>, which is the input to the show rule on ref. Otherwise, just print it using <a href=\"https://typst.app/docs/reference/foundations/repr/\"><code>repr</code></a>.<br>\nFor example, I have<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/4/40ee5aaf11651d698bda4a3994a3389d6810d7e8.png\" alt=\"image\" data-base62-sha1=\"9gpeeXPf9qUXBw4lwX3D1V6SCVO\" width=\"583\" height=\"422\"></p>",
+      "raw": "The `@citation` syntax is actually a `ref`.\n```typ\n#show ref: footnote\n```\nwill make all references as footnotes, including references to labels.\n\nThe documentation gives a more detailed example\nhere: https://typst.app/docs/reference/model/ref/#:~:text=Chapter%5D.-,Customization,-If%20you%20write\nwhich you can adapt to result in\n```typ\n#show ref: it => {\n  let cite = ref\n  let el = it.element\n  if el == none {\n    footnote(it)\n  } else {\n    it\n  }\n}\n#set heading(numbering: \"1\")\n= Heading <label>\n\nCitation: @citation\n\nLabel: @label\n\n#bibliography(\"bibliography.bib\")\n```\n\nIn most IDEs, you can inspect the value of `it`, which is the input to the show rule on ref. Otherwise, just print it using [`repr`](https://typst.app/docs/reference/foundations/repr/).\nFor example, I have \n![image|583x422](upload://9gpeeXPf9qUXBw4lwX3D1V6SCVO.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 51,
+      "score": 75.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 6208,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-11-30T15:29:00.315Z",
+      "updated_at": "2024-11-30T15:29:00.315Z",
+      "cooked": "<p>The recommended way to do this is to use a citation style designed for footnotes, as this is natively supported by Typst:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(height: auto)\n#set cite(style: \"chicago-notes\")\n\nThis is a citation@typst\n\n#bibliography(\"bib.yaml\")\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/7/78c630bb3af7ba9700cc5570c50703746b74b5c3.png\" alt=\"output: citation as footnote\" data-base62-sha1=\"hepUSeFBT4IvkxnF8brh3ndkv75\" width=\"466\" height=\"165\"></p>\n<details>\n<summary>\nbib.yaml file for reference</summary>\n<pre data-code-wrap=\"yaml\"><code class=\"lang-yaml\">typst:\n    type: Web\n    title: Typst\n    author:\n      - Laurenz\n      - Martin\n    url: https://typst.app\n</code></pre>\n</details>",
+      "raw": "The recommended way to do this is to use a citation style designed for footnotes, as this is natively supported by Typst:\n\n```typ\n#set page(height: auto)\n#set cite(style: \"chicago-notes\")\n\nThis is a citation@typst\n\n#bibliography(\"bib.yaml\")\n```\n![output: citation as footnote|466x165](upload://hepUSeFBT4IvkxnF8brh3ndkv75.png)\n\n\n[details=\"bib.yaml file for reference\"]\n```yaml\ntypst:\n    type: Web\n    title: Typst\n    author:\n      - Laurenz\n      - Martin\n    url: https://typst.app\n```\n[/details]",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 38,
+      "score": 67.6,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:16.088864"
+}

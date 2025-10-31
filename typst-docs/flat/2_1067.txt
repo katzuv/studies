@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1067,
+    "title": "How to use inline headings with an additional linebreak between heading and text?",
+    "slug": "how-to-use-inline-headings-with-an-additional-linebreak-between-heading-and-text",
+    "posts_count": 2,
+    "created_at": "2024-10-13T19:48:30.358Z",
+    "last_posted_at": "2024-10-13T20:23:33.497Z",
+    "views": 202,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 170
+  },
+  "posts": [
+    {
+      "id": 3830,
+      "post_number": 1,
+      "username": "wulfheart",
+      "name": "Alex",
+      "created_at": "2024-10-13T19:48:30.551Z",
+      "updated_at": "2024-12-19T05:06:05.550Z",
+      "cooked": "<p>Hello,</p>\n<p>I would like to have inline headings but with my preferred formatting style (one linebreak before and after a heading) I can’t seem to make it work.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show heading.where(level: 4): it =&gt; strong(it.body) + [ ]\n\n// Note: This is how I like my formatting\n\n==== This is not inline with \n\nthe following text.\n\n\n// For it to work it has to look like this\n==== This is inline with \nthe following text.\n</code></pre>",
+      "raw": "Hello,\n\nI would like to have inline headings but with my preferred formatting style (one linebreak before and after a heading) I can't seem to make it work.\n\n```typ\n#show heading.where(level: 4): it => strong(it.body) + [ ]\n\n// Note: This is how I like my formatting\n\n==== This is not inline with \n\nthe following text.\n\n\n// For it to work it has to look like this\n==== This is inline with \nthe following text.\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 31,
+      "score": 931.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 568
+    },
+    {
+      "id": 3832,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-10-13T20:23:33.497Z",
+      "updated_at": "2024-10-13T20:24:16.739Z",
+      "cooked": "<p>An empty line introduces a paragraph break on its own; you’ll need to either remove the newline, or at least put a comment or something else in it:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">==== This is not inline with \n//\nthe following text.\n</code></pre>\n<p>Keeping the completely empty line unfortunately won’t work.</p>\n<p>PS: Could you maybe try to revise your post’s title so others can find it easier in the future? The <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">question guidelines </a> recommend a complete question:</p>\n<blockquote>\n<p><strong>Good titles are questions you would ask your friend about Typst.</strong></p>\n</blockquote>",
+      "raw": "An empty line introduces a paragraph break on its own; you'll need to either remove the newline, or at least put a comment or something else in it:\n```typ\n==== This is not inline with \n//\nthe following text.\n```\nKeeping the completely empty line unfortunately won't work.\n\nPS: Could you maybe try to revise your post’s title so others can find it easier in the future? The [question guidelines ](https://forum.typst.app/t/how-to-post-in-the-questions-category/11) recommend a complete question:\n\n> **Good titles are questions you would ask your friend about Typst.**",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 15.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:57.153416"
+}

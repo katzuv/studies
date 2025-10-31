@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 3786,
+    "title": "How to calculate \"6 enters/newlines\"",
+    "slug": "how-to-calculate-6-enters-newlines",
+    "posts_count": 2,
+    "created_at": "2025-04-23T21:49:46.097Z",
+    "last_posted_at": "2025-04-24T06:36:47.464Z",
+    "views": 57,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "scripting",
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 232
+  },
+  "posts": [
+    {
+      "id": 11539,
+      "post_number": 1,
+      "username": "alex01",
+      "name": "alex",
+      "created_at": "2025-04-23T21:49:46.219Z",
+      "updated_at": "2025-04-24T06:57:07.024Z",
+      "cooked": "<p>Hi.</p>\n<p>I have a text with that structure.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#align(center+top)[\nAuthors Name\n]\n\n// 12 * 6 \"enter\"\n// here should be 6 times newlines\n#v(72pt)\n\n#align(center+horizon)[\n  #text(size: 22pt)[\n    *Title*\\\n  ]\n  #v(12pt) // one new line\n  #text(size: 18pt)[\n    Sub-Title\n  ]\n]\n\n// 12 * 6 \"enter\"\n// here should be 6 times newlines\n#v(72pt)\n\nText\n</code></pre>\n<p>I hpe that this could be done easily with <a href=\"https://typst.app/docs/reference/layout/relative/\" class=\"inline-onebox\">Relative Length Type – Typst Documentation</a> or <a href=\"https://typst.app/docs/reference/layout/fraction/\" class=\"inline-onebox\">Fraction Type – Typst Documentation</a> but I haven’t fully understood which one is here the best.</p>\n<p>Maybe this function <a href=\"https://typst.app/docs/reference/layout/measure/\" class=\"inline-onebox\">Measure Function – Typst Documentation</a> is the right solution but I’m not sure how to use it.</p>\n<p>Is there a function which can be use in <code>v</code> like the following?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#v(linebreak()*6)\n</code></pre>",
+      "raw": "Hi.\n\nI have a text with that structure.\n```typ\n#align(center+top)[\nAuthors Name\n]\n\n// 12 * 6 \"enter\"\n// here should be 6 times newlines\n#v(72pt)\n\n#align(center+horizon)[\n  #text(size: 22pt)[\n    *Title*\\\n  ]\n  #v(12pt) // one new line\n  #text(size: 18pt)[\n    Sub-Title\n  ]\n]\n\n// 12 * 6 \"enter\"\n// here should be 6 times newlines\n#v(72pt)\n\nText\n```\n\nI hpe that this could be done easily with https://typst.app/docs/reference/layout/relative/ or https://typst.app/docs/reference/layout/fraction/ but I haven't fully understood which one is here the best.\n\nMaybe this function https://typst.app/docs/reference/layout/measure/ is the right solution but I'm not sure how to use it.\n\nIs there a function which can be use in `v` like the following?\n```typ\n#v(linebreak()*6)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 25.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1296
+    },
+    {
+      "id": 11549,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-04-24T06:36:47.464Z",
+      "updated_at": "2025-04-24T06:36:47.464Z",
+      "cooked": "<p>Hello!</p>\n<p>In Typst, there are two distinct “newlines”: <a href=\"https://typst.app/docs/reference/text/linebreak/\"><code>linebreak</code></a> and <a href=\"https://typst.app/docs/reference/model/parbreak/\"><code>parbreak</code></a>.</p>\n<p>The linebreak occurs in a paragraph. The parbreak starts a new paragraph.</p>\n<p>In markup, it would look like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#lorem(10)\\ // linebreak\n#lorem(5)\n\n#lorem(10) // parbreak just before! Notice the empty line\n</code></pre>\n<p>If you are trying to get that space between paragraphs, then just create a new empty paragraph 6 times! Calling parbreak multiple times would not work, because consecutive parbreaks are internally collapsed into a single one.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#for i in range(6) { par[] }\n</code></pre>",
+      "raw": "Hello! \n\nIn Typst, there are two distinct \"newlines\": [`linebreak`](https://typst.app/docs/reference/text/linebreak/) and [`parbreak`](https://typst.app/docs/reference/model/parbreak/).\n\nThe linebreak occurs in a paragraph. The parbreak starts a new paragraph.\n\nIn markup, it would look like this:\n```typ\n#lorem(10)\\ // linebreak\n#lorem(5)\n\n#lorem(10) // parbreak just before! Notice the empty line\n```\n\nIf you are trying to get that space between paragraphs, then just create a new empty paragraph 6 times! Calling parbreak multiple times would not work, because consecutive parbreaks are internally collapsed into a single one.\n\n```typ\n#for i in range(6) { par[] }\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 10.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:46.655955"
+}

@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 3060,
+    "title": "How to set heading of some level not in outline",
+    "slug": "how-to-set-heading-of-some-level-not-in-outline",
+    "posts_count": 2,
+    "created_at": "2025-03-01T09:12:02.189Z",
+    "last_posted_at": "2025-03-01T10:04:46.344Z",
+    "views": 30,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "scripting",
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 46
+  },
+  "posts": [
+    {
+      "id": 9238,
+      "post_number": 1,
+      "username": "ajswjjddd",
+      "name": "ajswjjddd",
+      "created_at": "2025-03-01T09:12:02.315Z",
+      "updated_at": "2025-03-01T09:12:02.315Z",
+      "cooked": "<p>when I write my thesis template, in some part of it , the heading of level 2 shouldn’t be in the outline. I don’t find ways</p>",
+      "raw": "when I write my thesis template, in some part of it , the heading of level 2 shouldn't be in the outline. I don't find ways",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 16,
+      "score": 33.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 970
+    },
+    {
+      "id": 9241,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-03-01T10:04:46.344Z",
+      "updated_at": "2025-03-01T10:04:46.344Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/ajswjjddd\">@ajswjjddd</a>, you can use the <a href=\"https://typst.app/docs/reference/model/heading/#parameters-outlined\">outlined</a> parameter of heading.</p>",
+      "raw": "Hello @ajswjjddd, you can use the [outlined](https://typst.app/docs/reference/model/heading/#parameters-outlined) parameter of heading.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 15,
+      "score": 3.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:54.657894"
+}

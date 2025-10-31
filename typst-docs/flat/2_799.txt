@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 799,
+    "title": "How does the counter update function works?",
+    "slug": "how-does-the-counter-update-function-works",
+    "posts_count": 3,
+    "created_at": "2024-09-29T21:30:51.464Z",
+    "last_posted_at": "2024-09-30T19:26:41.631Z",
+    "views": 189,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "counter"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 412
+  },
+  "posts": [
+    {
+      "id": 2968,
+      "post_number": 1,
+      "username": "Allon",
+      "name": "Allon",
+      "created_at": "2024-09-29T21:30:51.588Z",
+      "updated_at": "2024-09-29T21:42:44.929Z",
+      "cooked": "<p>Hi,<br>\nI used counter update to reset its value to 0 but it does not work. I am quite sure I am missing something. Could you tell me what I need to add to get the counter back to zero when I call the mainFormatQuestions function</p>\n<p>Thanks in advance,</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let mainFormatQuestions(arr_input) = {\n  let c = counter(\"question\")\n  c.update(0)\n  let formatQuestion(it) = block[\n    #c.step()\n    *Question #context c.display():*\n    #it  \n  ]\n  let arr_output = arr_input.map(i =&gt; formatQuestion(i))\n  return(arr_output)\n}\n\n#let myArray = (  \n  [3 x 5 = .........],\n  [3 x 7 = .........]\n)\n\n#table(columns: (1fr, 1fr, 1fr),\n  inset: 10pt,\n  align: left,  \n  ..mainFormatQuestions(myArray)\n)\n</code></pre>",
+      "raw": "Hi,\nI used counter update to reset its value to 0 but it does not work. I am quite sure I am missing something. Could you tell me what I need to add to get the counter back to zero when I call the mainFormatQuestions function\n\nThanks in advance,\n\n```typ\n#let mainFormatQuestions(arr_input) = {\n  let c = counter(\"question\")\n  c.update(0)\n  let formatQuestion(it) = block[\n    #c.step()\n    *Question #context c.display():*\n    #it  \n  ]\n  let arr_output = arr_input.map(i => formatQuestion(i))\n  return(arr_output)\n}\n\n#let myArray = (  \n  [3 x 5 = .........],\n  [3 x 7 = .........]\n)\n\n#table(columns: (1fr, 1fr, 1fr),\n  inset: 10pt,\n  align: left,  \n  ..mainFormatQuestions(myArray)\n)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 39,
+      "score": 627.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 367
+    },
+    {
+      "id": 2971,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-09-29T22:04:31.666Z",
+      "updated_at": "2024-09-29T22:05:16.590Z",
+      "cooked": "<p>User <a class=\"mention\" href=\"/u/gabe\">@gabe</a> gave a good summary about how state works, and the situation for counter is the same:</p>\n<aside class=\"quote no-group\" data-username=\"gabe\" data-post=\"3\" data-topic=\"778\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/gabe/48/620_2.png\" class=\"avatar\"><a href=\"https://forum.typst.app/t/can-i-attach-and-update-state-in-metadata/778/3\">Can I attach and update state in metadata?</a></div>\n<blockquote>\n<p>States themselves never change, but instead <strong>we put down markers (which live in the content)</strong> that are used to compute what the value of state at a given position should be. The markers that we put down only have the name of the state and the desired operation. When we call state.get(), <strong>we’re taking that state’s initial value, applying all the markers that match its name that we’ve seen thus far, and giving the result</strong>.</p>\n</blockquote>\n</aside>\n<p>(Emphasis mine) The problem why your code doesn’t work is that, due to the explicit return, the <code>update</code> is not put into the content of your document. Basically, there are two ways how a function’s return value may form:</p>\n<ul>\n<li>if the function reaches a <code>return</code>, the value of that statement is returned</li>\n<li>otherwise, all values that were encountered are “joined”. For example, a function with body <code>{ [foo]; [bar] }</code> has as its result <code>[foo]+[bar] = [foobar]</code>.</li>\n</ul>\n<p>For the update to do anything, your result would need to include the <code>update()</code> content, and that update content needs to end up in the document.</p>\n<p>In your case, a fix that doesn’t interfere with the structure of your code too much would be to return the update and the array, so that your function would be called like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let (update, questions) = mainFormatQuestions(myArray)\n#update\n#table(columns: (1fr, 1fr, 1fr),\n  inset: 10pt,\n  align: left,  \n  ..questions\n)\n</code></pre>\n<p>Another option would be to do the whole table, not just constructing the array:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#questions-table(myArray)\n</code></pre>\n<p>Since <code>questions-table()</code> returns <code>content</code> and not an array, you could include the initial update in there.</p>",
+      "raw": "User @gabe gave a good summary about how state works, and the situation for counter is the same:\n\n[quote=\"gabe, post:3, topic:778\"]\nStates themselves never change, but instead **we put down markers (which live in the content)** that are used to compute what the value of state at a given position should be. The markers that we put down only have the name of the state and the desired operation. When we call state.get(), **we’re taking that state’s initial value, applying all the markers that match its name that we’ve seen thus far, and giving the result**.\n[/quote]\n\n(Emphasis mine) The problem why your code doesn't work is that, due to the explicit return, the `update` is not put into the content of your document. Basically, there are two ways how a function's return value may form:\n- if the function reaches a `return`, the value of that statement is returned\n- otherwise, all values that were encountered are \"joined\". For example, a function with body `{ [foo]; [bar] }` has as its result `[foo]+[bar] = [foobar]`.\n\nFor the update to do anything, your result would need to include the `update()` content, and that update content needs to end up in the document.\n\nIn your case, a fix that doesn't interfere with the structure of your code too much would be to return the update and the array, so that your function would be called like this:\n```typ\n#let (update, questions) = mainFormatQuestions(myArray)\n#update\n#table(columns: (1fr, 1fr, 1fr),\n  inset: 10pt,\n  align: left,  \n  ..questions\n)\n```\nAnother option would be to do the whole table, not just constructing the array:\n```typ\n#questions-table(myArray)\n```\nSince `questions-table()` returns `content` and not an array, you could include the initial update in there.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 39,
+      "score": 42.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 3044,
+      "post_number": 3,
+      "username": "Allon",
+      "name": "Allon",
+      "created_at": "2024-09-30T19:26:41.631Z",
+      "updated_at": "2024-09-30T19:26:41.631Z",
+      "cooked": "<p>Hi,<br>\nI used the second solution, it is even clearer for the user. Thanks a lot for your help !</p>",
+      "raw": "Hi,\nI used the second solution, it is even clearer for the user. Thanks a lot for your help !",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 4.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 367
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:48.464755"
+}

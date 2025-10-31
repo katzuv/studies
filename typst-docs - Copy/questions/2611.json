@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2611,
+    "title": "Can we hyphenate using wordlist as in xelatex?",
+    "slug": "can-we-hyphenate-using-wordlist-as-in-xelatex",
+    "posts_count": 2,
+    "created_at": "2025-01-30T14:33:44.983Z",
+    "last_posted_at": "2025-01-30T22:35:09.997Z",
+    "views": 87,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "text-formatting",
+      "latex-migration"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 86
+  },
+  "posts": [
+    {
+      "id": 8034,
+      "post_number": 1,
+      "username": "Rama_Prakasha",
+      "name": "Rama Prakasha",
+      "created_at": "2025-01-30T14:33:45.250Z",
+      "updated_at": "2025-01-30T14:43:02.035Z",
+      "cooked": "<p>I typeset lot of Sanskrit and other indic languages using xelatex. For better nuanced hyphenation I use word-lists like these:</p>\n<pre><code class=\"lang-auto\">\\hyphenation{%\nवेदान्त-परि-शील-न-कुश-लानां\nविचार-प्रचोदन-स्थानं\nसर्व-वेदान्त-तात्पर्य-निर्णायक-त्वेन\n}\n</code></pre>\n<p>Is it possible in typst?</p>",
+      "raw": "I typeset lot of Sanskrit and other indic languages using xelatex. For better nuanced hyphenation I use word-lists like these:\n```=latex\n\\hyphenation{%\nवेदान्त-परि-शील-न-कुश-लानां\nविचार-प्रचोदन-स्थानं\nसर्व-वेदान्त-तात्पर्य-निर्णायक-त्वेन\n}\n```\nIs it possible in typst?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 25.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1115
+    },
+    {
+      "id": 8052,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-01-30T22:35:09.997Z",
+      "updated_at": "2025-01-30T22:35:09.997Z",
+      "cooked": "<p>Typst uses <code>-?</code> (unicode soft hypen <code>\\u{ad}</code>) as hyphenation points.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let words = (\n  \"वेदान्त-परि-शील-न-कुश-लानां\",\n  \"विचार-प्रचोदन-स्थानं\",\n  \"सर्व-वेदान्त-तात्पर्य-निर्णायक-त्वेन\",\n)\n\n#show: body =&gt; words.fold(body, (body, word) =&gt; {\n  show word.replace(\"-\", \"\"): word.replace(\"-\", [-?].text)\n  body\n})\n\nyour text here\n</code></pre>",
+      "raw": "Typst uses `-?` (unicode soft hypen `\\u{ad}`) as hyphenation points.\n\n```typ\n#let words = (\n  \"वेदान्त-परि-शील-न-कुश-लानां\",\n  \"विचार-प्रचोदन-स्थानं\",\n  \"सर्व-वेदान्त-तात्पर्य-निर्णायक-त्वेन\",\n)\n\n#show: body => words.fold(body, (body, word) => {\n  show word.replace(\"-\", \"\"): word.replace(\"-\", [-?].text)\n  body\n})\n\nyour text here\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 21,
+      "score": 19.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:20.442511"
+}

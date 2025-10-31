@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1636,
+    "title": "Include a whole directory",
+    "slug": "include-a-whole-directory",
+    "posts_count": 3,
+    "created_at": "2024-11-09T15:40:30.734Z",
+    "last_posted_at": "2024-11-09T21:30:01.034Z",
+    "views": 487,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 146
+  },
+  "posts": [
+    {
+      "id": 5402,
+      "post_number": 1,
+      "username": "Nguyen_Truong_Son",
+      "name": "Nguyen Truong Son",
+      "created_at": "2024-11-09T15:40:30.868Z",
+      "updated_at": "2024-11-09T15:41:48.032Z",
+      "cooked": "<p>Currently I’m putting 1 chapter to 1 file, then include every file in <code>main.typ</code>. Is there anyway to just include a whole folder, so i just need to create new file without manually import? Tysm!</p>\n<p>This is my current setup (stripped):</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">// Report cover\n#include \"Matter/00.FrontPage.typ\"\n\n#include \"Contents/01.Introduction.typ\"\n\n// Biblography\n#include \"Matter/01.Cite.typ\"\n</code></pre>",
+      "raw": "Currently I'm putting 1 chapter to 1 file, then include every file in `main.typ`. Is there anyway to just include a whole folder, so i just need to create new file without manually import? Tysm!\n\nThis is my current setup (stripped):\n```typ\n// Report cover\n#include \"Matter/00.FrontPage.typ\"\n\n#include \"Contents/01.Introduction.typ\"\n\n// Biblography\n#include \"Matter/01.Cite.typ\"\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 45,
+      "score": 2488.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 203
+    },
+    {
+      "id": 5405,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2024-11-09T18:20:43.948Z",
+      "updated_at": "2024-11-09T18:20:43.948Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/nguyen_truong_son\">@Nguyen_Truong_Son</a>,</p>\n<p>unfortunately, this option is not yet built into Typst, there is a ope issue about it <a href=\"https://github.com/typst/typst/issues/2123\" rel=\"noopener nofollow ugc\">here</a>.<br>\nThere is a not-so-nice workaround: if you use Typst locally with the CLI you can run an external script, which reads all the file names of the folder and pass them to Typst via the <a href=\"https://typst.app/docs/reference/foundations/sys\"><code>input</code></a> parameter.</p>",
+      "raw": "Hello @Nguyen_Truong_Son,\n\nunfortunately, this option is not yet built into Typst, there is a ope issue about it [here](https://github.com/typst/typst/issues/2123). \nThere is a not-so-nice workaround: if you use Typst locally with the CLI you can run an external script, which reads all the file names of the folder and pass them to Typst via the [`input`](https://typst.app/docs/reference/foundations/sys) parameter.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 38,
+      "score": 52.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    },
+    {
+      "id": 5413,
+      "post_number": 3,
+      "username": "Nguyen_Truong_Son",
+      "name": "Nguyen Truong Son",
+      "created_at": "2024-11-09T21:30:01.034Z",
+      "updated_at": "2024-11-09T21:30:01.034Z",
+      "cooked": "<p>Tysm, hope that we will have that feature in near future <img src=\"https://forum.typst.app/images/emoji/apple/smile.png?v=12\" title=\":smile:\" class=\"emoji\" alt=\":smile:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Tysm, hope that we will have that feature in near future :smile:",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 35,
+      "score": 27.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 203
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:16.072074"
+}

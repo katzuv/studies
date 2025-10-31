@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3051,
+    "title": "How do I display an array of a certain width(say eighteen 1's) in one line?",
+    "slug": "how-do-i-display-an-array-of-a-certain-width-say-eighteen-1s-in-one-line",
+    "posts_count": 3,
+    "created_at": "2025-02-28T17:09:19.389Z",
+    "last_posted_at": "2025-02-28T18:43:20.642Z",
+    "views": 38,
+    "like_count": 2,
+    "reply_count": 2,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 304
+  },
+  "posts": [
+    {
+      "id": 9207,
+      "post_number": 1,
+      "username": "feng",
+      "name": "",
+      "created_at": "2025-02-28T17:09:19.560Z",
+      "updated_at": "2025-02-28T17:09:19.560Z",
+      "cooked": "<p>Here are two arrays of numbers:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let a = (40,50,55,64,75,88,99,69,72,79,80,86,95)\n#a\n#let b = (1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)\n#b\n</code></pre>\n<p>Both can be dispayed in one line as expected, and the end of the array is still far from the right margin.<br>\nHowever, if you add one more dot/digit/number:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let a1 = (40,50,55,64,75,88,99,69,72,79,80,86,95.)\n#let a2 = (40,50,55,64,75,88,99,69,72,79,80,86,951)\n#let b1 = (1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1.)\n#let b2 = (1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)\n</code></pre>\n<p>the array will be displayed vertically, one number for each line.<br>\nIt seems that there’s a strict width limit for an array. I know I can display a long array in math mode and in some cases this feature makes reading easier. Just want to know if I can adjust the limit because it can be useful.</p>",
+      "raw": "Here are two arrays of numbers:\n```typ\n#let a = (40,50,55,64,75,88,99,69,72,79,80,86,95)\n#a\n#let b = (1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)\n#b\n```\nBoth can be dispayed in one line as expected, and the end of the array is still far from the right margin. \nHowever, if you add one more dot/digit/number:\n```typ\n#let a1 = (40,50,55,64,75,88,99,69,72,79,80,86,95.)\n#let a2 = (40,50,55,64,75,88,99,69,72,79,80,86,951)\n#let b1 = (1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1.)\n#let b2 = (1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)\n```\nthe array will be displayed vertically, one number for each line.\nIt seems that there's a strict width limit for an array. I know I can display a long array in math mode and in some cases this feature makes reading easier. Just want to know if I can adjust the limit because it can be useful.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 18,
+      "score": 108.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1283
+    },
+    {
+      "id": 9208,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-02-28T17:31:36.072Z",
+      "updated_at": "2025-02-28T17:34:24.022Z",
+      "cooked": "<p>Your examples output the raw <code>array</code> type directly. You wouldn’t use this output for a final document directly, but rather during the documents/templates development for debugging.<br>\nTo display an array in a final document, I would do something like this.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let a = (40,50,55,64,75,88,99,69,72,79,80,86,95,66)\n(#a.map(str).join(\", \"))\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/e/e4d4145753e28db13fe960de06275c0dba8e446f.png\" alt=\"image\" data-base62-sha1=\"wEjeXXsAt4IeivXNLNUeN9hresn\" width=\"427\" height=\"46\"></p>\n<p>But to answer the question, there is no option to adjust the limit for the build in representation.</p>",
+      "raw": "Your examples output the raw `array` type directly. You wouldn't use this output for a final document directly, but rather during the documents/templates development for debugging. \nTo display an array in a final document, I would do something like this. \n```typst\n#let a = (40,50,55,64,75,88,99,69,72,79,80,86,95,66)\n(#a.map(str).join(\", \"))\n```\n![image|427x46](upload://wEjeXXsAt4IeivXNLNUeN9hresn.png)\n\nBut to answer the question, there is no option to adjust the limit for the build in representation.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 16,
+      "score": 43.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    },
+    {
+      "id": 9226,
+      "post_number": 4,
+      "username": "feng",
+      "name": "",
+      "created_at": "2025-02-28T18:43:20.642Z",
+      "updated_at": "2025-02-28T18:43:20.642Z",
+      "cooked": "<p>Thank you so much! Looks like I’ve jumped some important parts in the tutorial <img src=\"https://forum.typst.app/images/emoji/apple/melting_face.png?v=12\" title=\":melting_face:\" class=\"emoji\" alt=\":melting_face:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Thank you so much! Looks like I’ve jumped some important parts in the tutorial :melting_face:",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 15,
+      "score": 3.0,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1283
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:56.813825"
+}

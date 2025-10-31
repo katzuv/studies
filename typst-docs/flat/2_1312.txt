@@ -1,0 +1,66 @@
+{
+  "topic_metadata": {
+    "id": 1312,
+    "title": "How to include webography?",
+    "slug": "how-to-include-webography",
+    "posts_count": 2,
+    "created_at": "2024-10-23T14:11:43.587Z",
+    "last_posted_at": "2024-12-10T07:15:08.635Z",
+    "views": 131,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "scripting",
+      "packages",
+      "literature",
+      "bibtex"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 157
+  },
+  "posts": [
+    {
+      "id": 4557,
+      "post_number": 1,
+      "username": "Enjoyer_101",
+      "name": "brrrrr",
+      "created_at": "2024-10-23T14:11:43.718Z",
+      "updated_at": "2024-10-24T08:26:02.851Z",
+      "cooked": "<p>Hello,<br>\nI would like to inlcude the webography of a document that mentions an academic example but does not qualify to a standard bibliographic citation (no information about authors as it was made in the name of an enterprise to help people use its technology).<br>\nMany thanks in advance</p>",
+      "raw": "Hello,\nI would like to inlcude the webography of a document that mentions an academic example but does not qualify to a standard bibliographic citation (no information about authors as it was made in the name of an enterprise to help people use its technology).\nMany thanks in advance",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 37,
+      "score": 142.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 538
+    },
+    {
+      "id": 6451,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-12-10T07:15:08.635Z",
+      "updated_at": "2024-12-10T07:15:08.635Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/enjoyer_101\">@Enjoyer_101</a>,</p>\n<p>If I understand well, you want to cite web content that were authored by corporate entities. It would help if you give us more details, but as far as I know, there is no issue with doing that.</p>\n<p>Your bibfile can be written by hand, e.g., for a website reference. The author is not a physical person, it is quoted verbatim using <code>{{ ... }}</code>.</p>\n<pre data-code-wrap=\"bib\"><code class=\"lang-bib\">@online{AnticipatoryActionOCHA_jun_2024,\n  title = {Anticipatory Action},\n  author = {{United Nations Office for the Coordination of Humanitarian Affairs}},\n  date = {2024-06-25},\n  url = {https://www.unocha.org/anticipatory-action},\n  urldate = {2024-07-08},\n  abstract = {Every year, millions of people face the reality of},\n  langid = {english}\n}\n</code></pre>",
+      "raw": "Hello @Enjoyer_101,\n\nIf I understand well, you want to cite web content that were authored by corporate entities. It would help if you give us more details, but as far as I know, there is no issue with doing that.\n\nYour bibfile can be written by hand, e.g., for a website reference. The author is not a physical person, it is quoted verbatim using `{{ ... }}`.\n\n```bib\n@online{AnticipatoryActionOCHA_jun_2024,\n  title = {Anticipatory Action},\n  author = {{United Nations Office for the Coordination of Humanitarian Affairs}},\n  date = {2024-06-25},\n  url = {https://www.unocha.org/anticipatory-action},\n  urldate = {2024-07-08},\n  abstract = {Every year, millions of people face the reality of},\n  langid = {english}\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 4.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:02.783040"
+}

@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 935,
+    "title": "How do I make the math area take up the whole width of the page?",
+    "slug": "how-do-i-make-the-math-area-take-up-the-whole-width-of-the-page",
+    "posts_count": 2,
+    "created_at": "2024-10-05T06:08:51.667Z",
+    "last_posted_at": "2024-10-05T17:30:07.970Z",
+    "views": 174,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "xkevio",
+    "tags": [
+      "layout",
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 233
+  },
+  "posts": [
+    {
+      "id": 3432,
+      "post_number": 1,
+      "username": "Sky",
+      "name": "Sky",
+      "created_at": "2024-10-05T06:08:51.823Z",
+      "updated_at": "2024-10-10T15:11:25.447Z",
+      "cooked": "<p>Hello! I’m trying to add notes to my math. This is the code:</p>\n<pre><code class=\"lang-auto\">$\n&amp;a a(a union (b a))^* b &amp; \\\n=&amp; a a a* (b a a*)* b&amp; \"(Property g)\" \\\n=&amp; a (a a* b)* a a* b&amp; \"(Property h; \" R = a a*, S = b \")\" \\\n$\n</code></pre>\n<p>However, the math becomes super scrunched up, and centered on the page:<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/1X/3a0acc3bba3111334068bb931ecbbcfa4b7e3a10.png\" data-download-href=\"https://forum.typst.app/uploads/default/3a0acc3bba3111334068bb931ecbbcfa4b7e3a10\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/3a0acc3bba3111334068bb931ecbbcfa4b7e3a10_2_690x111.png\" alt=\"image\" data-base62-sha1=\"8hsPiFjPMpSr9nPtOyRA5qHc4I8\" width=\"690\" height=\"111\" srcset=\"https://forum.typst.app/uploads/default/optimized/1X/3a0acc3bba3111334068bb931ecbbcfa4b7e3a10_2_690x111.png, https://forum.typst.app/uploads/default/original/1X/3a0acc3bba3111334068bb931ecbbcfa4b7e3a10.png 1.5x, https://forum.typst.app/uploads/default/original/1X/3a0acc3bba3111334068bb931ecbbcfa4b7e3a10.png 2x\" data-dominant-color=\"FAFAFA\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">772×125 15.2 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>I really wanted it to look more like this:<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/1X/eb4638b90c6095f444ef0814ce0ddd8d2fa0cd29.png\" data-download-href=\"https://forum.typst.app/uploads/default/eb4638b90c6095f444ef0814ce0ddd8d2fa0cd29\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/eb4638b90c6095f444ef0814ce0ddd8d2fa0cd29_2_690x111.png\" alt=\"image\" data-base62-sha1=\"xzkEAduhTWIJK8jRKQKkpRYC4Rj\" width=\"690\" height=\"111\" srcset=\"https://forum.typst.app/uploads/default/optimized/1X/eb4638b90c6095f444ef0814ce0ddd8d2fa0cd29_2_690x111.png, https://forum.typst.app/uploads/default/original/1X/eb4638b90c6095f444ef0814ce0ddd8d2fa0cd29.png 1.5x, https://forum.typst.app/uploads/default/original/1X/eb4638b90c6095f444ef0814ce0ddd8d2fa0cd29.png 2x\" data-dominant-color=\"FAFAFA\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">772×125 15.7 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>However, I couldn’t figure out how to style the math area in the docs. The docs are ALMOST helpful.</p>\n<aside class=\"onebox allowlistedgeneric\" data-onebox-src=\"https://typst.app/docs/reference/math#alignment\">\n  <header class=\"source\">\n      <img src=\"https://forum.typst.app/uploads/default/original/1X/098187a593d51c4db99324614e2baeeb1bb355cc.png\" class=\"site-icon\" data-dominant-color=\"3CA8B6\" width=\"32\" height=\"32\">\n\n      <a href=\"https://typst.app/docs/reference/math#alignment\" target=\"_blank\" rel=\"noopener\">Typst</a>\n  </header>\n\n  <article class=\"onebox-body\">\n    <div class=\"aspect-image\" style=\"--aspect-ratio:690/361;\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/db1c18ed802fe6841bee62606931f352da10ed09_2_690x362.png\" class=\"thumbnail\" data-dominant-color=\"7CC2C5\" width=\"690\" height=\"362\"></div>\n\n<h3><a href=\"https://typst.app/docs/reference/math#alignment\" target=\"_blank\" rel=\"noopener\">Math – Typst Documentation</a></h3>\n\n  <p>Documentation for functions related to Math in Typst.</p>\n\n\n  </article>\n\n  <div class=\"onebox-metadata\">\n    \n    \n  </div>\n\n  <div style=\"clear: both\"></div>\n</aside>\n\n<p>How can I fix this? Thank you.</p>",
+      "raw": "Hello! I'm trying to add notes to my math. This is the code:\n\n```\n$\n&a a(a union (b a))^* b & \\\n=& a a a* (b a a*)* b& \"(Property g)\" \\\n=& a (a a* b)* a a* b& \"(Property h; \" R = a a*, S = b \")\" \\\n$\n```\n\nHowever, the math becomes super scrunched up, and centered on the page:\n![image|690x111](upload://8hsPiFjPMpSr9nPtOyRA5qHc4I8.png)\n\nI really wanted it to look more like this:\n![image|690x111](upload://xzkEAduhTWIJK8jRKQKkpRYC4Rj.png)\n\nHowever, I couldn't figure out how to style the math area in the docs. The docs are ALMOST helpful.\n\nhttps://typst.app/docs/reference/math#alignment\n\nHow can I fix this? Thank you.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 44,
+      "score": 533.8,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 541
+    },
+    {
+      "id": 3463,
+      "post_number": 2,
+      "username": "xkevio",
+      "name": "Kevio",
+      "created_at": "2024-10-05T17:30:07.970Z",
+      "updated_at": "2024-10-05T17:30:07.970Z",
+      "cooked": "<p>Typst will scale math blocks only as big as they need to be. You could in theory increase the block width manually with something like:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show math.equation.where(block: true): set block(width: 100%)\n</code></pre>\n<p>but that might lead to other layouting issues. Rather, I recommend manually inserting horizontal spaces where you need them to be as Typst’s align environment does not do that on its own. Either use the pre-defined spaces like <code>quad</code> or <code>wide</code> or just <code>#h(5cm)</code> directly.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">$\n&amp;a a(a union (b a))^* b &amp; \\\n=&amp; a a a* (b a a*)* b&amp; #h(3cm) \"(Property g)\" \\\n=&amp; a (a a* b)* a a* b&amp; #h(3cm) \"(Property h; \" R = a a*, S = b \")\" \\\n$\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/1X/98d5c379ee8e0b0a1f7331d3fc1618fce2afd758.png\" alt=\"image\" data-base62-sha1=\"lO2yPO4YASIGwKzHS4w94exGURy\" width=\"531\" height=\"94\"></p>",
+      "raw": "Typst will scale math blocks only as big as they need to be. You could in theory increase the block width manually with something like:\n\n```typ\n#show math.equation.where(block: true): set block(width: 100%)\n```\n\nbut that might lead to other layouting issues. Rather, I recommend manually inserting horizontal spaces where you need them to be as Typst's align environment does not do that on its own. Either use the pre-defined spaces like `quad` or `wide` or just `#h(5cm)` directly.\n\n```typ\n$\n&a a(a union (b a))^* b & \\\n=& a a a* (b a a*)* b& #h(3cm) \"(Property g)\" \\\n=& a (a a* b)* a a* b& #h(3cm) \"(Property h; \" R = a a*, S = b \")\" \\\n$\n```\n\n![image|531x94](upload://lO2yPO4YASIGwKzHS4w94exGURy.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 41,
+      "score": 33.2,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 21
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:23.794115"
+}

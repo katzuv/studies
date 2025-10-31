@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1563,
+    "title": "How to create a table of sign?",
+    "slug": "how-to-create-a-table-of-sign",
+    "posts_count": 3,
+    "created_at": "2024-11-05T22:14:50.668Z",
+    "last_posted_at": "2024-11-06T06:15:08.654Z",
+    "views": 98,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "PgBiel",
+    "tags": [
+      "math",
+      "tables"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 380
+  },
+  "posts": [
+    {
+      "id": 5178,
+      "post_number": 1,
+      "username": "nemolivier",
+      "name": "nemolivier",
+      "created_at": "2024-11-05T22:14:50.778Z",
+      "updated_at": "2024-11-06T03:02:27.505Z",
+      "cooked": "<p>Hello,<br>\nI try to help my son creating a clean doc for his math homework. We needs to create a <em>table of signs</em> (direct translation from french, sorry, it may be the reason why I struggle to find solution here or on google).<br>\nIt looks like this :<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/3/30daec21d792767429e0bc9a75e0ecd099e410db.jpeg\" data-download-href=\"https://forum.typst.app/uploads/default/30daec21d792767429e0bc9a75e0ecd099e410db\" title=\"PXL_20241105_215805654\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/3/30daec21d792767429e0bc9a75e0ecd099e410db_2_690x210.jpeg\" alt=\"PXL_20241105_215805654\" data-base62-sha1=\"6YbXnaSMYyPGR2wtb55pngHV4HV\" width=\"690\" height=\"210\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/3/30daec21d792767429e0bc9a75e0ecd099e410db_2_690x210.jpeg, https://forum.typst.app/uploads/default/optimized/2X/3/30daec21d792767429e0bc9a75e0ecd099e410db_2_1035x315.jpeg 1.5x, https://forum.typst.app/uploads/default/optimized/2X/3/30daec21d792767429e0bc9a75e0ecd099e410db_2_1380x420.jpeg 2x\" data-dominant-color=\"AA9E97\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">PXL_20241105_215805654</span><span class=\"informations\">3456×1052 361 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div><br>\nThe solution may be using a complicated <code>table.cell(colspan:)</code> structure, but I wonder if there’s a more elegant solution.<br>\nAlso, I can’t find a solution for the « 0 » across the vertical lines…<br>\nThank’s a lot,<br>\nOlivier.</p>",
+      "raw": "Hello,\nI try to help my son creating a clean doc for his math homework. We needs to create a *table of signs* (direct translation from french, sorry, it may be the reason why I struggle to find solution here or on google). \nIt looks like this : \n![PXL_20241105_215805654|690x210](upload://6YbXnaSMYyPGR2wtb55pngHV4HV.jpeg)\nThe solution may be using a complicated `table.cell(colspan:)` structure, but I wonder if there’s a more elegant solution. \nAlso, I can’t find a solution for the « 0 » across the vertical lines…\nThank’s a lot,\nOlivier.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 36,
+      "score": 187.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 752
+    },
+    {
+      "id": 5184,
+      "post_number": 2,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-11-06T02:52:52.989Z",
+      "updated_at": "2024-11-06T02:56:55.562Z",
+      "cooked": "<p>Hey <a class=\"mention\" href=\"/u/nemolivier\">@nemolivier</a>, welcome to the forum! I’ve updated your post title to better suit our question post guidelines: <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\" class=\"inline-onebox\">How to post in the Questions category</a></p>\n<p>Make sure your post title is a question you’d ask to a friend about Typst. <img src=\"https://forum.typst.app/images/emoji/apple/wink.png?v=12\" title=\":wink:\" class=\"emoji\" alt=\":wink:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>\n<hr>\n<p>Here’s an example based on something I’ve made before. Note that we use 0pt columns for the interval limits. Feel free to customize and use it as much as you want:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show table.cell: it =&gt; {\n  if it.x &gt; 0 and it.y &gt; 0 {\n    show \"+\": set text(green.darken(5%))\n    show $-$.body.text: set text(red.darken(15%))\n    show \"0\": set text(gray)\n    it\n  } else {\n    set text(blue.darken(20%))\n    it\n  }\n}\n\n#table(\n  columns: (auto, auto, 0pt, auto, 0pt, auto, 0pt, auto),\n  align: (x, y) =&gt; if y == 0 { center + bottom } else { center },\n  stroke: (x, y) =&gt; (\n    // Dash stroke inside\n    right: if x &gt; 0 and y &gt; 0 { (paint: black, dash: \"dotted\") },\n    // Left border\n    left: if y &gt; 0 and x == 1 { black },\n    // Top border\n    top: if x &gt; 0 and y == 1 { black },\n    rest: none),\n  $x$, [], $-oo$, [], $5$, [], $10$, [],\n\n  // Right border\n  table.vline(start: 1, stroke: (dash: none)),\n\n  $f$, $-$, [], $+$, [], $-$, [], $+$,\n  $g$, $+$, [0], $+$, [], $+$, [], $+$,\n  $h$, $-$, [], $+$, [], $-$, [], $+$,\n  $m$, $+$, [], $+$, [], $+$, [], $+$,\n\n  // Have to place bottom border manually\n  // to avoid having to somehow fetch the amount of rows\n  table.hline(start: 1, stroke: (dash: none))\n)\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/7/7394e40573feeecd54c5cd175d183582f8f7595f.png\" alt=\"output: sign table\" data-base62-sha1=\"gutUayGbmm0tNfQsPMZrqOkD7uT\" width=\"598\" height=\"479\"></p>",
+      "raw": "Hey @nemolivier, welcome to the forum! I've updated your post title to better suit our question post guidelines: https://forum.typst.app/t/how-to-post-in-the-questions-category/11\n\nMake sure your post title is a question you'd ask to a friend about Typst. :wink:\n\n---\n\nHere's an example based on something I've made before. Note that we use 0pt columns for the interval limits. Feel free to customize and use it as much as you want:\n\n```typ\n#show table.cell: it => {\n  if it.x > 0 and it.y > 0 {\n    show \"+\": set text(green.darken(5%))\n    show $-$.body.text: set text(red.darken(15%))\n    show \"0\": set text(gray)\n    it\n  } else {\n    set text(blue.darken(20%))\n    it\n  }\n}\n\n#table(\n  columns: (auto, auto, 0pt, auto, 0pt, auto, 0pt, auto),\n  align: (x, y) => if y == 0 { center + bottom } else { center },\n  stroke: (x, y) => (\n    // Dash stroke inside\n    right: if x > 0 and y > 0 { (paint: black, dash: \"dotted\") },\n    // Left border\n    left: if y > 0 and x == 1 { black },\n    // Top border\n    top: if x > 0 and y == 1 { black },\n    rest: none),\n  $x$, [], $-oo$, [], $5$, [], $10$, [],\n\n  // Right border\n  table.vline(start: 1, stroke: (dash: none)),\n\n  $f$, $-$, [], $+$, [], $-$, [], $+$,\n  $g$, $+$, [0], $+$, [], $+$, [], $+$,\n  $h$, $-$, [], $+$, [], $-$, [], $+$,\n  $m$, $+$, [], $+$, [], $+$, [], $+$,\n\n  // Have to place bottom border manually\n  // to avoid having to somehow fetch the amount of rows\n  table.hline(start: 1, stroke: (dash: none))\n)\n```\n\n![output: sign table|598x479](upload://gutUayGbmm0tNfQsPMZrqOkD7uT.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 35,
+      "score": 27.0,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 3
+    },
+    {
+      "id": 5189,
+      "post_number": 3,
+      "username": "nemolivier",
+      "name": "nemolivier",
+      "created_at": "2024-11-06T06:15:08.654Z",
+      "updated_at": "2024-11-06T06:15:08.654Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/pgbiel\">@PgBiel</a> ,<br>\nMany thanks for the quick and gentle answer.<br>\n(I <em>do</em> have read the guideline, sorry it was not enough).<br>\nYour answer is very complete and helpful (0 pt columns, I like that <img src=\"https://forum.typst.app/images/emoji/apple/grinning.png?v=12\" title=\":grinning:\" class=\"emoji\" alt=\":grinning:\" loading=\"lazy\" width=\"20\" height=\"20\">), I’m going to take time to understand all this (and making my son understand it too !!)<br>\nHope this help other people.<br>\nRegards,<br>\nOlivier.</p>",
+      "raw": "Hello @PgBiel ,\nMany thanks for the quick and gentle answer.\n(I *do* have read the guideline, sorry it was not enough).\nYour answer is very complete and helpful (0 pt columns, I like that :grinning:), I'm going to take time to understand all this (and making my son understand it too !!)\nHope this help other people.\nRegards,\nOlivier.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 30,
+      "score": 51.0,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 752
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:26.973607"
+}

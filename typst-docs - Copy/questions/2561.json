@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2561,
+    "title": "How to center caption but left align the text inside?",
+    "slug": "how-to-center-caption-but-left-align-the-text-inside",
+    "posts_count": 2,
+    "created_at": "2025-01-27T10:42:38.649Z",
+    "last_posted_at": "2025-01-28T10:46:52.430Z",
+    "views": 222,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "J_Wunder",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 1,
+    "word_count": 118
+  },
+  "posts": [
+    {
+      "id": 7911,
+      "post_number": 1,
+      "username": "J_Wunder",
+      "name": "",
+      "created_at": "2025-01-27T10:42:38.771Z",
+      "updated_at": "2025-01-27T10:57:24.811Z",
+      "cooked": "<p>How can I align the caption of a figure with the center of its corresponding image and at the same time have the text inside the caption be left-aligned? I am currently using this show-rule to left-align both the caption and the text:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show figure.caption: set align(left)\n</code></pre>\n<p>How can I now center the caption while keeping the text inside left aligned?</p>",
+      "raw": "How can I align the caption of a figure with the center of its corresponding image and at the same time have the text inside the caption be left-aligned? I am currently using this show-rule to left-align both the caption and the text:\n``` typ\n#show figure.caption: set align(left)\n```\nHow can I now center the caption while keeping the text inside left aligned?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 32,
+      "score": 836.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1101
+    },
+    {
+      "id": 7955,
+      "post_number": 2,
+      "username": "J_Wunder",
+      "name": "",
+      "created_at": "2025-01-28T10:46:52.430Z",
+      "updated_at": "2025-01-28T10:46:52.430Z",
+      "cooked": "<p>I found the following solution:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show figure.caption: it =&gt; {\n  align(box(align(it, left)), center)\n}\n</code></pre>\n<p>This sets the alignment of the caption to left-bound inside the box but then centers the box in relation to the figure. If anybody knows of a better solution, please feel free to comment.</p>",
+      "raw": "I found the following solution:\n```typ\n#show figure.caption: it => {\n  align(box(align(it, left)), center)\n}\n```\nThis sets the alignment of the caption to left-bound inside the box but then centers the box in relation to the figure. If anybody knows of a better solution, please feel free to comment.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 25,
+      "score": 60.0,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 1101
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:27.261290"
+}

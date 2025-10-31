@@ -1,0 +1,65 @@
+{
+  "topic_metadata": {
+    "id": 2193,
+    "title": "How can I count journal publications in a .bib file?",
+    "slug": "how-can-i-count-journal-publications-in-a-bib-file",
+    "posts_count": 2,
+    "created_at": "2024-12-24T01:05:19.115Z",
+    "last_posted_at": "2024-12-25T15:15:24.408Z",
+    "views": 117,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Y.D.X",
+    "tags": [
+      "scripting",
+      "literature",
+      "bibtex"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 182
+  },
+  "posts": [
+    {
+      "id": 6890,
+      "post_number": 1,
+      "username": "Mark_Dean",
+      "name": "Mark Dean",
+      "created_at": "2024-12-24T01:05:19.262Z",
+      "updated_at": "2025-02-05T14:58:30.553Z",
+      "cooked": "<p>I have a CV that renders the full contents of a bibtex .bib file containing my publications. I would like my CV to update a description counting the number of publications in each journal every time add an entry to the .bib file. How can I count the number of publications in different journals automatically?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">\n#let journal_name = \"Physical Review Letters\"\n// How do a make the hypothetical function that counts papers?\n#let number_PRL = count_pubs(\"papers.bib\", #journal_name)\n\nI have written #let number_PRL papers in #journal_name\n\n#bibliography(\"papers.bib\", full: true)\n\n</code></pre>",
+      "raw": "I have a CV that renders the full contents of a bibtex .bib file containing my publications. I would like my CV to update a description counting the number of publications in each journal every time add an entry to the .bib file. How can I count the number of publications in different journals automatically?\n\n```typ \n\n#let journal_name = \"Physical Review Letters\"\n// How do a make the hypothetical function that counts papers?\n#let number_PRL = count_pubs(\"papers.bib\", #journal_name)\n\nI have written #let number_PRL papers in #journal_name\n\n#bibliography(\"papers.bib\", full: true)\n\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 336.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 954
+    },
+    {
+      "id": 6913,
+      "post_number": 2,
+      "username": "Y.D.X",
+      "name": "Y.D.X.",
+      "created_at": "2024-12-25T15:15:24.408Z",
+      "updated_at": "2024-12-25T15:15:24.408Z",
+      "cooked": "<p>Hmm, here is a fragile hack that uses regex to parse raw <code>ref.bib</code>. It should work if your <code>ref.bib</code> is properly formatted. (at least I think so)</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let journals = {\n  read(\"papers.bib\").matches(\n    // Assuming you always use `journaltitle` but never `journal`,\n    // and no journal title contains any bracket\n    regex(`\\s*journaltitle\\s*=\\s*\\{(.+?)\\},`.text)\n  ).map(it =&gt; it.captures.at(0))\n}\n\n#let count-journal(journal) = {\n  // Assuming you always use “Physical Review Letters” but never “Phys. Rev. Lett.” or “PRL”.\n  journals.filter(j =&gt; j == journal).len()\n}\n\n#count-journal(\"Physical Review Letters\")\n</code></pre>",
+      "raw": "Hmm, here is a fragile hack that uses regex to parse raw `ref.bib`. It should work if your `ref.bib` is properly formatted. (at least I think so)\n\n```typ\n#let journals = {\n  read(\"papers.bib\").matches(\n    // Assuming you always use `journaltitle` but never `journal`,\n    // and no journal title contains any bracket\n    regex(`\\s*journaltitle\\s*=\\s*\\{(.+?)\\},`.text)\n  ).map(it => it.captures.at(0))\n}\n\n#let count-journal(journal) = {\n  // Assuming you always use “Physical Review Letters” but never “Phys. Rev. Lett.” or “PRL”.\n  journals.filter(j => j == journal).len()\n}\n\n#count-journal(\"Physical Review Letters\")\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 23,
+      "score": 19.6,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 292
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:26.520383"
+}

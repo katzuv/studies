@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 4154,
+    "title": "Scrolling pdf document is not possible with the mouse scroll wheel",
+    "slug": "scrolling-pdf-document-is-not-possible-with-the-mouse-scroll-wheel",
+    "posts_count": 3,
+    "created_at": "2025-05-19T09:16:04.744Z",
+    "last_posted_at": "2025-05-19T10:10:55.485Z",
+    "views": 27,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "Andrew_Duncan",
+    "tags": [
+      "tooling"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 111
+  },
+  "posts": [
+    {
+      "id": 12732,
+      "post_number": 1,
+      "username": "Andrew_Duncan",
+      "name": "Andrew Duncan",
+      "created_at": "2025-05-19T09:16:04.983Z",
+      "updated_at": "2025-05-19T15:38:30.708Z",
+      "cooked": "<p>Hi all,</p>\n<p>I am creating my pdf document using typst. I have seen a peculiar behaviour. It is possible to scroll the document using page down or up of the keyboard. Unfortunately, it is not possible when I use my mouse scroll wheel. Any idea of the root cause of this problem?</p>\n<p>Thank you</p>",
+      "raw": "Hi all,\n\nI am creating my pdf document using typst. I have seen a peculiar behaviour. It is possible to scroll the document using page down or up of the keyboard. Unfortunately, it is not possible when I use my mouse scroll wheel. Any idea of the root cause of this problem?\n\nThank you",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 16,
+      "score": 8.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1560
+    },
+    {
+      "id": 12733,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-05-19T09:41:14.832Z",
+      "updated_at": "2025-05-19T09:41:14.832Z",
+      "cooked": "<p>It seems unlikely that this would be related to Typst. What’s your PDF viewer? Did you try another PDF in the same viewer?</p>",
+      "raw": "It seems unlikely that this would be related to Typst. What's your PDF viewer? Did you try another PDF in the same viewer?",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 15,
+      "score": 23.0,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 332
+    },
+    {
+      "id": 12735,
+      "post_number": 3,
+      "username": "Andrew_Duncan",
+      "name": "Andrew Duncan",
+      "created_at": "2025-05-19T10:10:55.485Z",
+      "updated_at": "2025-05-19T10:10:55.485Z",
+      "cooked": "<p>I think the problem is in the pdf reader and not typst. Scrolling the document through the mouse wheel is fine with Acrobat Reader (Windows). The problem happened with my Linux pdf reader.</p>",
+      "raw": "I think the problem is in the pdf reader and not typst. Scrolling the document through the mouse wheel is fine with Acrobat Reader (Windows). The problem happened with my Linux pdf reader.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 15,
+      "score": 3.0,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 1560
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:41.751584"
+}

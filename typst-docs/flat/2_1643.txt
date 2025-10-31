@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1643,
+    "title": "What is the simplest way to define multiple similar functions?",
+    "slug": "what-is-the-simplest-way-to-define-multiple-similar-functions",
+    "posts_count": 3,
+    "created_at": "2024-11-09T22:27:06.139Z",
+    "last_posted_at": "2024-11-10T00:25:47.984Z",
+    "views": 107,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Eric",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 342
+  },
+  "posts": [
+    {
+      "id": 5417,
+      "post_number": 1,
+      "username": "moe",
+      "name": "",
+      "created_at": "2024-11-09T22:27:06.342Z",
+      "updated_at": "2024-11-10T15:17:30.494Z",
+      "cooked": "<p>hey! i’m writing a small math library which includes this snippet:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let theorem_impl(type, caption, body) = {\n  align(\n    center,\n    figure(\n      caption: figure.caption(\n        position: top,\n        caption,\n      ),\n      kind: lower(type),\n      supplement: type,\n      box(\n        fill: rgb(\"#eee\"),\n        stroke: 1pt + rgb(\"000\"),\n        inset: 5pt,\n        body,\n      ),\n    ),\n  )\n}\n\n#let theorem(caption: [], body) = theorem_impl(\n  \"Theorem\",\n  caption,\n  body,\n)\n\n#let proposition(caption: [], body) = theorem_impl(\n  \"Proposition\",\n  caption,\n  body,\n)\n\n#let lemma(caption: [], body) = theorem_impl(\n  \"Lemma\",\n  caption,\n  body,\n)\n</code></pre>\n<p>i was curious if there’s a manner by which to label the three derivative functions dynamically via a loop, as opposed to manually defining each of them, as the naive solution:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#for theorem-type in ([Theorem], [Proposition], [Lemma]) {\n  let theorem-type(caption: [], body) = theorem_impl(\n    type,\n    caption,\n    body,\n  )\n}\n</code></pre>\n<p>did not seem to work. thanks!</p>",
+      "raw": "hey! i'm writing a small math library which includes this snippet:\n\n```typ\n#let theorem_impl(type, caption, body) = {\n  align(\n    center,\n    figure(\n      caption: figure.caption(\n        position: top,\n        caption,\n      ),\n      kind: lower(type),\n      supplement: type,\n      box(\n        fill: rgb(\"#eee\"),\n        stroke: 1pt + rgb(\"000\"),\n        inset: 5pt,\n        body,\n      ),\n    ),\n  )\n}\n\n#let theorem(caption: [], body) = theorem_impl(\n  \"Theorem\",\n  caption,\n  body,\n)\n\n#let proposition(caption: [], body) = theorem_impl(\n  \"Proposition\",\n  caption,\n  body,\n)\n\n#let lemma(caption: [], body) = theorem_impl(\n  \"Lemma\",\n  caption,\n  body,\n)\n```\n\ni was curious if there's a manner by which to label the three derivative functions dynamically via a loop, as opposed to manually defining each of them, as the naive solution:\n```typ\n#for theorem-type in ([Theorem], [Proposition], [Lemma]) {\n  let theorem-type(caption: [], body) = theorem_impl(\n    type,\n    caption,\n    body,\n  )\n}\n```\n\ndid not seem to work. thanks!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 34,
+      "score": 206.8,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 783
+    },
+    {
+      "id": 5432,
+      "post_number": 2,
+      "username": "Eric",
+      "name": "Eric Biedert",
+      "created_at": "2024-11-09T23:25:08.048Z",
+      "updated_at": "2024-11-09T23:25:54.435Z",
+      "cooked": "<p>Defining functions in a loop won’t work, as they would then only be accessible from inside the loop. However, you can simplify your code a bit by using the <a href=\"https://typst.app/docs/reference/foundations/function/#definitions-with\"><code>with</code></a> function to pre-apply some arguments:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let theorem_impl(type, caption: [], body) = {\n  ...\n}\n\n#let theorem = theorem_impl.with(\"Theorem\")\n#let proposition = theorem_impl.with(\"Proposition\")\n#let lemma = theorem_impl.with(\"Lemma\")\n</code></pre>\n<p>The <code>with</code> function here gives you a new function where the <code>type</code> parameter is already set to the passed value. Note that I added a default value for the <code>caption</code> parameter, as the new functions will share the same parameter structure as the original implementation.</p>\n<p>For completeness, I want to point out that there already exist some packages for theorems, such as <a href=\"https://typst.app/universe/package/ctheorems\"><code>ctheorems</code></a>, <a href=\"https://typst.app/universe/package/lemmify\"><code>lemmify</code></a>, and <a href=\"https://typst.app/universe/package/great-theorems\"><code>great-theorems</code></a>.</p>\n<hr>\n<p><em>On an unrelated note, please try to put any questions in the <a class=\"hashtag-cooked\" href=\"/c/questions/5\" data-type=\"category\" data-slug=\"questions\" data-id=\"5\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>Questions</span></a> category. If you can move this topic yourself, don’t hesitate to do so. If not, don’t worry, as a moderator will take care of it.</em></p>",
+      "raw": "Defining functions in a loop won't work, as they would then only be accessible from inside the loop. However, you can simplify your code a bit by using the [`with`](https://typst.app/docs/reference/foundations/function/#definitions-with) function to pre-apply some arguments:\n\n```typ\n#let theorem_impl(type, caption: [], body) = {\n  ...\n}\n\n#let theorem = theorem_impl.with(\"Theorem\")\n#let proposition = theorem_impl.with(\"Proposition\")\n#let lemma = theorem_impl.with(\"Lemma\")\n```\nThe `with` function here gives you a new function where the `type` parameter is already set to the passed value. Note that I added a default value for the `caption` parameter, as the new functions will share the same parameter structure as the original implementation.\n\nFor completeness, I want to point out that there already exist some packages for theorems, such as [`ctheorems`](https://typst.app/universe/package/ctheorems), [`lemmify`](https://typst.app/universe/package/lemmify), and [`great-theorems`](https://typst.app/universe/package/great-theorems).\n\n---\n\n_On an unrelated note, please try to put any questions in the #questions category. If you can move this topic yourself, don't hesitate to do so. If not, don't worry, as a moderator will take care of it._",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 31,
+      "score": 41.2,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 88
+    },
+    {
+      "id": 5440,
+      "post_number": 3,
+      "username": "moe",
+      "name": "",
+      "created_at": "2024-11-10T00:25:47.984Z",
+      "updated_at": "2024-11-10T00:25:47.984Z",
+      "cooked": "<p>thanks! ill take a look at the existing packages as well, they look great, and i appreciate the explanation. ive moved the post to questions, too.</p>",
+      "raw": "thanks! ill take a look at the existing packages as well, they look great, and i appreciate the explanation. ive moved the post to questions, too.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 5.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 783
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:14.633333"
+}

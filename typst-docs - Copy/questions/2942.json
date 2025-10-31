@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2942,
+    "title": "How to style all outlines that are not the table of contents?",
+    "slug": "how-to-style-all-outlines-that-are-not-the-table-of-contents",
+    "posts_count": 2,
+    "created_at": "2025-02-23T16:48:16.320Z",
+    "last_posted_at": "2025-02-23T18:05:04.199Z",
+    "views": 92,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "outline"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 192
+  },
+  "posts": [
+    {
+      "id": 8924,
+      "post_number": 1,
+      "username": "talb",
+      "name": "talb",
+      "created_at": "2025-02-23T16:48:16.485Z",
+      "updated_at": "2025-02-23T16:48:16.485Z",
+      "cooked": "<p>I want to add a colon to the entries of all outlines that are not the table of contents in my document (index of figures, index of tables, index of algorithms…). Is there a solution that does not involve exhaustively iterating on all these types of outlines like what follows?</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show outline.where(target: figure.where(supplement: [Figure])).or(\n  outline.where(target: figure.where(supplement: [Table]))).or(\n  outline.where(target: figure.where(supplement: [Algorithm]))\n  // and so on...\n): out =&gt; {\n  show outline.entry: ent =&gt; ent.indented(\n    [#ent.prefix():], ent.inner()\n  )\n  out\n}\n</code></pre>",
+      "raw": "I want to add a colon to the entries of all outlines that are not the table of contents in my document (index of figures, index of tables, index of algorithms...). Is there a solution that does not involve exhaustively iterating on all these types of outlines like what follows?\n\n```typst\n#show outline.where(target: figure.where(supplement: [Figure])).or(\n  outline.where(target: figure.where(supplement: [Table]))).or(\n  outline.where(target: figure.where(supplement: [Algorithm]))\n  // and so on...\n): out => {\n  show outline.entry: ent => ent.indented(\n    [#ent.prefix():], ent.inner()\n  )\n  out\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 310.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 341
+    },
+    {
+      "id": 8928,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-02-23T18:05:04.199Z",
+      "updated_at": "2025-02-23T18:05:04.199Z",
+      "cooked": "<p>You can set up a conditional show rule for the outline entries to add the colon depending on the outline target. This allows you to just exclude the outline entries of headings.</p>\n<p>On another note, your show rule for the outline entry with a colon was missing the link to the element, see the <a href=\"https://typst.app/docs/reference/model/outline/#building-an-entry\">docs</a> on “Building an entry”.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let colon-entry(it) = {\n  link(\n    it.element.location(),\n    it.indented([#it.prefix():], it.inner())\n  )\n}\n\n#show outline: out =&gt; {\n  show outline.entry: it =&gt; if out.target == selector(heading) { it } else { colon-entry(it) }\n  out \n}\n</code></pre>",
+      "raw": "You can set up a conditional show rule for the outline entries to add the colon depending on the outline target. This allows you to just exclude the outline entries of headings.\n\nOn another note, your show rule for the outline entry with a colon was missing the link to the element, see the [docs](https://typst.app/docs/reference/model/outline/#building-an-entry) on \"Building an entry\".\n\n```typ\n#let colon-entry(it) = {\n  link(\n    it.element.location(),\n    it.indented([#it.prefix():], it.inner())\n  )\n}\n\n#show outline: out => {\n  show outline.entry: it => if out.target == selector(heading) { it } else { colon-entry(it) }\n  out \n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 22,
+      "score": 29.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:18.999696"
+}

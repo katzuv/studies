@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 1536,
+    "title": "How can I create latex-like subequations?",
+    "slug": "how-can-i-create-latex-like-subequations",
+    "posts_count": 2,
+    "created_at": "2024-11-04T17:00:59.898Z",
+    "last_posted_at": "2024-12-10T07:32:38.584Z",
+    "views": 233,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "math",
+      "latex-migration"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 240
+  },
+  "posts": [
+    {
+      "id": 5129,
+      "post_number": 1,
+      "username": "cgahr",
+      "name": "Constantin Gahr",
+      "created_at": "2024-11-04T17:01:00.142Z",
+      "updated_at": "2024-12-15T10:31:23.415Z",
+      "cooked": "<p>I want to create latex like subequations. Using the following code</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let subequation(..it) = (\n  figure(\n    {\n      context {\n        let n = counter(math.equation).at(here()).first()\n\n        let c = counter(\"subequation\")\n        c.update((\n          counter(heading).get().first(),\n          n + 1,\n          0,\n        ))\n\n        set math.equation(numbering: n =&gt; {\n          numbering(\"(1.1a)\", ..c.get())\n        })\n        for i in it.pos() {\n          c.step(level: 3)\n          block[ #i ]\n        }\n        counter(math.equation).update(n + 1)\n      }\n    },\n    supplement: \"Equation\",\n    kind: \"subequation\",\n  )\n)\n\n#show figure.where(kind: \"subequation\"): set figure(numbering: n =&gt; numbering(\n  \"(1.1)\",\n  ..(counter(heading).get().first(), counter(math.equation).get().first() + 1),\n))\n\n\n\n#subequation([$ a $ &lt;a&gt;], [ $ b $ &lt;b&gt;]) &lt;both&gt;\n@label3 consists of @label and @label2\n</code></pre>\n<p>I’m getting quite close. The label works properly, i.e. <code>@a</code> references equation (1.23a). I can’t, however, reference both equations at once using the <code>@both</code> label. I understand why, but like to find a workaround anyways.</p>\n<p>Any ideas?</p>\n<p>EDIT: I updated my code. Now both correctly references (1.23). Maybe somebody has us for the example.</p>\n<p>What does not work, however, is alignment using <code>&amp;</code>…</p>",
+      "raw": "I want to create latex like subequations. Using the following code\n```typst\n#let subequation(..it) = (\n  figure(\n    {\n      context {\n        let n = counter(math.equation).at(here()).first()\n\n        let c = counter(\"subequation\")\n        c.update((\n          counter(heading).get().first(),\n          n + 1,\n          0,\n        ))\n\n        set math.equation(numbering: n => {\n          numbering(\"(1.1a)\", ..c.get())\n        })\n        for i in it.pos() {\n          c.step(level: 3)\n          block[ #i ]\n        }\n        counter(math.equation).update(n + 1)\n      }\n    },\n    supplement: \"Equation\",\n    kind: \"subequation\",\n  )\n)\n\n#show figure.where(kind: \"subequation\"): set figure(numbering: n => numbering(\n  \"(1.1)\",\n  ..(counter(heading).get().first(), counter(math.equation).get().first() + 1),\n))\n\n\n\n#subequation([$ a $ <a>], [ $ b $ <b>]) <both>\n@label3 consists of @label and @label2\n```\nI'm getting quite close. The label works properly, i.e. `@a` references equation (1.23a). I can't, however, reference both equations at once using the `@both` label. I understand why, but like to find a workaround anyways.\n\nAny ideas?\n\nEDIT: I updated my code. Now both correctly references (1.23). Maybe somebody has us for the example.\n\nWhat does not work, however, is alignment using `&`...",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 48,
+      "score": 569.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 740
+    },
+    {
+      "id": 6453,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-12-10T07:32:38.584Z",
+      "updated_at": "2024-12-10T07:32:38.584Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/cgahr\">@cgahr</a>,<br>\nif you are interested other users have discussed this issue at length:</p>\n<ul>\n<li><a href=\"https://forum.typst.app/t/how-can-i-set-numbering-for-sub-equations/1603\" class=\"inline-onebox\">How can I set numbering for sub-equations?</a></li>\n<li><a href=\"https://forum.typst.app/t/how-to-implement-sub-numbering-for-custom-figures-and-equations/1978\" class=\"inline-onebox\">How to implement sub-numbering for custom figures and equations?</a></li>\n</ul>\n<p>There is a package called <a href=\"https://typst.app/universe/package/equate/\">equate</a>.</p>\n<p>Related:</p>\n<ul>\n<li><a href=\"https://forum.typst.app/t/how-can-i-number-equations-within-sections/1936\" class=\"inline-onebox\">How can I number equations within sections?</a></li>\n</ul>",
+      "raw": "Hello @cgahr,\nif you are interested other users have discussed this issue at length:\n- https://forum.typst.app/t/how-can-i-set-numbering-for-sub-equations/1603\n- https://forum.typst.app/t/how-to-implement-sub-numbering-for-custom-figures-and-equations/1978\n\nThere is a package called [equate](https://typst.app/universe/package/equate/). \n\nRelated:\n- https://forum.typst.app/t/how-can-i-number-equations-within-sections/1936",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 28,
+      "score": 20.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:31.731959"
+}

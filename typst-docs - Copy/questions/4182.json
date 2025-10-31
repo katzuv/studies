@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 4182,
+    "title": "How can I place a node relative to another node or its outline in fletcher?",
+    "slug": "how-can-i-place-a-node-relative-to-another-node-or-its-outline-in-fletcher",
+    "posts_count": 3,
+    "created_at": "2025-05-20T11:08:02.680Z",
+    "last_posted_at": "2025-05-22T07:32:50.776Z",
+    "views": 43,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "fletcher"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 215
+  },
+  "posts": [
+    {
+      "id": 12800,
+      "post_number": 1,
+      "username": "Hakkape",
+      "name": "Alex H",
+      "created_at": "2025-05-20T11:08:02.789Z",
+      "updated_at": "2025-05-22T19:23:14.482Z",
+      "cooked": "<p>Hi everyone,<br>\ni am trying to place rectangular nodes in a fletcher diagram and want each node to also have a smaller circular node on its corner with a number inside. I can of course place them by hand as shown below, but if change the content of the larger node, the smaller node is not placed correctly anymore. I have not been able to find out how to place one node relative to another node (or in this case, relative to the outline), so any insight would be appreciated.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/fletcher:0.5.7\" as fletcher: diagram, node, edge\n#diagram({\n  node((0, 0), text(\"test\"), shape: rect, stroke: 1pt)\n  node((0.25, -0.18), text(size: 10pt)[2], shape: circle, stroke: 1pt, fill: white, inset: 2pt)\n})\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/d/dcccec463566dd16181dbbe00aa910f8d9f4503c.png\" alt=\"Screenshot_2025-05-20_13-09-24\" data-base62-sha1=\"vvi5vG711FqgbBNCeitxk7szyuE\" width=\"223\" height=\"154\"></p>",
+      "raw": "Hi everyone,\ni am trying to place rectangular nodes in a fletcher diagram and want each node to also have a smaller circular node on its corner with a number inside. I can of course place them by hand as shown below, but if change the content of the larger node, the smaller node is not placed correctly anymore. I have not been able to find out how to place one node relative to another node (or in this case, relative to the outline), so any insight would be appreciated.\n\n```typ\n#import \"@preview/fletcher:0.5.7\" as fletcher: diagram, node, edge\n#diagram({\n  node((0, 0), text(\"test\"), shape: rect, stroke: 1pt)\n  node((0.25, -0.18), text(size: 10pt)[2], shape: circle, stroke: 1pt, fill: white, inset: 2pt)\n})\n```\n![Screenshot_2025-05-20_13-09-24|223x154](upload://vvi5vG711FqgbBNCeitxk7szyuE.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 18,
+      "score": 48.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1141
+    },
+    {
+      "id": 12819,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-20T16:07:29.272Z",
+      "updated_at": "2025-05-22T15:45:17.650Z",
+      "cooked": "<p>Hi. This is covered in the “Node anchors” section of the manual.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/fletcher:0.5.7\": diagram, edge, node\n\n#let badge(pos, body, ..args) = {\n  body = text(size: 10pt, body)\n  node(pos, shape: circle, fill: white, inset: 2pt, ..args, body)\n}\n\n#diagram({\n  node((0, 0), name: &lt;this&gt;, shape: rect, stroke: 1pt)[test]\n  badge(&lt;this.north-east&gt;, stroke: 1pt)[2]\n})\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/a/af5d45d33c3501897129a8b5dfcee55ff6d63b63.png\" alt=\"image\" data-base62-sha1=\"p1lonMqQI9favV1u4L9c7GXqabN\" width=\"120\" height=\"95\"></p>",
+      "raw": "Hi. This is covered in the \"Node anchors\" section of the manual.\n\n```typ\n#import \"@preview/fletcher:0.5.7\": diagram, edge, node\n\n#let badge(pos, body, ..args) = {\n  body = text(size: 10pt, body)\n  node(pos, shape: circle, fill: white, inset: 2pt, ..args, body)\n}\n\n#diagram({\n  node((0, 0), name: <this>, shape: rect, stroke: 1pt)[test]\n  badge(<this.north-east>, stroke: 1pt)[2]\n})\n```\n\n![image|120x95](upload://p1lonMqQI9favV1u4L9c7GXqabN.png)",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 17,
+      "score": 43.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    },
+    {
+      "id": 12923,
+      "post_number": 3,
+      "username": "Hakkape",
+      "name": "Alex H",
+      "created_at": "2025-05-22T07:32:50.776Z",
+      "updated_at": "2025-05-22T07:32:50.776Z",
+      "cooked": "<p>Thanks, i somehow missed this section, was looking all over the manual…</p>",
+      "raw": "Thanks, i somehow missed this section, was looking all over the manual..",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 15,
+      "score": 3.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1141
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:35.774919"
+}

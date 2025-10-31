@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3055,
+    "title": "How do I use the rotate function in the CeTZ content environment?",
+    "slug": "how-do-i-use-the-rotate-function-in-the-cetz-content-environment",
+    "posts_count": 3,
+    "created_at": "2025-02-28T21:29:32.259Z",
+    "last_posted_at": "2025-02-28T21:59:34.183Z",
+    "views": 86,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "cetz"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 151
+  },
+  "posts": [
+    {
+      "id": 9230,
+      "post_number": 1,
+      "username": "Johannes",
+      "name": "Johannes",
+      "created_at": "2025-02-28T21:29:32.329Z",
+      "updated_at": "2025-03-07T21:44:39.027Z",
+      "cooked": "<p>hey, I’m trying to use the rotate function in the CeTZ environment like this:</p>\n<p><span class=\"hashtag-raw\">#figure</span>(<br>\ncetz.canvas(<br>\n{<br>\nimport cetz.draw: *<br>\ncontent((0,0), rotate(90deg)[U])<br>\n}<br>\n)<br>\n)</p>\n<p>However, this doesn‘t work. I get this error message: Assertion failed: Rotate takes a single z-angle or angles (x, y, z or yaw, pitch, roll) as named arguments, got: arguments(90deg, [U])</p>\n<p>When using rotate outside the CeTZ environment, it does exactly what i would expect it to do. What am I missing? Is there maybe a better way of rotating text within CeTZ?<br>\nThanks!</p>",
+      "raw": "hey, I’m trying to use the rotate function in the CeTZ environment like this:\n\n#figure(\ncetz.canvas(\n    {\n    import cetz.draw: *\n      content((0,0), rotate(90deg)[U])\n  }\n)\n)\n\nHowever, this doesn‘t work. I get this error message: Assertion failed: Rotate takes a single z-angle or angles (x, y, z or yaw, pitch, roll) as named arguments, got: arguments(90deg, [U])\n\nWhen using rotate outside the CeTZ environment, it does exactly what i would expect it to do. What am I missing? Is there maybe a better way of rotating text within CeTZ?\nThanks!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 19,
+      "score": 378.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1129
+    },
+    {
+      "id": 9232,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-02-28T21:56:12.928Z",
+      "updated_at": "2025-02-28T21:58:45.256Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/johannes\">@Johannes</a>,</p>\n<p>cetz has a build in <a href=\"https://cetz-package.github.io/docs/api/draw-functions/shapes/content/\">angle argument</a>.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#import \"@preview/cetz:0.3.2\"\n\n#figure(\n  cetz.canvas({\n    import cetz.draw: *\n    content((0,0), angle:90deg, [U])\n  })\n)\n</code></pre>\n<hr>\n<p>Please use backticks to format your code correctly on the forum.</p>\n<pre><code class=\"lang-auto\">```typst\n...\n```\n\n</code></pre>",
+      "raw": "Hi @Johannes,\n\ncetz has a build in [angle argument](https://cetz-package.github.io/docs/api/draw-functions/shapes/content/).\n\n```typst\n#import \"@preview/cetz:0.3.2\"\n\n#figure(\n  cetz.canvas({\n    import cetz.draw: *\n    content((0,0), angle:90deg, [U])\n  })\n)\n```\n---\nPlease use backticks to format your code correctly on the forum.\n````\n```typst\n...\n```\n\n````",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 18,
+      "score": 3.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    },
+    {
+      "id": 9233,
+      "post_number": 3,
+      "username": "Johannes",
+      "name": "Johannes",
+      "created_at": "2025-02-28T21:59:34.183Z",
+      "updated_at": "2025-02-28T21:59:34.183Z",
+      "cooked": "<p>Thank you, works like a charm.</p>",
+      "raw": "Thank you, works like a charm.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 16,
+      "score": 18.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1129
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:55.367924"
+}

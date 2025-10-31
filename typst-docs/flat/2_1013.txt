@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1013,
+    "title": "Why do references to subfigures (using subpar) not respect custom numbering?",
+    "slug": "why-do-references-to-subfigures-using-subpar-not-respect-custom-numbering",
+    "posts_count": 3,
+    "created_at": "2024-10-10T14:03:27.026Z",
+    "last_posted_at": "2024-10-12T02:30:18.067Z",
+    "views": 284,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "numbering",
+      "figures"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 180
+  },
+  "posts": [
+    {
+      "id": 3662,
+      "post_number": 1,
+      "username": "shhuang",
+      "name": "",
+      "created_at": "2024-10-10T14:03:27.189Z",
+      "updated_at": "2024-10-12T21:08:46.142Z",
+      "cooked": "<p>When I customize the numbering with the following codes, although the caption is fine, the reference is not correct.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/subpar:0.1.1\"\n\n#show figure.caption: it =&gt; (\n  context box(\n    inset: (left: 1em, right: 1em),\n    align(left)[\n      *#it.supplement~#it.counter.display()#it.separator*#it.body\n    ],\n  )\n)\n\n#set figure(numbering: n =&gt; [R#n])\n\n#subpar.grid(\n  figure(\n    box(stroke: 1pt, inset: 5pt)[This is a figure],\n    caption: [This is a caption]\n  ), &lt;fig11&gt;,\n  figure(\n    box(stroke: 1pt, inset: 5pt)[This is a figure],\n    caption: [This is a caption]\n  ),&lt;fig12&gt;,\n  columns: (1fr, 1fr),\n  caption: [These are two subfigures.],\n  placement: auto,\n  // label: &lt;fig12&gt;,\n)\n\n#figure(\n  box(stroke: 1pt, inset: 5pt)[This is a figure],\n  caption: [This is a caption],\n) &lt;fig2&gt;\n\nsee @fig11, @fig12, @fig2\n\n</code></pre>\n<p>The “R” is missed when I use the references of subplots:<br>\n<img src=\"https://forum.typst.app/uploads/default/original/1X/9d2923ab805f3bf0e932c776a3f98f3b342b0faa.png\" alt=\"image\" data-base62-sha1=\"mqj6pMkIAw0rW1wLrtugJgaIHTI\" width=\"569\" height=\"202\"></p>",
+      "raw": "When I customize the numbering with the following codes, although the caption is fine, the reference is not correct.\n\n```typ\n#import \"@preview/subpar:0.1.1\"\n\n#show figure.caption: it => (\n  context box(\n    inset: (left: 1em, right: 1em),\n    align(left)[\n      *#it.supplement~#it.counter.display()#it.separator*#it.body\n    ],\n  )\n)\n\n#set figure(numbering: n => [R#n])\n\n#subpar.grid(\n  figure(\n    box(stroke: 1pt, inset: 5pt)[This is a figure],\n    caption: [This is a caption]\n  ), <fig11>,\n  figure(\n    box(stroke: 1pt, inset: 5pt)[This is a figure],\n    caption: [This is a caption]\n  ),<fig12>,\n  columns: (1fr, 1fr),\n  caption: [These are two subfigures.],\n  placement: auto,\n  // label: <fig12>,\n)\n\n#figure(\n  box(stroke: 1pt, inset: 5pt)[This is a figure],\n  caption: [This is a caption],\n) <fig2>\n\nsee @fig11, @fig12, @fig2\n\n```\nThe \"R\" is missed when I use the references of subplots:\n![image|569x202](upload://mqj6pMkIAw0rW1wLrtugJgaIHTI.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 38,
+      "score": 1232.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 556
+    },
+    {
+      "id": 3666,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-10-10T14:58:38.922Z",
+      "updated_at": "2024-10-10T14:58:38.922Z",
+      "cooked": "<p>The reason why this happens is because you have changed <code>figure(numbering)</code> but have not set a specific show rule for <code>ref</code>. You can set it using <code>subpar.grid(numbering-sub-ref: \"R1.a\")</code><br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/1X/5a76eac45a3fbb235c82fec846a4a04118c1a89b.png\" data-download-href=\"https://forum.typst.app/uploads/default/5a76eac45a3fbb235c82fec846a4a04118c1a89b\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/5a76eac45a3fbb235c82fec846a4a04118c1a89b_2_690x235.png\" alt=\"image\" data-base62-sha1=\"cUhKyHC9ITdpJOOFiEdI2dRGNsL\" width=\"690\" height=\"235\" srcset=\"https://forum.typst.app/uploads/default/optimized/1X/5a76eac45a3fbb235c82fec846a4a04118c1a89b_2_690x235.png, https://forum.typst.app/uploads/default/optimized/1X/5a76eac45a3fbb235c82fec846a4a04118c1a89b_2_1035x352.png 1.5x, https://forum.typst.app/uploads/default/original/1X/5a76eac45a3fbb235c82fec846a4a04118c1a89b.png 2x\" data-dominant-color=\"F5F5F5\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">1280×436 53.8 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "The reason why this happens is because you have changed `figure(numbering)` but have not set a specific show rule for `ref`. You can set it using `subpar.grid(numbering-sub-ref: \"R1.a\")`\n![image|690x235](upload://cUhKyHC9ITdpJOOFiEdI2dRGNsL.png)",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 34,
+      "score": 26.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 3732,
+      "post_number": 3,
+      "username": "shhuang",
+      "name": "",
+      "created_at": "2024-10-12T02:30:18.067Z",
+      "updated_at": "2024-10-12T02:30:18.067Z",
+      "cooked": "<p>It worked! Thanks very much!</p>",
+      "raw": "It worked! Thanks very much!",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 30,
+      "score": 20.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 556
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:06.644069"
+}

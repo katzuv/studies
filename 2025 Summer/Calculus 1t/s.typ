@@ -3,10 +3,15 @@
 #show: thmrules.with(qed-symbol: $square$) // Applies theorem styling, QED symbol is optional
 
 #set text(lang: "he", dir: rtl)
+#set heading(numbering: "1.1")
 
 // 2. Define your custom 'theorem' environment
 // The `thmbox` function by default links its numbering to the current heading structure
 // through its `base: "heading"` parameter, which is what we want for "Chapter.Theorem" numbering.
+
+#let all-theorems = state("all-theorems", ())
+#let theorem-counter = counter("theorem")
+
 #let theorem = thmbox(
   "theorem", // This is the unique identifier for the internal counter for theorems
   "משפט", // This is the displayed name of the environment (e.g., "Theorem 1.1")
@@ -15,9 +20,41 @@
   radius: 4pt // Optional: rounds the corners of the theorem box
 )
 
-// 3. Configure document headings to be numbered (e.g., "1.", "2.", etc.)
-// This is essential for the "2.3" style numbering to work correctly.
-#set heading(numbering: "1.")
+#let משפט(body, title: none) = context {
+  let current = here()      // location captured *before* the theorem
+  let t = theorem(title)[#text(body)]
+  t
+  // Get the current location in the document. This is crucial for creating clickable links.
+  let current-location = here()
+  
+  // Format the theorem number (e.g., "1", "1.1" if nested, etc.)
+  let theorem-number = theorem-counter.display()
+  
+  // Create a unique label for this theorem. Labels are necessary for linking.
+  // We use the raw counter value to ensure uniqueness.
+  let theorem-label = "thm-" + str(theorem-counter.get().first())
+
+  // Create the full name/title for the theorem list
+  if 1 < 2 {
+    
+  }
+  let theorem-display-name = "Theorem " + theorem-number + ": " + title
+
+  // Update the global state with the current theorem's information
+  // We append a dictionary with the display name, its location, and its unique label.
+  all-theorems.update(theorems => theorems + ((
+    name: theorem-display-name,
+    location: current-location,
+    label: theorem-label
+  ),))
+
+   all-theorems.update(theorems => theorems + ((
+    name: theorem-display-name,
+    location: current-location,
+    label: theorem-label
+  ),))
+}
+
 
 // 4. Implement the crucial show rule to reset the 'theorem' counter
 // whenever a new level 1 heading appears.
@@ -28,44 +65,49 @@
   it // Render the heading itself
 }
 
-// --- Example Document Content to Demonstrate Numbering ---
 
+
+// --- Example Document Content to Demonstrate Numbering ---
+#theorem($x > 4$)[כי $x=3$ כי]
 = חדו"א 1ת
 #lorem(20) // Some placeholder text
 
-#theorem[
-  כל סדרה
-] // This will be Theorem 1.1
 
-#theorem[
-  The set of rational numbers is dense in the set of real numbers.
-] // This will be Theorem 1.2
+
+#משפט()[פשוט כי $a² + b² = c²$]
+
+#משפט("פיתגורס")[פשוט כי $a² + b² = c²$]
+
+
+// #משפט[
+  // The set of rational numbers is dense in the set of real numbers.
+// ] // This will be Theorem 1.2
 
 == כותרת
 #lorem(15)
 
-#theorem[
-  The Bolzano-Weierstrass theorem states that every bounded sequence in $bb(R)^n$ has a convergent subsequence.
-] // This will be Theorem 1.3
+// #משפט[
+//   The Bolzano-Weierstrass theorem states that every bounded sequence in $bb(R)^n$ has a convergent subsequence.
+// ] <bs>
 
 = Advanced Topics in Calculus
 #lorem(30) // Some placeholder text. This is the second level 1 heading.
 
-#theorem[
-  If a function $f$ is differentiable at a point $a$, then $f$ is continuous at $a$.
-] // **This will be Theorem 2.1** (counter reset for new level 1 heading)
+// #משפט[
+//   If a function $f$ is differentiable at a point $a$, then $f$ is continuous at $a$.
+// ] // **This will be Theorem 2.1** (counter reset for new level 1 heading)
 
-#theorem[
-  The Fundamental Theorem of Calculus establishes a connection between the two main branches of calculus: differential calculus and integral calculus.
-] // This will be Theorem 2.2
+// #משפט[
+//   The Fundamental Theorem of Calculus establishes a connection between the two main branches of calculus: differential calculus and integral calculus.
+// ] // This will be Theorem 2.2
 
-#theorem[
-  For any real number $x$, the exponential function $e^x$ is equal to its own derivative.
-] // **This will be Theorem 2.3**, matching your desired numbering.
+// #משפט[
+//   For any real number $x$, the exponential function $e^x$ is equal to its own derivative.
+// ] // **This will be Theorem 2.3**, matching your desired numbering.
 
 === Further Exploration (Under "Advanced Topics in Calculus")
 #lorem(10)
 
-#theorem[
-  L'Hôpital's Rule can be used to evaluate indeterminate forms of limits.
-] // This will be Theorem 2.4
+// #משפט[
+//   L'Hôpital's Rule can be used to evaluate indeterminate forms of limits.
+// ] // This will be Theorem 2.4

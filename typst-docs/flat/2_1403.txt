@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1403,
+    "title": "Wrong numbering for the equation",
+    "slug": "wrong-numbering-for-the-equation",
+    "posts_count": 3,
+    "created_at": "2024-10-28T20:50:07.583Z",
+    "last_posted_at": "2024-10-28T21:30:32.595Z",
+    "views": 197,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Eric",
+    "tags": [
+      "math",
+      "numbering"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 322
+  },
+  "posts": [
+    {
+      "id": 4781,
+      "post_number": 1,
+      "username": "Chi_Zhang",
+      "name": "Chi Zhang",
+      "created_at": "2024-10-28T20:50:07.680Z",
+      "updated_at": "2024-10-28T20:54:51.624Z",
+      "cooked": "<p>I don’t know whether it’s a bug or if I did something wrong, but the equation numbers aren’t displaying correctly.</p>\n<p>A minimal code:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set page(paper: \"a7\")\n#set heading(numbering: \"1.1\")\n#set math.equation(numbering: \"(1.1)\" )\n= Heading One \n$ y = x^2 + 1 $\n$ y = x^2 + 2 $\n= Heading Two\n$ y = x^2 + 3 $\n</code></pre>\n<p>it gives<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/9/97c47ebbbe7848b807e478851d1ecf7cac8d0f4b.png\" data-download-href=\"https://forum.typst.app/uploads/default/97c47ebbbe7848b807e478851d1ecf7cac8d0f4b\" title=\"Screenshot 2024-10-28 at 21.46.32\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/9/97c47ebbbe7848b807e478851d1ecf7cac8d0f4b_2_606x500.png\" alt=\"Screenshot 2024-10-28 at 21.46.32\" data-base62-sha1=\"lEB5nrV6z7AEoWMIqx2QfqG0tbd\" width=\"606\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/9/97c47ebbbe7848b807e478851d1ecf7cac8d0f4b_2_606x500.png, https://forum.typst.app/uploads/default/original/2X/9/97c47ebbbe7848b807e478851d1ecf7cac8d0f4b.png 1.5x, https://forum.typst.app/uploads/default/original/2X/9/97c47ebbbe7848b807e478851d1ecf7cac8d0f4b.png 2x\" data-dominant-color=\"F5F5F6\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">Screenshot 2024-10-28 at 21.46.32</span><span class=\"informations\">682×562 36.6 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>The expectation is (1.1), (1.2), (2.1). The same issue also happens to figures.</p>",
+      "raw": "I don't know whether it's a bug or if I did something wrong, but the equation numbers aren't displaying correctly.\n\nA minimal code:\n```typst\n#set page(paper: \"a7\")\n#set heading(numbering: \"1.1\")\n#set math.equation(numbering: \"(1.1)\" )\n= Heading One \n$ y = x^2 + 1 $\n$ y = x^2 + 2 $\n= Heading Two\n$ y = x^2 + 3 $\n```\nit gives \n![Screenshot 2024-10-28 at 21.46.32|606x500, 100%](upload://lEB5nrV6z7AEoWMIqx2QfqG0tbd.png)\n\nThe expectation is (1.1), (1.2), (2.1). The same issue also happens to figures.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 32,
+      "score": 886.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 310
+    },
+    {
+      "id": 4782,
+      "post_number": 2,
+      "username": "Eric",
+      "name": "Eric Biedert",
+      "created_at": "2024-10-28T21:06:06.314Z",
+      "updated_at": "2024-10-28T21:06:06.314Z",
+      "cooked": "<p>By just setting the equation numbering to <code>\"(1.1)\"</code>, Typst cannot infer that you wish to have the current heading number there. You need to specify that separately, via a numbering function:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set math.equation(numbering: (..nums) =&gt; {\n  let section = counter(heading).get().first()\n  numbering(\"(1.1)\", section, ..nums)\n})\n</code></pre>\n<p>Doing this will give you the numbers (1.1), (1.2) and (2.3). You see that the equation number also needs to be reset at the start of each section. To achieve that, you can update the heading counter in a show rule for level-1 headings:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show heading.where(level: 1): it =&gt; {\n  counter(math.equation).update(0)\n  it\n}\n</code></pre>\n<p>These two pieces together will then give your expected numbers. To do the same for figures, just copy the first piece (to set the numbering) for figures, and include the counter updates for the various figure kinds in the show rule:</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">counter(figure.where(kind: image)).update(0)\ncounter(figure.where(kind: table)).update(0)\ncounter(figure.where(kind: raw)).update(0)\n// + any custom figure kinds you use in your document\n</code></pre>\n<p>One side effect of this is that if you now reference equations, you no longer get something like “Equation 1”. Instead, the parentheses of the equation numbering is included, resulting in something like “Equation (1.1)”.</p>",
+      "raw": "By just setting the equation numbering to `\"(1.1)\"`, Typst cannot infer that you wish to have the current heading number there. You need to specify that separately, via a numbering function:\n```typ\n#set math.equation(numbering: (..nums) => {\n  let section = counter(heading).get().first()\n  numbering(\"(1.1)\", section, ..nums)\n})\n```\nDoing this will give you the numbers (1.1), (1.2) and (2.3). You see that the equation number also needs to be reset at the start of each section. To achieve that, you can update the heading counter in a show rule for level-1 headings:\n```typ\n#show heading.where(level: 1): it => {\n  counter(math.equation).update(0)\n  it\n}\n```\nThese two pieces together will then give your expected numbers. To do the same for figures, just copy the first piece (to set the numbering) for figures, and include the counter updates for the various figure kinds in the show rule:\n```typc\ncounter(figure.where(kind: image)).update(0)\ncounter(figure.where(kind: table)).update(0)\ncounter(figure.where(kind: raw)).update(0)\n// + any custom figure kinds you use in your document\n```\nOne side effect of this is that if you now reference equations, you no longer get something like \"Equation 1\". Instead, the parentheses of the equation numbering is included, resulting in something like \"Equation (1.1)\".",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 35.8,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 88
+    },
+    {
+      "id": 4783,
+      "post_number": 3,
+      "username": "Chi_Zhang",
+      "name": "Chi Zhang",
+      "created_at": "2024-10-28T21:30:32.595Z",
+      "updated_at": "2024-10-28T21:30:32.595Z",
+      "cooked": "<p>Thank you! It works now, and the current citation style is exactly what I wanted.</p>",
+      "raw": "Thank you! It works now, and the current citation style is exactly what I wanted.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 28,
+      "score": 10.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 310
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:50.052040"
+}

@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 1985,
+    "title": "How to have first line indent in a new paragraph after a math block?",
+    "slug": "how-to-have-first-line-indent-in-a-new-paragraph-after-a-math-block",
+    "posts_count": 2,
+    "created_at": "2024-12-04T20:24:56.320Z",
+    "last_posted_at": "2024-12-04T23:48:44.864Z",
+    "views": 225,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "miles-1",
+    "tags": [
+      "layout",
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 289
+  },
+  "posts": [
+    {
+      "id": 6344,
+      "post_number": 1,
+      "username": "CKB",
+      "name": "CKB",
+      "created_at": "2024-12-04T20:24:56.494Z",
+      "updated_at": "2024-12-04T20:24:56.494Z",
+      "cooked": "<p>Hello. I always use first line indents for my paragraphs. When I write equations in an article, sometimes I add a new paragraph immediately after a math block, like this:</p>\n<pre><code class=\"lang-auto\">    Lorem ipsum dolor sit amet \n             a^2+b^2=c\n    New paragraph should be indented. Lorem ipsum dolor sit amet\n</code></pre>\n<p>Right now Typst seems to not support this, and doesn’t indent my new paragraph after the math block no matter what I do. Here’s what I’ve tried:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set par(first-line-indent: 2em)\n#lorem(30)\n$ A xor B dot.circle C = D^2 mod F^2 $\n\n#parbreak()\nNew paragraph (No indent)\n\nSecond paragraph (Indent appears)\n</code></pre>\n<p>If I were writing in markdown, I would’ve just put a tab before the newline and most software would acknowledge it. Does anyone know how to do this? I am very new to Typst.</p>",
+      "raw": "Hello. I always use first line indents for my paragraphs. When I write equations in an article, sometimes I add a new paragraph immediately after a math block, like this:\n```\n    Lorem ipsum dolor sit amet \n             a^2+b^2=c\n    New paragraph should be indented. Lorem ipsum dolor sit amet\n```\n\nRight now Typst seems to not support this, and doesn't indent my new paragraph after the math block no matter what I do. Here's what I've tried:\n```typ\n#set par(first-line-indent: 2em)\n#lorem(30)\n$ A xor B dot.circle C = D^2 mod F^2 $\n\n#parbreak()\nNew paragraph (No indent)\n\nSecond paragraph (Indent appears)\n```\n\nIf I were writing in markdown, I would've just put a tab before the newline and most software would acknowledge it. Does anyone know how to do this? I am very new to Typst.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 35,
+      "score": 902.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 891
+    },
+    {
+      "id": 6346,
+      "post_number": 2,
+      "username": "miles-1",
+      "name": "miles",
+      "created_at": "2024-12-04T23:48:44.864Z",
+      "updated_at": "2024-12-04T23:57:37.210Z",
+      "cooked": "<p>You’re right, Typst currently only indents successive paragraphs, and doesn’t indent the first paragraph after block content. To work around this, you can use the <a href=\"https://typst.app/docs/reference/layout/h/\"><code>h</code> function</a> (horizontal space function):</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set par(first-line-indent: 2em)\n#lorem(30)\n$ A xor B dot.circle C = D^2 mod F^2 $\n\n#h(2em) New paragraph (now with indent)\n\nSecond paragraph (Indent appears)\n</code></pre>\n<p>If you only use one block equation at a time <strong>and</strong> a paragraph always follows a block equation, you can use a show rule to make this change for all paragraphs:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set par(first-line-indent: 2em)\n\n#show math.equation: it =&gt; {\n  it\n  if it.block {\n    h(2em)\n  }\n}\n\n#lorem(30)\n$ A xor B dot.circle C = D^2 mod F^2 $\n\nNew paragraph (now with indent, even without `h` in front)\n\nSecond paragraph (Indent appears)\n</code></pre>",
+      "raw": "You're right, Typst currently only indents successive paragraphs, and doesn't indent the first paragraph after block content. To work around this, you can use the [`h` function](https://typst.app/docs/reference/layout/h/) (horizontal space function):\n\n```typst\n#set par(first-line-indent: 2em)\n#lorem(30)\n$ A xor B dot.circle C = D^2 mod F^2 $\n\n#h(2em) New paragraph (now with indent)\n\nSecond paragraph (Indent appears)\n```\n\nIf you only use one block equation at a time **and** a paragraph always follows a block equation, you can use a show rule to make this change for all paragraphs:\n\n```typst\n#set par(first-line-indent: 2em)\n\n#show math.equation: it => {\n  it\n  if it.block {\n    h(2em)\n  }\n}\n\n#lorem(30)\n$ A xor B dot.circle C = D^2 mod F^2 $\n\nNew paragraph (now with indent, even without `h` in front)\n\nSecond paragraph (Indent appears)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 34,
+      "score": 81.8,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 177
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:59.601516"
+}

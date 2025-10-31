@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 880,
+    "title": "Tables: It is possible to inherit from 'set table' horizontal align only?",
+    "slug": "tables-it-is-possible-to-inherit-from-set-table-horizontal-align-only",
+    "posts_count": 3,
+    "created_at": "2024-10-02T17:28:19.981Z",
+    "last_posted_at": "2024-10-03T07:48:38.621Z",
+    "views": 75,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "tables"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 341
+  },
+  "posts": [
+    {
+      "id": 3243,
+      "post_number": 1,
+      "username": "jsx97",
+      "name": "jsx97",
+      "created_at": "2024-10-02T17:28:20.101Z",
+      "updated_at": "2024-10-02T18:41:42.327Z",
+      "cooked": "<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set table(align: horizon + start)\n\n// Works fine, but since `start` is already specified in `#set`,\n// I would prefer to not specify it once again.\n#figure(\n  table(\n    columns: 2,\n    table.header([Monday], [Tuesday]),\n    align: top + start,\n\n    [\n      - Lorem ipsum\n      - Lorem ipsum dolor\n    ],\n\n    [\n      - Lorem ipsum\n      - Lorem ipsum dolor\n      - Lorem ipsum\n      - Lorem ipsum dolor\n    ]\n  )\n)\n</code></pre>\n<p>At the top of the document, I have</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set table(align: horizon + start)\n</code></pre>\n<p>And then somewhere in the middle of the document I have a table for which I prefer to use <code>align: top + start</code>.</p>\n<p>Is it possible to make it inherit <code>start</code> from <code>set table</code> instead of specifying it once again? I tried</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">align: top + auto\n</code></pre>\n<p>but this produces an error.</p>",
+      "raw": "```typ\n#set table(align: horizon + start)\n\n// Works fine, but since `start` is already specified in `#set`,\n// I would prefer to not specify it once again.\n#figure(\n  table(\n    columns: 2,\n    table.header([Monday], [Tuesday]),\n    align: top + start,\n\n    [\n      - Lorem ipsum\n      - Lorem ipsum dolor\n    ],\n\n    [\n      - Lorem ipsum\n      - Lorem ipsum dolor\n      - Lorem ipsum\n      - Lorem ipsum dolor\n    ]\n  )\n)\n```\n\nAt the top of the document, I have\n\n```typ\n#set table(align: horizon + start)\n```\n\nAnd then somewhere in the middle of the document I have a table for which I prefer to use `align: top + start`.\n\nIs it possible to make it inherit `start` from `set table` instead of specifying it once again? I tried\n\n```typ\nalign: top + auto\n```\n\nbut this produces an error.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 210.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 477
+    },
+    {
+      "id": 3245,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2024-10-02T17:40:35.271Z",
+      "updated_at": "2024-10-02T17:42:25.059Z",
+      "cooked": "<p>I’m fairly confident that for alignment you have to repeat both parts. It probably has to do with implicit defaults. Like when you write <code>top</code> it implicitly adds a default <code>center</code>. So, no, not possible. I might be wrong as I never faced this or haven’t faced enough to be 100% sure.</p>\n<p>To be honest, I think this applies to any type. <code>stroke</code> has the same story: you can’t just make it <code>2em + yellow</code> and then somewhere set it to <code>red</code> and expect it to also be <code>2em</code>. Although I haven’t tried this with <code>stroke</code> as <code>dictionary</code>, maybe if you set <code>(paint: blue, thickness: 4pt)</code>, then you can preserve <code>(thickness: 4pt)</code> by specifying just <code>(paint: red)</code>.</p>",
+      "raw": "I'm fairly confident that for alignment you have to repeat both parts. It probably has to do with implicit defaults. Like when you write `top` it implicitly adds a default `center`. So, no, not possible. I might be wrong as I never faced this or haven't faced enough to be 100% sure.\n\nTo be honest, I think this applies to any type. `stroke` has the same story: you can't just make it `2em + yellow` and then somewhere set it to `red` and expect it to also be `2em`. Although I haven't tried this with `stroke` as `dictionary`, maybe if you set `(paint: blue, thickness: 4pt)`, then you can preserve `(thickness: 4pt)` by specifying just `(paint: red)`.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 21,
+      "score": 24.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    },
+    {
+      "id": 3289,
+      "post_number": 3,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2024-10-03T07:48:38.621Z",
+      "updated_at": "2024-10-03T07:49:08.626Z",
+      "cooked": "<p>What you can do is access the current <code>table.align</code> value to make the new value. For this you need a context:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set table(align: horizon + start)\n\n#figure(\n  context table(\n    columns: 2,\n    table.header([Monday], [Tuesday]),\n    align: top + table.align.x,\n    [\n      - Lorem ipsum\n      - Lorem ipsum dolor\n    ],\n\n    [\n      - Lorem ipsum\n      - Lorem ipsum dolor\n      - Lorem ipsum\n      - Lorem ipsum dolor\n    ]\n  )\n)\n</code></pre>\n<p><a class=\"mention\" href=\"/u/andrew\">@Andrew</a> for stroke I just checked and it turns out each value <em>is</em> inherited! (see documentation <a href=\"https://typst.app/docs/reference/visualize/stroke/#simple-strokes\">here</a>). For example:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set line(length: 1cm, stroke: (paint: blue, thickness: 4pt))\n#line()\n\n#set line(stroke: red)\n#line()\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/1X/7c60a477bec51da233ce6d071069696556049016.png\" alt=\"image\" data-base62-sha1=\"hKigeuuQgRLHd9Pr0itIrMK8aeG\" width=\"101\" height=\"61\"></p>",
+      "raw": "What you can do is access the current `table.align` value to make the new value. For this you need a context:\n\n```typ\n#set table(align: horizon + start)\n\n#figure(\n  context table(\n    columns: 2,\n    table.header([Monday], [Tuesday]),\n    align: top + table.align.x,\n    [\n      - Lorem ipsum\n      - Lorem ipsum dolor\n    ],\n\n    [\n      - Lorem ipsum\n      - Lorem ipsum dolor\n      - Lorem ipsum\n      - Lorem ipsum dolor\n    ]\n  )\n)\n```\n\n@Andrew for stroke I just checked and it turns out each value _is_ inherited! (see documentation [here](https://typst.app/docs/reference/visualize/stroke/#simple-strokes)). For example:\n\n```typ\n#set line(length: 1cm, stroke: (paint: blue, thickness: 4pt))\n#line()\n\n#set line(stroke: red)\n#line()\n```\n\n![image|101x61](upload://hKigeuuQgRLHd9Pr0itIrMK8aeG.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 22,
+      "score": 24.4,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:30.387230"
+}

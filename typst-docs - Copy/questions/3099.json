@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3099,
+    "title": "How do you do array calculations?",
+    "slug": "how-do-you-do-array-calculations",
+    "posts_count": 3,
+    "created_at": "2025-03-04T12:00:32.147Z",
+    "last_posted_at": "2025-03-04T13:02:38.878Z",
+    "views": 163,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 467
+  },
+  "posts": [
+    {
+      "id": 9359,
+      "post_number": 1,
+      "username": "Max1",
+      "name": "",
+      "created_at": "2025-03-04T12:00:32.285Z",
+      "updated_at": "2025-03-04T12:51:01.039Z",
+      "cooked": "<p>I stumbled into the wish to do array calculation (at least some basics like element-wise multiplication, multiplication by float, substraction, …).<br>\nEspecially when doing some cetz plots it would make some coordinate calculations much easier.</p>\n<p>According to <a href=\"https://typst.app/docs/reference/foundations/array/\" class=\"inline-onebox\">Array Type – Typst Documentation</a> only addition and multiplication by an integer can be done in typst.<br>\nWhile I do not really understand the reasons (an explanation would be nice just to understand whether this is something on the roadmap or intended by design) I would like to know how others are solving this.</p>\n<ul>\n<li>Are you writing custom functions that you reuse?</li>\n<li>Are you doing it element wise “by-hand”?</li>\n<li>Is there any package I’m not aware of?</li>\n<li>Am I wrong and there is a typst way to do it?</li>\n</ul>",
+      "raw": "I stumbled into the wish to do array calculation (at least some basics like element-wise multiplication, multiplication by float, substraction, ...).\nEspecially when doing some cetz plots it would make some coordinate calculations much easier.\n\nAccording to https://typst.app/docs/reference/foundations/array/ only addition and multiplication by an integer can be done in typst.\nWhile I do not really understand the reasons (an explanation would be nice just to understand whether this is something on the roadmap or intended by design) I would like to know how others are solving this.\n\n - Are you writing custom functions that you reuse?\n - Are you doing it element wise \"by-hand\"?\n - Is there any package I'm not aware of?\n - Am I wrong and there is a typst way to do it?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 35,
+      "score": 697.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1298
+    },
+    {
+      "id": 9365,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-03-04T12:50:51.337Z",
+      "updated_at": "2025-03-04T13:48:15.858Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/max1\">@Max1</a>, welcome to the forum! I have edited the title of your question to follow our <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">guidelines</a>.</p>\n<p>Note that the “addition” and “multiplication” of several arrays in Typst are not mathematical operations: <code>array1 + array1</code> will concatenate the arrays and <code>array1 * 3</code> will concatenate 3 copies of <code>array1</code>.</p>\n<p>For actual math operations, you have the functions <code>array.sum</code> and <code>array.product</code> that operate on the elements of an array:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#(1,2,3).product()  // returns 6\n</code></pre>\n<p>For operations with several arrays, you can use arrays functions like <code>map</code>, <code>zip</code> and <code>fold</code> to implement some of them easily. For example the sum of two vectors:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let a = (1, 2, 3)\n#let b = (0, 10, 100)\n\n// Returns (1, 12 ,103)\n#a.zip(b).map(array.sum)\n</code></pre>\n<p>I recently posted an example implementation of matrix multiplication along these lines: <a href=\"https://forum.typst.app/t/minimal-implementation-of-matrix-multiplication/2959\" class=\"inline-onebox\">Minimal implementation of matrix multiplication</a></p>\n<p>For heavy usage you can try to find a package that implements what you need. At some point there will probably be a comprehensive numerical package in the form of a WebAssembly plugin but I don’t think we’re there yet. But CeTZ itself has a lot of vector and matrix functions that you can access with <code>cetz.util.vector</code> and <code>cetz.util.matrix</code>. See for example <a href=\"https://cetz-package.github.io/docs/api/internal/vector/\">here</a> for the vector documentation. Note that these functions are documented as internals, so I guess they might change even in minor updates of the CeTZ package.</p>",
+      "raw": "Hi @Max1, welcome to the forum! I have edited the title of your question to follow our [guidelines](https://forum.typst.app/t/how-to-post-in-the-questions-category/11).\n\nNote that the \"addition\" and \"multiplication\" of several arrays in Typst are not mathematical operations: `array1 + array1` will concatenate the arrays and `array1 * 3` will concatenate 3 copies of `array1`.\n\nFor actual math operations, you have the functions `array.sum` and `array.product` that operate on the elements of an array:\n\n```typ\n#(1,2,3).product()  // returns 6\n```\n\nFor operations with several arrays, you can use arrays functions like `map`, `zip` and `fold` to implement some of them easily. For example the sum of two vectors:\n\n```typ\n#let a = (1, 2, 3)\n#let b = (0, 10, 100)\n\n// Returns (1, 12 ,103)\n#a.zip(b).map(array.sum)\n```\n\nI recently posted an example implementation of matrix multiplication along these lines: https://forum.typst.app/t/minimal-implementation-of-matrix-multiplication/2959\n\nFor heavy usage you can try to find a package that implements what you need. At some point there will probably be a comprehensive numerical package in the form of a WebAssembly plugin but I don't think we're there yet. But CeTZ itself has a lot of vector and matrix functions that you can access with `cetz.util.vector` and `cetz.util.matrix`. See for example [here](https://cetz-package.github.io/docs/api/internal/vector/) for the vector documentation. Note that these functions are documented as internals, so I guess they might change even in minor updates of the CeTZ package.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 34,
+      "score": 51.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    },
+    {
+      "id": 9367,
+      "post_number": 3,
+      "username": "Max1",
+      "name": "",
+      "created_at": "2025-03-04T13:02:38.878Z",
+      "updated_at": "2025-03-04T13:02:38.878Z",
+      "cooked": "<p>Thanks a lot for the answer.</p>\n<p>Obviously misunderstood the part about addition and multiplication and didn’t test it enough to see the mistake <img src=\"https://forum.typst.app/images/emoji/apple/man_facepalming.png?v=12\" title=\":man_facepalming:\" class=\"emoji\" alt=\":man_facepalming:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>\n<p>I knew about the <code>array.sum</code> and <code>array.product</code> functions but didn’t think much further. Quite elegant way how you implemented the basic stuff. Never came into my mind doing it that way <img src=\"https://forum.typst.app/images/emoji/apple/sweat_smile.png?v=12\" title=\":sweat_smile:\" class=\"emoji\" alt=\":sweat_smile:\" loading=\"lazy\" width=\"20\" height=\"20\">  Thanks a lot <img src=\"https://forum.typst.app/images/emoji/apple/blush.png?v=12\" title=\":blush:\" class=\"emoji\" alt=\":blush:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>\n<p>Also thanks for the hint to cetz internals.</p>",
+      "raw": "Thanks a lot for the answer. \n\nObviously misunderstood the part about addition and multiplication and didn't test it enough to see the mistake :man_facepalming: \n\nI knew about the `array.sum` and `array.product` functions but didn't think much further. Quite elegant way how you implemented the basic stuff. Never came into my mind doing it that way :sweat_smile:  Thanks a lot :blush: \n\nAlso thanks for the hint to cetz internals.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 31,
+      "score": 21.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1298
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:45.277900"
+}

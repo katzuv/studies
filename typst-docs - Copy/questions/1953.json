@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1953,
+    "title": "How to customize page header with current or previous level 1 headline displayed in corner?",
+    "slug": "how-to-customize-page-header-with-current-or-previous-level-1-headline-displayed-in-corner",
+    "posts_count": 3,
+    "created_at": "2024-12-02T16:24:59.095Z",
+    "last_posted_at": "2024-12-02T18:47:21.043Z",
+    "views": 510,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "PgBiel",
+    "tags": [
+      "scripting",
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 761
+  },
+  "posts": [
+    {
+      "id": 6248,
+      "post_number": 1,
+      "username": "MrConfuse",
+      "name": "MrConfuse",
+      "created_at": "2024-12-02T16:24:59.231Z",
+      "updated_at": "2024-12-02T18:45:38.768Z",
+      "cooked": "<p>Hi, I’m fairly new to Typst and I am currently porting my LaTeX doc over to Typst. The styling of that document has a dynamic headline of the current headline the text belongs to, or the first headline on that page. While trying to achieve just that I have hit a few road blocks which I managed to clear, but this one has some weird behavior with the state-Type I have not been able to figure out.</p>\n<p>The code as it is now:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let ht-first = state(\"page-first-section\", [])\n#ht-first.\n#set page(header: {\n  let first-heading = context query(\n    heading.where(level: 1)).find(h =&gt; h.location().page() == here().page())\n// find last heading of level 1 on current page\n\n  context ht-first.get()\n\n  // Title top left\n  set text(8pt)\n  place(top + left,smallcaps[#{\n    context if query(\n    heading.where(level: 1)).find(h =&gt; h.location().page() == here().page()) == none {\n\n    context ht-first.at(here())\n    \n    }\n    else {\n      ht-first.update([#heading(first-heading).body])\n      ht-first.at(here())\n      \n    }\n  }], dy: 1.2cm)\n  // Numbering top right\n  context place(top + right, text(10pt, numbering(here().page-numbering(), counter(page).at(here()).first())), dy: 1.25cm)\n  // horizontal line underneath\n  line(length: 100%)\n  }\n)\n</code></pre>\n<p>The goal here is to dynamically display the first level 1headline of the page, or the last level 1 headline of the previous page-/s. The current headline (as in, defined on that page) does work and will display correctly. I want to store that headline in this state:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let ht-first = state(\"page-first-section\", [])\n</code></pre>\n<p>For some reason however, the state will be empty by the time the next page without headline comes along. Manually overriding the state on the page using <code>#ht-first.update(\"Some arbitrary text\")</code> does work for that single page, before going back to the non working state.<br>\nIdeally this would also carry over the latest level 1 headline of the previous page, if there is no headline on the current page.</p>\n<p>I also found <a href=\"https://stackoverflow.com/questions/76363935/typst-header-that-changes-from-page-to-page-based-on-state\" rel=\"noopener nofollow ugc\">this</a> StackOverflow post that has done this exact thing in the past, however, this does not seem to work anymore.</p>\n<p>Any ideas and hints would be greatly appreciated!</p>\n<p>Update:<br>\nAfter posting this I, as is usual, thought of the solution, so here is a cleaned up working example of my code:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(header: context\n{\n  // Title top left\n  set text(10pt)\n  place(top + left, {\n    if query(heading.where(level: 1))\n    .find(h =&gt; h.location().page() == here().page()) == none {\n      // Filter headers that come after the current page\n      let smh = query(heading.where(level: 1)).filter(h =&gt; h.location().page() &lt;= here().page())\n      smh.last().body // last element in array is newest level 1 headline\n    } else {\n      let onPageHeading = query(heading.where(level: 1)).filter(h =&gt; h.location().page() == here().page())\n      onPageHeading.first().body\n    }\n  }, dy: 1.25cm)\n\n  // Numbering top right\n  place(top + right, numbering(here().page-numbering(), counter(page).at(here()).first()), dy: 1.25cm)\n  // horizontal line underneath\n  line(length: 100%)\n})\n</code></pre>\n<p>One question remains, however: Is there a simpler/faster/better solution?</p>",
+      "raw": "Hi, I'm fairly new to Typst and I am currently porting my LaTeX doc over to Typst. The styling of that document has a dynamic headline of the current headline the text belongs to, or the first headline on that page. While trying to achieve just that I have hit a few road blocks which I managed to clear, but this one has some weird behavior with the state-Type I have not been able to figure out.\n\nThe code as it is now:\n```typ\n#let ht-first = state(\"page-first-section\", [])\n#ht-first.\n#set page(header: {\n  let first-heading = context query(\n    heading.where(level: 1)).find(h => h.location().page() == here().page())\n// find last heading of level 1 on current page\n\n  context ht-first.get()\n\n  // Title top left\n  set text(8pt)\n  place(top + left,smallcaps[#{\n    context if query(\n    heading.where(level: 1)).find(h => h.location().page() == here().page()) == none {\n\n    context ht-first.at(here())\n    \n    }\n    else {\n      ht-first.update([#heading(first-heading).body])\n      ht-first.at(here())\n      \n    }\n  }], dy: 1.2cm)\n  // Numbering top right\n  context place(top + right, text(10pt, numbering(here().page-numbering(), counter(page).at(here()).first())), dy: 1.25cm)\n  // horizontal line underneath\n  line(length: 100%)\n  }\n)\n```\nThe goal here is to dynamically display the first level 1headline of the page, or the last level 1 headline of the previous page-/s. The current headline (as in, defined on that page) does work and will display correctly. I want to store that headline in this state:\n```typ\n#let ht-first = state(\"page-first-section\", [])\n```\nFor some reason however, the state will be empty by the time the next page without headline comes along. Manually overriding the state on the page using ```#ht-first.update(\"Some arbitrary text\")``` does work for that single page, before going back to the non working state.\nIdeally this would also carry over the latest level 1 headline of the previous page, if there is no headline on the current page.\n\nI also found [this](https://stackoverflow.com/questions/76363935/typst-header-that-changes-from-page-to-page-based-on-state) StackOverflow post that has done this exact thing in the past, however, this does not seem to work anymore.\n\nAny ideas and hints would be greatly appreciated!\n\nUpdate:\nAfter posting this I, as is usual, thought of the solution, so here is a cleaned up working example of my code:\n```typ\n#set page(header: context\n{\n  // Title top left\n  set text(10pt)\n  place(top + left, {\n    if query(heading.where(level: 1))\n    .find(h => h.location().page() == here().page()) == none {\n      // Filter headers that come after the current page\n      let smh = query(heading.where(level: 1)).filter(h => h.location().page() <= here().page())\n      smh.last().body // last element in array is newest level 1 headline\n    } else {\n      let onPageHeading = query(heading.where(level: 1)).filter(h => h.location().page() == here().page())\n      onPageHeading.first().body\n    }\n  }, dy: 1.25cm)\n\n  // Numbering top right\n  place(top + right, numbering(here().page-numbering(), counter(page).at(here()).first()), dy: 1.25cm)\n  // horizontal line underneath\n  line(length: 100%)\n})\n```\n\nOne question remains, however: Is there a simpler/faster/better solution?",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 44,
+      "score": 2368.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 879
+    },
+    {
+      "id": 6258,
+      "post_number": 2,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-12-02T18:45:41.499Z",
+      "updated_at": "2024-12-02T18:45:41.499Z",
+      "cooked": "<p>Hey <a class=\"mention\" href=\"/u/mrconfuse\">@MrConfuse</a>, welcome to the forum! I’ve changed your question post’s title to better fit our guidelines: <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">How to post in the Questions category</a></p>\n<p>For future posts, make sure your title is a question you’d ask to a friend about Typst. <img src=\"https://forum.typst.app/images/emoji/apple/wink.png?v=12\" title=\":wink:\" class=\"emoji\" alt=\":wink:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>\n<p>In addition, instead of editing your post and prefixing your title with “[Solved]”, please either post your solution as a reply to your post and mark it as a Solution, or wait for someone to answer and do so for their answer if it solves your problem. This allows for easy filtering of solved posts in the forum, and also displays the solution in a dedicated box under your original post. Thank you!</p>",
+      "raw": "Hey @MrConfuse, welcome to the forum! I’ve changed your question post’s title to better fit our guidelines: [How to post in the Questions category](https://forum.typst.app/t/how-to-post-in-the-questions-category/11)\n\nFor future posts, make sure your title is a question you’d ask to a friend about Typst. :wink:\n\nIn addition, instead of editing your post and prefixing your title with \"[Solved]\", please either post your solution as a reply to your post and mark it as a Solution, or wait for someone to answer and do so for their answer if it solves your problem. This allows for easy filtering of solved posts in the forum, and also displays the solution in a dedicated box under your original post. Thank you!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 40,
+      "score": 67.6,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    },
+    {
+      "id": 6259,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-12-02T18:47:21.043Z",
+      "updated_at": "2024-12-02T18:49:42.600Z",
+      "cooked": "<aside class=\"quote no-group\" data-username=\"MrConfuse\" data-post=\"1\" data-topic=\"1953\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/letter_avatar_proxy/v4/letter/m/DF681B/48.png\" class=\"avatar\"> MrConfuse:</div>\n<blockquote>\n<p>One question remains, however: Is there a simpler/faster/better solution?</p>\n</blockquote>\n</aside>\n<p>Someone already did this for you! Check out the <code>hydra</code> package:</p><aside class=\"onebox allowlistedgeneric\" data-onebox-src=\"https://typst.app/universe/package/hydra/\">\n  <header class=\"source\">\n      <img src=\"https://forum.typst.app/uploads/default/original/1X/098187a593d51c4db99324614e2baeeb1bb355cc.png\" class=\"site-icon\" data-dominant-color=\"3CA8B6\" width=\"32\" height=\"32\">\n\n      <a href=\"https://typst.app/universe/package/hydra/\" target=\"_blank\" rel=\"noopener\">Typst</a>\n  </header>\n\n  <article class=\"onebox-body\">\n    <div class=\"aspect-image\" style=\"--aspect-ratio:690/361;\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/db1c18ed802fe6841bee62606931f352da10ed09_2_690x362.png\" class=\"thumbnail\" data-dominant-color=\"7CC2C5\" width=\"690\" height=\"362\"></div>\n\n<h3><a href=\"https://typst.app/universe/package/hydra/\" target=\"_blank\" rel=\"noopener\">hydra – Typst Universe</a></h3>\n\n  <p>Query and display headings in your documents and templates.</p>\n\n\n  </article>\n\n  <div class=\"onebox-metadata\">\n    \n    \n  </div>\n\n  <div style=\"clear: both\"></div>\n</aside>\n\n<p>Regarding placing the heading on the left and the page number on the right, instead of placing left and right at the same time, I recommend placing both at the same line with a filling space between them:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">// Displays \"Left\" to the left and \"Right\" to the right\nLeft #h(1fr) Right\n</code></pre>\n<p>For more complex setups (with, say, three sections in the header instead of just two), use a multi-column grid (<a href=\"https://typst.app/docs/reference/layout/grid/\" class=\"inline-onebox\">Grid Function – Typst Documentation</a>).</p>",
+      "raw": "[quote=\"MrConfuse, post:1, topic:1953\"]\nOne question remains, however: Is there a simpler/faster/better solution?\n[/quote]\n\nSomeone already did this for you! Check out the `hydra` package:\nhttps://typst.app/universe/package/hydra/\n\nRegarding placing the heading on the left and the page number on the right, instead of placing left and right at the same time, I recommend placing both at the same line with a filling space between them:\n\n```typ\n// Displays \"Left\" to the left and \"Right\" to the right\nLeft #h(1fr) Right\n```\n\nFor more complex setups (with, say, three sections in the header instead of just two), use a multi-column grid (https://typst.app/docs/reference/layout/grid/).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 0,
+      "reads": 40,
+      "score": 87.6,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:10.830795"
+}

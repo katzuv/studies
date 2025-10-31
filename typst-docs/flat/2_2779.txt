@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2779,
+    "title": "How can I keep annotations (like circles) from being distorted in a plot with different axis scales?",
+    "slug": "how-can-i-keep-annotations-like-circles-from-being-distorted-in-a-plot-with-different-axis-scales",
+    "posts_count": 2,
+    "created_at": "2025-02-11T21:44:38.415Z",
+    "last_posted_at": "2025-02-12T09:45:38.704Z",
+    "views": 54,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "cetz"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 249
+  },
+  "posts": [
+    {
+      "id": 8481,
+      "post_number": 1,
+      "username": "Mathemensch",
+      "name": "Alexander Schulz",
+      "created_at": "2025-02-11T21:44:38.535Z",
+      "updated_at": "2025-02-12T07:05:14.557Z",
+      "cooked": "<p>Hey everyone,</p>\n<p>I’m working with plots in Typst and I’m running into an issue with annotations. When I add shapes like circles or rectangles using plot.annotate(), they get distorted if the x- and y-axes have different scales. This makes sense mathematically, but I’m wondering if there’s a way to keep shapes (especially circles) looking correct without manually adjusting their dimensions based on the axis ratio.</p>\n<p>Does anyone have a good approach for this? I’ve put together a small example with code:<br>\n<a href=\"https://typst.app/project/rcrQ4svHRC346ata25RcZk\" class=\"onebox\" target=\"_blank\" rel=\"noopener\">https://typst.app/project/rcrQ4svHRC346ata25RcZk</a></p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">plot.plot(\n      size: (10, 5),\n      axis-style: \"school-book\",\n      x-tick-step: 1,\n      y-tick-step: 10,\n      x-max: 10,\n      y-max: 100,\n      {\n        plot.add(\n          style: (stroke: blue + 1.5pt),\n          domain: (0, 10),\n          x =&gt; calc.pow(x, 2),\n        )\n        plot.annotate({\n          circle((8, 64), radius: 2, fill: red)\n        })\n      },\n    )\n</code></pre>\n<p>Would love to hear your thoughts!</p>\n<p>Thanks!</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/1/11c006e39861357ba7bc4d63bff82a2ff74fde14.png\" data-download-href=\"https://forum.typst.app/uploads/default/11c006e39861357ba7bc4d63bff82a2ff74fde14\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/1/11c006e39861357ba7bc4d63bff82a2ff74fde14_2_690x391.png\" alt=\"image\" data-base62-sha1=\"2x1x1UztUl6sKWEB0FHVwXfSUII\" width=\"690\" height=\"391\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/1/11c006e39861357ba7bc4d63bff82a2ff74fde14_2_690x391.png, https://forum.typst.app/uploads/default/original/2X/1/11c006e39861357ba7bc4d63bff82a2ff74fde14.png 1.5x, https://forum.typst.app/uploads/default/original/2X/1/11c006e39861357ba7bc4d63bff82a2ff74fde14.png 2x\" data-dominant-color=\"F9F9FA\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">868×492 46.8 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "Hey everyone,\n\nI’m working with plots in Typst and I’m running into an issue with annotations. When I add shapes like circles or rectangles using plot.annotate(), they get distorted if the x- and y-axes have different scales. This makes sense mathematically, but I’m wondering if there’s a way to keep shapes (especially circles) looking correct without manually adjusting their dimensions based on the axis ratio.\n\nDoes anyone have a good approach for this? I’ve put together a small example with code:\nhttps://typst.app/project/rcrQ4svHRC346ata25RcZk\n\n```typ\nplot.plot(\n      size: (10, 5),\n      axis-style: \"school-book\",\n      x-tick-step: 1,\n      y-tick-step: 10,\n      x-max: 10,\n      y-max: 100,\n      {\n        plot.add(\n          style: (stroke: blue + 1.5pt),\n          domain: (0, 10),\n          x => calc.pow(x, 2),\n        )\n        plot.annotate({\n          circle((8, 64), radius: 2, fill: red)\n        })\n      },\n    )\n```\n\nWould love to hear your thoughts!\n\nThanks!\n\n![image|690x391](upload://2x1x1UztUl6sKWEB0FHVwXfSUII.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 54.6,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 307
+    },
+    {
+      "id": 8498,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-02-12T09:45:38.704Z",
+      "updated_at": "2025-02-12T09:45:38.704Z",
+      "cooked": "<p>You could use <code>plot.add()</code> to add data points with a specific marker</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">plot.add(\n  mark: \"o\",\n  style: (stroke: none),\n  ((8, 64), (9, 81))\n)\n</code></pre>\n<p>You can use the arguments <code>mark-size</code> and <code>mark-style</code> to adjust the annotations. Setting the stroke style to <code>none</code> is only necessary if you add multiple points with the same function call.</p>\n<p>The available markers are shown in the source code in <a href=\"https://github.com/cetz-package/cetz-plot/blob/master/src/plot/mark.typ\" rel=\"noopener nofollow ugc\">mark.typ</a>. I couldn’t find a list of all available markers in the manual.</p>",
+      "raw": "You could use `plot.add()` to add data points with a specific marker\n\n```typc\nplot.add(\n  mark: \"o\",\n  style: (stroke: none),\n  ((8, 64), (9, 81))\n)\n```\n\nYou can use the arguments `mark-size` and `mark-style` to adjust the annotations. Setting the stroke style to `none` is only necessary if you add multiple points with the same function call.\n\nThe available markers are shown in the source code in [mark.typ](https://github.com/cetz-package/cetz-plot/blob/master/src/plot/mark.typ). I couldn't find a list of all available markers in the manual.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 20,
+      "score": 9.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:45.998779"
+}

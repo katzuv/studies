@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1255,
+    "title": "How to organize Projects in the web app?",
+    "slug": "how-to-organize-projects-in-the-web-app",
+    "posts_count": 3,
+    "created_at": "2024-10-21T11:05:02.389Z",
+    "last_posted_at": "2024-12-10T18:24:18.591Z",
+    "views": 133,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "laurmaedje",
+    "tags": [
+      "web-app"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 87
+  },
+  "posts": [
+    {
+      "id": 4395,
+      "post_number": 1,
+      "username": "Derivat",
+      "name": "",
+      "created_at": "2024-10-21T11:05:02.528Z",
+      "updated_at": "2024-12-15T10:26:28.507Z",
+      "cooked": "<p>I use the Typst web app to write my homework several times every week. I’ve been doing that for a while, but now there are just too many projects.<br>\nAre there any features for organizing implemented in the web app such as labels, tags or folders?</p>",
+      "raw": "I use the Typst web app to write my homework several times every week. I've been doing that for a while, but now there are just too many projects.\nAre there any features for organizing implemented in the web app such as labels, tags or folders?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 44,
+      "score": 78.8,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 642
+    },
+    {
+      "id": 6459,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-12-10T11:11:55.509Z",
+      "updated_at": "2024-12-11T07:11:54.329Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/derivat\">@Derivat</a>,<br>\nI think there has been discourse off the forum. I think <a class=\"mention\" href=\"/u/laurmaedje\">@laurmaedje</a> would be the most knowledgeable to give an answer on the progress</p>",
+      "raw": "Hello @Derivat,\nI think there has been discourse off the forum. I think @laurmaedje would be the most knowledgeable to give an answer on the progress",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 35,
+      "score": 7.0,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 6477,
+      "post_number": 3,
+      "username": "laurmaedje",
+      "name": "Laurenz Mädje",
+      "created_at": "2024-12-10T18:24:18.591Z",
+      "updated_at": "2024-12-10T18:24:18.591Z",
+      "cooked": "<p>There are no project folders yet, but we have plans to add that feature.</p>",
+      "raw": "There are no project folders yet, but we have plans to add that feature.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 32,
+      "score": 41.4,
+      "accepted_answer": true,
+      "trust_level": 4,
+      "user_id": 2
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:18.543049"
+}

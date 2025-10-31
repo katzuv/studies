@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 1657,
+    "title": "How to apply set rules to custom functions?",
+    "slug": "how-to-apply-set-rules-to-custom-functions",
+    "posts_count": 2,
+    "created_at": "2024-11-10T14:44:48.809Z",
+    "last_posted_at": "2024-11-10T15:39:00.397Z",
+    "views": 388,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "scripting",
+      "packages"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 149
+  },
+  "posts": [
+    {
+      "id": 5458,
+      "post_number": 1,
+      "username": "MartyByrde",
+      "name": "MartyByrde",
+      "created_at": "2024-11-10T14:44:49.058Z",
+      "updated_at": "2024-11-10T14:44:49.058Z",
+      "cooked": "<p>Hey guys I am frequently using function in my documents. For example</p>\n<pre><code class=\"lang-auto\">#let formatXY(msg, color: blue) = {\ntext(msg, color)\n}\n</code></pre>\n<p>Now having declared a function we can simply use it and provide arguments to it. Like:</p>\n<pre><code class=\"lang-auto\">Some paragraph #formatXY(\"test\")\n</code></pre>\n<p>My question now is how to for instance set the color of all future formatXY calls to be red instead. When trying to use a set / show rule, I get the hint / error that: “only element functions can be used in set rules”.</p>\n<p>For example: <code>#set formatXY(color:red)</code></p>\n<p>Has anyone of you figured this one out or is it impossible to use show / set rules for custom functions?</p>",
+      "raw": "Hey guys I am frequently using function in my documents. For example\n```\n#let formatXY(msg, color: blue) = {\ntext(msg, color)\n}\n```\nNow having declared a function we can simply use it and provide arguments to it. Like:\n\n```\nSome paragraph #formatXY(\"test\")\n```\n\nMy question now is how to for instance set the color of all future formatXY calls to be red instead. When trying to use a set / show rule, I get the hint / error that: \"only element functions can be used in set rules\".\n\nFor example: `#set formatXY(color:red)`\n\nHas anyone of you figured this one out or is it impossible to use show / set rules for custom functions?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 44,
+      "score": 1768.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 689
+    },
+    {
+      "id": 5466,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2024-11-10T15:39:00.397Z",
+      "updated_at": "2024-11-10T15:41:37.416Z",
+      "cooked": "<p>Hi,</p>\n<p>you can overwrite your function like this.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let formatXY = formatXY.with(color: red)\n</code></pre>\n<p>It will be possible to use show / set on custom functions in the future with custom elements, but for now you can use the above.</p>",
+      "raw": "Hi,\n\nyou can overwrite your function like this.\n```typst\n#let formatXY = formatXY.with(color: red)\n```\nIt will be possible to use show / set on custom functions in the future with custom elements, but for now you can use the above.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 44,
+      "score": 133.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:11.741112"
+}

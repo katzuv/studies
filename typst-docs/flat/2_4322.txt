@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 4322,
+    "title": "Is there a work around for DOI links in bibliographies not spanning the whole URL?",
+    "slug": "is-there-a-work-around-for-doi-links-in-bibliographies-not-spanning-the-whole-url",
+    "posts_count": 3,
+    "created_at": "2025-05-27T07:22:34.702Z",
+    "last_posted_at": "2025-05-27T08:10:19.140Z",
+    "views": 30,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "literature",
+      "citation"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 374
+  },
+  "posts": [
+    {
+      "id": 13226,
+      "post_number": 1,
+      "username": "Marcel",
+      "name": "Marcel",
+      "created_at": "2025-05-27T07:22:34.783Z",
+      "updated_at": "2025-05-27T12:03:40.291Z",
+      "cooked": "<p>Hello,</p>\n<p>is there a work around for the Issue showcased <a href=\"https://github.com/typst/hayagriva/issues/114#issuecomment-2781361465\" rel=\"noopener nofollow ugc\">here</a>? The doi prefix does not link to the right place. I need to use APA and have the right prefix. This is kinda urgent…</p>",
+      "raw": "Hello,\n\nis there a work around for the Issue showcased [here](https://github.com/typst/hayagriva/issues/114#issuecomment-2781361465)? The doi prefix does not link to the right place. I need to use APA and have the right prefix. This is kinda urgent..",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 20,
+      "score": 14.0,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1664
+    },
+    {
+      "id": 13229,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-05-27T07:49:00.251Z",
+      "updated_at": "2025-05-27T07:49:00.251Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/marcel\">@Marcel</a>, welcome and thank you for your question! I have changed your post’s title to bring it in line with the <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">question guidelines</a> and thus make it easier to understand from the title:</p>\n<blockquote>\n<p><strong>Good titles are questions you would ask your friend about Typst.</strong></p>\n</blockquote>",
+      "raw": "Hi @Marcel, welcome and thank you for your question! I have changed your post’s title to bring it in line with the [question guidelines](https://forum.typst.app/t/how-to-post-in-the-questions-category/11) and thus make it easier to understand from the title:\n\n> **Good titles are questions you would ask your friend about Typst.**",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 20,
+      "score": 3.8,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 13231,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-05-27T08:10:19.140Z",
+      "updated_at": "2025-05-27T08:10:19.140Z",
+      "cooked": "<p>If it’s urgent, I would probably recommend modifying the bibliography file. I tested with the following:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show link: highlight\n\n#bibliography(\n  style: \"apa\",\n  full: true,\n  bytes(```\n@article{glacier-melt,\n  author = {Regine Hock},\n  title = {Glacier melt: a review of processes and their modelling},\n  journal = {Progress in Physical Geography: Earth and Environment},\n  volume = {29},\n  number = {3},\n  pages = {362-391},\n  year = {2005},\n  doi = {10.1191/0309133305pp453ra},\n  URL = {https://doi.org/10.1191/0309133305pp453ra},\n}\n```.text),\n)\n</code></pre>\n<p>(Note that for next time, you can make it easier for us by adding an example bibliography entry to your post. That way we can immediately start working on your problem, and don’t first need to reproduce it.)</p>\n<p>This entry already contains a URL field, but it is ignored in favor of the DOI. If you remove the DOI field, the highlight indicates that the full URL is the link instead.</p>\n<p>If you’re interested, the DOI vs URL decision is due to the following code in <a href=\"https://www.zotero.org/styles/apa\">the CSL used by Typst</a>:</p>\n<pre data-code-wrap=\"xml\"><code class=\"lang-xml\">  &lt;macro name=\"access\"&gt;\n    &lt;choose&gt;\n      &lt;if variable=\"DOI\" match=\"any\"&gt;\n        &lt;text variable=\"DOI\" prefix=\"https://doi.org/\"/&gt;\n      &lt;/if&gt;\n      &lt;else-if variable=\"URL\"&gt;\n        &lt;group delimiter=\" \"&gt;\n          &lt;choose&gt;\n            &lt;if variable=\"issued status\" match=\"none\"&gt;\n              &lt;group delimiter=\" \"&gt;\n                &lt;text term=\"retrieved\" text-case=\"capitalize-first\"/&gt;\n                &lt;date variable=\"accessed\" form=\"text\" suffix=\",\"/&gt;\n                &lt;text term=\"from\"/&gt;\n              &lt;/group&gt;\n            &lt;/if&gt;\n          &lt;/choose&gt;\n          &lt;text variable=\"URL\"/&gt;\n        &lt;/group&gt;\n      &lt;/else-if&gt;\n    &lt;/choose&gt;\n  &lt;/macro&gt;\n</code></pre>\n<p>I think it’s the <code>&lt;text variable=\"DOI\"&gt;</code> that produces the link implicitly, and the prefix is not included in this (since it isn’t for all styles), so this can’t be easily fixed by providing a custom CSL style…</p>",
+      "raw": "If it's urgent, I would probably recommend modifying the bibliography file. I tested with the following:\n````\n#show link: highlight\n\n#bibliography(\n  style: \"apa\",\n  full: true,\n  bytes(```\n@article{glacier-melt,\n  author = {Regine Hock},\n  title = {Glacier melt: a review of processes and their modelling},\n  journal = {Progress in Physical Geography: Earth and Environment},\n  volume = {29},\n  number = {3},\n  pages = {362-391},\n  year = {2005},\n  doi = {10.1191/0309133305pp453ra},\n  URL = {https://doi.org/10.1191/0309133305pp453ra},\n}\n```.text),\n)\n````\n\n(Note that for next time, you can make it easier for us by adding an example bibliography entry to your post. That way we can immediately start working on your problem, and don't first need to reproduce it.)\n\nThis entry already contains a URL field, but it is ignored in favor of the DOI. If you remove the DOI field, the highlight indicates that the full URL is the link instead.\n\nIf you're interested, the DOI vs URL decision is due to the following code in [the CSL used by Typst](https://www.zotero.org/styles/apa):\n```xml\n  <macro name=\"access\">\n    <choose>\n      <if variable=\"DOI\" match=\"any\">\n        <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n      </if>\n      <else-if variable=\"URL\">\n        <group delimiter=\" \">\n          <choose>\n            <if variable=\"issued status\" match=\"none\">\n              <group delimiter=\" \">\n                <text term=\"retrieved\" text-case=\"capitalize-first\"/>\n                <date variable=\"accessed\" form=\"text\" suffix=\",\"/>\n                <text term=\"from\"/>\n              </group>\n            </if>\n          </choose>\n          <text variable=\"URL\"/>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n```\nI think it's the `<text variable=\"DOI\">` that produces the link implicitly, and the prefix is not included in this (since it isn't for all styles), so this can't be easily fixed by providing a custom CSL style...",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 19,
+      "score": 33.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:12.754481"
+}

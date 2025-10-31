@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 3027,
+    "title": "How can I tack something to an equation?",
+    "slug": "how-can-i-tack-something-to-an-equation",
+    "posts_count": 2,
+    "created_at": "2025-02-27T15:52:07.438Z",
+    "last_posted_at": "2025-02-27T16:25:34.305Z",
+    "views": 40,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 245
+  },
+  "posts": [
+    {
+      "id": 9135,
+      "post_number": 1,
+      "username": "engifar",
+      "name": "",
+      "created_at": "2025-02-27T15:52:07.620Z",
+      "updated_at": "2025-02-27T15:52:07.620Z",
+      "cooked": "<p>Hello, I have the following code:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">Wegen $x^2 + 4x + 5 = (x+2)^2 + 1 &gt; 0$ gilt nach dem Satz über die Partialbruchzerlegung, dass\n$\n    (2x^3 + 8x^2 + 16x + 16) / (x^4 + 6x^3 + 14x^2 + 14x + 5) = A / (x+1) + B / ((x+1)^2) + (C x + D) / (x^2 + 4x + 5) quad (*)\n$\nfür geeignete $A$, $B$, $C$, $D in RR$. Es gilt:\n$\n    (*) quad &lt;=&gt; quad 2x^3 + 8x^2 + 16x + 16 = A(x+1)(x^2 + 4x + 5) + B(x^2 + 4x + 5) + (C x + D)(x+1)^2\n$\n</code></pre>\n<p>This puts a star at the end of the first equation, but also causes the entire equation to shift to the left, because the block gets wider and gets centered. The same applies to the second equation. I’d like to tack the equations like in LaTeX, where the equation isn’t affected but the star is just put at the very end (or beginning) of the line, not affecting the equation placement. Is that possible in Typst?</p>",
+      "raw": "Hello, I have the following code:\n```typ\nWegen $x^2 + 4x + 5 = (x+2)^2 + 1 > 0$ gilt nach dem Satz über die Partialbruchzerlegung, dass\n$\n    (2x^3 + 8x^2 + 16x + 16) / (x^4 + 6x^3 + 14x^2 + 14x + 5) = A / (x+1) + B / ((x+1)^2) + (C x + D) / (x^2 + 4x + 5) quad (*)\n$\nfür geeignete $A$, $B$, $C$, $D in RR$. Es gilt:\n$\n    (*) quad <=> quad 2x^3 + 8x^2 + 16x + 16 = A(x+1)(x^2 + 4x + 5) + B(x^2 + 4x + 5) + (C x + D)(x+1)^2\n$\n```\n\nThis puts a star at the end of the first equation, but also causes the entire equation to shift to the left, because the block gets wider and gets centered. The same applies to the second equation. I'd like to tack the equations like in LaTeX, where the equation isn't affected but the star is just put at the very end (or beginning) of the line, not affecting the equation placement. Is that possible in Typst?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 15.8,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1229
+    },
+    {
+      "id": 9137,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-02-27T16:25:34.305Z",
+      "updated_at": "2025-02-27T16:25:34.305Z",
+      "cooked": "<p>Hello, you can try to use the <a href=\"https://typst.app/docs/reference/math/equation/#parameters-numbering\">numbering</a> parameter of equation!</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">Wegen $x^2 + 4x + 5 = (x+2)^2 + 1 &gt; 0$ gilt nach dem Satz über die Partialbruchzerlegung, dass\n#math.equation(numbering: \"(*)\", block: true, $\n    (2x^3 + 8x^2 + 16x + 16) / (x^4 + 6x^3 + 14x^2 + 14x + 5) = A / (x+1) + B / ((x+1)^2) + (C x + D) / (x^2 + 4x + 5)\n$)\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/e/ee2e12acd4f8bfd71c666bbf0f24c77755ac633d.png\" data-download-href=\"https://forum.typst.app/uploads/default/ee2e12acd4f8bfd71c666bbf0f24c77755ac633d\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/e/ee2e12acd4f8bfd71c666bbf0f24c77755ac633d_2_690x90.png\" alt=\"image\" data-base62-sha1=\"xZ2lCOk7nu5rpUMt1Vshyi3pveR\" width=\"690\" height=\"90\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/e/ee2e12acd4f8bfd71c666bbf0f24c77755ac633d_2_690x90.png, https://forum.typst.app/uploads/default/original/2X/e/ee2e12acd4f8bfd71c666bbf0f24c77755ac633d.png 1.5x, https://forum.typst.app/uploads/default/original/2X/e/ee2e12acd4f8bfd71c666bbf0f24c77755ac633d.png 2x\" data-dominant-color=\"F3F3F3\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">751×99 18 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "Hello, you can try to use the [numbering](https://typst.app/docs/reference/math/equation/#parameters-numbering) parameter of equation!\n```typ\nWegen $x^2 + 4x + 5 = (x+2)^2 + 1 > 0$ gilt nach dem Satz über die Partialbruchzerlegung, dass\n#math.equation(numbering: \"(*)\", block: true, $\n    (2x^3 + 8x^2 + 16x + 16) / (x^4 + 6x^3 + 14x^2 + 14x + 5) = A / (x+1) + B / ((x+1)^2) + (C x + D) / (x^2 + 4x + 5)\n$)\n```\n![image|690x90](upload://xZ2lCOk7nu5rpUMt1Vshyi3pveR.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 25,
+      "score": 35.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:03.488138"
+}
