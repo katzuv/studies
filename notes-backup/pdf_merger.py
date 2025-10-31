@@ -1,32 +1,28 @@
 """
-PDF Merger with Table of Contents
-Merges multiple PDF files and creates a clickable table of contents
+PDF Merger with Table of Contents.
+Merges multiple PDF files and creates a clickable table of contents.
 """
 
 import fitz  # PyMuPDF
 from pathlib import Path
-from typing import List, Dict, Tuple
 
 
 class PDFMerger:
-    """Handles merging PDFs and creating table of contents"""
+    """Handles merging PDFs and creating table of contents."""
     
     def __init__(self):
         self.output_doc = None
         self.toc_entries = []
         
-    def merge_pdfs(self, pdf_files: List[Path], output_path: Path, 
-                   toc_titles: List[str] = None) -> Path:
+    def merge_pdfs(self, pdf_files: list[Path], output_path: Path, 
+                   toc_titles: list[str] = None) -> Path:
         """
-        Merge multiple PDF files into one with table of contents
+        Merge multiple PDF files into one with table of contents.
         
-        Args:
-            pdf_files: List of PDF file paths to merge
-            output_path: Path for the output merged PDF
-            toc_titles: List of titles for each PDF in the TOC (optional)
-            
-        Returns:
-            Path to the created merged PDF
+        @param pdf_files: List of PDF file paths to merge.
+        @param output_path: Path for the output merged PDF.
+        @param toc_titles: List of titles for each PDF in the TOC (optional).
+        @return: Path to the created merged PDF.
         """
         if not pdf_files:
             raise ValueError("No PDF files provided for merging")
@@ -88,7 +84,7 @@ class PDFMerger:
         return output_path
     
     def _add_toc_page(self):
-        """Add a visual table of contents page at the beginning"""
+        """Add a visual table of contents page at the beginning."""
         # Insert a blank page at the beginning
         toc_page = self.output_doc.new_page(0, width=595, height=842)  # A4 size
         
@@ -158,53 +154,59 @@ class PDFMerger:
         self.output_doc.set_toc(updated_toc)
 
 
-def merge_course_pdfs(lectures_folder: Path, tirgul_folder: Path, 
-                      output_folder: Path, course_name: str) -> Dict[str, Path]:
+def merge_course_pdfs(lectures: list[Path], tirguls: list[Path], 
+                      course_folder: Path, parent_folder: Path, 
+                      course_name: str) -> dict[str, list[Path]]:
     """
-    Merge lecture and tirgul PDFs for a course
+    Merge lecture and tirgul PDFs for a course.
+    Outputs PDFs to both the course folder and parent folder.
     
-    Args:
-        lectures_folder: Path to folder containing lecture PDFs
-        tirgul_folder: Path to folder containing tirgul PDFs
-        output_folder: Path to output folder
-        course_name: Name of the course
-        
-    Returns:
-        Dictionary with paths to generated PDFs
+    @param lectures: List of lecture PDF paths.
+    @param tirguls: List of tirgul PDF paths.
+    @param course_folder: Path to course-specific output folder.
+    @param parent_folder: Path to parent folder for all courses.
+    @param course_name: Name of the course.
+    @return: Dictionary with lists of paths to generated PDFs in both locations.
     """
-    lectures_folder = Path(lectures_folder)
-    tirgul_folder = Path(tirgul_folder)
-    output_folder = Path(output_folder)
-    output_folder.mkdir(parents=True, exist_ok=True)
+    course_folder = Path(course_folder)
+    parent_folder = Path(parent_folder)
+    course_folder.mkdir(parents=True, exist_ok=True)
+    parent_folder.mkdir(parents=True, exist_ok=True)
     
     merger = PDFMerger()
-    results = {}
-    
-    # Get and sort PDF files
-    def get_sorted_pdfs(folder: Path) -> List[Path]:
-        if not folder.exists():
-            return []
-        pdfs = sorted(folder.glob('*.pdf'))
-        return pdfs
-    
-    lectures = get_sorted_pdfs(lectures_folder)
-    tirguls = get_sorted_pdfs(tirgul_folder)
+    results = {'course': [], 'parent': []}
     
     # Merge lectures
     if lectures:
-        lectures_output = output_folder / f"{course_name}_Lectures.pdf"
         lecture_titles = [f"Lecture {i+1}" for i in range(len(lectures))]
-        merger.merge_pdfs(lectures, lectures_output, lecture_titles)
-        results['lectures'] = lectures_output
-        print(f"Created: {lectures_output}")
+        
+        # Save to course folder
+        lectures_course = course_folder / f"{course_name}_Lectures.pdf"
+        merger.merge_pdfs(lectures, lectures_course, lecture_titles)
+        results['course'].append(lectures_course)
+        print(f"Created: {lectures_course}")
+        
+        # Save to parent folder
+        lectures_parent = parent_folder / f"{course_name}_Lectures.pdf"
+        merger.merge_pdfs(lectures, lectures_parent, lecture_titles)
+        results['parent'].append(lectures_parent)
+        print(f"Created: {lectures_parent}")
     
     # Merge tirguls
     if tirguls:
-        tirguls_output = output_folder / f"{course_name}_Tirgul.pdf"
         tirgul_titles = [f"Tirgul {i+1}" for i in range(len(tirguls))]
-        merger.merge_pdfs(tirguls, tirguls_output, tirgul_titles)
-        results['tirgul'] = tirguls_output
-        print(f"Created: {tirguls_output}")
+        
+        # Save to course folder
+        tirguls_course = course_folder / f"{course_name}_Tirgul.pdf"
+        merger.merge_pdfs(tirguls, tirguls_course, tirgul_titles)
+        results['course'].append(tirguls_course)
+        print(f"Created: {tirguls_course}")
+        
+        # Save to parent folder
+        tirguls_parent = parent_folder / f"{course_name}_Tirgul.pdf"
+        merger.merge_pdfs(tirguls, tirguls_parent, tirgul_titles)
+        results['parent'].append(tirguls_parent)
+        print(f"Created: {tirguls_parent}")
     
     # Merge all course files
     if lectures or tirguls:
@@ -219,10 +221,17 @@ def merge_course_pdfs(lectures_folder: Path, tirgul_folder: Path,
             all_files.extend(tirguls)
             all_titles.extend([f"Tirgul {i+1}" for i in range(len(tirguls))])
         
-        full_output = output_folder / f"{course_name}_Full.pdf"
-        merger.merge_pdfs(all_files, full_output, all_titles)
-        results['full'] = full_output
-        print(f"Created: {full_output}")
+        # Save to course folder
+        full_course = course_folder / f"{course_name}_Full.pdf"
+        merger.merge_pdfs(all_files, full_course, all_titles)
+        results['course'].append(full_course)
+        print(f"Created: {full_course}")
+        
+        # Save to parent folder
+        full_parent = parent_folder / f"{course_name}_Full.pdf"
+        merger.merge_pdfs(all_files, full_parent, all_titles)
+        results['parent'].append(full_parent)
+        print(f"Created: {full_parent}")
     
     return results
 

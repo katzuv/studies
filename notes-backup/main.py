@@ -1,6 +1,6 @@
 """
-Main script for Notes Backup and PDF Merger
-Orchestrates downloading from Google Drive, merging PDFs, and uploading results
+Main script for Notes Backup and PDF Merger.
+Orchestrates downloading from Google Drive, merging PDFs, and uploading results.
 """
 
 import json
@@ -12,26 +12,28 @@ from pdf_merger import merge_course_pdfs
 
 
 def load_config(config_path: Path) -> dict:
-    """Load configuration from JSON file"""
-    with open(config_path, 'r') as f:
+    """
+    Load configuration from JSON file.
+    
+    @param config_path: Path to config file.
+    @return: Dictionary with configuration.
+    """
+    with config_path.open('r') as f:
         return json.load(f)
 
 
 def process_course(drive: DriveHandler, course_name: str, 
                   course_folder_id: str, temp_dir: Path, 
-                  merged_folder_id: str) -> dict:
+                  parent_merged_folder_id: str) -> dict:
     """
-    Process a single course: download, merge, and upload
+    Process a single course: download, merge, and upload.
     
-    Args:
-        drive: DriveHandler instance
-        course_name: Name of the course
-        course_folder_id: Google Drive folder ID for the course
-        temp_dir: Temporary directory for downloads
-        merged_folder_id: Google Drive folder ID for merged PDFs
-        
-    Returns:
-        Dictionary with processing results
+    @param drive: DriveHandler instance.
+    @param course_name: Name of the course.
+    @param course_folder_id: Google Drive folder ID for the course.
+    @param temp_dir: Temporary directory for downloads.
+    @param parent_merged_folder_id: Google Drive folder ID for parent merged PDFs folder.
+    @return: Dictionary with processing results.
     """
     temp_dir = Path(temp_dir)
     print(f"\n{'='*60}")
@@ -48,40 +50,59 @@ def process_course(drive: DriveHandler, course_name: str,
     try:
         # Download course files
         print(f"\n[1/3] Downloading files for {course_name}...")
-        download_paths = download_course_files(
+        file_lists = download_course_files(
             drive, course_name, course_folder_id, temp_dir
         )
         
-        if not download_paths:
+        if not file_lists['lectures'] and not file_lists['tirgul']:
             results['status'] = 'skipped'
             results['errors'].append('No files found to download')
             return results
         
         # Merge PDFs
         print(f"\n[2/3] Merging PDFs for {course_name}...")
-        merged_dir = temp_dir / f"{course_name}_merged"
-        merged_dir.mkdir(parents=True, exist_ok=True)
-        
-        lectures_folder = download_paths.get('lectures', Path())
-        tirgul_folder = download_paths.get('tirgul', Path())
+        course_output_dir = temp_dir / f"{course_name}_merged"
+        parent_output_dir = temp_dir / "all_courses_merged"
         
         merged_files = merge_course_pdfs(
-            lectures_folder, tirgul_folder, merged_dir, course_name
+            file_lists['lectures'], 
+            file_lists['tirgul'],
+            course_output_dir,
+            parent_output_dir,
+            course_name
         )
         
         # Upload merged files
         print(f"\n[3/3] Uploading merged files for {course_name}...")
-        for file_type, file_path in merged_files.items():
+        
+        # Upload course-specific files to the course folder
+        course_merged_folder_id = drive.get_or_create_folder("Merged", course_folder_id)
+        for file_path in merged_files['course']:
             if file_path.exists():
                 try:
-                    file_id = drive.upload_file(file_path, merged_folder_id)
+                    file_id = drive.upload_file(file_path, course_merged_folder_id)
                     results['files_created'].append({
-                        'type': file_type,
+                        'location': 'course',
                         'name': file_path.name,
                         'id': file_id
                     })
                 except Exception as e:
-                    error_msg = f"Failed to upload {file_type}: {e}"
+                    error_msg = f"Failed to upload {file_path.name} to course folder: {e}"
+                    print(f"Error: {error_msg}")
+                    results['errors'].append(error_msg)
+        
+        # Upload parent files to the parent merged folder
+        for file_path in merged_files['parent']:
+            if file_path.exists():
+                try:
+                    file_id = drive.upload_file(file_path, parent_merged_folder_id)
+                    results['files_created'].append({
+                        'location': 'parent',
+                        'name': file_path.name,
+                        'id': file_id
+                    })
+                except Exception as e:
+                    error_msg = f"Failed to upload {file_path.name} to parent folder: {e}"
                     print(f"Error: {error_msg}")
                     results['errors'].append(error_msg)
         

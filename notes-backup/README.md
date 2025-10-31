@@ -18,14 +18,11 @@ Each course in Google Drive should follow this structure:
 
 ```
 Course_Name/
-├── Lectures/
-│   ├── Lecture_01.pdf
-│   ├── Lecture_02.pdf
-│   └── ...
-└── Tirgul/
-    ├── Tirgul_01.pdf
-    ├── Tirgul_02.pdf
-    └── ...
+├── Lecture_01.pdf
+├── Lecture_02.pdf
+├── Tirgul_01.pdf
+├── Tirgul_02.pdf
+└── ...
 ```
 
 ## Setup
