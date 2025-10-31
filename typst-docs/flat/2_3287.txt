@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3287,
+    "title": "How to troubleshoot typeface with multiple optical weights?",
+    "slug": "how-to-troubleshoot-typeface-with-multiple-optical-weights",
+    "posts_count": 3,
+    "created_at": "2025-03-16T21:18:40.614Z",
+    "last_posted_at": "2025-03-17T10:19:48.527Z",
+    "views": 38,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "fonts"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 185
+  },
+  "posts": [
+    {
+      "id": 9879,
+      "post_number": 1,
+      "username": "AJ_Rush",
+      "name": "AJ Rush",
+      "created_at": "2025-03-16T21:18:40.762Z",
+      "updated_at": "2025-03-17T08:52:47.088Z",
+      "cooked": "<p>I’ve heard that some people have difficulty using high-end fonts with multiple optical weights in Typst. I like Coelacanth, which has six different weights. I found that the display weight was being used for body text, but when I took the display weight out of my font folder—leaving heading, subheading, body, caption, and subcaption—it looks like it fixed the problem.</p>\n<p>Just visually inspecting elements with larger (e.g., 48pt) and smaller (e.g., 6pt) type looks like they might be right, but I’m not sure.</p>\n<p>I’d like some help getting the Typst code right in order to test it. Ideally I’d like to output the same text in, for example, 96pt, 48pt magnified x2, 24pt magnified x4, and so on all the way down to 4pt magnified x24. Then I could inspect them side by side and see how they’re (hopefully) different.</p>\n<p>I can’t find a Typst function for zooming in on text. Any suggestions?</p>",
+      "raw": "I've heard that some people have difficulty using high-end fonts with multiple optical weights in Typst. I like Coelacanth, which has six different weights. I found that the display weight was being used for body text, but when I took the display weight out of my font folder---leaving heading, subheading, body, caption, and subcaption---it looks like it fixed the problem.\n\nJust visually inspecting elements with larger (e.g., 48pt) and smaller (e.g., 6pt) type looks like they might be right, but I'm not sure.\n\nI'd like some help getting the Typst code right in order to test it. Ideally I'd like to output the same text in, for example, 96pt, 48pt magnified x2, 24pt magnified x4, and so on all the way down to 4pt magnified x24. Then I could inspect them side by side and see how they're (hopefully) different.\n\nI can't find a Typst function for zooming in on text. Any suggestions?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 18,
+      "score": 38.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 873
+    },
+    {
+      "id": 9892,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-03-17T08:42:40.646Z",
+      "updated_at": "2025-03-17T08:42:40.646Z",
+      "cooked": "<p>I think you’re looking for the <a href=\"https://typst.app/docs/reference/layout/scale/\"><code>scale</code></a> function?</p>",
+      "raw": "I think you're looking for the [`scale`](https://typst.app/docs/reference/layout/scale/) function?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 15,
+      "score": 18.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    },
+    {
+      "id": 9904,
+      "post_number": 3,
+      "username": "AJ_Rush",
+      "name": "AJ Rush",
+      "created_at": "2025-03-17T10:19:48.527Z",
+      "updated_at": "2025-03-17T10:19:48.527Z",
+      "cooked": "<p>Looks like it will, thanks!</p>",
+      "raw": "Looks like it will, thanks!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 15,
+      "score": 3.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 873
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:18.687432"
+}

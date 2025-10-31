@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3739,
+    "title": "How to add \"translation of translation\" in packаge leipzig-glossing?",
+    "slug": "how-to-add-translation-of-translation-in-pack-ge-leipzig-glossing",
+    "posts_count": 3,
+    "created_at": "2025-04-21T09:04:37.039Z",
+    "last_posted_at": "2025-04-21T13:58:43.797Z",
+    "views": 31,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "packages"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 446
+  },
+  "posts": [
+    {
+      "id": 11380,
+      "post_number": 1,
+      "username": "tkat",
+      "name": "tkat",
+      "created_at": "2025-04-21T09:04:37.215Z",
+      "updated_at": "2025-04-22T06:12:09.171Z",
+      "cooked": "<p>Using package <code>leipzig-glossing</code>, I faced with problem that I cannot put addional lines under the translation, not under the morphemes.<br>\nI.e. it is possible to make this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#example(\n (\n header: [Hunzib (van den Berg 1995:46)],\n source: ([ождиг],[хо#super[н]хе],[мукъер]),\n transliteration: ([oʒdig],[χõχe],[muqʼer]),\n morphemes: ([ož-di-g],[xõxe],[m-uq'e-r]),\n additional-lines: (\n ([boy-#smallcaps[obl]-#smallcaps[ad]], [tree(#smallcaps[g4])],\n[#smallcaps[g4]-bend-#smallcaps[pret]]),\n ([at boy], [tree], [bent]),\n ),\n translation: [\"Because of the boy, the tree bent.\"]\n )\n)\n</code></pre>\n<p>Hovewer, package does not allow me to put additional lines under the translation to put “translation of translation”, something like that:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#example(\n (\n header: [Hunzib (van den Berg 1995:46)],\n source: ([ождиг],[хо#super[н]хе],[мукъер]),\n transliteration: ([oʒdig],[χõχe],[muqʼer]),\n morphemes: ([ož-di-g],[xõxe],[m-uq'e-r]),\n additional-lines: (\n ([boy-#smallcaps[obl]-#smallcaps[ad]], [tree(#smallcaps[g4])],\n[#smallcaps[g4]-bend-#smallcaps[pret]]),\n ([at boy], [tree], [bent]),\n ),\n translation: [\"Because of the boy, the tree bent.\"],\n**additional-line: [\"Из-за мальчика дерево согнулось\"]**,\n )\n)\n</code></pre>\n<p>Do you know what to do to add additional line for translation?</p>",
+      "raw": "Using package ```leipzig-glossing```, I faced with problem that I cannot put addional lines under the translation, not under the morphemes.\nI.e. it is possible to make this:\n```typ\n#example(\n (\n header: [Hunzib (van den Berg 1995:46)],\n source: ([ождиг],[хо#super[н]хе],[мукъер]),\n transliteration: ([oʒdig],[χõχe],[muqʼer]),\n morphemes: ([ož-di-g],[xõxe],[m-uq'e-r]),\n additional-lines: (\n ([boy-#smallcaps[obl]-#smallcaps[ad]], [tree(#smallcaps[g4])],\n[#smallcaps[g4]-bend-#smallcaps[pret]]),\n ([at boy], [tree], [bent]),\n ),\n translation: [\"Because of the boy, the tree bent.\"]\n )\n)\n```\nHovewer, package does not allow me to put additional lines under the translation to put \"translation of translation\", something like that:\n```typ\n#example(\n (\n header: [Hunzib (van den Berg 1995:46)],\n source: ([ождиг],[хо#super[н]хе],[мукъер]),\n transliteration: ([oʒdig],[χõχe],[muqʼer]),\n morphemes: ([ož-di-g],[xõxe],[m-uq'e-r]),\n additional-lines: (\n ([boy-#smallcaps[obl]-#smallcaps[ad]], [tree(#smallcaps[g4])],\n[#smallcaps[g4]-bend-#smallcaps[pret]]),\n ([at boy], [tree], [bent]),\n ),\n translation: [\"Because of the boy, the tree bent.\"],\n**additional-line: [\"Из-за мальчика дерево согнулось\"]**,\n )\n)\n```\nDo you know what to do to add additional line for translation?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 21,
+      "score": 9.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1486
+    },
+    {
+      "id": 11387,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-04-21T11:47:35.691Z",
+      "updated_at": "2025-04-21T11:47:35.691Z",
+      "cooked": "<p>Hello. If you want to add a new paragraph, then  do this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/leipzig-glossing:0.5.0\": example\n\n#example((\n  header: [Hunzib (van den Berg 1995:46)],\n  source: ([ождиг], [хо#super[н]хе], [мукъер]),\n  transliteration: ([oʒdig], [χõχe], [muqʼer]),\n  morphemes: ([ož-di-g], [xõxe], [m-uq'e-r]),\n  additional-lines: (\n    (\n      [boy-#smallcaps[obl]-#smallcaps[ad]],\n      [tree(#smallcaps[g4])],\n      [#smallcaps[g4]-bend-#smallcaps[pret]],\n    ),\n    ([at boy], [tree], [bent]),\n  ),\n  translation: [\n    \"Because of the boy, the tree bent.\"\n\n    \"Из-за мальчика дерево согнулось\"\n  ],\n))\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/e/e7c13083884c4105e052162b2ea1223eef189388.png\" alt=\"image\" data-base62-sha1=\"x4ccxzQGcHSOBAlF9p4im3aMEnm\" width=\"224\" height=\"142\"></p>\n<p>If the same paragraph with a line break:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/leipzig-glossing:0.5.0\": example\n\n#example((\n  header: [Hunzib (van den Berg 1995:46)],\n  source: ([ождиг], [хо#super[н]хе], [мукъер]),\n  transliteration: ([oʒdig], [χõχe], [muqʼer]),\n  morphemes: ([ož-di-g], [xõxe], [m-uq'e-r]),\n  additional-lines: (\n    (\n      [boy-#smallcaps[obl]-#smallcaps[ad]],\n      [tree(#smallcaps[g4])],\n      [#smallcaps[g4]-bend-#smallcaps[pret]],\n    ),\n    ([at boy], [tree], [bent]),\n  ),\n  translation: [\n    \"Because of the boy, the tree bent.\" \\\n    \"Из-за мальчика дерево согнулось\"\n  ],\n))\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/b/b4dcb6e31795342a05d88e455a2357cb6a0714e4.png\" alt=\"image\" data-base62-sha1=\"pNYP21AI5vTHvOVgl4YC0ej30va\" width=\"222\" height=\"140\"></p>\n<hr>\n<p>P.S. Don’t forget to put language identifier for code blocks.</p>\n<aside class=\"quote no-group quote-modified\" data-username=\"reknih\" data-post=\"1\" data-topic=\"11\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/reknih/48/3_2.png\" class=\"avatar\"><a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11/1\">How to post in the Questions category</a></div>\n<blockquote>\n<p>If your question pertains to a bit of Typst markup you have problems with, put it in the question body! You can syntax-highlight Typst code by wrapping it in ` ```typ … ````. It will then look like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set font(size: 12pt)\n\nHello from *Typst* at $ pi.var + 1 $ o'clock!\n</code></pre>\n<p>If you need to highlight a code or math mode snippet instead, the language tags <code>typc</code> and <code>typm</code> do that, respectively.</p>\n</blockquote>\n</aside>",
+      "raw": "Hello. If you want to add a new paragraph, then  do this:\n\n```typ\n#import \"@preview/leipzig-glossing:0.5.0\": example\n\n#example((\n  header: [Hunzib (van den Berg 1995:46)],\n  source: ([ождиг], [хо#super[н]хе], [мукъер]),\n  transliteration: ([oʒdig], [χõχe], [muqʼer]),\n  morphemes: ([ož-di-g], [xõxe], [m-uq'e-r]),\n  additional-lines: (\n    (\n      [boy-#smallcaps[obl]-#smallcaps[ad]],\n      [tree(#smallcaps[g4])],\n      [#smallcaps[g4]-bend-#smallcaps[pret]],\n    ),\n    ([at boy], [tree], [bent]),\n  ),\n  translation: [\n    \"Because of the boy, the tree bent.\"\n\n    \"Из-за мальчика дерево согнулось\"\n  ],\n))\n```\n\n![image|224x142](upload://x4ccxzQGcHSOBAlF9p4im3aMEnm.png)\n\nIf the same paragraph with a line break:\n\n```typ\n#import \"@preview/leipzig-glossing:0.5.0\": example\n\n#example((\n  header: [Hunzib (van den Berg 1995:46)],\n  source: ([ождиг], [хо#super[н]хе], [мукъер]),\n  transliteration: ([oʒdig], [χõχe], [muqʼer]),\n  morphemes: ([ož-di-g], [xõxe], [m-uq'e-r]),\n  additional-lines: (\n    (\n      [boy-#smallcaps[obl]-#smallcaps[ad]],\n      [tree(#smallcaps[g4])],\n      [#smallcaps[g4]-bend-#smallcaps[pret]],\n    ),\n    ([at boy], [tree], [bent]),\n  ),\n  translation: [\n    \"Because of the boy, the tree bent.\" \\\n    \"Из-за мальчика дерево согнулось\"\n  ],\n))\n```\n\n![image|222x140](upload://pNYP21AI5vTHvOVgl4YC0ej30va.png)\n\n---\n\nP.S. Don't forget to put language identifier for code blocks.\n\n[quote=\"reknih, post:1, topic:11\"]\nIf your question pertains to a bit of Typst markup you have problems with, put it in the question body! You can syntax-highlight Typst code by wrapping it in ` ```typ ... ````. It will then look like this:\n\n```typ\n#set font(size: 12pt)\n\nHello from *Typst* at $ pi.var + 1 $ o'clock!\n```\n\nIf you need to highlight a code or math mode snippet instead, the language tags `typc` and `typm` do that, respectively.\n[/quote]",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 19,
+      "score": 8.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    },
+    {
+      "id": 11393,
+      "post_number": 3,
+      "username": "tkat",
+      "name": "tkat",
+      "created_at": "2025-04-21T13:58:43.797Z",
+      "updated_at": "2025-04-21T13:59:21.942Z",
+      "cooked": "<p>Thank you so much!! <img src=\"https://forum.typst.app/images/emoji/apple/sparkles.png?v=12\" title=\":sparkles:\" class=\"emoji\" alt=\":sparkles:\" loading=\"lazy\" width=\"20\" height=\"20\"> <img src=\"https://forum.typst.app/images/emoji/apple/sparkles.png?v=12\" title=\":sparkles:\" class=\"emoji\" alt=\":sparkles:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Thank you so much!! :sparkles: :sparkles:",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 18,
+      "score": 18.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1486
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:54.706232"
+}

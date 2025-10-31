@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 3902,
+    "title": "How to typeset direct and inverse limits and control how subscripts are attached?",
+    "slug": "how-to-typeset-direct-and-inverse-limits-and-control-how-subscripts-are-attached",
+    "posts_count": 2,
+    "created_at": "2025-05-02T07:47:26.743Z",
+    "last_posted_at": "2025-05-02T08:17:46.903Z",
+    "views": 42,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "bluss",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 147
+  },
+  "posts": [
+    {
+      "id": 11884,
+      "post_number": 1,
+      "username": "AprilGrimoire",
+      "name": "AprilGrimoire",
+      "created_at": "2025-05-02T07:47:26.904Z",
+      "updated_at": "2025-05-02T08:44:47.949Z",
+      "cooked": "<p>Hello!</p>\n<p>I want to typeset direct and inverse limits, as shown in the following image:</p>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/7/757dc3341987e818b400e2e4517a005de327c440.png\" alt=\"image\" data-base62-sha1=\"gLnj9JU6uhEVgxRFXsczl17PoPe\" width=\"254\" height=\"68\"></p>\n<p>I also want to know how can I control the way subscripts are attached. Normally subscripts are attached to the bottom-right, but this behavior is changed for some special symbols like <code>lim</code> and such. How can I mimic this behavior on custom symbols?</p>",
+      "raw": "Hello!\n\nI want to typeset direct and inverse limits, as shown in the following image:\n\n![image|254x68](upload://gLnj9JU6uhEVgxRFXsczl17PoPe.png)\n\nI also want to know how can I control the way subscripts are attached. Normally subscripts are attached to the bottom-right, but this behavior is changed for some special symbols like `lim` and such. How can I mimic this behavior on custom symbols?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 22,
+      "score": 59.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1309
+    },
+    {
+      "id": 11886,
+      "post_number": 2,
+      "username": "bluss",
+      "name": "Ulrik",
+      "created_at": "2025-05-02T08:17:46.903Z",
+      "updated_at": "2025-05-02T08:18:20.548Z",
+      "cooked": "<p>Use <code>math.op</code> to define things the same way predefined <code>lim</code> and <code>sin</code> for example are defined. It takes an argument to set limits.</p>\n<p>Also note that you can force it directly using the <code>limits</code> function (<code>scripts</code> is the opposite). And in inline equations even <code>lim</code> has subscripts instead of limits, but it can be forced with <code>limits</code> again as shown below…</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let opA = math.op(\"opA\", limits: true)\n$ opA_x $\n$ limits(\"opB\")_x $\n\n$lim_x$\n$limits(lim)_x$\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/5/5367a51a34e70838954e7cd7499ac817b40b0f76.png\" alt=\"bild\" data-base62-sha1=\"bTPGFMkdRG2VQMkOQ8nyQWc6xDM\" width=\"158\" height=\"188\"></p>",
+      "raw": "Use `math.op` to define things the same way predefined `lim` and `sin` for example are defined. It takes an argument to set limits.\n\nAlso note that you can force it directly using the `limits` function (`scripts` is the opposite). And in inline equations even `lim` has subscripts instead of limits, but it can be forced with `limits` again as shown below..\n\n```typst\n#let opA = math.op(\"opA\", limits: true)\n$ opA_x $\n$ limits(\"opB\")_x $\n\n$lim_x$\n$limits(lim)_x$\n```\n\n\n\n![bild|158x188](upload://bTPGFMkdRG2VQMkOQ8nyQWc6xDM.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 21,
+      "score": 19.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 1272
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:24.469608"
+}

@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1991,
+    "title": "How to display a rotated table over several pages?",
+    "slug": "how-to-display-a-rotated-table-over-several-pages",
+    "posts_count": 3,
+    "created_at": "2024-12-05T10:26:53.929Z",
+    "last_posted_at": "2024-12-05T13:33:14.703Z",
+    "views": 211,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "PgBiel",
+    "tags": [
+      "tables"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 390
+  },
+  "posts": [
+    {
+      "id": 6356,
+      "post_number": 1,
+      "username": "fdekerm",
+      "name": "François de Kermenguy",
+      "created_at": "2024-12-05T10:26:54.048Z",
+      "updated_at": "2024-12-05T10:26:54.048Z",
+      "cooked": "<p>Hello,<br>\nI have a very large table that I’d like to display on several pages. The following code :</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set page(\"a4\", margin: (\n  left: 1cm, \n  bottom: 1cm,\n  top: 1cm,\n  right: 1cm), \n  flipped: false)\n\n\n#rotate(\n  -90deg,\n  reflow: true)[#figure(\n block(width: 100%, breakable: true, (table( \n    columns: (auto, auto, auto, auto, auto, auto, auto, auto, auto,),\n    align: (left,left,left,left,left,left,left,left,left,),\n    table.header([Type of model and\n      outputs], [Model name and/or\n      references], [...\n</code></pre>\n<p>gives this:<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/3/3a9e67a2744ee388171d13cd20449523283e5d22.jpeg\" data-download-href=\"https://forum.typst.app/uploads/default/3a9e67a2744ee388171d13cd20449523283e5d22\" title=\"Capture d’écran 2024-12-05 111946\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/3/3a9e67a2744ee388171d13cd20449523283e5d22_2_371x499.jpeg\" alt=\"Capture d’écran 2024-12-05 111946\" data-base62-sha1=\"8mz4AEY1E6d8NxWhLSU4KzEwzRw\" width=\"371\" height=\"499\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/3/3a9e67a2744ee388171d13cd20449523283e5d22_2_371x499.jpeg, https://forum.typst.app/uploads/default/optimized/2X/3/3a9e67a2744ee388171d13cd20449523283e5d22_2_556x748.jpeg 1.5x, https://forum.typst.app/uploads/default/original/2X/3/3a9e67a2744ee388171d13cd20449523283e5d22.jpeg 2x\" data-dominant-color=\"EAEAEA\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">Capture d’écran 2024-12-05 111946</span><span class=\"informations\">699×941 47.6 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>How can I make the rotated table spread over several pages?<br>\nThank you,<br>\nfdekerm</p>",
+      "raw": "Hello, \nI have a very large table that I'd like to display on several pages. The following code :\n\n```typst\n#set page(\"a4\", margin: (\n  left: 1cm, \n  bottom: 1cm,\n  top: 1cm,\n  right: 1cm), \n  flipped: false)\n\n\n#rotate(\n  -90deg,\n  reflow: true)[#figure(\n block(width: 100%, breakable: true, (table( \n    columns: (auto, auto, auto, auto, auto, auto, auto, auto, auto,),\n    align: (left,left,left,left,left,left,left,left,left,),\n    table.header([Type of model and\n      outputs], [Model name and/or\n      references], [...\n```\n\ngives this:\n![Capture d’écran 2024-12-05 111946|371x499](upload://8mz4AEY1E6d8NxWhLSU4KzEwzRw.jpeg)\n\n\n\n\nHow can I make the rotated table spread over several pages? \nThank you,\nfdekerm",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 35,
+      "score": 967.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 136
+    },
+    {
+      "id": 6360,
+      "post_number": 2,
+      "username": "gezepi",
+      "name": "",
+      "created_at": "2024-12-05T12:43:49.296Z",
+      "updated_at": "2024-12-05T12:43:49.296Z",
+      "cooked": "<p>My first thought to address this was instead of rotating the figure, rotate the page with <code>#set page(flipped: true)</code>.  I tried that and it did not improve the situation:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(\"a6\")\n#let numCols = 6\n#let numRows = 15\n\n#let testTable = table( \n  columns: (auto,)*numCols,\n  align: (left,left,left,left,left,left,left,left,left,),\n  \n  table.header(..(lorem(2),)*numCols),\n  ..(..(\"data\",)*numCols,)*numRows\n)\n\n#set page(flipped: true)\n\n#figure(\n  block(width: 100%, breakable: true,\n    testTable,\n  )\n)\n</code></pre>\n<details>\n<summary>\nOutput</summary>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/4/44459e4842def2d332570aeccf1f227dfb70f4ae.png\" alt=\"image\" data-base62-sha1=\"9JXCIxgqG3X3JlsCgJ9k8SpjME6\" width=\"428\" height=\"301\"></p>\n</details>\n<p>But if the same table is used outside of a figure, it works as expected:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(\"a6\")\n#let numCols = 6\n#let numRows = 15\n\n#let testTable = table( \n  columns: (auto,)*numCols,\n  align: (left,left,left,left,left,left,left,left,left,),\n  \n  table.header(..(lorem(2),)*numCols),\n  ..(..(\"data\",)*numCols,)*numRows\n)\n\npreamble text\n#set page(flipped: true)\n\n#testTable\n</code></pre>\n<details>\n<summary>\nOutput</summary>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/f/f4fb0819ad7d4a79141b433105071db048cba58a.png\" data-download-href=\"https://forum.typst.app/uploads/default/f4fb0819ad7d4a79141b433105071db048cba58a\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/f/f4fb0819ad7d4a79141b433105071db048cba58a_2_347x500.png\" alt=\"image\" data-base62-sha1=\"yXckO3hkiYRtjXsnNbYTzFkk62S\" width=\"347\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/f/f4fb0819ad7d4a79141b433105071db048cba58a_2_347x500.png, https://forum.typst.app/uploads/default/original/2X/f/f4fb0819ad7d4a79141b433105071db048cba58a.png 1.5x, https://forum.typst.app/uploads/default/original/2X/f/f4fb0819ad7d4a79141b433105071db048cba58a.png 2x\" data-dominant-color=\"EFEFEF\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">430×618 47 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n</details>\n<p>And changing orientation of the page works nicely:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">Normal orientation\n#set page(flipped: true)\n#testTable\n#set page(flipped: false)\nAgain, normal orientation\n</code></pre>\n<details>\n<summary>\nOutput</summary>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/4/4a86e67207df87e8d8426aba711919327a226898.png\" data-download-href=\"https://forum.typst.app/uploads/default/4a86e67207df87e8d8426aba711919327a226898\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/4/4a86e67207df87e8d8426aba711919327a226898_2_187x500.png\" alt=\"image\" data-base62-sha1=\"aDim12M94lIGryWc34uv9yYzJ32\" width=\"187\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/4/4a86e67207df87e8d8426aba711919327a226898_2_187x500.png, https://forum.typst.app/uploads/default/original/2X/4/4a86e67207df87e8d8426aba711919327a226898.png 1.5x, https://forum.typst.app/uploads/default/original/2X/4/4a86e67207df87e8d8426aba711919327a226898.png 2x\" data-dominant-color=\"F2F2F4\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">261×695 25.3 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n</details>\n<p>So, it seems figures do not handle spilling into a new page well.</p>",
+      "raw": "My first thought to address this was instead of rotating the figure, rotate the page with `#set page(flipped: true)`.  I tried that and it did not improve the situation:\n```typ\n#set page(\"a6\")\n#let numCols = 6\n#let numRows = 15\n\n#let testTable = table( \n  columns: (auto,)*numCols,\n  align: (left,left,left,left,left,left,left,left,left,),\n  \n  table.header(..(lorem(2),)*numCols),\n  ..(..(\"data\",)*numCols,)*numRows\n)\n\n#set page(flipped: true)\n\n#figure(\n  block(width: 100%, breakable: true,\n    testTable,\n  )\n)\n```\n[details=\"Output\"]\n![image|428x301](upload://9JXCIxgqG3X3JlsCgJ9k8SpjME6.png)\n[/details]\n\nBut if the same table is used outside of a figure, it works as expected:\n```typ\n#set page(\"a6\")\n#let numCols = 6\n#let numRows = 15\n\n#let testTable = table( \n  columns: (auto,)*numCols,\n  align: (left,left,left,left,left,left,left,left,left,),\n  \n  table.header(..(lorem(2),)*numCols),\n  ..(..(\"data\",)*numCols,)*numRows\n)\n\npreamble text\n#set page(flipped: true)\n\n#testTable\n```\n\n[details=\"Output\"]\n![image|347x500](upload://yXckO3hkiYRtjXsnNbYTzFkk62S.png)\n[/details]\n\nAnd changing orientation of the page works nicely:\n```typ\nNormal orientation\n#set page(flipped: true)\n#testTable\n#set page(flipped: false)\nAgain, normal orientation\n```\n[details=\"Output\"]\n![image|187x500](upload://aDim12M94lIGryWc34uv9yYzJ32.png)\n[/details]\n\nSo, it seems figures do not handle spilling into a new page well.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 51.0,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 326
+    },
+    {
+      "id": 6361,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-12-05T13:33:14.703Z",
+      "updated_at": "2024-12-05T13:40:41.931Z",
+      "cooked": "<aside class=\"quote no-group\" data-username=\"gezepi\" data-post=\"2\" data-topic=\"1991\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/letter_avatar_proxy/v4/letter/g/C34CE0/48.png\" class=\"avatar\"> gezepi:</div>\n<blockquote>\n<p>So, it seems figures do not handle spilling into a new page well.</p>\n</blockquote>\n</aside>\n<p>Figures are unbreakable by default (<strong>regardless</strong> of whether a <code>block(breakable: true)</code> is used in its body). You can use <code>#show figure.where(kind: table): set block(breakable: true)</code> to change this. (Though note that, for now, the figure caption won’t be repeated. There is some discussion and even a PR to change this, but it isn’t done yet.)</p>\n<p>See also “Figure Behavior” in <a href=\"https://typst.app//docs/reference/model/figure#figure-behaviour\" class=\"inline-onebox\">Figure Function – Typst Documentation</a></p>",
+      "raw": "[quote=\"gezepi, post:2, topic:1991\"]\nSo, it seems figures do not handle spilling into a new page well.\n[/quote]\n\nFigures are unbreakable by default (**regardless** of whether a `block(breakable: true)` is used in its body). You can use `#show figure.where(kind: table): set block(breakable: true)` to change this. (Though note that, for now, the figure caption won't be repeated. There is some discussion and even a PR to change this, but it isn't done yet.)\n\nSee also \"Figure Behavior\" in https://typst.app//docs/reference/model/figure#figure-behaviour",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 2,
+      "reads": 25,
+      "score": 75.0,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:58.870511"
+}

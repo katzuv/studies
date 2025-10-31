@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2226,
+    "title": "How do you write 8 choose 2 in typst?",
+    "slug": "how-do-you-write-8-choose-2-in-typst",
+    "posts_count": 3,
+    "created_at": "2024-12-28T14:25:05.432Z",
+    "last_posted_at": "2024-12-28T14:30:07.646Z",
+    "views": 184,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 110
+  },
+  "posts": [
+    {
+      "id": 6999,
+      "post_number": 1,
+      "username": "Liana_Lee",
+      "name": "Liana Lee",
+      "created_at": "2024-12-28T14:25:05.641Z",
+      "updated_at": "2024-12-28T14:25:05.641Z",
+      "cooked": "<p>I am making typing up a solution to a problem in typst, and I am trying to write 8 choose 2 in my solution, but I’m not sure what the code to writing 8 choose 2 is. This picture is what I want the code to show:<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/d/d8674f71ad643ac98eddebb0673813cfadf82b16.png\" alt=\"Screenshot 2024-12-28 at 6.22.59 AM\" data-base62-sha1=\"uSotrNKCuwc0FeCws5HpSXE5Ar4\" width=\"230\" height=\"334\"><br>\nCan you please help me? Thank you!!!</p>",
+      "raw": "I am making typing up a solution to a problem in typst, and I am trying to write 8 choose 2 in my solution, but I'm not sure what the code to writing 8 choose 2 is. This picture is what I want the code to show:\n![Screenshot 2024-12-28 at 6.22.59 AM|230x334](upload://uSotrNKCuwc0FeCws5HpSXE5Ar4.png)\nCan you please help me? Thank you!!!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 47,
+      "score": 379.4,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 984
+    },
+    {
+      "id": 7000,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-12-28T14:28:00.367Z",
+      "updated_at": "2024-12-28T14:28:00.367Z",
+      "cooked": "<p>Searching the docs for “choose” unfortunately only finds <code>calc.binom()</code> (which doesn’t display but calculate the binomial). But going off that and searching for “binom” finds also <code>math.binom()</code>:</p>\n<aside class=\"onebox allowlistedgeneric\" data-onebox-src=\"https://typst.app/docs/reference/math/binom/\">\n  <header class=\"source\">\n      <img src=\"https://forum.typst.app/uploads/default/original/1X/098187a593d51c4db99324614e2baeeb1bb355cc.png\" class=\"site-icon\" data-dominant-color=\"3CA8B6\" width=\"32\" height=\"32\">\n\n      <a href=\"https://typst.app/docs/reference/math/binom/\" target=\"_blank\" rel=\"noopener\">Typst</a>\n  </header>\n\n  <article class=\"onebox-body\">\n    <div class=\"aspect-image\" style=\"--aspect-ratio:690/361;\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/db1c18ed802fe6841bee62606931f352da10ed09_2_690x362.png\" class=\"thumbnail\" data-dominant-color=\"7CC2C5\" width=\"690\" height=\"362\"></div>\n\n<h3><a href=\"https://typst.app/docs/reference/math/binom/\" target=\"_blank\" rel=\"noopener\">Binomial Function – Typst Documentation</a></h3>\n\n  <p>Documentation for the `binom` function.</p>\n\n\n  </article>\n\n  <div class=\"onebox-metadata\">\n    \n    \n  </div>\n\n  <div style=\"clear: both\"></div>\n</aside>\n",
+      "raw": "Searching the docs for \"choose\" unfortunately only finds `calc.binom()` (which doesn't display but calculate the binomial). But going off that and searching for \"binom\" finds also `math.binom()`:\n\nhttps://typst.app/docs/reference/math/binom/",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 47,
+      "score": 39.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 7003,
+      "post_number": 3,
+      "username": "Liana_Lee",
+      "name": "Liana Lee",
+      "created_at": "2024-12-28T14:30:07.646Z",
+      "updated_at": "2024-12-28T14:30:07.646Z",
+      "cooked": "<p>Thank you so much!!! <img src=\"https://forum.typst.app/images/emoji/apple/smile.png?v=12\" title=\":smile:\" class=\"emoji\" alt=\":smile:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Thank you so much!!!! :smile:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 45,
+      "score": 54.0,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 984
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:23.460699"
+}

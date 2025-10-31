@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 863,
+    "title": "How to load a Zotero collection with Typst Pro?",
+    "slug": "how-to-load-a-zotero-collection-with-typst-pro",
+    "posts_count": 3,
+    "created_at": "2024-10-02T07:14:12.822Z",
+    "last_posted_at": "2024-10-02T08:26:53.944Z",
+    "views": 725,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "web-app",
+      "typst-pro"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 109
+  },
+  "posts": [
+    {
+      "id": 3186,
+      "post_number": 1,
+      "username": "Julian_Wassmann",
+      "name": "Julian Waßmann",
+      "created_at": "2024-10-02T07:14:12.921Z",
+      "updated_at": "2024-10-02T19:04:07.094Z",
+      "cooked": "<p>Hello,</p>\n<p>I successfully connected my account with Zotero (shown in account settings). How can I load the Zotero collection into a Typst Project using the Web App?</p>\n<p>I haven’t found any information, only on the Typst Pro Pricing site (“Pick which collection you want to link to each project”). Is this feature available yet?</p>\n<p>Thank you for your help!<br>\nJulian</p>",
+      "raw": "Hello,\n\nI successfully connected my account with Zotero (shown in account settings). How can I load the Zotero collection into a Typst Project using the Web App?\n\nI haven't found any information, only on the Typst Pro Pricing site (\"Pick which collection you want to link to each project\"). Is this feature available yet?\n\nThank you for your help!\nJulian",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 47,
+      "score": 3639.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 340
+    },
+    {
+      "id": 3188,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2024-10-02T07:39:50.148Z",
+      "updated_at": "2024-10-02T07:39:50.148Z",
+      "cooked": "<p>Hi Julian,</p>\n<p>it’s a bit hidden. You can select the collection inside a project in the side menu “Files”.<br>\n<img src=\"https://forum.typst.app/uploads/default/original/1X/25b000b1aa62977b85de5c76420bb72c86c39bd2.png\" alt=\"image\" data-base62-sha1=\"5noKwPnWlgj3X11SZFOYrS71M6S\" width=\"421\" height=\"224\"></p>",
+      "raw": "Hi Julian,\n\nit's a bit hidden. You can select the collection inside a project in the side menu \"Files\". \n![image|421x224](upload://5noKwPnWlgj3X11SZFOYrS71M6S.png)",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 46,
+      "score": 269.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    },
+    {
+      "id": 3192,
+      "post_number": 3,
+      "username": "Julian_Wassmann",
+      "name": "Julian Waßmann",
+      "created_at": "2024-10-02T08:26:53.944Z",
+      "updated_at": "2024-10-02T08:26:53.944Z",
+      "cooked": "<p>Hi flokl,</p>\n<p>Thank you! It works now.</p>\n<p>In my opinion, it would be great if an instruction will be added to the docs.</p>",
+      "raw": "Hi flokl,\n\nThank you! It works now.\n\nIn my opinion, it would be great if an instruction will be added to the docs.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 42,
+      "score": 53.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 340
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:35.683550"
+}

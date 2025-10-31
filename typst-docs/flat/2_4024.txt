@@ -1,0 +1,65 @@
+{
+  "topic_metadata": {
+    "id": 4024,
+    "title": "How to do delete outline prefix number",
+    "slug": "how-to-do-delete-outline-prefix-number",
+    "posts_count": 2,
+    "created_at": "2025-05-11T11:37:13.403Z",
+    "last_posted_at": "2025-05-11T11:44:06.648Z",
+    "views": 48,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "layout",
+      "outline",
+      "numbering"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 148
+  },
+  "posts": [
+    {
+      "id": 12248,
+      "post_number": 1,
+      "username": "HuangMI",
+      "name": "HuangMI",
+      "created_at": "2025-05-11T11:37:13.507Z",
+      "updated_at": "2025-05-14T06:35:02.159Z",
+      "cooked": "<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#outline(title: \"\")\n#set heading(numbering: \"1.1\")\n= 第一章\n\n== 正数和负数\n== 正数和负数\n\n= 第二章\n\n== 正数和负数\n== 正数和负数\n=== 正数和负数\n==== 正数和负数\n\n= 第三章\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/4/436b0d59247d0c4542cae0cede9fa9c3b0bc5ab5.png\" data-download-href=\"https://forum.typst.app/uploads/default/436b0d59247d0c4542cae0cede9fa9c3b0bc5ab5\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/4/436b0d59247d0c4542cae0cede9fa9c3b0bc5ab5_2_653x500.png\" alt=\"image\" data-base62-sha1=\"9CplCj6q6KSQuY1pFP16SeDkojH\" width=\"653\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/4/436b0d59247d0c4542cae0cede9fa9c3b0bc5ab5_2_653x500.png, https://forum.typst.app/uploads/default/original/2X/4/436b0d59247d0c4542cae0cede9fa9c3b0bc5ab5.png 1.5x, https://forum.typst.app/uploads/default/original/2X/4/436b0d59247d0c4542cae0cede9fa9c3b0bc5ab5.png 2x\" data-dominant-color=\"F2F1F1\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">960×735 61.7 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "```typ\n#outline(title: \"\")\n#set heading(numbering: \"1.1\")\n= 第一章\n\n== 正数和负数\n== 正数和负数\n\n= 第二章\n\n== 正数和负数\n== 正数和负数\n=== 正数和负数\n==== 正数和负数\n\n= 第三章\n```\n\n![image|653x500](upload://9CplCj6q6KSQuY1pFP16SeDkojH.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 28,
+      "score": 30.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1479
+    },
+    {
+      "id": 12249,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-11T11:44:06.648Z",
+      "updated_at": "2025-05-12T04:10:48.945Z",
+      "cooked": "<p>With the new helper functions, you can just skip <code>it.prefix()</code>:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show outline.entry: it =&gt; {\n  link(it.element.location(), it.indented(none, it.inner()))\n}\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/b/bfb65f3fdbe7534a0b161699352333a6a08f037f.png\" alt=\"image\" data-base62-sha1=\"rlXVuc3aZrZRtvcqNImQOHN4GIv\" width=\"605\" height=\"190\"></p>\n<p>Also, <code>#outline(title: \"\")</code> is not the same as <code>#outline(title: none)</code>. If you don’t need title, then use <code>none</code>, otherwise it will be present with no text. You can also use <code>set text(lang: \"zh\")</code> many things to be localized to Chinese.</p>\n<aside class=\"onebox allowlistedgeneric\" data-onebox-src=\"https://typst.app/docs/reference/model/outline/#definitions-entry-definitions-indented\">\n  <header class=\"source\">\n      <img src=\"https://forum.typst.app/uploads/default/original/1X/098187a593d51c4db99324614e2baeeb1bb355cc.png\" class=\"site-icon\" data-dominant-color=\"3CA8B6\" width=\"32\" height=\"32\">\n\n      <a href=\"https://typst.app/docs/reference/model/outline/#definitions-entry-definitions-indented\" target=\"_blank\" rel=\"noopener\">Typst</a>\n  </header>\n\n  <article class=\"onebox-body\">\n    <div class=\"aspect-image\" style=\"--aspect-ratio:690/361;\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/db1c18ed802fe6841bee62606931f352da10ed09_2_690x362.png\" class=\"thumbnail\" data-dominant-color=\"7CC2C5\" width=\"690\" height=\"362\"></div>\n\n<h3><a href=\"https://typst.app/docs/reference/model/outline/#definitions-entry-definitions-indented\" target=\"_blank\" rel=\"noopener\">Outline Function – Typst Documentation</a></h3>\n\n  <p>Documentation for the `outline` function.</p>\n\n\n  </article>\n\n  <div class=\"onebox-metadata\">\n    \n    \n  </div>\n\n  <div style=\"clear: both\"></div>\n</aside>\n\n<hr>\n<p>If you need to remove just top-level numbers:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show outline.entry: it =&gt; {\n  let prefix = if it.element.func() != heading or it.element.level != 1 {\n    it.prefix()\n  }\n  link(it.element.location(), it.indented(prefix, it.inner()))\n}\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/5/5bc36c9fcdc169413fc6a957ebcb0f2966e8f79e.png\" alt=\"image\" data-base62-sha1=\"d5M8XlzbTRFeFURTiQWwqDRSbtI\" width=\"592\" height=\"185\"></p>",
+      "raw": "With the new helper functions, you can just skip `it.prefix()`:\n\n```typ\n#show outline.entry: it => {\n  link(it.element.location(), it.indented(none, it.inner()))\n}\n```\n\n![image|605x190](upload://rlXVuc3aZrZRtvcqNImQOHN4GIv.png)\n\n\nAlso, `#outline(title: \"\")` is not the same as `#outline(title: none)`. If you don't need title, then use `none`, otherwise it will be present with no text. You can also use `set text(lang: \"zh\")` many things to be localized to Chinese.\n\nhttps://typst.app/docs/reference/model/outline/#definitions-entry-definitions-indented\n\n---\n\nIf you need to remove just top-level numbers:\n\n```typ\n#show outline.entry: it => {\n  let prefix = if it.element.func() != heading or it.element.level != 1 {\n    it.prefix()\n  }\n  link(it.element.location(), it.indented(prefix, it.inner()))\n}\n```\n\n![image|592x185](upload://d5M8XlzbTRFeFURTiQWwqDRSbtI.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 26,
+      "score": 60.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:03.095134"
+}

@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1533,
+    "title": "How can I set the font size for the first column excluding the header row inside a table?",
+    "slug": "how-can-i-set-the-font-size-for-the-first-column-excluding-the-header-row-inside-a-table",
+    "posts_count": 2,
+    "created_at": "2024-11-04T13:11:32.214Z",
+    "last_posted_at": "2024-11-04T13:54:26.647Z",
+    "views": 619,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "tables"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 279
+  },
+  "posts": [
+    {
+      "id": 5115,
+      "post_number": 1,
+      "username": "maxigaz",
+      "name": "maxigaz",
+      "created_at": "2024-11-04T13:11:32.355Z",
+      "updated_at": "2024-11-04T13:11:32.355Z",
+      "cooked": "<p>Hi!</p>\n<p>I’m migrating from the <code>tablex</code> package to typst’s native <code>table</code> function as per the developer’s recommendation as well as improved compile times and performance (especially with tinymist).</p>\n<p>Is it possible to format the content of each cell of the first column except the header (the first row) so that it has a bigger font size using <code>table</code>? If so, how can I do that?</p>\n<p>Here is a basic example:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let ktable(..cells) = table(\n  stroke: (x: none, y: color.rgb(\"#DEDEDE\")),\n\n  columns: (50pt, 50pt, auto, auto),\n  inset: 8pt,\n\n  table.hline(stroke: black),\n\n  table.cell(align: center)[*Character*],\n  table.cell(align: center)[*Keyword*],\n  table.cell(align: center)[*Index*],\n  table.cell(align: center)[*Story*],\n  table.hline(stroke: black),\n\n  ..cells,\n\n  table.hline(stroke: black),\n)\n\n#ktable(\n  [吾], [I], [11], [#lorem(10)],\n\n  [明], [bright], [12], [#lorem(10)],\n\n  [唱], [chant], [13], [#lorem(10)],\n)\n</code></pre>\n<p>Here, I would like to have all the cells with Japanese characters in them to be <code>22pt</code> big.</p>",
+      "raw": "Hi!\n\nI'm migrating from the `tablex` package to typst's native `table` function as per the developer's recommendation as well as improved compile times and performance (especially with tinymist).\n\nIs it possible to format the content of each cell of the first column except the header (the first row) so that it has a bigger font size using `table`? If so, how can I do that?\n\nHere is a basic example:\n\n```typ\n#let ktable(..cells) = table(\n  stroke: (x: none, y: color.rgb(\"#DEDEDE\")),\n\n  columns: (50pt, 50pt, auto, auto),\n  inset: 8pt,\n\n  table.hline(stroke: black),\n\n  table.cell(align: center)[*Character*],\n  table.cell(align: center)[*Keyword*],\n  table.cell(align: center)[*Index*],\n  table.cell(align: center)[*Story*],\n  table.hline(stroke: black),\n\n  ..cells,\n\n  table.hline(stroke: black),\n)\n\n#ktable(\n  [吾], [I], [11], [#lorem(10)],\n\n  [明], [bright], [12], [#lorem(10)],\n\n  [唱], [chant], [13], [#lorem(10)],\n)\n```\n\nHere, I would like to have all the cells with Japanese characters in them to be `22pt` big.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 42,
+      "score": 3503.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 738
+    },
+    {
+      "id": 5118,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-11-04T13:54:26.647Z",
+      "updated_at": "2024-11-04T13:54:26.647Z",
+      "cooked": "<p>Hello, it’s fairly simple if you add a show rule to <a href=\"https://typst.app/docs/reference/model/table/#definitions-cell\"><code>table.cell</code></a>.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let ktable(..cells) = {\n  show table.cell: c =&gt; {\n    if c.y == 0 {\n      return strong(c)\n    }\n    if c.y &gt; 0 and c.x == 0 {\n      return text(22pt, c)\n    }\n    c\n  }\n  table(\n    stroke: (\n      x: none, \n      y: color.rgb(\"#DEDEDE\")\n    ),\n    columns: (50pt, 50pt, auto, auto),\n    inset: 8pt,\n  \n    table.hline(stroke: black),\n  \n    table.cell(align: center)[Character],\n    table.cell(align: center)[Keyword],\n    table.cell(align: center)[Index],\n    table.cell(align: center)[Story],\n    table.hline(stroke: black),\n  \n    ..cells,\n  \n    table.hline(stroke: black),\n  )\n}\n\n#ktable(\n  [吾], [I], [11], [#lorem(10)],\n\n  [明], [bright], [12], [#lorem(10)],\n\n  [唱], [chant], [13], [#lorem(10)],\n)\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/4/4430f9ce567e05fe8689f894442abe4696a80b58.png\" data-download-href=\"https://forum.typst.app/uploads/default/4430f9ce567e05fe8689f894442abe4696a80b58\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/4/4430f9ce567e05fe8689f894442abe4696a80b58_2_690x199.png\" alt=\"image\" data-base62-sha1=\"9JfoGyDcIUsfhlGVCP1kNk9NI7K\" width=\"690\" height=\"199\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/4/4430f9ce567e05fe8689f894442abe4696a80b58_2_690x199.png, https://forum.typst.app/uploads/default/original/2X/4/4430f9ce567e05fe8689f894442abe4696a80b58.png 1.5x, https://forum.typst.app/uploads/default/original/2X/4/4430f9ce567e05fe8689f894442abe4696a80b58.png 2x\" data-dominant-color=\"EFEFEF\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">728×210 27.1 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "Hello, it's fairly simple if you add a show rule to [`table.cell`](https://typst.app/docs/reference/model/table/#definitions-cell).\n\n\n```typ\n#let ktable(..cells) = {\n  show table.cell: c => {\n    if c.y == 0 {\n      return strong(c)\n    }\n    if c.y > 0 and c.x == 0 {\n      return text(22pt, c)\n    }\n    c\n  }\n  table(\n    stroke: (\n      x: none, \n      y: color.rgb(\"#DEDEDE\")\n    ),\n    columns: (50pt, 50pt, auto, auto),\n    inset: 8pt,\n  \n    table.hline(stroke: black),\n  \n    table.cell(align: center)[Character],\n    table.cell(align: center)[Keyword],\n    table.cell(align: center)[Index],\n    table.cell(align: center)[Story],\n    table.hline(stroke: black),\n  \n    ..cells,\n  \n    table.hline(stroke: black),\n  )\n}\n\n#ktable(\n  [吾], [I], [11], [#lorem(10)],\n\n  [明], [bright], [12], [#lorem(10)],\n\n  [唱], [chant], [13], [#lorem(10)],\n)\n```\n![image|690x199](upload://9JfoGyDcIUsfhlGVCP1kNk9NI7K.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 39,
+      "score": 112.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:33.152367"
+}

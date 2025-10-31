@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2612,
+    "title": "How can I hide the page number on the first page?",
+    "slug": "how-can-i-hide-the-page-number-on-the-first-page",
+    "posts_count": 2,
+    "created_at": "2025-01-30T15:38:05.341Z",
+    "last_posted_at": "2025-01-30T15:49:46.618Z",
+    "views": 469,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "numbering",
+      "page"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 146
+  },
+  "posts": [
+    {
+      "id": 8035,
+      "post_number": 1,
+      "username": "This_isYE",
+      "name": "This isYE",
+      "created_at": "2025-01-30T15:38:05.540Z",
+      "updated_at": "2025-01-30T15:48:02.842Z",
+      "cooked": "<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">\n// Configure the page.\n  #set page(\n    paper: \"a4\",\n    // The margins depend on the paper size.\n    margin: (x: 2cm, y: 1.5cm),\n    numbering:  \"1/1\", number-align: right,\n  )\n</code></pre>\n<p>I am using this to number pages and would like to hide the numbering from the first page, ie start numbering from 2/total beginning with the 2nd page.</p>\n<p>Thank you devs!</p>",
+      "raw": "```typ\n\n// Configure the page.\n  #set page(\n    paper: \"a4\",\n    // The margins depend on the paper size.\n    margin: (x: 2cm, y: 1.5cm),\n    numbering:  \"1/1\", number-align: right,\n  )\n```\n\nI am using this to number pages and would like to hide the numbering from the first page, ie start numbering from 2/total beginning with the 2nd page.\n\nThank you devs!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 41,
+      "score": 2248.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1060
+    },
+    {
+      "id": 8037,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-30T15:49:46.618Z",
+      "updated_at": "2025-01-30T15:49:46.618Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/this_isye\">@This_isYE</a>, I think your question is answered in these two posts:</p>\n<aside class=\"quote quote-modified\" data-post=\"1\" data-topic=\"2419\">\n  <div class=\"title\">\n    <div class=\"quote-controls\"></div>\n    <img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/letter_avatar_proxy/v4/letter/j/00298C/48.png\" class=\"avatar\">\n    <a href=\"https://forum.typst.app/t/how-can-i-start-page-numbering-on-the-first-page/2419\">How can I start page numbering on the first page?</a> <a class=\"badge-category__wrapper \" href=\"/c/questions/5\"><span data-category-id=\"5\" style=\"--category-badge-color: #F7C000; --category-badge-text-color: #fdfdfd;\" data-drop-close=\"true\" class=\"badge-category \" title=\"Your questions about using Typst and the web app go in this category.\"><span class=\"badge-category__name\">Questions</span></span></a>\n  </div>\n  <blockquote>\n    I am new to Typst and using it for preparing assignments for my masters course work … when i set the page number using set page(numbering) i noticed that contents of my first page completely moved to second page and only the title remained in the first page. it seems that the first page is automatically treated as a title page when we switch on numbering… \nSince my document does not need a title page… how do i set this off … \nSnippets of my typst code is give below… \n#set text(\n  font: \"New Comp…\n  </blockquote>\n</aside>\n\n<p>(here OP has what you want but would like the opposite)</p>\n<aside class=\"quote\" data-post=\"1\" data-topic=\"515\">\n  <div class=\"title\">\n    <div class=\"quote-controls\"></div>\n    <img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/letter_avatar_proxy/v4/letter/g/8F3617/48.png\" class=\"avatar\">\n    <a href=\"https://forum.typst.app/t/can-you-have-different-values-for-the-top-margin-after-the-first-page/515\">Can you have different values for the top margin AFTER the first page?</a> <a class=\"badge-category__wrapper \" href=\"/c/questions/5\"><span data-category-id=\"5\" style=\"--category-badge-color: #F7C000; --category-badge-text-color: #fdfdfd;\" data-drop-close=\"true\" class=\"badge-category \" title=\"Your questions about using Typst and the web app go in this category.\"><span class=\"badge-category__name\">Questions</span></span></a>\n  </div>\n  <blockquote>\n    I would like to be able to set the top margin value differently on every page AFTER the first page. \nPage 1 would have a top margin value of 1cm, every other pager after that would be set to 2.5cm. \nTIA\n  </blockquote>\n</aside>\n\n<p>(here the issue is the same, but with margin instead of numbering)</p>\n<p>Feel free to follow up if these don’t fully solve your problem.</p>",
+      "raw": "Hi @This_isYE, I think your question is answered in these two posts:\n\nhttps://forum.typst.app/t/how-can-i-start-page-numbering-on-the-first-page/2419?u=sillyfreak\n\n(here OP has what you want but would like the opposite)\n\nhttps://forum.typst.app/t/can-you-have-different-values-for-the-top-margin-after-the-first-page/515?u=sillyfreak\n\n(here the issue is the same, but with margin instead of numbering)\n\nFeel free to follow up if these don't fully solve your problem.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 40,
+      "score": 42.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:19.733035"
+}

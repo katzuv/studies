@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2855,
+    "title": "How do I add a header/footer of dynamic height?",
+    "slug": "how-do-i-add-a-header-footer-of-dynamic-height",
+    "posts_count": 3,
+    "created_at": "2025-02-17T02:32:39.490Z",
+    "last_posted_at": "2025-02-17T13:26:59.949Z",
+    "views": 218,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "layout",
+      "header-footer"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 442
+  },
+  "posts": [
+    {
+      "id": 8737,
+      "post_number": 1,
+      "username": "juan",
+      "name": "Juan Martín Seery",
+      "created_at": "2025-02-17T02:32:39.842Z",
+      "updated_at": "2025-02-17T16:01:40.941Z",
+      "cooked": "<p><strong>Context</strong>: I’m trying to make an invoice template. It consists of three sections: (a) information about me and the client, (b) a table with the products and a summary section, (c) some metadata about the invoice.</p>\n<p>I want sections (a) and (c) to repeat on each page if the table “overflows”. Note that section (a) has a dynamic height since I’m generating these invoices programmatically.</p>\n<p>I’ve tried using <code>#set page(header: ...)</code> but I didn’t find a way to give it an “auto” height. Is there a way to make this template in Typst?</p>",
+      "raw": "**Context**: I'm trying to make an invoice template. It consists of three sections: (a) information about me and the client, (b) a table with the products and a summary section, (c) some metadata about the invoice.\n\nI want sections (a) and (c) to repeat on each page if the table \"overflows\". Note that section (a) has a dynamic height since I'm generating these invoices programmatically.\n\nI've tried using `#set page(header: ...)` but I didn't find a way to give it an \"auto\" height. Is there a way to make this template in Typst?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 46,
+      "score": 764.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 540
+    },
+    {
+      "id": 8745,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-02-17T09:36:53.666Z",
+      "updated_at": "2025-02-17T09:37:26.023Z",
+      "cooked": "<p>Hi, welcome to the Typst forum!</p>\n<p>I think the header size is computed as the top margin minus the header ascent. So in your case, you actually need to set the top margin dynamically based on the header content:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let header = pad(y: 1cm, rect(height: 4cm, width: 100%, stroke: red))\n#let margin = 2cm // for other sides\n\n#context[\n  #let h = measure(width: page.width - 2 * margin, header).height\n  #set page(\n    margin: (top: h, rest: margin),\n    header: header,\n    header-ascent: 0pt,\n  )\n\n  Text.\n]\n</code></pre>\n<p>This uses the <code>measure</code> function to find the height of the header content. We must specify the available width where the header will be laid out. Normally we would get the available width by wrapping our code in a <code>layout</code> call, but that puts the content in container and you cannot configure the page (e.g. change the margins) inside of a container. So instead we compute the width as the total page width minus the left and right margins.</p>\n<p>For simplicity here I set the header-ascent to 0 and control the spacing between header and main text using padding around the header.</p>\n<p>But maybe a better approach for your problem is to simply use the <code>table.header</code> and <code>table.footer</code> features of Typst tables: when a table is broken in multiple pages, by default Typst will repeat the table header and footer on every page. If you want the table footer to look like a page footer, you can add an extra row to fill the extra space between the main content and the footer:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(paper: \"a6\", margin: (y: 0pt))\n\n#let header = rect(width: 100%, height: 3cm, stroke: red)\n#let main-content = block(width: 100%, height: 10cm, fill: green)\n#let footer = rect(width: 100%, height: 3cm, stroke: blue)\n\n#table(\n  inset: 0pt,\n  stroke: none,\n  table.header(header),\n  table.cell(inset: (y: 1cm), main-content),\n  block(width: 100%, height: 1fr, fill: gray)[Filler space],\n  table.footer(footer),\n)\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/2/23815729917727e040aeab435835d0ebcdeaf797.png\" data-download-href=\"https://forum.typst.app/uploads/default/23815729917727e040aeab435835d0ebcdeaf797\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/2/23815729917727e040aeab435835d0ebcdeaf797_2_517x365.png\" alt=\"image\" data-base62-sha1=\"545OYoc8HgnK28Q2kJe3um7WEJN\" width=\"517\" height=\"365\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/2/23815729917727e040aeab435835d0ebcdeaf797_2_517x365.png, https://forum.typst.app/uploads/default/original/2X/2/23815729917727e040aeab435835d0ebcdeaf797.png 1.5x, https://forum.typst.app/uploads/default/original/2X/2/23815729917727e040aeab435835d0ebcdeaf797.png 2x\" data-dominant-color=\"B0DBB5\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">770×544 4.21 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "Hi, welcome to the Typst forum!\n\nI think the header size is computed as the top margin minus the header ascent. So in your case, you actually need to set the top margin dynamically based on the header content:\n\n```typ\n#let header = pad(y: 1cm, rect(height: 4cm, width: 100%, stroke: red))\n#let margin = 2cm // for other sides\n\n#context[\n  #let h = measure(width: page.width - 2 * margin, header).height\n  #set page(\n    margin: (top: h, rest: margin),\n    header: header,\n    header-ascent: 0pt,\n  )\n\n  Text.\n]\n```\n\nThis uses the `measure` function to find the height of the header content. We must specify the available width where the header will be laid out. Normally we would get the available width by wrapping our code in a `layout` call, but that puts the content in container and you cannot configure the page (e.g. change the margins) inside of a container. So instead we compute the width as the total page width minus the left and right margins.\n\nFor simplicity here I set the header-ascent to 0 and control the spacing between header and main text using padding around the header.\n\nBut maybe a better approach for your problem is to simply use the `table.header` and `table.footer` features of Typst tables: when a table is broken in multiple pages, by default Typst will repeat the table header and footer on every page. If you want the table footer to look like a page footer, you can add an extra row to fill the extra space between the main content and the footer:\n\n```typ\n#set page(paper: \"a6\", margin: (y: 0pt))\n\n#let header = rect(width: 100%, height: 3cm, stroke: red)\n#let main-content = block(width: 100%, height: 10cm, fill: green)\n#let footer = rect(width: 100%, height: 3cm, stroke: blue)\n\n#table(\n  inset: 0pt,\n  stroke: none,\n  table.header(header),\n  table.cell(inset: (y: 1cm), main-content),\n  block(width: 100%, height: 1fr, fill: gray)[Filler space],\n  table.footer(footer),\n)\n```\n\n![image|690x487, 75%](upload://545OYoc8HgnK28Q2kJe3um7WEJN.png)",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 44,
+      "score": 38.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    },
+    {
+      "id": 8751,
+      "post_number": 3,
+      "username": "juan",
+      "name": "Juan Martín Seery",
+      "created_at": "2025-02-17T13:26:59.949Z",
+      "updated_at": "2025-02-17T13:26:59.949Z",
+      "cooked": "<p>Awesome! Thank you very much. I ended up using the table with <code>table.header</code> and <code>table.footer</code></p>",
+      "raw": "Awesome! Thank you very much. I ended up using the table with `table.header` and `table.footer`",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 34,
+      "score": 21.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 540
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:28.329216"
+}

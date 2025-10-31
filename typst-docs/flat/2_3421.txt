@@ -1,0 +1,61 @@
+{
+  "topic_metadata": {
+    "id": 3421,
+    "title": "How can I modify a specific detail of a theme (newbie question)?",
+    "slug": "how-can-i-modify-a-specific-detail-of-a-theme-newbie-question",
+    "posts_count": 2,
+    "created_at": "2025-03-27T06:56:39.486Z",
+    "last_posted_at": "2025-03-27T07:08:29.280Z",
+    "views": 50,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 216
+  },
+  "posts": [
+    {
+      "id": 10305,
+      "post_number": 1,
+      "username": "Mathieu",
+      "name": "Mathieu",
+      "created_at": "2025-03-27T06:56:39.593Z",
+      "updated_at": "2025-03-27T06:56:39.593Z",
+      "cooked": "<p>I’m fooling around with the <a href=\"https://typst.app/universe/package/owlbear\">owlbear</a> theme. It displays a large dropcap at the beginning of the first paragraph:</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/e/e60d9b80ed42914a768a6b22bf94056ad9fbecbb.png\" data-download-href=\"https://forum.typst.app/uploads/default/e60d9b80ed42914a768a6b22bf94056ad9fbecbb\" title=\"render\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/e/e60d9b80ed42914a768a6b22bf94056ad9fbecbb_2_690x345.png\" alt=\"render\" data-base62-sha1=\"wP8YgmVRHm539P7KJQi8VCwZYlt\" width=\"690\" height=\"345\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/e/e60d9b80ed42914a768a6b22bf94056ad9fbecbb_2_690x345.png, https://forum.typst.app/uploads/default/original/2X/e/e60d9b80ed42914a768a6b22bf94056ad9fbecbb.png 1.5x, https://forum.typst.app/uploads/default/original/2X/e/e60d9b80ed42914a768a6b22bf94056ad9fbecbb.png 2x\" data-dominant-color=\"F3F1F0\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">render</span><span class=\"informations\">919×460 77.6 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>I’d like to make this dropcap slightly smaller or larger. What is the canonical way to achieve that? Should I load the them in my document source, then attempt to redefine its internal functions, as in:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/owlbear:0.0.1\": book-template\n#show: book-template  // These two lines simply apply the template\n\n#show par: (it) =&gt; {\n  paragraph_counter.step(level: 2)\n\n  context {\n    if paragraph_counter.get().at(1) == 1 {\n      return book-template.dropcap(\n        height: 10, // &lt;-- this is my edit\n        font: book-template.theme.font.dropcap,\n        fill: book-template.theme.paint.dropcap.fill,\n        stroke: (\n          paint: book-template.theme.paint.dropcap.stroke,\n          thickness: 1.5pt,\n        ),\n        it.body\n      )\n    } else {\n      return it\n    }\n  }\n}\n</code></pre>\n<p>That approach fails because things like <code>paragraph_counter</code> or <code>theme</code> are undefined in this scope.</p>\n<p>Should I instead clone the template and modify it locally? Again, at this point I have no idea what is the canonical/expected way to achieve this.</p>",
+      "raw": "I'm fooling around with the [owlbear](https://typst.app/universe/package/owlbear) theme. It displays a large dropcap at the beginning of the first paragraph:\n\n![render|690x345](upload://wP8YgmVRHm539P7KJQi8VCwZYlt.png)\n\nI'd like to make this dropcap slightly smaller or larger. What is the canonical way to achieve that? Should I load the them in my document source, then attempt to redefine its internal functions, as in:\n\n```typ\n#import \"@preview/owlbear:0.0.1\": book-template\n#show: book-template  // These two lines simply apply the template\n\n#show par: (it) => {\n  paragraph_counter.step(level: 2)\n\n  context {\n    if paragraph_counter.get().at(1) == 1 {\n      return book-template.dropcap(\n        height: 10, // <-- this is my edit\n        font: book-template.theme.font.dropcap,\n        fill: book-template.theme.paint.dropcap.fill,\n        stroke: (\n          paint: book-template.theme.paint.dropcap.stroke,\n          thickness: 1.5pt,\n        ),\n        it.body\n      )\n    } else {\n      return it\n    }\n  }\n}\n```\n\nThat approach fails because things like `paragraph_counter` or `theme` are undefined in this scope.\n\nShould I instead clone the template and modify it locally? Again, at this point I have no idea what is the canonical/expected way to achieve this.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 27,
+      "score": 85.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1200
+    },
+    {
+      "id": 10306,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-03-27T07:08:29.280Z",
+      "updated_at": "2025-03-27T07:08:29.280Z",
+      "cooked": "<p>You should clone it locally and modify <code>height</code>. Unfortunately, this is not exposed to the user from the template. You can create an issue at their project <a href=\"https://gitlab.com/doggobit/typst-owlbear/-/issues\">here</a>.</p>",
+      "raw": "You should clone it locally and modify `height`. Unfortunately, this is not exposed to the user from the template. You can create an issue at their project [here](https://gitlab.com/doggobit/typst-owlbear/-/issues).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 26,
+      "score": 20.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:49:56.618432"
+}

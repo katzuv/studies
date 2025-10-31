@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2419,
+    "title": "How can I start page numbering on the first page?",
+    "slug": "how-can-i-start-page-numbering-on-the-first-page",
+    "posts_count": 3,
+    "created_at": "2025-01-15T05:54:05.062Z",
+    "last_posted_at": "2025-01-15T11:18:28.663Z",
+    "views": 484,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "neuralpain",
+    "tags": [
+      "numbering",
+      "page"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 488
+  },
+  "posts": [
+    {
+      "id": 7529,
+      "post_number": 1,
+      "username": "jaivishnuks",
+      "name": "jaivishnuks",
+      "created_at": "2025-01-15T05:54:05.265Z",
+      "updated_at": "2025-01-15T11:16:24.846Z",
+      "cooked": "<p>I am new to Typst and using it for preparing assignments for my masters course work … when i set the page number using <code>set page(numbering)</code> i noticed that contents of my first page completely moved to second page and only the title remained in the first page. it seems that the first page is automatically treated as a title page when we switch on numbering…<br>\nSince my document does not need a title page… how do i set this off …<br>\nSnippets of my typst code is give below…</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set text(\n  font: \"New Computer Modern\",\n  size: 13pt\n)\n\n#let title = [Tutorial No.1]\n\n#let author = [Jaivishnu K.S]\n\n#align(center, text(16pt)[\n  *#title*\n])\n\n#align(center, text(13pt)[\n  #author])\n\n#set enum(numbering: \"1.a)\")\n\n#set par(justify: true,leading:3em,spacing: 2em)\n\n#set heading(numbering: \"1.a)\")\n#set page(numbering: \"1\")\n\n#v(10pt)\n\n+ Evaluate the following\n\t+ $overline(b) dot overline(c)$ where  b = (1,4,17) and c=(-4,-3,1) \\  $overline(b) dot overline(c) = b_i c_i = -4-12+17 = 1$\n</code></pre>",
+      "raw": "I am new to Typst and using it for preparing assignments for my masters course work .... when i set the page number using `set page(numbering)` i noticed that contents of my first page completely moved to second page and only the title remained in the first page. it seems that the first page is automatically treated as a title page when we switch on numbering.. \nSince my document does not need a title page... how do i set this off ... \nSnippets of my typst code is give below... \n\n```typ\n#set text(\n  font: \"New Computer Modern\",\n  size: 13pt\n)\n\n#let title = [Tutorial No.1]\n\n#let author = [Jaivishnu K.S]\n\n#align(center, text(16pt)[\n  *#title*\n])\n\n#align(center, text(13pt)[\n  #author])\n\n#set enum(numbering: \"1.a)\")\n\n#set par(justify: true,leading:3em,spacing: 2em)\n\n#set heading(numbering: \"1.a)\")\n#set page(numbering: \"1\")\n\n#v(10pt)\n\n+ Evaluate the following\n\t+ $overline(b) dot overline(c)$ where  b = (1,4,17) and c=(-4,-3,1) \\  $overline(b) dot overline(c) = b_i c_i = -4-12+17 = 1$\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 48,
+      "score": 1219.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1054
+    },
+    {
+      "id": 7530,
+      "post_number": 2,
+      "username": "neuralpain",
+      "name": "neuralpain",
+      "created_at": "2025-01-15T07:35:25.138Z",
+      "updated_at": "2025-01-15T07:56:44.804Z",
+      "cooked": "<p><img src=\"https://forum.typst.app/uploads/default/original/1X/330078baf19fa0907af79ed20bd09ba6c7025cc2.png?v=12\" title=\":typstguy_talking:\" class=\"emoji emoji-custom\" alt=\":typstguy_talking:\" loading=\"lazy\" width=\"20\" height=\"20\"> Hi <a class=\"mention\" href=\"/u/jaivishnuks\">@jaivishnuks</a>, welcome to the community! <img src=\"https://forum.typst.app/images/emoji/apple/wave.png?v=12\" title=\":wave:\" class=\"emoji\" alt=\":wave:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>\n<p>Typst code is interpreted line-by-line, therefore, when using the <code>page</code> function after the code for <code>title</code> like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#align(center, text(16pt)[#title])\n// [...]\n#set page(numbering: \"1\")\n</code></pre>\n<p>it only affects the elements which come after.</p>\n<blockquote>\n<p>It should be noted that whenever you set a new page layout, the content which comes after the <code>page</code> function is displayed starting on a new page.</p>\n</blockquote>\n<p>This is good for when you only want certain pages to have different layouts. For example, when creating a cover page, you may want the margins for that first page to be set differently, and you may also not want any numbering on that page. You would write the code something similar to this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(margin: (x: 3in, y: 2in)) // page settings for cover (numbering is not displayed)\n#lorem(180)\n\n#set page(margin: 2.5cm, numbering: \"1\") // page settings for the rest of the document (numbering begins now)\n#lorem(2000)\n</code></pre>\n<p>As shown above, the cover page has a different page margin than the rest of the document and does not include numbering like the rest of the document.</p>\n<p><strong>For your situation, placing the code for the page layout at the top would suffice.</strong></p>\n<p>I hope this was helpful and you have a fantastic time writing in Typst! <img src=\"https://forum.typst.app/uploads/default/original/1X/274f848b78859852628e9efdb7d0aefa6c38bb26.png?v=12\" title=\":typstguy:\" class=\"emoji emoji-custom\" alt=\":typstguy:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": ":typstguy_talking: Hi @jaivishnuks, welcome to the community! :wave:\n\nTypst code is interpreted line-by-line, therefore, when using the `page` function after the code for `title` like this:\n\n```typ\n#align(center, text(16pt)[#title])\n// [...]\n#set page(numbering: \"1\")\n```\n\nit only affects the elements which come after.\n\n> It should be noted that whenever you set a new page layout, the content which comes after the `page` function is displayed starting on a new page.\n\nThis is good for when you only want certain pages to have different layouts. For example, when creating a cover page, you may want the margins for that first page to be set differently, and you may also not want any numbering on that page. You would write the code something similar to this:\n\n```typ\n#set page(margin: (x: 3in, y: 2in)) // page settings for cover (numbering is not displayed)\n#lorem(180)\n\n#set page(margin: 2.5cm, numbering: \"1\") // page settings for the rest of the document (numbering begins now)\n#lorem(2000)\n```\n\nAs shown above, the cover page has a different page margin than the rest of the document and does not include numbering like the rest of the document.\n\n**For your situation, placing the code for the page layout at the top would suffice.**\n\nI hope this was helpful and you have a fantastic time writing in Typst! :typstguy:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 45,
+      "score": 63.6,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 946
+    },
+    {
+      "id": 7542,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-15T11:18:28.663Z",
+      "updated_at": "2025-01-15T11:18:28.663Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/jaivishnuks\">@jaivishnuks</a>, welcome and thank you for your question! I have changed your post’s title to bring it in line with the <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">question guidelines</a> and thus make it easier to understand from the title:</p>\n<blockquote>\n<p><strong>Good titles are questions you would ask your friend about Typst.</strong></p>\n</blockquote>\n<p>I also formatted your code a bit; clicking on the pencil symbol you should be able to see what I changed, and the question guidelines also provide some guidance on how to show Typst code.</p>",
+      "raw": "Hi @jaivishnuks, welcome and thank you for your question! I have changed your post’s title to bring it in line with the [question guidelines](https://forum.typst.app/t/how-to-post-in-the-questions-category/11) and thus make it easier to understand from the title:\n\n> **Good titles are questions you would ask your friend about Typst.**\n\nI also formatted your code a bit; clicking on the pencil symbol you should be able to see what I changed, and the question guidelines also provide some guidance on how to show Typst code.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 35,
+      "score": 61.8,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:50.233008"
+}

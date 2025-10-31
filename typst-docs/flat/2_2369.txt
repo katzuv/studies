@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2369,
+    "title": "How do I access a group in a regex of a show rule?",
+    "slug": "how-do-i-access-a-group-in-a-regex-of-a-show-rule",
+    "posts_count": 2,
+    "created_at": "2025-01-11T09:36:19.852Z",
+    "last_posted_at": "2025-01-11T12:44:21.618Z",
+    "views": 179,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 210
+  },
+  "posts": [
+    {
+      "id": 7385,
+      "post_number": 1,
+      "username": "Olaf",
+      "name": "Olaf",
+      "created_at": "2025-01-11T09:36:20.031Z",
+      "updated_at": "2025-01-11T09:36:20.031Z",
+      "cooked": "<p>I want to build a show rule that uses a regular expression to find text passages that are enclosed in curly brackets. In the output, the curly brackets should be replaced by square brackets. And the entire expression should be displayed in red.</p>\n<p>To achieve this, I need to get access to the text between the curly brackets. That would be the first group in the regular expression. However, the it binding includes the complete expression. That’s why my show rule returns ‘Hello [{World}]!’ instead of ‘Hello [World]!’.</p>\n<p>How do I get the group?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show regex(\"\\{(.*?)\\}\"): it =&gt; {\n  set text(fill: red)\n\n  [\\[#it\\]]\n}\n\nHello {World}!\n</code></pre>",
+      "raw": "I want to build a show rule that uses a regular expression to find text passages that are enclosed in curly brackets. In the output, the curly brackets should be replaced by square brackets. And the entire expression should be displayed in red. \n\nTo achieve this, I need to get access to the text between the curly brackets. That would be the first group in the regular expression. However, the it binding includes the complete expression. That's why my show rule returns ‘Hello [{World}]!’ instead of ‘Hello [World]!’.\n\nHow do I get the group?\n\n\n```typ\n#show regex(\"\\{(.*?)\\}\"): it => {\n  set text(fill: red)\n\n  [\\[#it\\]]\n}\n\nHello {World}!\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 38,
+      "score": 782.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 418
+    },
+    {
+      "id": 7392,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-01-11T12:44:21.618Z",
+      "updated_at": "2025-01-11T13:05:23.406Z",
+      "cooked": "<p><code>it</code> is already the matching text as content, the other fields that <code>.match()</code> would return are therefore not accessible in the show rule.</p>\n<p>If you want to replace the curly brackets by square brackets, you could use two show rules inside your regex show rule. If you want to completely remove the curly brackets, just use empty strings as the replacements.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show regex(\"\\{(.*?)\\}\"): it =&gt; {\n  show \"{\": \"[\"\n  show \"}\": \"]\"\n  set text(red)\n  it\n}\n</code></pre>\n<p>If there is the possibility that you could have single curly brackets in your document, you can use the following pattern instead to always match the innermost pair of curly brackets.</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">regex(\"\\{[^\\{\\}]*?\\}\")\n</code></pre>",
+      "raw": "`it` is already the matching text as content, the other fields that `.match()` would return are therefore not accessible in the show rule.\n\nIf you want to replace the curly brackets by square brackets, you could use two show rules inside your regex show rule. If you want to completely remove the curly brackets, just use empty strings as the replacements.\n\n```typ\n#show regex(\"\\{(.*?)\\}\"): it => {\n  show \"{\": \"[\"\n  show \"}\": \"]\"\n  set text(red)\n  it\n}\n```\n\nIf there is the possibility that you could have single curly brackets in your document, you can use the following pattern instead to always match the innermost pair of curly brackets.\n```typc\nregex(\"\\{[^\\{\\}]*?\\}\")\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 33,
+      "score": 6.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:55.303357"
+}

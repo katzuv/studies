@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2044,
+    "title": "Why is my footer `((..) => ..,)` instead of the page number?",
+    "slug": "why-is-my-footer-instead-of-the-page-number",
+    "posts_count": 3,
+    "created_at": "2024-12-10T13:39:35.347Z",
+    "last_posted_at": "2024-12-10T14:41:25.538Z",
+    "views": 108,
+    "like_count": 3,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 357
+  },
+  "posts": [
+    {
+      "id": 6466,
+      "post_number": 1,
+      "username": "PaulS",
+      "name": "",
+      "created_at": "2024-12-10T13:39:35.608Z",
+      "updated_at": "2024-12-10T14:26:30.989Z",
+      "cooked": "<p>I have the following template, which used to work fine. However, when the new <code>typst</code> version came, it places</p>\n<p><code>((..) =&gt; ..,)</code></p>\n<p>at the bottom of the page, instead of the page number.</p>\n<p>Could you please help me? Thanks!</p>\n<pre><code class=\"lang-auto\">#let conf(lang: \"en\",\n  title: none,\n  author: [My full name],\n  date: datetime.today().display(),\n  doc,) = {\n\n  set page(\n    paper: \"a4\",\n    numbering: \"1\",\n    footer: context(\n      loc =&gt; {\n        let page-number = counter(page).at(loc).first()\n        let match-list = query(selector(&lt;turn-on-page-numbering&gt;).before(loc), loc)\n        if match-list == () { return none }\n        align(center, str(page-number))\n      },\n    ),\n  )\n\n  set par(justify: true)\n  set text(\n    font: \"Libertinus Serif\",\n    size: 12pt,\n    lang: lang,\n  )\n\n  set heading(numbering: \"1.\")\n  show: rest =&gt; {\n    for i in (5,6) {\n      rest = {\n        show heading.where(level: i): it =&gt; strong(it.body)\n        rest\n      }\n    }\n    rest\n  }\n\n  show heading: it =&gt; {\n    it\n    v(0.5em)\n  }\n\n  set enum(indent: 1em)\n  set list(indent: 1em)\n\n  set align(center)\n  text(17pt, weight: \"bold\", title)\n  v(2em)\n  text(15pt, author)\n  v(1.5em)\n\n  text(15pt, date)\n  pagebreak()\n  set align(left)\n  set par(justify: true)\n\n  set enum(full: true, numbering: (..n) =&gt; {\n      let format = if n.pos().len() &gt; 1 {\"a)\"} else {\"1.\"}\n      numbering(format, n.pos().last())})\n\n  doc\n}\n</code></pre>",
+      "raw": "I have the following template, which used to work fine. However, when the new `typst` version came, it places \n\n`((..) => ..,)`\n\nat the bottom of the page, instead of the page number.\n\nCould you please help me? Thanks!\n\n```\n#let conf(lang: \"en\",\n  title: none,\n  author: [My full name],\n  date: datetime.today().display(),\n  doc,) = {\n\n  set page(\n    paper: \"a4\",\n    numbering: \"1\",\n    footer: context(\n      loc => {\n        let page-number = counter(page).at(loc).first()\n        let match-list = query(selector(<turn-on-page-numbering>).before(loc), loc)\n        if match-list == () { return none }\n        align(center, str(page-number))\n      },\n    ),\n  )\n\n  set par(justify: true)\n  set text(\n    font: \"Libertinus Serif\",\n    size: 12pt,\n    lang: lang,\n  )\n\n  set heading(numbering: \"1.\")\n  show: rest => {\n    for i in (5,6) {\n      rest = {\n        show heading.where(level: i): it => strong(it.body)\n        rest\n      }\n    }\n    rest\n  }\n\n  show heading: it => {\n    it\n    v(0.5em)\n  }\n\n  set enum(indent: 1em)\n  set list(indent: 1em)\n\n  set align(center)\n  text(17pt, weight: \"bold\", title)\n  v(2em)\n  text(15pt, author)\n  v(1.5em)\n\n  text(15pt, date)\n  pagebreak()\n  set align(left)\n  set par(justify: true)\n\n  set enum(full: true, numbering: (..n) => {\n      let format = if n.pos().len() > 1 {\"a)\"} else {\"1.\"}\n      numbering(format, n.pos().last())})\n\n  doc\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 271.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 280
+    },
+    {
+      "id": 6468,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-12-10T14:25:38.717Z",
+      "updated_at": "2024-12-10T14:27:08.724Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/pauls\">@PaulS</a>! The <code>((..) =&gt; ..,)</code> you see comes from your footer.</p>\n<p>You can read the topic <a href=\"https://forum.typst.app/t/why-is-the-value-i-receive-from-context-always-content/164\" class=\"inline-onebox\">Why is the value I receive from context always content?</a> to understand context expressions.</p>\n<p>This topic “<a href=\"https://forum.typst.app/t/how-to-use-context-instead-of-a-callback-function-in-locate-function-calls/965/2\" class=\"inline-onebox\">How to use context instead of a callback function in locate function calls? - #2 by quachpas</a>” adresses your issue directly.</p>\n<p>Without looking any further, I can suggest the following:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(\n    paper: \"a4\",\n    numbering: \"1\",\n    footer: context {\n      let page-number = counter(page).at(here()).first()\n      let match-list = query(selector(&lt;turn-on-page-numbering&gt;).before(here()))\n      if match-list == () { return none }\n      align(center, str(page-number))\n    },\n  )\n</code></pre>\n<p>I also took the opportunity to rename your topic to “Why is my footer <code>((..) =&gt; ..,)</code> instead of the page number?”, if that’s wrong please modify it!<br>\n<a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">Good titles are questions you would ask your friend about Typst.</a></p>",
+      "raw": "Hello @PaulS! The `((..) => ..,)` you see comes from your footer.\n\nYou can read the topic https://forum.typst.app/t/why-is-the-value-i-receive-from-context-always-content/164 to understand context expressions.\n\nThis topic \"https://forum.typst.app/t/how-to-use-context-instead-of-a-callback-function-in-locate-function-calls/965/2\" adresses your issue directly.\n\nWithout looking any further, I can suggest the following:\n\n```typ\n#set page(\n    paper: \"a4\",\n    numbering: \"1\",\n    footer: context {\n      let page-number = counter(page).at(here()).first()\n      let match-list = query(selector(<turn-on-page-numbering>).before(here()))\n      if match-list == () { return none }\n      align(center, str(page-number))\n    },\n  )\n```\n\nI also took the opportunity to rename your topic to \"Why is my footer `((..) => ..,)` instead of the page number?\", if that's wrong please modify it!\n[Good titles are questions you would ask your friend about Typst.](https://forum.typst.app/t/how-to-post-in-the-questions-category/11)",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 29,
+      "score": 75.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 6469,
+      "post_number": 3,
+      "username": "PaulS",
+      "name": "",
+      "created_at": "2024-12-10T14:41:25.538Z",
+      "updated_at": "2024-12-10T14:41:25.538Z",
+      "cooked": "<p>Thank you very much indeed, <a class=\"mention\" href=\"/u/quachpas\">@quachpas</a>! That fixed the issue!</p>",
+      "raw": "Thank you very much indeed, @quachpas! That fixed the issue!",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 26,
+      "score": 20.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 280
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:45.002545"
+}

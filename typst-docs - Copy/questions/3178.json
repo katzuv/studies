@@ -1,0 +1,61 @@
+{
+  "topic_metadata": {
+    "id": 3178,
+    "title": "Is there a way to write Swiss Standard German in typst?",
+    "slug": "is-there-a-way-to-write-swiss-standard-german-in-typst",
+    "posts_count": 2,
+    "created_at": "2025-03-10T15:08:28.466Z",
+    "last_posted_at": "2025-03-10T15:22:42.087Z",
+    "views": 77,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 270
+  },
+  "posts": [
+    {
+      "id": 9596,
+      "post_number": 1,
+      "username": "fungusworld",
+      "name": "fungusworld",
+      "created_at": "2025-03-10T15:08:28.564Z",
+      "updated_at": "2025-03-10T15:09:22.252Z",
+      "cooked": "<p>Hello there!<br>\nI have a bit of an issue with the way typst formats languages. I am from Switzerland, and frequently write reports and papers for university, which I have increasingly been using typst for. <a href=\"https://en.wikipedia.org/wiki/Swiss_Standard_German\" rel=\"noopener nofollow ugc\">The Swiss variety of german</a> has some subtle differences to classic german (high german) that typst can’t take into account, because it uses ISO language codes and many local language varieties like Swiss German don’t have their own ISO language codes. The subtle differences include things like there not being an “ß” (Eszett) in Swiss German, and quotation marks usually being in the « french » style, rather than the „ german “ style.</p>\n<p>Now I was wondering if there is a way to customize whatever <code> lang: \"de\"</code> is pointing to when it refers to <code>\"de\"</code>, so at least minor things like quotation marks can be changed, or if there is maybe even a simple tag in <code>lang</code> or <code>quotes</code> that I’ve missed? I was also wondering if maybe I should open an issue on github about this. It would obviously be easiest if typst included regional language variant options, like maybe <code>lang: \"de:ch\"</code> for swiss german, or <code>lang: \"de:au\"</code> for austrian german.</p>",
+      "raw": "Hello there!\nI have a bit of an issue with the way typst formats languages. I am from Switzerland, and frequently write reports and papers for university, which I have increasingly been using typst for. [The Swiss variety of german](https://en.wikipedia.org/wiki/Swiss_Standard_German) has some subtle differences to classic german (high german) that typst can't take into account, because it uses ISO language codes and many local language varieties like Swiss German don't have their own ISO language codes. The subtle differences include things like there not being an \"ß\" (Eszett) in Swiss German, and quotation marks usually being in the « french » style, rather than the „ german “ style.\n\nNow I was wondering if there is a way to customize whatever ` lang: \"de\"` is pointing to when it refers to `\"de\"`, so at least minor things like quotation marks can be changed, or if there is maybe even a simple tag in `lang` or `quotes` that I've missed? I was also wondering if maybe I should open an issue on github about this. It would obviously be easiest if typst included regional language variant options, like maybe `lang: \"de:ch\"` for swiss german, or `lang: \"de:au\"` for austrian german.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 29,
+      "score": 155.8,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1325
+    },
+    {
+      "id": 9602,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-03-10T15:22:42.087Z",
+      "updated_at": "2025-03-10T15:22:42.087Z",
+      "cooked": "<p>I think you’re looking for the <a href=\"https://typst.app/docs/reference/text/text/#parameters-region\"><code>region</code></a> parameter of <code>text</code> <img src=\"https://forum.typst.app/images/emoji/apple/slight_smile.png?v=12\" title=\":slight_smile:\" class=\"emoji\" alt=\":slight_smile:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set text(lang: \"de\", region: \"CH\")\n\"Hello!\"\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/a/a36140b5c05c9d882fab56079a67fd035eb0ae00.png\" alt=\"image\" data-base62-sha1=\"njkbPon1zi1LJb6JB2HSggFpkc0\" width=\"90\" height=\"36\"></p>\n<p>Though this won’t automatically replace <code>ß</code> with <code>ss</code> in your text (and I don’t think it should). But if you want you can do</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show \"ß\": \"ss\"\n</code></pre>",
+      "raw": "I think you're looking for the [`region`](https://typst.app/docs/reference/text/text/#parameters-region) parameter of `text` :slight_smile: \n\n```typ\n#set text(lang: \"de\", region: \"CH\")\n\"Hello!\"\n```\n![image|120x48, 75%](upload://njkbPon1zi1LJb6JB2HSggFpkc0.png)\n\nThough this won't automatically replace `ß` with `ss` in your text (and I don't think it should). But if you want you can do\n\n```typ\n#show \"ß\": \"ss\"\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 27,
+      "score": 35.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:31.056477"
+}

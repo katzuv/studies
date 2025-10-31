@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2955,
+    "title": "How to justify outline entries?",
+    "slug": "how-to-justify-outline-entries",
+    "posts_count": 2,
+    "created_at": "2025-02-24T12:53:28.037Z",
+    "last_posted_at": "2025-02-24T13:12:21.513Z",
+    "views": 43,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "outline"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 147
+  },
+  "posts": [
+    {
+      "id": 8970,
+      "post_number": 1,
+      "username": "talb",
+      "name": "talb",
+      "created_at": "2025-02-24T12:53:28.173Z",
+      "updated_at": "2025-02-24T12:53:48.986Z",
+      "cooked": "<p>Here is my code:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#figure(caption: lorem(13))[Test]\n\n#outline(target: selector(figure))\n</code></pre>\n<p>Result:</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/0/0455a44c827c1ff99ea0c7db76549b721e37f4a6.png\" data-download-href=\"https://forum.typst.app/uploads/default/0455a44c827c1ff99ea0c7db76549b721e37f4a6\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/0/0455a44c827c1ff99ea0c7db76549b721e37f4a6_2_690x161.png\" alt=\"image\" data-base62-sha1=\"CloAr8rcXHpjFjWm7bQcdkkemq\" width=\"690\" height=\"161\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/0/0455a44c827c1ff99ea0c7db76549b721e37f4a6_2_690x161.png, https://forum.typst.app/uploads/default/original/2X/0/0455a44c827c1ff99ea0c7db76549b721e37f4a6.png 1.5x, https://forum.typst.app/uploads/default/original/2X/0/0455a44c827c1ff99ea0c7db76549b721e37f4a6.png 2x\" data-dominant-color=\"F6F6F6\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">999×234 32.7 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>I would like to:</p>\n<ol>\n<li>justify the body of the outline entry (the empty space at the end of the first line is not very clean)</li>\n<li>have the second line of the outline entry start at the same level as “Figure 1”</li>\n</ol>\n<p>Adding the following show rule does not fix problem 1., as the entry name and caption are not aligned anymore.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show outline.entry: ent =&gt; link(\n  ent.element.location(),\n  ent.indented([#ent.prefix():], {\n    set par(justify: true)\n    ent.inner()\n  })\n)\n</code></pre>\n<p>Result:</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/8/87a6cb5fba0fbd32d0535b135434ce2ca6a1d7a9.png\" data-download-href=\"https://forum.typst.app/uploads/default/87a6cb5fba0fbd32d0535b135434ce2ca6a1d7a9\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/8/87a6cb5fba0fbd32d0535b135434ce2ca6a1d7a9_2_690x87.png\" alt=\"image\" data-base62-sha1=\"jm1OsJJ6uj6MHr9QnV2vgAW29Jf\" width=\"690\" height=\"87\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/8/87a6cb5fba0fbd32d0535b135434ce2ca6a1d7a9_2_690x87.png, https://forum.typst.app/uploads/default/original/2X/8/87a6cb5fba0fbd32d0535b135434ce2ca6a1d7a9.png 1.5x, https://forum.typst.app/uploads/default/original/2X/8/87a6cb5fba0fbd32d0535b135434ce2ca6a1d7a9.png 2x\" data-dominant-color=\"F7F7F7\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">951×121 16 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>How do I solve my problems?</p>",
+      "raw": "\nHere is my code:\n\n```typst\n#figure(caption: lorem(13))[Test]\n\n#outline(target: selector(figure))\n```\n\nResult:\n\n![image|690x161](upload://CloAr8rcXHpjFjWm7bQcdkkemq.png)\n\nI would like to:\n1. justify the body of the outline entry (the empty space at the end of the first line is not very clean)\n2. have the second line of the outline entry start at the same level as \"Figure 1\"\n\nAdding the following show rule does not fix problem 1., as the entry name and caption are not aligned anymore.\n\n```typst\n#show outline.entry: ent => link(\n  ent.element.location(),\n  ent.indented([#ent.prefix():], {\n    set par(justify: true)\n    ent.inner()\n  })\n)\n```\n\nResult:\n\n![image|690x87](upload://jm1OsJJ6uj6MHr9QnV2vgAW29Jf.png)\n\nHow do I solve my problems?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 75.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 341
+    },
+    {
+      "id": 8971,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-02-24T13:12:21.513Z",
+      "updated_at": "2025-02-24T13:13:09.785Z",
+      "cooked": "<p>Do you mean the following?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show outline.entry: set par(justify: true)\n\n#show outline.entry: it =&gt; link(\n  it.element.location(),\n  it.prefix() + h(1em) + it.inner(),\n)\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/e/e02e905df9b26d77ebd72242db1b2f26499dbeed.png\" data-download-href=\"https://forum.typst.app/uploads/default/e02e905df9b26d77ebd72242db1b2f26499dbeed\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/e/e02e905df9b26d77ebd72242db1b2f26499dbeed_2_517x84.png\" alt=\"image\" data-base62-sha1=\"vZcIoSlTkFPnQHJtqw2OwfiNg3X\" width=\"517\" height=\"84\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/e/e02e905df9b26d77ebd72242db1b2f26499dbeed_2_517x84.png, https://forum.typst.app/uploads/default/optimized/2X/e/e02e905df9b26d77ebd72242db1b2f26499dbeed_2_775x126.png 1.5x, https://forum.typst.app/uploads/default/original/2X/e/e02e905df9b26d77ebd72242db1b2f26499dbeed.png 2x\" data-dominant-color=\"F0F0F0\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">842×138 22.3 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "Do you mean the following?\n\n```typ\n#show outline.entry: set par(justify: true)\n\n#show outline.entry: it => link(\n  it.element.location(),\n  it.prefix() + h(1em) + it.inner(),\n)\n```\n\n![image|690x113, 75%](upload://vZcIoSlTkFPnQHJtqw2OwfiNg3X.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 23,
+      "score": 19.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:16.011189"
+}

@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 4162,
+    "title": "How to make parameter \"body\" of function optional without causing error?",
+    "slug": "how-to-make-parameter-body-of-function-optional-without-causing-error",
+    "posts_count": 2,
+    "created_at": "2025-05-19T13:53:12.862Z",
+    "last_posted_at": "2025-05-19T14:22:43.068Z",
+    "views": 46,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 209
+  },
+  "posts": [
+    {
+      "id": 12747,
+      "post_number": 1,
+      "username": "Alex",
+      "name": "Alex",
+      "created_at": "2025-05-19T13:53:12.972Z",
+      "updated_at": "2025-05-19T13:53:12.972Z",
+      "cooked": "<p>Hello everyone,</p>\n<p>I have a problem with a typst function i want to declare where the behavior of said function vary depending on the body :</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let bis(n: 2, body) = { // note the argument body\n  if body == none {\n    get_number(n)\n  } else {\n   // code\n  }\n}\n</code></pre>\n<p>Such code lead to this kind of error</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#bis()[\nSome text \\\nSome text2 \\\n] // -&gt; ok\n\nSome text #bis() // -&gt; missing argument body\nSome text #bis()[] // -&gt; ok\n</code></pre>\n<p>When changing the code to have optional argument for body such as :</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let bis(n: 2, body : none) = { // note the argument body\n  if body == none {\n    get_number(n)\n  } else {\n   // code\n  }\n}\n</code></pre>\n<p>I get this behavior :<br>\nSuch code lead to this kind of error</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#bis()[\nSome text \\\nSome text2\n] // -&gt; unexpected argument\n\nSome text #bis() // -&gt; ok\nSome text #bis()[] // -&gt; unexpected argument\n</code></pre>\n<p>I want to be able to run this kind of code with no error  :</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#bis()[\nSome text \\\nSome text2 \\\n] // -&gt; ok\n\nSome text #bis() // -&gt; ok\n</code></pre>\n<p>How can i change the  <code>bis</code> function to get what i want.<br>\nThanks in advance for your answer</p>",
+      "raw": "Hello everyone, \n\nI have a problem with a typst function i want to declare where the behavior of said function vary depending on the body : \n```typst\n#let bis(n: 2, body) = { // note the argument body\n  if body == none {\n    get_number(n)\n  } else {\n   // code\n  }\n}\n```\nSuch code lead to this kind of error \n```typst\n#bis()[\nSome text \\\nSome text2 \\\n] // -> ok\n\nSome text #bis() // -> missing argument body\nSome text #bis()[] // -> ok\n```\n\n\nWhen changing the code to have optional argument for body such as : \n```typst\n#let bis(n: 2, body : none) = { // note the argument body\n  if body == none {\n    get_number(n)\n  } else {\n   // code\n  }\n}\n```\n\nI get this behavior : \nSuch code lead to this kind of error \n```typst\n#bis()[\nSome text \\\nSome text2\n] // -> unexpected argument\n\nSome text #bis() // -> ok\nSome text #bis()[] // -> unexpected argument\n```\n\nI want to be able to run this kind of code with no error  : \n```typst\n#bis()[\nSome text \\\nSome text2 \\\n] // -> ok\n\nSome text #bis() // -> ok\n```\n\nHow can i change the  `bis` function to get what i want.\nThanks in advance for your answer",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 20,
+      "score": 139.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 987
+    },
+    {
+      "id": 12767,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-05-19T14:22:43.068Z",
+      "updated_at": "2025-05-19T14:22:51.019Z",
+      "cooked": "<p>You need to use an <a href=\"https://typst.app/docs/reference/foundations/arguments/#argument-sinks\">argument sink</a>:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let bis(n: 2, ..args) = {\n  // check args.pos() here\n  // (maybe also args.named() to make sure the caller didn't pass an invalid argument)\n}\n</code></pre>",
+      "raw": "You need to use an [argument sink](https://typst.app/docs/reference/foundations/arguments/#argument-sinks):\n\n```\n#let bis(n: 2, ..args) = {\n  // check args.pos() here\n  // (maybe also args.named() to make sure the caller didn't pass an invalid argument)\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 18,
+      "score": 48.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:39.564670"
+}

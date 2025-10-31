@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 3903,
+    "title": "Why are line breaks suppressed in content blocks inside aligned equations?",
+    "slug": "why-are-line-breaks-suppressed-in-content-blocks-inside-aligned-equations",
+    "posts_count": 3,
+    "created_at": "2025-05-02T07:58:15.473Z",
+    "last_posted_at": "2025-05-05T22:38:49.731Z",
+    "views": 72,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "layout",
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 422
+  },
+  "posts": [
+    {
+      "id": 11885,
+      "post_number": 1,
+      "username": "AprilGrimoire",
+      "name": "AprilGrimoire",
+      "created_at": "2025-05-02T07:58:15.642Z",
+      "updated_at": "2025-05-13T16:56:21.814Z",
+      "cooked": "<p>Hi. I want to add some comments to a multi-line calculation:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">$\n  &amp;1 + 1 \\\n\n  =&amp;2 \\\n  &amp; #[\n      Hello \\\n  \n      World\n    ]\n$\n</code></pre>\n<p>I expected that the contents inside <code>#[]</code> would be treated as a block. However, line-breaks inside <code>#[]</code> are suppressed, and if I manually force a line-break with <code>\\</code>, it breaks the alignment.</p>\n<p>Why? Thank you.</p>",
+      "raw": "Hi. I want to add some comments to a multi-line calculation:\n\n```typ\n$\n  &1 + 1 \\\n\n  =&2 \\\n  & #[\n      Hello \\\n  \n      World\n    ]\n$\n```\n\nI expected that the contents inside `#[]` would be treated as a block. However, line-breaks inside `#[]` are suppressed, and if I manually force a line-break with `\\`, it breaks the alignment.\n\nWhy? Thank you.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 34.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1309
+    },
+    {
+      "id": 11906,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-02T20:37:08.076Z",
+      "updated_at": "2025-05-02T20:37:08.076Z",
+      "cooked": "<p>Hi. When you write a code block, you should use the appropriate language identifier to get correct syntax highlighting.</p>\n<aside class=\"quote no-group quote-modified\" data-username=\"reknih\" data-post=\"1\" data-topic=\"11\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/reknih/48/3_2.png\" class=\"avatar\"><a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11/1\">How to post in the Questions category</a></div>\n<blockquote>\n<p>If your question pertains to a bit of Typst markup you have problems with, put it in the question body! You can syntax-highlight Typst code by wrapping it in ` ```typ … ````. It will then look like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set font(size: 12pt)\n\nHello from *Typst* at $ pi.var + 1 $ o'clock!\n</code></pre>\n<p>If you need to highlight a code or math mode snippet instead, the language tags <code>typc</code> and <code>typm</code> do that, respectively.</p>\n<p>It would be great if you could post the <strong>smallest possible code samples</strong> that allow people to see what your problem is.</p>\n</blockquote>\n</aside>\n<hr>\n<p>You can use <a href=\"https://typst.app/docs/reference/layout/place/\"><code>place()</code></a> to insert a block that will not interfere with anything:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#lorem(10)\n$\n    &amp; 1 + 1   \\\n  = &amp; 2       \\\n    &amp; #place[\n        Hello\n\n        World\n      ]\n$\n#lorem(10)\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/1/1f7c67202ce04b535758ebaf4460528ac5f9e395.png\" alt=\"image\" data-base62-sha1=\"4uxkFHeQISdOkjKPGWkxaVRwyMZ\" width=\"400\" height=\"117\"></p>\n<p>But if there is text below, then it will overlap it, so instead you can try using <code>block</code>:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#lorem(10)\n$\n    &amp; 1 + 1   \\\n  = &amp; 2       \\\n    &amp; #align(start, block[\n        Hello \\\n        World\n      ])\n$\n#lorem(10)\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/1/1d2fc3041bb765ead457bcb0678ed8bca742f532.png\" alt=\"image\" data-base62-sha1=\"4acaTJ9OyjGAhS6D3623Akx5xUS\" width=\"380\" height=\"143\"></p>\n<p>For easier use:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#lorem(10)\n#let in-math(body) = align(start, block(body))\n$\n    &amp; 1 + 1   \\\n  = &amp; 2       \\\n    &amp; #in-math[\n        Hello \\\n        World\n      ]\n$\n#lorem(10)\n</code></pre>\n<aside class=\"quote no-group\" data-username=\"AprilGrimoire\" data-post=\"1\" data-topic=\"3903\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/aprilgrimoire/48/2108_2.png\" class=\"avatar\"> AprilGrimoire:</div>\n<blockquote>\n<p>I expected that the contents inside <code>#[]</code> would be treated as a block.</p>\n</blockquote>\n</aside>\n<p>You are just entering code mode and then markup mode, since you can add this inline, it is like <code>box</code>, but not actually a box, nor it’s a block. It will add inner content directly, so how it will be laid out is up to the compiler.</p>",
+      "raw": "Hi. When you write a code block, you should use the appropriate language identifier to get correct syntax highlighting.\n\n[quote=\"reknih, post:1, topic:11\"]\nIf your question pertains to a bit of Typst markup you have problems with, put it in the question body! You can syntax-highlight Typst code by wrapping it in ` ```typ ... ````. It will then look like this:\n\n```typ\n#set font(size: 12pt)\n\nHello from *Typst* at $ pi.var + 1 $ o'clock!\n```\n\nIf you need to highlight a code or math mode snippet instead, the language tags `typc` and `typm` do that, respectively.\n\nIt would be great if you could post the **smallest possible code samples** that allow people to see what your problem is.\n[/quote]\n\n---\n\nYou can use [`place()`](https://typst.app/docs/reference/layout/place/) to insert a block that will not interfere with anything:\n\n```typ\n#lorem(10)\n$\n    & 1 + 1   \\\n  = & 2       \\\n    & #place[\n        Hello\n\n        World\n      ]\n$\n#lorem(10)\n```\n\n![image|400x117](upload://4uxkFHeQISdOkjKPGWkxaVRwyMZ.png)\n\nBut if there is text below, then it will overlap it, so instead you can try using `block`:\n\n```typ\n#lorem(10)\n$\n    & 1 + 1   \\\n  = & 2       \\\n    & #align(start, block[\n        Hello \\\n        World\n      ])\n$\n#lorem(10)\n```\n\n![image|380x143](upload://4acaTJ9OyjGAhS6D3623Akx5xUS.png)\n\nFor easier use:\n\n```typ\n#lorem(10)\n#let in-math(body) = align(start, block(body))\n$\n    & 1 + 1   \\\n  = & 2       \\\n    & #in-math[\n        Hello \\\n        World\n      ]\n$\n#lorem(10)\n```\n\n[quote=\"AprilGrimoire, post:1, topic:3903\"]\nI expected that the contents inside `#[]` would be treated as a block.\n[/quote]\n\nYou are just entering code mode and then markup mode, since you can add this inline, it is like `box`, but not actually a box, nor it's a block. It will add inner content directly, so how it will be laid out is up to the compiler.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 1,
+      "reads": 21,
+      "score": 19.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    },
+    {
+      "id": 12010,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2025-05-05T22:38:49.731Z",
+      "updated_at": "2025-05-05T22:39:41.122Z",
+      "cooked": "<p>Hey <a class=\"mention\" href=\"/u/aprilgrimoire\">@AprilGrimoire</a>, welcome to the forum! I’ve changed your question post’s title to better fit our guidelines: <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\" class=\"inline-onebox\">How to post in the Questions category</a></p>\n<p>Make sure your title is a question you’d ask to a friend about Typst. (Note how the title is much clearer now!) <img src=\"https://forum.typst.app/images/emoji/apple/wink.png?v=12\" title=\":wink:\" class=\"emoji\" alt=\":wink:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>\n<p>Also, make sure to mark Andrew’s answer as a solution with the <img src=\"https://forum.typst.app/images/emoji/apple/white_check_mark.png?v=12\" title=\":white_check_mark:\" class=\"emoji\" alt=\":white_check_mark:\" loading=\"lazy\" width=\"20\" height=\"20\"> button if it has solved your problem. Otherwise, let us know what you still need help with.</p>",
+      "raw": "Hey @AprilGrimoire, welcome to the forum! I’ve changed your question post’s title to better fit our guidelines: https://forum.typst.app/t/how-to-post-in-the-questions-category/11\n\nMake sure your title is a question you’d ask to a friend about Typst. (Note how the title is much clearer now!) :wink:\n\nAlso, make sure to mark Andrew's answer as a solution with the :white_check_mark: button if it has solved your problem. Otherwise, let us know what you still need help with.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 14,
+      "score": 17.8,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:23.745936"
+}

@@ -1,0 +1,61 @@
+{
+  "topic_metadata": {
+    "id": 2448,
+    "title": "How could I display no headings in the PDF?",
+    "slug": "how-could-i-display-no-headings-in-the-pdf",
+    "posts_count": 2,
+    "created_at": "2025-01-17T12:28:55.808Z",
+    "last_posted_at": "2025-01-17T12:34:43.521Z",
+    "views": 49,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 90
+  },
+  "posts": [
+    {
+      "id": 7601,
+      "post_number": 1,
+      "username": "chxp",
+      "name": "chxp",
+      "created_at": "2025-01-17T12:28:55.963Z",
+      "updated_at": "2025-01-17T12:29:43.666Z",
+      "cooked": "<p>How could I display no headings in the PDF? (Removing them completely and not filling them with white.)</p>\n<p>I use the heading to classify the content and fold the content under the heading in the script.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set page(\"a4\", margin: auto)\n\n= red pic\n// figure\n#figure(\n    rect(height:6cm, width: 11cm, fill: red),\n    caption: [A curious figure.],\n) &lt;fig1&gt;\n\n#figure(\n    rect(height:10cm, width: 5cm, fill: red),\n    caption: [A curious figure.],\n) &lt;fig2&gt;\n\n= blue pic\n#figure(\n    rect(height:2cm, width: 8cm, fill: blue),\n    caption: [A curious figure.],\n) &lt;fig3&gt;\n\n</code></pre>",
+      "raw": "How could I display no headings in the PDF? (Removing them completely and not filling them with white.)\n\nI use the heading to classify the content and fold the content under the heading in the script.\n\n```typst\n#set page(\"a4\", margin: auto)\n\n= red pic\n// figure\n#figure(\n    rect(height:6cm, width: 11cm, fill: red),\n    caption: [A curious figure.],\n) <fig1>\n\n#figure(\n    rect(height:10cm, width: 5cm, fill: red),\n    caption: [A curious figure.],\n) <fig2>\n\n= blue pic\n#figure(\n    rect(height:2cm, width: 8cm, fill: blue),\n    caption: [A curious figure.],\n) <fig3>\n\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 25.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1055
+    },
+    {
+      "id": 7602,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-01-17T12:34:43.521Z",
+      "updated_at": "2025-01-17T12:34:43.521Z",
+      "cooked": "<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">show heading: none\n</code></pre>",
+      "raw": "```typc\nshow heading: none\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 25,
+      "score": 20.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:44.721733"
+}

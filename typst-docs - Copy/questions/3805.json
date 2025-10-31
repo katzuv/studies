@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 3805,
+    "title": "How to put stuff in its own package?",
+    "slug": "how-to-put-stuff-in-its-own-package",
+    "posts_count": 3,
+    "created_at": "2025-04-25T09:49:56.305Z",
+    "last_posted_at": "2025-04-25T11:31:57.755Z",
+    "views": 54,
+    "like_count": 3,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "scripting",
+      "package-authoring"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 486
+  },
+  "posts": [
+    {
+      "id": 11601,
+      "post_number": 1,
+      "username": "Manfred_Lotz",
+      "name": "Manfred Lotz",
+      "created_at": "2025-04-25T09:49:56.423Z",
+      "updated_at": "2025-04-26T20:17:37.261Z",
+      "cooked": "<p>In this thread <a href=\"https://forum.typst.app/t/how-to-have-a-number-with-blue-circle-background-in-text/3793/22\" class=\"inline-onebox\">How to have a number with blue circle background in text? - #22 by Andrew</a>, <a class=\"mention\" href=\"/u/andrew\">@Andrew</a> gave me a piece of code which is working nicely.</p>\n<p>When I put this code</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#import \"@preview/codly:1.3.0\": *\n#show: codly-init\n#codly(\n  highlight-fill: _ =&gt; none,\n  highlight-stroke: _ =&gt; none,\n  number-format: none,\n  highlight-inset: 0pt, // https://github.com/Dherse/codly/issues/81\n)\n\n#let raw-count() = counter(figure.where(kind: raw)).get().first()\n#let nnum-label(raw-num, n) = label(str(raw-num) + \"-\" + str(n))\n\n#let nnum(n) = context {\n  let label = nnum-label(raw-count(), n)\n  let body = strong(text(0.8em, baseline: 0.1em, blue, numbering(\"⓵\", n)))\n  link(label, body)\n}\n\n#let add-markers(..markers) = context {\n  let raw-num = raw-count() + 1\n  let markers = for marker in markers.pos() {\n    let n = marker.remove(\"nnum\")\n    ((..marker, tag: nnum(n), label: nnum-label(raw-num, n)),)\n  }\n  codly(highlights: markers)\n}\n\n#let unique-code-block(body) = context {\n  [#figure(body)#label(\"code\" + str(raw-count() + 1))]\n}\n</code></pre>\n<p>into a separate file and create an example where I simply import it</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#import \"@local/raw-text:0.1.0\": *\n\n#add-markers((line: 2, start: 4, end: 4, nnum: 1), (line: 2, start: 8, nnum: 2))\n#unique-code-block(```\n something\n   more of this is great\n what is that?\n```)\n\n/ #nnum(1): first\n/ #nnum(2): second\n</code></pre>\n<p>and compile I get</p>\n<pre><code class=\"lang-auto\">error: label `&lt;1-1&gt;` does not exist in the document\n   ┌─ @local/raw-text:0.1.0/raw-text.typ:16:2\n   │\n16 │   link(label, body)\n   │   ^^^^^^^^^^^^^^^^^\n\nerror: label `&lt;1-2&gt;` does not exist in the document\n   ┌─ @local/raw-text:0.1.0/raw-text.typ:16:2\n   │\n16 │   link(label, body)\n   │   ^^^^^^^^^^^^^^^^^\n</code></pre>\n<p>As a newbie I didn’t find the cause.</p>",
+      "raw": "In this thread https://forum.typst.app/t/how-to-have-a-number-with-blue-circle-background-in-text/3793/22, @Andrew gave me a piece of code which is working nicely.\n\nWhen I put this code\n\n```typst\n#import \"@preview/codly:1.3.0\": *\n#show: codly-init\n#codly(\n  highlight-fill: _ => none,\n  highlight-stroke: _ => none,\n  number-format: none,\n  highlight-inset: 0pt, // https://github.com/Dherse/codly/issues/81\n)\n\n#let raw-count() = counter(figure.where(kind: raw)).get().first()\n#let nnum-label(raw-num, n) = label(str(raw-num) + \"-\" + str(n))\n\n#let nnum(n) = context {\n  let label = nnum-label(raw-count(), n)\n  let body = strong(text(0.8em, baseline: 0.1em, blue, numbering(\"⓵\", n)))\n  link(label, body)\n}\n\n#let add-markers(..markers) = context {\n  let raw-num = raw-count() + 1\n  let markers = for marker in markers.pos() {\n    let n = marker.remove(\"nnum\")\n    ((..marker, tag: nnum(n), label: nnum-label(raw-num, n)),)\n  }\n  codly(highlights: markers)\n}\n\n#let unique-code-block(body) = context {\n  [#figure(body)#label(\"code\" + str(raw-count() + 1))]\n}\n``` \ninto a separate file and create an example where I simply import it \n\n```typst\n#import \"@local/raw-text:0.1.0\": *\n\n#add-markers((line: 2, start: 4, end: 4, nnum: 1), (line: 2, start: 8, nnum: 2))\n#unique-code-block(```\n something\n   more of this is great\n what is that?\n```)\n\n/ #nnum(1): first\n/ #nnum(2): second\n```\n\nand compile I get\n\n```\nerror: label `<1-1>` does not exist in the document\n   ┌─ @local/raw-text:0.1.0/raw-text.typ:16:2\n   │\n16 │   link(label, body)\n   │   ^^^^^^^^^^^^^^^^^\n\nerror: label `<1-2>` does not exist in the document\n   ┌─ @local/raw-text:0.1.0/raw-text.typ:16:2\n   │\n16 │   link(label, body)\n   │   ^^^^^^^^^^^^^^^^^\n```\n\nAs a newbie I didn't find the cause.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 31,
+      "score": 21.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 638
+    },
+    {
+      "id": 11604,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-04-25T11:02:14.990Z",
+      "updated_at": "2025-04-25T11:02:14.990Z",
+      "cooked": "<p>If you import from a package, it will only return symbols, but not any of the content. So, the codly-init is missing.</p>\n<p>You need to move codly’s initialization to your main file, or import it like a template (<code>show: it =&gt; {...; it}</code>).</p>",
+      "raw": "If you import from a package, it will only return symbols, but not any of the content. So, the codly-init is missing.\n\nYou need to move codly's initialization to your main file, or import it like a template (`show: it => {...; it}`).",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 27,
+      "score": 40.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 11605,
+      "post_number": 3,
+      "username": "Manfred_Lotz",
+      "name": "Manfred Lotz",
+      "created_at": "2025-04-25T11:31:57.755Z",
+      "updated_at": "2025-04-25T11:31:57.755Z",
+      "cooked": "<p>Thanks a lot <a class=\"mention\" href=\"/u/quachpas\">@quachpas</a></p>\n<p>Changing it like this</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#import \"@preview/codly:1.3.0\": *\n\n#let raw-text-init(body) = {\n  show: codly-init\n  codly(\n    highlight-fill: _ =&gt; none,\n    highlight-stroke: _ =&gt; none,\n    number-format: none,\n    highlight-inset: 0pt, // https://github.com/Dherse/codly/issues/81\n  )\n  body\n}\n\n#let raw-count() = counter(figure.where(kind: raw)).get().first()\n#let nnum-label(raw-num, n) = label(str(raw-num) + \"-\" + str(n))\n\n#let nnum(n) = context {\n  let label = nnum-label(raw-count(), n)\n  let body = strong(text(0.8em, baseline: 0.1em, blue, numbering(\"⓵\", n)))\n  link(label, body)\n}\n\n#let add-markers(..markers) = context {\n  let raw-num = raw-count() + 1\n  let markers = for marker in markers.pos() {\n    let n = marker.remove(\"nnum\")\n    ((..marker, tag: nnum(n), label: nnum-label(raw-num, n)),)\n  }\n  codly(highlights: markers)\n}\n\n#let unique-code-block(body) = context {\n  [#figure(body)#label(\"code\" + str(raw-count() + 1))]\n}\n</code></pre>\n<p>and adding</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show: raw-text-init\n</code></pre>\n<p>to my test file makes it work.</p>",
+      "raw": "Thanks a lot @quachpas \n\nChanging it like this \n\n```typst\n#import \"@preview/codly:1.3.0\": *\n\n#let raw-text-init(body) = {\n  show: codly-init\n  codly(\n    highlight-fill: _ => none,\n    highlight-stroke: _ => none,\n    number-format: none,\n    highlight-inset: 0pt, // https://github.com/Dherse/codly/issues/81\n  )\n  body\n}\n\n#let raw-count() = counter(figure.where(kind: raw)).get().first()\n#let nnum-label(raw-num, n) = label(str(raw-num) + \"-\" + str(n))\n\n#let nnum(n) = context {\n  let label = nnum-label(raw-count(), n)\n  let body = strong(text(0.8em, baseline: 0.1em, blue, numbering(\"⓵\", n)))\n  link(label, body)\n}\n\n#let add-markers(..markers) = context {\n  let raw-num = raw-count() + 1\n  let markers = for marker in markers.pos() {\n    let n = marker.remove(\"nnum\")\n    ((..marker, tag: nnum(n), label: nnum-label(raw-num, n)),)\n  }\n  codly(highlights: markers)\n}\n\n#let unique-code-block(body) = context {\n  [#figure(body)#label(\"code\" + str(raw-count() + 1))]\n}\n```\n\nand adding \n\n```typst\n#show: raw-text-init\n``` \n\nto my test file makes it work.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 27,
+      "score": 50.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 638
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:41.626338"
+}

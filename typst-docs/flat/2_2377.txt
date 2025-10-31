@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2377,
+    "title": "How to use `eval` to recover declared variable?",
+    "slug": "how-to-use-eval-to-recover-declared-variable",
+    "posts_count": 3,
+    "created_at": "2025-01-12T11:34:31.022Z",
+    "last_posted_at": "2025-01-12T17:29:56.764Z",
+    "views": 139,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 472
+  },
+  "posts": [
+    {
+      "id": 7409,
+      "post_number": 1,
+      "username": "Alex",
+      "name": "Alex",
+      "created_at": "2025-01-12T11:34:31.187Z",
+      "updated_at": "2025-01-12T11:34:31.187Z",
+      "cooked": "<p>Hello everyone,</p>\n<p>For a personal project i have automated imports of pages into main.typ using a json file with the following structure :</p>\n<pre data-code-wrap=\"json\"><code class=\"lang-json\">{\n    \"reglement\": [],\n    \"officiel\": [\n        \"Braban\\u00e7onne\",\n        \"WoltjeKreet\",\n        \"Gaudeamus\",\n        \"IoVivat\",\n        \"marche_etudiants\",\n        \"LiedVanGeenTaal\",\n        \"WoltjeClubLied\"\n    ],\n    \"leekes\": [],\n    \"groupe_folklorique\": [],\n    \"andere\": [],\n    \"index\": [],\n    \"others\": [\n        \"fulltext\",\n        \"repetition\"\n    ]\n}\n</code></pre>\n<p>Basically, the keys in the following json file represent section of the the future text and the array represent variables to include.</p>\n<p>I retrieve the content of the json in a dict and i iterate over each “section” and “variable”. After that i use  <code>eval()</code> to call and use my variables :</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">// in main.typ\n\n#import \"imports.typ\" : * // for importing variables\n\n// normal call of my variable previously defined\n#sacre_page\n#WoltjeClubLied\n#CridesPres\n#Gaudeamus\n#Brabançonne  // Variable brabançonne here\n#marche_etudiants\n#IoVivat\n#LiedVanGeenTaal\n\n// using json, dictionnary and eval\n#for key in dict.keys() {\n  for songname in dict.at(key){\n    \"#\" + str(songname) + linebreak() // used to debug -&gt; correct names\n    eval(\"#\" + str(songname), mode : \"markup\") // unknown variable Brabançonne \n  }\n}\n</code></pre>\n<p>I suppose it could be due to the scope of the evaluated code that is not the same as the code  located on top.  Unfortunately i don’t really know how to correctly define it.<br>\nAnother supposition is to evaluate the code including the <code>#import \"imports.typ\" : *</code></p>\n<p>For more insight you can check the project here : <a href=\"https://typst.app/project/rA51dz4VMV7DFc6XDUxMfn\" class=\"inline-onebox\">Typst</a> and <code>main.typ</code> should be the most useful file to check.<br>\n( <img src=\"https://forum.typst.app/images/emoji/apple/warning.png?v=12\" title=\":warning:\" class=\"emoji\" alt=\":warning:\" loading=\"lazy\" width=\"20\" height=\"20\"> It is quite big and partially automated via python script so not everything make sense. )<br>\nThank you in advance for your help</p>",
+      "raw": "Hello everyone, \n\nFor a personal project i have automated imports of pages into main.typ using a json file with the following structure : \n\n```json\n{\n    \"reglement\": [],\n    \"officiel\": [\n        \"Braban\\u00e7onne\",\n        \"WoltjeKreet\",\n        \"Gaudeamus\",\n        \"IoVivat\",\n        \"marche_etudiants\",\n        \"LiedVanGeenTaal\",\n        \"WoltjeClubLied\"\n    ],\n    \"leekes\": [],\n    \"groupe_folklorique\": [],\n    \"andere\": [],\n    \"index\": [],\n    \"others\": [\n        \"fulltext\",\n        \"repetition\"\n    ]\n}\n```\n\nBasically, the keys in the following json file represent section of the the future text and the array represent variables to include. \n\nI retrieve the content of the json in a dict and i iterate over each \"section\" and \"variable\". After that i use  `eval()` to call and use my variables : \n\n```typst\n// in main.typ\n\n#import \"imports.typ\" : * // for importing variables\n\n// normal call of my variable previously defined\n#sacre_page\n#WoltjeClubLied\n#CridesPres\n#Gaudeamus\n#Brabançonne  // Variable brabançonne here\n#marche_etudiants\n#IoVivat\n#LiedVanGeenTaal\n\n// using json, dictionnary and eval\n#for key in dict.keys() {\n  for songname in dict.at(key){\n    \"#\" + str(songname) + linebreak() // used to debug -> correct names\n    eval(\"#\" + str(songname), mode : \"markup\") // unknown variable Brabançonne \n  }\n}\n```\nI suppose it could be due to the scope of the evaluated code that is not the same as the code  located on top.  Unfortunately i don't really know how to correctly define it. \nAnother supposition is to evaluate the code including the `#import \"imports.typ\" : *`\n\nFor more insight you can check the project here : https://typst.app/project/rA51dz4VMV7DFc6XDUxMfn and `main.typ` should be the most useful file to check.\n( :warning: It is quite big and partially automated via python script so not everything make sense. )\nThank you in advance for your help",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 34,
+      "score": 491.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 987
+    },
+    {
+      "id": 7412,
+      "post_number": 2,
+      "username": "Alex",
+      "name": "Alex",
+      "created_at": "2025-01-12T13:53:01.857Z",
+      "updated_at": "2025-01-12T13:53:01.857Z",
+      "cooked": "<p>The <code>import</code> hypothesis was correct so i implemented the following workaround :</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let dict = json(\"songs.json\")\n\n#for key in dict.keys() {\n  \n  for songname in dict.at(key){\n    eval(str(\"import \\\"imports.typ\\\" : *\\n\")+str(songname), mode: \"code\")\n  }\n}\n</code></pre>\n<p>I still think there’s a better way to do the same since for each song of each new page we make the same import.<br>\nFor the moment it will be marked as solution</p>",
+      "raw": "The `import` hypothesis was correct so i implemented the following workaround : \n```\n#let dict = json(\"songs.json\")\n\n#for key in dict.keys() {\n  \n  for songname in dict.at(key){\n    eval(str(\"import \\\"imports.typ\\\" : *\\n\")+str(songname), mode: \"code\")\n  }\n}\n```\n\nI still think there's a better way to do the same since for each song of each new page we make the same import. \nFor the moment it will be marked as solution",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 15.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 987
+    },
+    {
+      "id": 7420,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-12T17:29:56.764Z",
+      "updated_at": "2025-01-12T17:29:56.764Z",
+      "cooked": "<p>The <code>eval</code> function has a <code>scope</code> parameter. Let’s say I have</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">// imports.typ\n#let foo = \"hello\"\n\n// main.typ\n#import \"imports.typ\": *\n\n#foo  // hello\n</code></pre>\n<p>then using the scope parameter I could also write</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"imports.typ\": *\n\n#eval(\"foo\", mode: \"code\", scope: (foo: foo))\n</code></pre>\n<p>This is not useful yet, since you’d have to write all the variable names. However you can use the <a href=\"https://typst.app/docs/reference/foundations/dictionary/#constructor\"><code>dictionary</code> constructor</a> to convert a module (<code>imports.typ</code>) into a dictionary, and pass that as the <code>scope</code>:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"imports.typ\" as imports\n\n#eval(\"foo\", mode: \"code\", scope: dictionary(imports))\n</code></pre>\n<p>(as an aside, I used <code>mode: \"code\"</code> to avoid having to add the <code>#</code> to the variable)</p>\n<p>You may notice that you’re not doing a lot with eval, and you have a dictionary already. So you can further simplify this to</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"imports.typ\" as imports\n\n#dictionary(imports).at(\"foo\")\n</code></pre>",
+      "raw": "The `eval` function has a `scope` parameter. Let's say I have\n\n```typ\n// imports.typ\n#let foo = \"hello\"\n\n// main.typ\n#import \"imports.typ\": *\n\n#foo  // hello\n```\n\nthen using the scope parameter I could also write\n\n```typ\n#import \"imports.typ\": *\n\n#eval(\"foo\", mode: \"code\", scope: (foo: foo))\n```\n\nThis is not useful yet, since you'd have to write all the variable names. However you can use the [`dictionary` constructor](https://typst.app/docs/reference/foundations/dictionary/#constructor) to convert a module (`imports.typ`) into a dictionary, and pass that as the `scope`:\n\n```typ\n#import \"imports.typ\" as imports\n\n#eval(\"foo\", mode: \"code\", scope: dictionary(imports))\n```\n\n(as an aside, I used `mode: \"code\"` to avoid having to add the `#` to the variable)\n\nYou may notice that you're not doing a lot with eval, and you have a dictionary already. So you can further simplify this to\n\n```typ\n#import \"imports.typ\" as imports\n\n#dictionary(imports).at(\"foo\")\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 27,
+      "score": 70.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:54.580165"
+}

@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1744,
+    "title": "How to set up page to have a frame?",
+    "slug": "how-to-set-up-page-to-have-a-frame",
+    "posts_count": 3,
+    "created_at": "2024-11-15T15:25:55.292Z",
+    "last_posted_at": "2024-11-15T17:32:42.871Z",
+    "views": 138,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "ParaN3xus",
+    "tags": [
+      "layout",
+      "tables"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 157
+  },
+  "posts": [
+    {
+      "id": 5675,
+      "post_number": 1,
+      "username": "Matvey",
+      "name": "Matvey",
+      "created_at": "2024-11-15T15:25:55.417Z",
+      "updated_at": "2024-11-15T17:31:28.833Z",
+      "cooked": "<p>Hey! Could you please help me to find out how to setup typst page to have a frame like the one in the attached image?<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/4/47d24ad67794340403ee2f1a9bc9d9f8543f4d09.png\" data-download-href=\"https://forum.typst.app/uploads/default/47d24ad67794340403ee2f1a9bc9d9f8543f4d09\" title=\"Screenshot 2024-11-15 at 18.24.20\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/4/47d24ad67794340403ee2f1a9bc9d9f8543f4d09_2_407x500.png\" alt=\"Screenshot 2024-11-15 at 18.24.20\" data-base62-sha1=\"afmrSsB0hFHY6QOJ0Zsg0zQMzgZ\" width=\"407\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/4/47d24ad67794340403ee2f1a9bc9d9f8543f4d09_2_407x500.png, https://forum.typst.app/uploads/default/optimized/2X/4/47d24ad67794340403ee2f1a9bc9d9f8543f4d09_2_610x750.png 1.5x, https://forum.typst.app/uploads/default/original/2X/4/47d24ad67794340403ee2f1a9bc9d9f8543f4d09.png 2x\" data-dominant-color=\"FBFBFB\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">Screenshot 2024-11-15 at 18.24.20</span><span class=\"informations\">762×934 25.6 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "Hey! Could you please help me to find out how to setup typst page to have a frame like the one in the attached image?\n![Screenshot 2024-11-15 at 18.24.20|407x500](upload://afmrSsB0hFHY6QOJ0Zsg0zQMzgZ.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 36,
+      "score": 542.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 812
+    },
+    {
+      "id": 5676,
+      "post_number": 2,
+      "username": "ParaN3xus",
+      "name": "ParaN3xus",
+      "created_at": "2024-11-15T16:18:43.350Z",
+      "updated_at": "2024-11-15T16:18:55.158Z",
+      "cooked": "<p>This seems like a customized <code>table</code>, so I wrote an example like:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let mypage(it) = {\n  page(\n    table(\n      columns: (auto,) * 5 + (1fr,) + (auto,),\n      rows: (1fr,) + (1.5em,) * 3,\n      align: center + horizon,\n      table.cell(colspan: 7, align: left + top, it),\n      [], [], [], [], [], table.cell(rowspan: 3)[Blah Blah], [blah],\n      [], [], [], [], [], table.cell(rowspan: 2)[#context counter(page).display()],\n      [Blah], [Blah], [Blah], [Blah], [Blah]\n    ),\n  )\n}\n\n#mypage[\n  hello\n]\n</code></pre>\n<p>You may change stroke color or other styles as you need.</p>",
+      "raw": "This seems like a customized `table`, so I wrote an example like:\n```typ\n#let mypage(it) = {\n  page(\n    table(\n      columns: (auto,) * 5 + (1fr,) + (auto,),\n      rows: (1fr,) + (1.5em,) * 3,\n      align: center + horizon,\n      table.cell(colspan: 7, align: left + top, it),\n      [], [], [], [], [], table.cell(rowspan: 3)[Blah Blah], [blah],\n      [], [], [], [], [], table.cell(rowspan: 2)[#context counter(page).display()],\n      [Blah], [Blah], [Blah], [Blah], [Blah]\n    ),\n  )\n}\n\n#mypage[\n  hello\n]\n```\nYou may change stroke color or other styles as you need.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 35,
+      "score": 27.0,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 14
+    },
+    {
+      "id": 5678,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-11-15T17:32:42.871Z",
+      "updated_at": "2024-11-15T17:32:42.871Z",
+      "cooked": "<p>Hey <a class=\"mention\" href=\"/u/matvey\">@Matvey</a>, welcome to the forum! I’ve changed your question post’s title to better fit our guidelines: <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\" class=\"inline-onebox\">How to post in the Questions category</a></p>\n<p>Make sure your title is a question you’d ask to a friend about Typst. <img src=\"https://forum.typst.app/images/emoji/apple/wink.png?v=12\" title=\":wink:\" class=\"emoji\" alt=\":wink:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Hey @Matvey, welcome to the forum! I've changed your question post's title to better fit our guidelines: https://forum.typst.app/t/how-to-post-in-the-questions-category/11\n\nMake sure your title is a question you'd ask to a friend about Typst. :wink:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 33,
+      "score": 26.6,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:52.332611"
+}

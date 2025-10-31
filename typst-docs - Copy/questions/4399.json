@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 4399,
+    "title": "How to remove html boilerplate from compiled html output?",
+    "slug": "how-to-remove-html-boilerplate-from-compiled-html-output",
+    "posts_count": 3,
+    "created_at": "2025-05-31T16:54:04.319Z",
+    "last_posted_at": "2025-06-05T23:10:26.913Z",
+    "views": 57,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "html"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 239
+  },
+  "posts": [
+    {
+      "id": 13503,
+      "post_number": 1,
+      "username": "adnlorenzana",
+      "name": "Adrian",
+      "created_at": "2025-05-31T16:54:04.384Z",
+      "updated_at": "2025-05-31T19:37:47.025Z",
+      "cooked": "<p>Hi all!<br>\nI’ve been trying to work with the new experimental html compilation feature to use it as an alternative to markdown in my static site. I have it just about working, but I’d like to remove from extra bits the compiler provides to the output that my static site generator already provides. For example, the compiler currently outputs the following in every file:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\"> &lt;!DOCTYPE html&gt;\n&lt;html&gt;\n  &lt;head&gt;\n    &lt;meta charset=\"utf-8\"&gt;\n    &lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"&gt;\n  &lt;/head&gt;\n  &lt;body&gt;CONTENT HERE&lt;/body&gt;\n&lt;/html&gt;\n</code></pre>\n<p>Is there any way to output say, only the  tags?<br>\nThanks!</p>",
+      "raw": "Hi all!\nI've been trying to work with the new experimental html compilation feature to use it as an alternative to markdown in my static site. I have it just about working, but I'd like to remove from extra bits the compiler provides to the output that my static site generator already provides. For example, the compiler currently outputs the following in every file:\n```\n <!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  </head>\n  <body>CONTENT HERE</body>\n</html>\n```\nIs there any way to output say, only the <body> tags?\nThanks!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 4.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1680
+    },
+    {
+      "id": 13719,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-06-04T23:01:26.631Z",
+      "updated_at": "2025-06-04T23:01:26.631Z",
+      "cooked": "<p>Hi. Looking at <a href=\"https://github.com/typst/typst/blob/494e6a64225261add59c3c9b1cd923bfdfa77961/crates/typst-html/src/lib.rs?plain=1#L49\" class=\"inline-onebox\">typst/crates/typst-html/src/lib.rs at 494e6a64225261add59c3c9b1cd923bfdfa77961 · typst/typst · GitHub</a>, the root element requires head, which adds the meta tags, and then the body is added. So no, you can’t remove them within Typst. This might become configurable at some point.</p>\n<p>See <a href=\"https://forum.typst.app/t/my-static-site-blog-based-on-astro-and-typst/4103\" class=\"inline-onebox\">My static-site blog based on astro and typst</a> and <a href=\"https://forum.typst.app/t/one-command-to-build-blogs-with-typst/4388\" class=\"inline-onebox\">One command to build blogs with Typst</a>. Maybe you can get some help from <a class=\"mention\" href=\"/u/myriad-dreamin\">@Myriad-Dreamin</a>.</p>",
+      "raw": "Hi. Looking at https://github.com/typst/typst/blob/494e6a64225261add59c3c9b1cd923bfdfa77961/crates/typst-html/src/lib.rs?plain=1#L49, the root element requires head, which adds the meta tags, and then the body is added. So no, you can't remove them within Typst. This might become configurable at some point.\n\nSee https://forum.typst.app/t/my-static-site-blog-based-on-astro-and-typst/4103 and https://forum.typst.app/t/one-command-to-build-blogs-with-typst/4388. Maybe you can get some help from @Myriad-Dreamin.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 15,
+      "score": 28.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    },
+    {
+      "id": 13799,
+      "post_number": 3,
+      "username": "adnlorenzana",
+      "name": "Adrian",
+      "created_at": "2025-06-05T23:10:26.913Z",
+      "updated_at": "2025-06-05T23:10:26.913Z",
+      "cooked": "<p>Gotcha, thanks for your help! I’m not at all skilled enough to have figured that out looking at the source.<br>\nI was looking at <a class=\"mention\" href=\"/u/myriad-dreamin\">@Myriad-Dreamin</a> 's implementation with Astro a little bit ago, I may end up just going that route for rebuilding my website :)</p>",
+      "raw": "Gotcha, thanks for your help! I'm not at all skilled enough to have figured that out looking at the source.\nI was looking at @Myriad-Dreamin 's implementation with Astro a little bit ago, I may end up just going that route for rebuilding my website :)",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 13,
+      "score": 17.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1680
+    }
+  ],
+  "scraped_at": "2025-06-10T09:46:59.178576"
+}

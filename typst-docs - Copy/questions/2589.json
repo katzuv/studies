@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2589,
+    "title": "Document with multiple bibliography files - how do I clear it?",
+    "slug": "document-with-multiple-bibliography-files-how-do-i-clear-it",
+    "posts_count": 3,
+    "created_at": "2025-01-29T11:31:45.259Z",
+    "last_posted_at": "2025-02-21T20:43:11.904Z",
+    "views": 144,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "literature"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 283
+  },
+  "posts": [
+    {
+      "id": 7985,
+      "post_number": 1,
+      "username": "runemarholt",
+      "name": "Rune Marholt",
+      "created_at": "2025-01-29T11:31:45.410Z",
+      "updated_at": "2025-02-05T14:54:51.506Z",
+      "cooked": "<p>I have a document where I wish to display multiple separate bibliographies. Is there a way to load in a bibliography, cite some references, list the bibliography and then clear it from the document to then later load in a new bibliography file?</p>\n<p>Context:<br>\nI am creating a grant application, where on one page (my resume), I wish to list my personal publications. I have my personal publications in a separate BibLaTeX <code>.bib</code> file and then use <code>#bibliography(\"personal_bibliography.bib\", title: none, full: true)</code>.</p>\n<p>Then on another page (my cover letter), I wish to cite some other publications and list them in a bibliography at the end of that page. Naturally, I don’t want these publications to appear on my resume as if they are my own publications.</p>\n<p>I hope the question makes sense. Thanks in advance.</p>",
+      "raw": "I have a document where I wish to display multiple separate bibliographies. Is there a way to load in a bibliography, cite some references, list the bibliography and then clear it from the document to then later load in a new bibliography file?\n\nContext:\nI am creating a grant application, where on one page (my resume), I wish to list my personal publications. I have my personal publications in a separate BibLaTeX `.bib` file and then use `#bibliography(\"personal_bibliography.bib\", title: none, full: true)`.\n\nThen on another page (my cover letter), I wish to cite some other publications and list them in a bibliography at the end of that page. Naturally, I don't want these publications to appear on my resume as if they are my own publications.\n\nI hope the question makes sense. Thanks in advance.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 31,
+      "score": 436.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 267
+    },
+    {
+      "id": 8008,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-01-30T07:42:39.901Z",
+      "updated_at": "2025-01-30T07:42:39.901Z",
+      "cooked": "<p>I think your best bet would be to try this</p>\n<aside class=\"onebox githubrepo\" data-onebox-src=\"https://github.com/pauladam94/biblyst/\">\n  <header class=\"source\">\n\n      <a href=\"https://github.com/pauladam94/biblyst/\" target=\"_blank\" rel=\"noopener\">github.com</a>\n  </header>\n\n  <article class=\"onebox-body\">\n    <div class=\"github-row\" data-github-private-repo=\"false\">\n  <img width=\"690\" height=\"344\" src=\"https://forum.typst.app/uploads/default/optimized/2X/b/b8a9552d63d9d7530323d5d2bfc3632fcda11b8d_2_690x344.png\" class=\"thumbnail\" data-dominant-color=\"E7EBEB\">\n\n  <h3><a href=\"https://github.com/pauladam94/biblyst/\" target=\"_blank\" rel=\"noopener\">GitHub - pauladam94/biblyst: Typst multiple bibliographie using same citation...</a></h3>\n\n    <p><span class=\"github-repo-description\">Typst multiple bibliographie using same citation an bibliographie syntax.</span></p>\n</div>\n\n  </article>\n\n  <div class=\"onebox-metadata\">\n    \n    \n  </div>\n\n  <div style=\"clear: both\"></div>\n</aside>\n\n<p>You can also take a look at this thread, with multiple solutions <a href=\"https://github.com/typst/typst/issues/1097\" class=\"inline-onebox\">Multiple bibliographies · Issue #1097 · typst/typst · GitHub</a></p>",
+      "raw": "I think your best bet would be to try this\n\nhttps://github.com/pauladam94/biblyst/\n\nYou can also take a look at this thread, with multiple solutions https://github.com/typst/typst/issues/1097",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 26,
+      "score": 25.0,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 8845,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-02-21T20:43:11.904Z",
+      "updated_at": "2025-02-21T20:43:11.904Z",
+      "cooked": "<p>Just rediscovered this post while doing some moderation. For anyone else finding this: I have created a package for multiple bibliographies, you can read more about it here:</p>\n<aside class=\"quote quote-modified\" data-post=\"1\" data-topic=\"2697\">\n  <div class=\"title\">\n    <div class=\"quote-controls\"></div>\n    <img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/sillyfreak/48/1483_2.png\" class=\"avatar\">\n    <a href=\"https://forum.typst.app/t/alexandria-multiple-bibliographies-in-the-same-document/2697\">Alexandria -- multiple bibliographies in the same document!</a> <a class=\"badge-category__wrapper \" href=\"/c/showcase/6\"><span data-category-id=\"6\" style=\"--category-badge-color: #239DAD; --category-badge-text-color: #fdfdfd;\" data-drop-close=\"true\" class=\"badge-category \" title=\"This is the place to post in if you want to show off something you created with Typst: Be it the most beautiful paper you have ever seen or something extremely out-of-the box and crazy.\"><span class=\"badge-category__name\">Showcase</span></span></a>\n  </div>\n  <blockquote>\n    This package is not merged yet, but I’m fairly excited about it so I wanted to share it right away: <a href=\"https://typst.app/universe/package/alexandria\">Alexandria</a> (<a href=\"https://github.com/SillyFreak/typst-alexandria\">Github</a>) allows you to create any number of bibliographies in the same document. It achieves that by using Hayagriva (Typst’s citation engine) as a WASM plugin, thus supporting all citation styles* that Typst supports natively! \n<a name=\"p-8272-demo-1\" class=\"anchor\" href=\"#p-8272-demo-1\"></a>Demo\n<details><summary>Example source code</summary>#import \"@preview/alexandria:0.1.0\": *\n\n#show: alexandria(prefix: \"x-\", read: path =&gt; read(path))\n#show: alexandr…</details>\n  </blockquote>\n</aside>\n\n<p>As far as I can tell, among the main differences to biblyst are:</p>\n<ul>\n<li>Alexandria is on Universe</li>\n<li>biblyst lets you define bibliography styles in Typst, Alexandria lets you use custom CSL styles and those built into Hayagriva (~those built into Typst, modulo version differences)</li>\n<li>Alexandria also works with bib files, not just Hayagriva YAML</li>\n<li>biblyst uses <code>bibliography()</code> and regular citation keys, Alexandria uses <code>bibliographyx()</code> and prefixed citation keys.</li>\n</ul>",
+      "raw": "Just rediscovered this post while doing some moderation. For anyone else finding this: I have created a package for multiple bibliographies, you can read more about it here:\n\nhttps://forum.typst.app/t/alexandria-multiple-bibliographies-in-the-same-document/2697?u=sillyfreak\n\nAs far as I can tell, among the main differences to biblyst are:\n- Alexandria is on Universe\n- biblyst lets you define bibliography styles in Typst, Alexandria lets you use custom CSL styles and those built into Hayagriva (~those built into Typst, modulo version differences)\n- Alexandria also works with bib files, not just Hayagriva YAML\n- biblyst uses `bibliography()` and regular citation keys, Alexandria uses `bibliographyx()` and prefixed citation keys.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 18,
+      "score": 23.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:23.477140"
+}

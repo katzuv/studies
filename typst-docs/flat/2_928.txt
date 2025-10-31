@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 928,
+    "title": "Is there a way to programmaticaly declare a vector?",
+    "slug": "is-there-a-way-to-programmaticaly-declare-a-vector",
+    "posts_count": 3,
+    "created_at": "2024-10-04T20:55:29.115Z",
+    "last_posted_at": "2024-10-05T15:24:29.086Z",
+    "views": 148,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "afiaith",
+    "tags": [
+      "scripting",
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 175
+  },
+  "posts": [
+    {
+      "id": 3419,
+      "post_number": 1,
+      "username": "Enjoyer_101",
+      "name": "brrrrr",
+      "created_at": "2024-10-04T20:55:29.211Z",
+      "updated_at": "2024-10-04T23:02:06.220Z",
+      "cooked": "<p>Let’s say i have a vector of <em>n</em> functions, can i instead of declaring the vector and typing the notation of each function inside the vector just write something like :<br>\n<code>vec(f_i for i in range(n))</code></p>",
+      "raw": "Let's say i have a vector of _n_ functions, can i instead of declaring the vector and typing the notation of each function inside the vector just write something like :\n`vec(f_i for i in range(n))`",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 38,
+      "score": 437.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 538
+    },
+    {
+      "id": 3423,
+      "post_number": 2,
+      "username": "afiaith",
+      "name": "Maja Abramski-Kronenberg",
+      "created_at": "2024-10-04T22:01:16.579Z",
+      "updated_at": "2024-10-04T23:52:05.467Z",
+      "cooked": "<p>Hi and welcome to the forum <img src=\"https://forum.typst.app/images/emoji/apple/wave.png?v=12\" title=\":wave:\" class=\"emoji\" alt=\":wave:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>\n<p>Do you mean something like this?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let n = 8\n$#math.vec(..range(n).map(i =&gt; $f_#i$))$\n</code></pre>\n<p>You can read more about <a href=\"https://typst.app/docs/reference/foundations/arguments/#spreading\">spreading</a> and <a href=\"https://typst.app/docs/reference/foundations/array/#definitions-map\">mapping</a> in the documentation. In general, <a href=\"https://en.wikipedia.org/wiki/Functional_programming\" rel=\"noopener nofollow ugc\">functional programming</a> is more suitable for situations like this. Since it looks like you come from an imperative perspective (<code>for i in range(n)</code>), have a look at <a href=\"https://en.wikipedia.org/wiki/Functional_programming#Imperative_vs._functional_programming\" rel=\"noopener nofollow ugc\">this comparison</a>.</p>\n<hr>\n<p>On the meta side of things, for the benefit of other users who might have similar questions, please consider the following:</p>\n<ul>\n<li>Edit the category of your topic to <a class=\"hashtag-cooked\" href=\"/c/questions/5\" data-type=\"category\" data-slug=\"questions\" data-id=\"5\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>Questions</span></a>.</li>\n<li>Add <a class=\"hashtag-cooked\" href=\"/tag/scripting\" data-type=\"tag\" data-slug=\"scripting\" data-id=\"84\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>scripting</span></a> to the tags.</li>\n</ul>",
+      "raw": "Hi and welcome to the forum 👋\n\nDo you mean something like this?\n\n```typ\n#let n = 8\n$#math.vec(..range(n).map(i => $f_#i$))$\n```\n\nYou can read more about [spreading](https://typst.app/docs/reference/foundations/arguments/#spreading) and [mapping](https://typst.app/docs/reference/foundations/array/#definitions-map) in the documentation. In general, [functional programming](https://en.wikipedia.org/wiki/Functional_programming) is more suitable for situations like this. Since it looks like you come from an imperative perspective (`for i in range(n)`), have a look at [this comparison](https://en.wikipedia.org/wiki/Functional_programming#Imperative_vs._functional_programming).\n\n---\n\nOn the meta side of things, for the benefit of other users who might have similar questions, please consider the following:\n- Edit the category of your topic to #questions.\n- Add #scripting to the tags.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 34,
+      "score": 56.8,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 91
+    },
+    {
+      "id": 3454,
+      "post_number": 3,
+      "username": "afiaith",
+      "name": "Maja Abramski-Kronenberg",
+      "created_at": "2024-10-05T15:24:29.086Z",
+      "updated_at": "2024-10-05T15:24:29.086Z",
+      "cooked": "<p>No problem, you’re welcome.</p>",
+      "raw": "No problem, you’re welcome.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 4.8,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 91
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:25.284323"
+}

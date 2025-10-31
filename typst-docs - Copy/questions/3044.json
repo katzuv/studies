@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 3044,
+    "title": "Is it possible to force inline math block to align vertically with equal sign",
+    "slug": "is-it-possible-to-force-inline-math-block-to-align-vertically-with-equal-sign",
+    "posts_count": 3,
+    "created_at": "2025-02-28T10:55:46.702Z",
+    "last_posted_at": "2025-02-28T12:30:30.329Z",
+    "views": 56,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "aarnent",
+    "tags": [
+      "math",
+      "latex-migration"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 209
+  },
+  "posts": [
+    {
+      "id": 9180,
+      "post_number": 1,
+      "username": "louveta",
+      "name": "louveta",
+      "created_at": "2025-02-28T10:55:46.819Z",
+      "updated_at": "2025-02-28T11:03:49.319Z",
+      "cooked": "<p>Hi,</p>\n<p>I have a math equation that contains a fraction with uneven height in the numerator and denominator:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">$forall F in cal(F), y_(t+1)(F) = y_(t)(F)(1+ eta |chi_t (F)|)$ where $eta = (sqrt(ln(m)))/(n sqrt((ln(m n log(n) / 4)))log(m)log(n))$\n</code></pre>\n<p>This results in a line where the fraction floats above the line:</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/2/26df9c2abc09608acce140357e9a95eb0221ce43.png\" data-download-href=\"https://forum.typst.app/uploads/default/26df9c2abc09608acce140357e9a95eb0221ce43\" title=\"2025-02-28-114536_hyprshot\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/2/26df9c2abc09608acce140357e9a95eb0221ce43_2_690x66.png\" alt=\"2025-02-28-114536_hyprshot\" data-base62-sha1=\"5xTe1k0QFaKlTaPw8DkGt3WRfxN\" width=\"690\" height=\"66\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/2/26df9c2abc09608acce140357e9a95eb0221ce43_2_690x66.png, https://forum.typst.app/uploads/default/optimized/2X/2/26df9c2abc09608acce140357e9a95eb0221ce43_2_1035x99.png 1.5x, https://forum.typst.app/uploads/default/original/2X/2/26df9c2abc09608acce140357e9a95eb0221ce43.png 2x\" data-dominant-color=\"F0F0F0\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">2025-02-28-114536_hyprshot</span><span class=\"informations\">1164×112 22 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>Is it possible to align the fraction part with the rest of the line as would happen in latex:</p>\n<pre><code class=\"lang-auto\">$\\forall F \\in \\mathcal{F}, y_{t+1}(F) = y_{t}(F)(1+ \\eta |\\chi_t (F)|)$ where $\\eta = \\frac{\\sqrt{\\ln(m)}}{n \\sqrt{\\ln(m n \\frac{\\log(n)}{4})}\\log(m)\\log(n)}$\n</code></pre>\n<p>would produce:</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/8/82fc2a22dfded17ea9f9cbe7dafbd469da375b3d.png\" data-download-href=\"https://forum.typst.app/uploads/default/82fc2a22dfded17ea9f9cbe7dafbd469da375b3d\" title=\"2025-02-28-120302_hyprshot\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/8/82fc2a22dfded17ea9f9cbe7dafbd469da375b3d_2_690x60.png\" alt=\"2025-02-28-120302_hyprshot\" data-base62-sha1=\"iGKkxyCTukA9Aiml5pnNUaszioZ\" width=\"690\" height=\"60\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/8/82fc2a22dfded17ea9f9cbe7dafbd469da375b3d_2_690x60.png, https://forum.typst.app/uploads/default/optimized/2X/8/82fc2a22dfded17ea9f9cbe7dafbd469da375b3d_2_1035x90.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/8/82fc2a22dfded17ea9f9cbe7dafbd469da375b3d_2_1380x120.png 2x\" data-dominant-color=\"F0F0F0\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">2025-02-28-120302_hyprshot</span><span class=\"informations\">1559×137 27.9 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "Hi,\n\nI have a math equation that contains a fraction with uneven height in the numerator and denominator:\n\n```typ\n$forall F in cal(F), y_(t+1)(F) = y_(t)(F)(1+ eta |chi_t (F)|)$ where $eta = (sqrt(ln(m)))/(n sqrt((ln(m n log(n) / 4)))log(m)log(n))$\n```\n\nThis results in a line where the fraction floats above the line:\n\n![2025-02-28-114536_hyprshot|690x66](upload://5xTe1k0QFaKlTaPw8DkGt3WRfxN.png)\n\nIs it possible to align the fraction part with the rest of the line as would happen in latex:\n\n```\n$\\forall F \\in \\mathcal{F}, y_{t+1}(F) = y_{t}(F)(1+ \\eta |\\chi_t (F)|)$ where $\\eta = \\frac{\\sqrt{\\ln(m)}}{n \\sqrt{\\ln(m n \\frac{\\log(n)}{4})}\\log(m)\\log(n)}$\n```\n\nwould produce:\n\n![2025-02-28-120302_hyprshot|690x60](upload://iGKkxyCTukA9Aiml5pnNUaszioZ.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 125.0,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1281
+    },
+    {
+      "id": 9182,
+      "post_number": 2,
+      "username": "aarnent",
+      "name": "",
+      "created_at": "2025-02-28T11:06:12.204Z",
+      "updated_at": "2025-02-28T11:06:12.204Z",
+      "cooked": "<p>Hi and welcome to the forum!</p>\n<p>I’m unable to reproduce the behavior, the provided code snippet seems to align as intended in typst:</p>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/b/b00d680cc7f241e4810444843c79a7a8754e5e8e.png\" alt=\"image\" data-base62-sha1=\"p7qKZEFEP5ogzfpKLkLHxADZ1YW\" width=\"398\" height=\"46\"></p>\n<p>Unless I misunderstood the question?</p>",
+      "raw": "Hi and welcome to the forum!\n\nI'm unable to reproduce the behavior, the provided code snippet seems to align as intended in typst:\n\n![image|398x46](upload://p7qKZEFEP5ogzfpKLkLHxADZ1YW.png)\n\nUnless I misunderstood the question?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 15.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 501
+    },
+    {
+      "id": 9189,
+      "post_number": 3,
+      "username": "louveta",
+      "name": "louveta",
+      "created_at": "2025-02-28T12:30:30.329Z",
+      "updated_at": "2025-02-28T12:30:30.329Z",
+      "cooked": "<p>Hi, thanks for your answer.</p>\n<p>You’re right the default behavior is what I wanted, this was due to an interaction with the template I use for this document and I forgot to test this in a clean environment.</p>",
+      "raw": "Hi, thanks for your answer.\n\nYou're right the default behavior is what I wanted, this was due to an interaction with the template I use for this document and I forgot to test this in a clean environment.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 23,
+      "score": 34.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1281
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:59.671255"
+}

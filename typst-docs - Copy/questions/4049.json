@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 4049,
+    "title": "How to add caption to fletcher diagram?",
+    "slug": "how-to-add-caption-to-fletcher-diagram",
+    "posts_count": 3,
+    "created_at": "2025-05-12T12:41:10.900Z",
+    "last_posted_at": "2025-05-13T12:48:21.525Z",
+    "views": 72,
+    "like_count": 3,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "fletcher"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 173
+  },
+  "posts": [
+    {
+      "id": 12338,
+      "post_number": 1,
+      "username": "Andrew_Duncan",
+      "name": "Andrew Duncan",
+      "created_at": "2025-05-12T12:41:11.040Z",
+      "updated_at": "2025-05-14T21:39:52.270Z",
+      "cooked": "<p>Hi All,<br>\nI have added a diagram using fletcher package. I would like to add caption below the diagram. Does fletcher package support caption inclusion under the diagram?</p>\n<p>Thank you.</p>",
+      "raw": "Hi All,\nI have added a diagram using fletcher package. I would like to add caption below the diagram. Does fletcher package support caption inclusion under the diagram?\n\nThank you.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 21,
+      "score": 74.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1560
+    },
+    {
+      "id": 12341,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-05-12T13:35:12.895Z",
+      "updated_at": "2025-05-12T13:35:26.226Z",
+      "cooked": "<p>In order to add a caption to anything in Typst you have to wrap in a <code>figure()</code>, see <a href=\"https://typst.app/docs/reference/model/figure/\" class=\"inline-onebox\">Figure Function – Typst Documentation</a>. This works for images, tables and really any other type of content, including fletcher diagrams.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let my-diagram = \"something you made with fletcher\"\n\n#figure(\n  my-diagram,\n  caption: \"This is the caption of my fletcher diagram\"\n)\n</code></pre>\n<p>I would also like to ask you to move your post to the <a class=\"hashtag-cooked\" href=\"/c/questions/5\" data-type=\"category\" data-slug=\"questions\" data-id=\"5\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>Questions</span></a> category and to change the title to an actual question you would ask a friend about Typst. See the following post about the <a class=\"hashtag-cooked\" href=\"/c/questions/5\" data-type=\"category\" data-slug=\"questions\" data-id=\"5\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>Questions</span></a> category if you want to know more:</p><aside class=\"quote quote-modified\" data-post=\"1\" data-topic=\"11\">\n  <div class=\"title\">\n    <div class=\"quote-controls\"></div>\n    <img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/reknih/48/3_2.png\" class=\"avatar\">\n    <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">How to post in the Questions category</a> <a class=\"badge-category__wrapper \" href=\"/c/questions/5\"><span data-category-id=\"5\" style=\"--category-badge-color: #F7C000; --category-badge-text-color: #fdfdfd;\" data-drop-close=\"true\" class=\"badge-category \" title=\"Your questions about using Typst and the web app go in this category.\"><span class=\"badge-category__name\">Questions</span></span></a>\n  </div>\n  <blockquote>\n    Your questions about using Typst and the web app go in this category. \nThis category should be a useful resource for both those who post questions and those who later search it for answers. To get there, we ask you to keep in mind the following if you ask a question: \n<a name=\"p-29-the-basics-1\" class=\"anchor\" href=\"#p-29-the-basics-1\"></a>The Basics\nEach post should contain one distinct question on Typst. If you have multiple questions, do not hesitate to create multiple posts! Posts that are discussions or otherwise not questions looking for help should go into the…\n  </blockquote>\n</aside>\n",
+      "raw": "In order to add a caption to anything in Typst you have to wrap in a `figure()`, see https://typst.app/docs/reference/model/figure/. This works for images, tables and really any other type of content, including fletcher diagrams.\n\n```typ\n#let my-diagram = \"something you made with fletcher\"\n\n#figure(\n  my-diagram,\n  caption: \"This is the caption of my fletcher diagram\"\n)\n```\n\nI would also like to ask you to move your post to the #questions category and to change the title to an actual question you would ask a friend about Typst. See the following post about the #questions category if you want to know more:\nhttps://forum.typst.app/t/how-to-post-in-the-questions-category/11",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 21,
+      "score": 39.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    },
+    {
+      "id": 12386,
+      "post_number": 3,
+      "username": "Andrew_Duncan",
+      "name": "Andrew Duncan",
+      "created_at": "2025-05-13T12:48:21.525Z",
+      "updated_at": "2025-05-13T12:48:21.525Z",
+      "cooked": "<p>Thank you for your support.</p>\n<aside class=\"quote no-group\" data-username=\"janekfleper\" data-post=\"2\" data-topic=\"4049\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/letter_avatar_proxy/v4/letter/j/8F38B1/48.png\" class=\"avatar\"> janekfleper:</div>\n<blockquote>\n<pre><code class=\"lang-auto\">#figure(\n  my-diagram,\n  caption: \"This is the caption of my fletcher diagram\"\n)\n</code></pre>\n</blockquote>\n</aside>",
+      "raw": "Thank you for your support.\n\n[quote=\"janekfleper, post:2, topic:4049\"]\n```\n#figure(\n  my-diagram,\n  caption: \"This is the caption of my fletcher diagram\"\n)\n```\n[/quote]",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 0,
+      "reads": 17,
+      "score": 3.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1560
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:56.506559"
+}

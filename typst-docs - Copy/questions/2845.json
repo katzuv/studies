@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2845,
+    "title": "What is the significance of paragraphs no longer being blocks?",
+    "slug": "what-is-the-significance-of-paragraphs-no-longer-being-blocks",
+    "posts_count": 2,
+    "created_at": "2025-02-15T20:13:53.195Z",
+    "last_posted_at": "2025-02-16T09:53:24.793Z",
+    "views": 172,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "layout",
+      "v0-13"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 246
+  },
+  "posts": [
+    {
+      "id": 8722,
+      "post_number": 1,
+      "username": "Llama",
+      "name": "Llama",
+      "created_at": "2025-02-15T20:13:53.347Z",
+      "updated_at": "2025-02-22T08:42:42.968Z",
+      "cooked": "<p>Hi,</p>\n<p>Paragraphs are no longer blocks, they say. So <code>tinymist</code> made me change</p>\n<pre><code class=\"lang-auto\">#show par: set block(spacing: 0.65em)\n</code></pre>\n<p>to</p>\n<pre><code class=\"lang-auto\">#set par(spacing: 0.65em)\n</code></pre>\n<p>Fine by me.</p>\n<p>What’s the place of the paragraph in the scheme of things now? An element?</p>\n<p>Otherwise, the paragraph behaves very much as before. Why? An explanation of the new basic text layout is welcome <img src=\"https://forum.typst.app/images/emoji/apple/slightly_smiling_face.png?v=12\" title=\":slightly_smiling_face:\" class=\"emoji\" alt=\":slightly_smiling_face:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Hi,\n\nParagraphs are no longer blocks, they say. So `tinymist` made me change\n```\n#show par: set block(spacing: 0.65em)\n```\nto\n```\n#set par(spacing: 0.65em)\n```\nFine by me.\n\nWhat's the place of the paragraph in the scheme of things now? An element?\n\nOtherwise, the paragraph behaves very much as before. Why? An explanation of the new basic text layout is welcome :slightly_smiling_face:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 48,
+      "score": 434.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1201
+    },
+    {
+      "id": 8730,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-02-16T09:53:24.793Z",
+      "updated_at": "2025-02-16T09:53:49.974Z",
+      "cooked": "<p>There have been several changes. As I understand, initially paragraphs were not elements, but were treated as blocks in some respects. But setting par spacing with <code>#show par: set block(spacing: ...)</code> had several problems, so the <code>par(spacing: ...)</code> property was introduced in Typst 0.12. The problems this solves are described in the <a href=\"https://github.com/typst/typst/pull/4390\" rel=\"noopener nofollow ugc\">PR that made this change</a>.</p>\n<p>The next release (Typst 0.13) introduces semantic paragraphs. Now a par is actually a real element. I think the main motivation was to have a distinction between paragraphs and other pieces of text. But it also brings the benefit that we can process paragraphs in show rules like other elements. See <a href=\"https://github.com/typst/typst/pull/5746\" rel=\"noopener nofollow ugc\">this PR</a> for details.</p>\n<p>With the new <code>par</code> elements, many things that were difficult or impossible are now easy:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show par: it =&gt; {\n  counter(\"par\").step()\n  place(left, dx: -3em, context counter(\"par\").display())\n  if \"Lorem\" in it.body.text {\n    set text(red)\n    it\n  } else {\n    it\n  }\n}\n\nSome paragraph.\n\n#lorem(30)\n\nOther paragraph.\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/f/f7d69f7b36eb8f0dd45575e859ed3815463c35e9.png\" data-download-href=\"https://forum.typst.app/uploads/default/f7d69f7b36eb8f0dd45575e859ed3815463c35e9\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/f/f7d69f7b36eb8f0dd45575e859ed3815463c35e9_2_517x102.png\" alt=\"image\" data-base62-sha1=\"zmtLid0bcgC8gPwRXgZoKoc0emt\" width=\"517\" height=\"102\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/f/f7d69f7b36eb8f0dd45575e859ed3815463c35e9_2_517x102.png, https://forum.typst.app/uploads/default/optimized/2X/f/f7d69f7b36eb8f0dd45575e859ed3815463c35e9_2_775x153.png 1.5x, https://forum.typst.app/uploads/default/original/2X/f/f7d69f7b36eb8f0dd45575e859ed3815463c35e9.png 2x\" data-dominant-color=\"FEF7F6\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">980×194 27.7 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "There have been several changes. As I understand, initially paragraphs were not elements, but were treated as blocks in some respects. But setting par spacing with `#show par: set block(spacing: ...)` had several problems, so the `par(spacing: ...)` property was introduced in Typst 0.12. The problems this solves are described in the [PR that made this change](https://github.com/typst/typst/pull/4390).\n\nThe next release (Typst 0.13) introduces semantic paragraphs. Now a par is actually a real element. I think the main motivation was to have a distinction between paragraphs and other pieces of text. But it also brings the benefit that we can process paragraphs in show rules like other elements. See [this PR](https://github.com/typst/typst/pull/5746) for details.\n\nWith the new `par` elements, many things that were difficult or impossible are now easy:\n\n```typ\n#show par: it => {\n  counter(\"par\").step()\n  place(left, dx: -3em, context counter(\"par\").display())\n  if \"Lorem\" in it.body.text {\n    set text(red)\n    it\n  } else {\n    it\n  }\n}\n\nSome paragraph.\n\n#lorem(30)\n\nOther paragraph.\n```\n![image|690x136, 75%](upload://zmtLid0bcgC8gPwRXgZoKoc0emt.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 43,
+      "score": 43.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:30.518448"
+}

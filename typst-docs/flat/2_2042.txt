@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2042,
+    "title": "How to use `row-gap` in the `mat` function?",
+    "slug": "how-to-use-row-gap-in-the-mat-function",
+    "posts_count": 2,
+    "created_at": "2024-12-10T12:09:33.736Z",
+    "last_posted_at": "2024-12-10T12:37:32.376Z",
+    "views": 44,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "gezepi",
+    "tags": [
+      "scripting",
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 169
+  },
+  "posts": [
+    {
+      "id": 6461,
+      "post_number": 1,
+      "username": "szsdk",
+      "name": "szsdk",
+      "created_at": "2024-12-10T12:09:33.873Z",
+      "updated_at": "2024-12-10T12:09:33.873Z",
+      "cooked": "<p>I want to manually adjust the <code>row-gap</code> of a matrix. Then I found the syntax is confusing. This works:</p>\n<pre><code class=\"lang-auto\">$\nmat(1;2;3; delim:\"[\", gap:#1em)\n$\n</code></pre>\n<p>But this doesn’t:</p>\n<pre><code class=\"lang-auto\">$\nmat(1;2;3; delim:\"[\", row-gap:#1em)\n$\n</code></pre>\n<p>How should I do it properly?</p>",
+      "raw": "I want to manually adjust the `row-gap` of a matrix. Then I found the syntax is confusing. This works:\n```\n$\nmat(1;2;3; delim:\"[\", gap:#1em)\n$\n```\nBut this doesn't:\n```\n$\nmat(1;2;3; delim:\"[\", row-gap:#1em)\n$\n```\nHow should I do it properly?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 20,
+      "score": 139.0,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 910
+    },
+    {
+      "id": 6462,
+      "post_number": 2,
+      "username": "gezepi",
+      "name": "",
+      "created_at": "2024-12-10T12:37:32.376Z",
+      "updated_at": "2024-12-10T12:37:32.376Z",
+      "cooked": "<p>I’m not sure but this might be related to the recent question: <a href=\"https://forum.typst.app/t/how-to-use-arguments-with-hyphens-in-math-mode/\">How to use arguments with hyphens in math mode</a>.</p>\n<p>The documentation shows that you can use a <code>set</code> command to do this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set math.mat(row-gap: 1em)\n$\nmat(1;2;3; delim:\"[\")\n$\n</code></pre>\n<p>Which renders the same as what you posted using the argument <code>gap</code>.  This will affect all matrices after this unless you encase this part in its own scope:</p>\n<details>\n<summary>\nCode wtih Scope</summary>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">$\nmat(1;2;3; delim:\"[\")\n$\n\n#[\n  #set math.mat(row-gap: 1em)\n  $\n  mat(1;2;3; delim:\"[\")\n  $\n]\n\n$\nmat(1;2;3; delim:\"[\")\n$\n</code></pre>\n</details>\n<details>\n<summary>\nOutput</summary>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/2/247f937782cdda2286fc1703ec0b494bf5ef4e59.png\" alt=\"image\" data-base62-sha1=\"5cSwcmLoZB7h4CTGuEZAxVucVAt\" width=\"197\" height=\"362\"></p>\n</details>",
+      "raw": "I'm not sure but this might be related to the recent question: [How to use arguments with hyphens in math mode](https://forum.typst.app/t/how-to-use-arguments-with-hyphens-in-math-mode/).\n\nThe documentation shows that you can use a `set` command to do this:\n```typ\n#set math.mat(row-gap: 1em)\n$\nmat(1;2;3; delim:\"[\")\n$\n```\nWhich renders the same as what you posted using the argument `gap`.  This will affect all matrices after this unless you encase this part in its own scope:\n\n[details=\"Code wtih Scope\"]\n```typ\n$\nmat(1;2;3; delim:\"[\")\n$\n\n#[\n  #set math.mat(row-gap: 1em)\n  $\n  mat(1;2;3; delim:\"[\")\n  $\n]\n\n$\nmat(1;2;3; delim:\"[\")\n$\n```\n[/details]\n\n\n[details=\"Output\"]\n![image|197x362](upload://5cSwcmLoZB7h4CTGuEZAxVucVAt.png)\n[/details]",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 19,
+      "score": 38.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 326
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:46.622195"
+}

@@ -1,0 +1,61 @@
+{
+  "topic_metadata": {
+    "id": 1145,
+    "title": "Spell Checkin not working in german",
+    "slug": "spell-checkin-not-working-in-german",
+    "posts_count": 2,
+    "created_at": "2024-10-16T16:49:41.258Z",
+    "last_posted_at": "2024-10-16T16:54:16.612Z",
+    "views": 335,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "xkevio",
+    "tags": [],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 147
+  },
+  "posts": [
+    {
+      "id": 4018,
+      "post_number": 1,
+      "username": "Georg_Rasumov",
+      "name": "Georg Rasumov",
+      "created_at": "2024-10-16T16:49:41.350Z",
+      "updated_at": "2024-10-16T16:49:41.350Z",
+      "cooked": "<p>I’m having trouble with spell checking in the browser application when setting the language to German using:</p>\n<p><code>#set text(lang: \"de\")</code></p>\n<p>No spelling errors are being detected at all.</p>\n<p>However, when I set the language to English:</p>\n<p><code>#set text(lang: \"en\")</code></p>\n<p>the spell checker works as expected. I’ve tested this on Firefox, Chrome, and Edge, but the issue persists across all browsers.</p>\n<p>Its also not workign with an minimal example as:</p>\n<pre><code class=\"lang-auto\">#set text(lang: \"de\", region: \"de\")\nFinde den Fehlr.\n</code></pre>",
+      "raw": "I'm having trouble with spell checking in the browser application when setting the language to German using:\n\n`#set text(lang: \"de\")`\n\nNo spelling errors are being detected at all.\n\nHowever, when I set the language to English:\n\n`#set text(lang: \"en\")`\n\nthe spell checker works as expected. I've tested this on Firefox, Chrome, and Edge, but the issue persists across all browsers.\n\nIts also not workign with an minimal example as:\n\n```\n#set text(lang: \"de\", region: \"de\")\nFinde den Fehlr.\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 45,
+      "score": 1059.0,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 603
+    },
+    {
+      "id": 4019,
+      "post_number": 2,
+      "username": "xkevio",
+      "name": "Kevio",
+      "created_at": "2024-10-16T16:54:16.612Z",
+      "updated_at": "2024-10-16T16:54:57.406Z",
+      "cooked": "<p>It’s a known issue (not a bug) as the web app uses a library called hunspell which relies on a rather complicated dictionary file format for spell checking. The issue stems from the fact that the only available German dictionary has a license incompatible with the web app and contacting its author to purchase the dictionary has not yet led to any results unfortunately.</p>",
+      "raw": "It's a known issue (not a bug) as the web app uses a library called hunspell which relies on a rather complicated dictionary file format for spell checking. The issue stems from the fact that the only available German dictionary has a license incompatible with the web app and contacting its author to purchase the dictionary has not yet led to any results unfortunately.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 43,
+      "score": 43.6,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 21
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:42.473454"
+}

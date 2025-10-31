@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2307,
+    "title": "Why is XML parsing not working?",
+    "slug": "why-is-xml-parsing-not-working",
+    "posts_count": 3,
+    "created_at": "2025-01-05T12:47:01.668Z",
+    "last_posted_at": "2025-01-05T14:50:37.170Z",
+    "views": 86,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Tiggax",
+    "tags": [
+      "data-loading"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 319
+  },
+  "posts": [
+    {
+      "id": 7210,
+      "post_number": 1,
+      "username": "not_raffa",
+      "name": "Raffaele Fontana",
+      "created_at": "2025-01-05T12:47:01.930Z",
+      "updated_at": "2025-01-06T06:14:53.829Z",
+      "cooked": "<p>Hi, I’m new here. I’m having trouble parsing an XML file, like the one shown in the example. I’ve already looked at the documentation, but I think I don’t really understand how it works.</p>\n<pre data-code-wrap=\"xml\"><code class=\"lang-xml\">&lt;result id=\"some-id\"&gt;\n  &lt;name&gt;some name&lt;/name&gt;\n  &lt;owner&gt;\n    &lt;name&gt;some admin&lt;/name&gt;\n  &lt;/owner&gt;\n  &lt;modification_time&gt;2000-06-12T13:27:15Z&lt;/modification_time&gt;\n  &lt;comment/&gt;\n  &lt;creation_time&gt;2000-06-12T13:27:15Z&lt;/creation_time&gt;\n  &lt;detection&gt;\n    &lt;result id=\"another-id\"&gt;\n      &lt;details&gt;\n        &lt;detail&gt;\n          &lt;name&gt;product&lt;/name&gt;\n          &lt;value&gt;some value&lt;/value&gt;\n        &lt;/detail&gt;\n        &lt;detail&gt;\n          &lt;name&gt;location&lt;/name&gt;\n          &lt;value&gt;80/tcp&lt;/value&gt;\n        &lt;/detail&gt;\n        &lt;detail&gt;\n          &lt;name&gt;source_oid&lt;/name&gt;\n          &lt;value&gt;null&lt;/value&gt;\n        &lt;/detail&gt;\n        &lt;detail&gt;\n          &lt;name&gt;source_name&lt;/name&gt;\n          &lt;value&gt;another value&lt;/value&gt;\n        &lt;/detail&gt;\n      &lt;/details&gt;\n    &lt;/result&gt;\n  &lt;/detection&gt;\n&lt;/result&gt;\n</code></pre>\n<p>Is it a problem if there are tags with the same name nested (not directly, but as children of children)?<br>\nMany thanks</p>",
+      "raw": "Hi, I’m new here. I’m having trouble parsing an XML file, like the one shown in the example. I’ve already looked at the documentation, but I think I don’t really understand how it works.\n\n```xml\n<result id=\"some-id\">\n  <name>some name</name>\n  <owner>\n    <name>some admin</name>\n  </owner>\n  <modification_time>2000-06-12T13:27:15Z</modification_time>\n  <comment/>\n  <creation_time>2000-06-12T13:27:15Z</creation_time>\n  <detection>\n    <result id=\"another-id\">\n      <details>\n        <detail>\n          <name>product</name>\n          <value>some value</value>\n        </detail>\n        <detail>\n          <name>location</name>\n          <value>80/tcp</value>\n        </detail>\n        <detail>\n          <name>source_oid</name>\n          <value>null</value>\n        </detail>\n        <detail>\n          <name>source_name</name>\n          <value>another value</value>\n        </detail>\n      </details>\n    </result>\n  </detection>\n</result>\n```\nIs it a problem if there are tags with the same name nested (not directly, but as children of children)?\nMany thanks",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 35,
+      "score": 82.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1012
+    },
+    {
+      "id": 7211,
+      "post_number": 2,
+      "username": "Tiggax",
+      "name": "",
+      "created_at": "2025-01-05T14:05:56.988Z",
+      "updated_at": "2025-01-05T14:05:56.988Z",
+      "cooked": "<p>I don’t understand the question.<br>\nDoes it not parse correctly?<br>\nAFAIK xml gets parsed into a list of dictionaries,<br>\nso it creates a list of tag dicts, each containing the tag name, and a list of children, which is in turn the same. this  means that you can have many same named tags, as the dictionaries are self contained.</p>",
+      "raw": "I don't understand the question.\nDoes it not parse correctly?\nAFAIK xml gets parsed into a list of dictionaries,\nso it creates a list of tag dicts, each containing the tag name, and a list of children, which is in turn the same. this  means that you can have many same named tags, as the dictionaries are self contained.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 35,
+      "score": 17.0,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 71
+    },
+    {
+      "id": 7215,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-05T14:50:37.170Z",
+      "updated_at": "2025-01-05T14:50:37.170Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/not_raffa\">@not_raffa</a>, could you maybe try to revise your post’s title to be a complete question as per the <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">question guidelines</a>:</p>\n<blockquote>\n<p><strong>Good titles are questions you would ask your friend about Typst.</strong></p>\n</blockquote>\n<p>We hope by adhering to this, we make the information in this forum easy to find in the future. Thanks!</p>\n<p>Also, you marked the reply you got as the solution – great! However, someone finding your question would (I think) not easily see how you were able to solve your problem using that response. It would be great if you could demonstrate how you managed to solve the problem you initially had in a separate reply to your post.</p>",
+      "raw": "Hi @not_raffa, could you maybe try to revise your post’s title to be a complete question as per the [question guidelines](https://forum.typst.app/t/how-to-post-in-the-questions-category/11):\n\n> **Good titles are questions you would ask your friend about Typst.**\n\nWe hope by adhering to this, we make the information in this forum easy to find in the future. Thanks!\n\nAlso, you marked the reply you got as the solution -- great! However, someone finding your question would (I think) not easily see how you were able to solve your problem using that response. It would be great if you could demonstrate how you managed to solve the problem you initially had in a separate reply to your post.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 32,
+      "score": 31.4,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:08.087452"
+}

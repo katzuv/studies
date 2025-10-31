@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2657,
+    "title": "How to use different fonts for math mode and math.cal?",
+    "slug": "how-to-use-different-fonts-for-math-mode-and-math-cal",
+    "posts_count": 3,
+    "created_at": "2025-02-03T15:59:07.646Z",
+    "last_posted_at": "2025-02-03T16:30:22.456Z",
+    "views": 259,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Eric",
+    "tags": [
+      "math",
+      "fonts"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 300
+  },
+  "posts": [
+    {
+      "id": 8170,
+      "post_number": 1,
+      "username": "AMBVT",
+      "name": "",
+      "created_at": "2025-02-03T15:59:07.802Z",
+      "updated_at": "2025-02-21T21:03:41.553Z",
+      "cooked": "<p>I want to use the TeX Gyre Pagella Math font for math mode, so I use the code</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">show math.equation: it =&gt; {\n  set text(font: \"TeX Gyre Pagella Math\")\n  set block(breakable: true)\n  if it.block == false {\n    box(it)\n  } else {\n    it\n  }\n}\n</code></pre>\n<p>Sometimes, I also want to use the New Computer Modern Math font for script letters in math mode, so I use the code</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">let scr(it) = math.class(\"normal\", box({\n  show math.equation: set text(font: \"New Computer Modern Math\", stylistic-set: 1)\n  $#math.cal(it)$\n}) + h(0pt))\n</code></pre>\n<p>(taken from <a href=\"https://forum.typst.app/t/how-does-one-avoid-caligraphic-font-difference-between-typst-and-latex/1781/3\">here</a>). But this command does not work, e.g.</p>\n<pre data-code-wrap=\"typm\"><code class=\"lang-typm\">scr(P)\n</code></pre>\n<p>displays TeX Gyre Pagella Math’s calligraphic font. What am I doing wrong?</p>",
+      "raw": "I want to use the TeX Gyre Pagella Math font for math mode, so I use the code\n```typc\nshow math.equation: it => {\n  set text(font: \"TeX Gyre Pagella Math\")\n  set block(breakable: true)\n  if it.block == false {\n    box(it)\n  } else {\n    it\n  }\n}\n```\nSometimes, I also want to use the New Computer Modern Math font for script letters in math mode, so I use the code\n```typc\nlet scr(it) = math.class(\"normal\", box({\n  show math.equation: set text(font: \"New Computer Modern Math\", stylistic-set: 1)\n  $#math.cal(it)$\n}) + h(0pt))\n```\n(taken from [here](https://forum.typst.app/t/how-does-one-avoid-caligraphic-font-difference-between-typst-and-latex/1781/3?u=ambvt)). But this command does not work, e.g.\n```typm\nscr(P)\n```\ndisplays TeX Gyre Pagella Math's calligraphic font. What am I doing wrong?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 44,
+      "score": 913.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 257
+    },
+    {
+      "id": 8171,
+      "post_number": 2,
+      "username": "Eric",
+      "name": "Eric Biedert",
+      "created_at": "2025-02-03T16:27:18.362Z",
+      "updated_at": "2025-02-03T16:27:18.362Z",
+      "cooked": "<p>For this, you need to know that there is a difference between using a show-set rule</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show math.equation: set text(font: \"TeX Gyre Pagella Math\")\n</code></pre>\n<p>and using a set rule inside a show rule</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show math.equation: it =&gt; {\n  set text(font: \"TeX Gyre Pagella Math\")\n  it\n}\n</code></pre>\n<p>Only in the first case (the show-set rule), the font can be overridden by another rule. I have expanded a bit on that difference in <a href=\"https://forum.typst.app/t/how-to-change-figure-caption-justification/1761/5\" class=\"inline-onebox\">How to change figure caption justification? - #5 by Eric</a>.</p>\n<p>To get your code working, you thus only need to rewrite your first show rule, such that the set rules are separated out into show-set rules. There, you could then also simplify the boxing of inline equations:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show math.equation: set text(font: \"TeX Gyre Pagella Math\")\n#show math.equation: set block(breakable: true)\n#show math.equation.where(block: false): box\n</code></pre>",
+      "raw": "For this, you need to know that there is a difference between using a show-set rule\n```typ\n#show math.equation: set text(font: \"TeX Gyre Pagella Math\")\n```\nand using a set rule inside a show rule\n```typ\n#show math.equation: it => {\n  set text(font: \"TeX Gyre Pagella Math\")\n  it\n}\n```\n\nOnly in the first case (the show-set rule), the font can be overridden by another rule. I have expanded a bit on that difference in https://forum.typst.app/t/how-to-change-figure-caption-justification/1761/5?u=eric.\n\nTo get your code working, you thus only need to rewrite your first show rule, such that the set rules are separated out into show-set rules. There, you could then also simplify the boxing of inline equations:\n```typ\n#show math.equation: set text(font: \"TeX Gyre Pagella Math\")\n#show math.equation: set block(breakable: true)\n#show math.equation.where(block: false): box\n```",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 42,
+      "score": 48.4,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 88
+    },
+    {
+      "id": 8172,
+      "post_number": 3,
+      "username": "AMBVT",
+      "name": "",
+      "created_at": "2025-02-03T16:30:22.456Z",
+      "updated_at": "2025-02-03T16:30:22.456Z",
+      "cooked": "<p>Perfect, thank you. I am deeply grateful. <img src=\"https://forum.typst.app/images/emoji/apple/smiley.png?v=12\" title=\":smiley:\" class=\"emoji\" alt=\":smiley:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Perfect, thank you. I am deeply grateful. :smiley:",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 40,
+      "score": 13.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 257
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:05.729004"
+}

@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2647,
+    "title": "How to prevent emoji from increasing line spacing?",
+    "slug": "how-to-prevent-emoji-from-increasing-line-spacing",
+    "posts_count": 3,
+    "created_at": "2025-02-02T14:12:46.554Z",
+    "last_posted_at": "2025-02-11T13:36:36.798Z",
+    "views": 130,
+    "like_count": 4,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "aarnent",
+    "tags": [
+      "layout",
+      "spacing"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 121
+  },
+  "posts": [
+    {
+      "id": 8106,
+      "post_number": 1,
+      "username": "jsx97",
+      "name": "jsx97",
+      "created_at": "2025-02-02T14:12:46.640Z",
+      "updated_at": "2025-02-02T14:14:23.083Z",
+      "cooked": "<p>I have an emoji inside a paragraph.</p>\n<pre><code class=\"lang-auto\">#set text(font: \"New Computer Modern\", size: 10pt)\n\n#lorem(50) 😂 #lorem(50)\n</code></pre>\n<p>And the problem is that it increases line spacing. How to prevent this from happening?</p>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/e/e14e6dc211fc017a1993d79175a49f78a40e90f7.png\" alt=\"image\" data-base62-sha1=\"w99sKiqLq0GtUvcWMmHzOQfcjeT\" width=\"232\" height=\"283\"></p>",
+      "raw": "I have an emoji inside a paragraph. \n\n```\n#set text(font: \"New Computer Modern\", size: 10pt)\n\n#lorem(50) 😂 #lorem(50)\n```\n\nAnd the problem is that it increases line spacing. How to prevent this from happening?\n\n![image|310x378, 75%](upload://w99sKiqLq0GtUvcWMmHzOQfcjeT.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 36,
+      "score": 207.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 477
+    },
+    {
+      "id": 8114,
+      "post_number": 2,
+      "username": "aarnent",
+      "name": "",
+      "created_at": "2025-02-02T18:33:35.325Z",
+      "updated_at": "2025-02-02T18:33:35.325Z",
+      "cooked": "<p>you can set the text <code>top-edge</code> and <code>bottom-edge</code> to be e.g. <code>\"ascender\"</code> (or a fixed length) to make line spacing more consistent:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set text(\n  font: \"New Computer Modern\",\n  size: 10pt,\n  top-edge: \"ascender\"\n)\n\n#lorem(50) 😂 #lorem(50)\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/e/edb398513919b000733842c4a869cd0fd719de8b.png\" alt=\"image\" data-base62-sha1=\"xUNWl9rsYjMAvqLyxYmudCxzPlN\" width=\"259\" height=\"149\"></p>",
+      "raw": "you can set the text `top-edge` and `bottom-edge` to be e.g. `\"ascender\"` (or a fixed length) to make line spacing more consistent:\n\n```typst\n#set text(\n  font: \"New Computer Modern\",\n  size: 10pt,\n  top-edge: \"ascender\"\n)\n\n#lorem(50) 😂 #lorem(50)\n```\n\n![image|259x149](upload://xUNWl9rsYjMAvqLyxYmudCxzPlN.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 35,
+      "score": 47.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 501
+    },
+    {
+      "id": 8469,
+      "post_number": 4,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-02-11T13:36:36.798Z",
+      "updated_at": "2025-02-11T13:37:07.119Z",
+      "cooked": "<p>Alternatively you can define a command to change text edges just for the emojis, for example:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let emoji = text.with(top-edge: \"bounds\")\n\n#lorem(50) #emoji[😂] #lorem(50)\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/8/8b58f91dfae5a8c508915b757bdd5e7be171dbf6.png\" alt=\"image\" data-base62-sha1=\"jSIZwOWDd8joB5gfQ9sK0LcWElM\" width=\"156\" height=\"57\"></p>",
+      "raw": "Alternatively you can define a command to change text edges just for the emojis, for example:\n\n```typ\n#let emoji = text.with(top-edge: \"bounds\")\n\n#lorem(50) #emoji[😂] #lorem(50)\n```\n\n![image|312x114, 50%](upload://jSIZwOWDd8joB5gfQ9sK0LcWElM.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 18,
+      "score": 33.6,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:08.099282"
+}

@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2827,
+    "title": "How can we filter an array or dictionary based on an if condition",
+    "slug": "how-can-we-filter-an-array-or-dictionary-based-on-an-if-condition",
+    "posts_count": 2,
+    "created_at": "2025-02-14T18:02:49.831Z",
+    "last_posted_at": "2025-02-14T18:30:38.228Z",
+    "views": 149,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 301
+  },
+  "posts": [
+    {
+      "id": 8682,
+      "post_number": 1,
+      "username": "This_isYE",
+      "name": "This isYE",
+      "created_at": "2025-02-14T18:02:49.974Z",
+      "updated_at": "2025-02-14T18:02:49.974Z",
+      "cooked": "<p>Hello every one:<br>\nLet’s Suppose we have a dictionary:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let indexed_dates= (\n  (0.0, \"2023-01-01\"),\n  (1.0, \"2023-01-02\"),\n  (2.0, \"2023-01-03\"),\n  (3.0, \"2023-01-04\"),\n  (4.0, \"2023-01-05\"),\n  (5.0, \"2023-01-06\"),\n  (7.0, \"2023-01-08\"),\n  (8.0, \"2023-01-09\"),\n  (9.0, \"2023-01-10\"),\n  (10.0, \"2023-01-11\"))\n</code></pre>\n<p>I want to select just the dates where the index is a multiple of 5,<br>\nCan we filter like this ? (I know we can’t because it doesn’t run haha :</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\"> indexed_dates = indexed_dates.map(x=&gt; x if x.at(0)/5==0)\n</code></pre>\n<p>Thank you !</p>",
+      "raw": "Hello every one:\nLet's Suppose we have a dictionary:\n\n```typ\n#let indexed_dates= (\n  (0.0, \"2023-01-01\"),\n  (1.0, \"2023-01-02\"),\n  (2.0, \"2023-01-03\"),\n  (3.0, \"2023-01-04\"),\n  (4.0, \"2023-01-05\"),\n  (5.0, \"2023-01-06\"),\n  (7.0, \"2023-01-08\"),\n  (8.0, \"2023-01-09\"),\n  (9.0, \"2023-01-10\"),\n  (10.0, \"2023-01-11\"))\n```\nI want to select just the dates where the index is a multiple of 5, \nCan we filter like this ? (I know we can't because it doesn't run haha : \n```typ\n indexed_dates = indexed_dates.map(x=> x if x.at(0)/5==0)\n```\n\nThank you !",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 32,
+      "score": 576.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1060
+    },
+    {
+      "id": 8684,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-02-14T18:30:38.228Z",
+      "updated_at": "2025-02-14T18:30:38.228Z",
+      "cooked": "<p>In your example it’s actually an array. You can filter it with <code>filter</code>:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let indexed_dates= (\n  (0.0, \"2023-01-01\"),\n  (1.0, \"2023-01-02\"),\n  (2.0, \"2023-01-03\"),\n  (3.0, \"2023-01-04\"),\n  (4.0, \"2023-01-05\"),\n  (5.0, \"2023-01-06\"),\n  (5.0, \"2023-01-07\"),\n  (7.0, \"2023-01-08\"),\n  (8.0, \"2023-01-09\"),\n  (9.0, \"2023-01-10\"),\n  (10.0, \"2023-01-11\"))\n\n#indexed_dates.filter(x =&gt; calc.rem(x.first(), 5) == 0)\n</code></pre>\n<p>If you had just the dates in the array you could use <code>enumerate</code>:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let dates = (\"2023-01-01\", \"2023-01-02\", \"2023-01-03\", \"2023-01-04\", \"2023-01-05\", \"2023-01-06\", \"2023-01-07\", \"2023-01-08\", \"2023-01-09\", \"2023-01-10\", \"2023-01-11\")\n\n#dates.enumerate().filter(x =&gt; calc.rem(x.first(), 5) == 0)\n</code></pre>\n<p>You can also be clever and destructure the index and value in the anonymous function parameter (though I find it less readable in this case):</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#dates.enumerate().filter(((i, x)) =&gt; calc.rem(i, 5) == 0)\n</code></pre>\n<p>For dictionaries, you can call <code>keys()</code> or <code>values()</code> or <code>pairs()</code> and then call <code>filter()</code> on the result.</p>",
+      "raw": "In your example it's actually an array. You can filter it with `filter`:\n\n```typ\n#let indexed_dates= (\n  (0.0, \"2023-01-01\"),\n  (1.0, \"2023-01-02\"),\n  (2.0, \"2023-01-03\"),\n  (3.0, \"2023-01-04\"),\n  (4.0, \"2023-01-05\"),\n  (5.0, \"2023-01-06\"),\n  (5.0, \"2023-01-07\"),\n  (7.0, \"2023-01-08\"),\n  (8.0, \"2023-01-09\"),\n  (9.0, \"2023-01-10\"),\n  (10.0, \"2023-01-11\"))\n\n#indexed_dates.filter(x => calc.rem(x.first(), 5) == 0)\n```\n\nIf you had just the dates in the array you could use `enumerate`:\n\n```typ\n#let dates = (\"2023-01-01\", \"2023-01-02\", \"2023-01-03\", \"2023-01-04\", \"2023-01-05\", \"2023-01-06\", \"2023-01-07\", \"2023-01-08\", \"2023-01-09\", \"2023-01-10\", \"2023-01-11\")\n\n#dates.enumerate().filter(x => calc.rem(x.first(), 5) == 0)\n```\n\nYou can also be clever and destructure the index and value in the anonymous function parameter (though I find it less readable in this case):\n\n```typ\n#dates.enumerate().filter(((i, x)) => calc.rem(i, 5) == 0)\n```\n\nFor dictionaries, you can call `keys()` or `values()` or `pairs()` and then call `filter()` on the result.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 31,
+      "score": 46.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:37.508650"
+}

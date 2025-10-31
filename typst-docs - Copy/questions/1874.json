@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1874,
+    "title": "Why does rotating elements in the table differ from the rule?",
+    "slug": "why-does-rotating-elements-in-the-table-differ-from-the-rule",
+    "posts_count": 3,
+    "created_at": "2024-11-25T09:29:44.888Z",
+    "last_posted_at": "2024-11-26T14:45:36.126Z",
+    "views": 137,
+    "like_count": 4,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "Christopher_Marcotte",
+    "tags": [
+      "tables",
+      "placement"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 435
+  },
+  "posts": [
+    {
+      "id": 6054,
+      "post_number": 1,
+      "username": "Christopher_Marcotte",
+      "name": "Christopher Marcotte",
+      "created_at": "2024-11-25T09:29:45.148Z",
+      "updated_at": "2024-11-26T08:53:14.875Z",
+      "cooked": "<p>Hello,</p>\n<p>I am trying to style a table with the first column being rotated text. I have run into a difference between rotating the text directly in the cells versus using a filtered show rule (<code>#show table.cell.where(x: 0): it =&gt; rotate(-90deg, reflow: true)[#strong(it)]</code>), with the former <a href=\"https://typst.app/project/rTQYrFs8zAfCM94CW9ijZr\">producing substantially nicer looking results</a>:<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/4/4d6f5cbb08b2719fa0152aa385c3bd4fbaa00700.png\" data-download-href=\"https://forum.typst.app/uploads/default/4d6f5cbb08b2719fa0152aa385c3bd4fbaa00700\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/4/4d6f5cbb08b2719fa0152aa385c3bd4fbaa00700_2_690x452.png\" alt=\"image\" data-base62-sha1=\"b31maZQ83E27eFYSAwvpXtJPxf2\" width=\"690\" height=\"452\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/4/4d6f5cbb08b2719fa0152aa385c3bd4fbaa00700_2_690x452.png, https://forum.typst.app/uploads/default/original/2X/4/4d6f5cbb08b2719fa0152aa385c3bd4fbaa00700.png 1.5x, https://forum.typst.app/uploads/default/original/2X/4/4d6f5cbb08b2719fa0152aa385c3bd4fbaa00700.png 2x\" data-dominant-color=\"F7F7F7\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">988×648 20.7 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>My first question is: <em>why</em>? This seems like it should be equivalent, but it seems that setting the content and rotating the content are not commutative, which is what I would expect the <code>reflow: true</code> option to enforce.</p>\n<p>My next question is: the show rule then nullifies the align keyword in the table, is this intentional?</p>\n<p>At the link you can see a show rule (rightmost in the image), which nests the rotation inside an alignment and produces a nice result (perhaps slightly different to the first one?) but still ignores the align table option; this somehow splits the difference, but is also somewhat obscured – is this the preferred method of achieving this layout?</p>",
+      "raw": "Hello,\n\nI am trying to style a table with the first column being rotated text. I have run into a difference between rotating the text directly in the cells versus using a filtered show rule (`#show table.cell.where(x: 0): it => rotate(-90deg, reflow: true)[#strong(it)]`), with the former [producing substantially nicer looking results](https://typst.app/project/rTQYrFs8zAfCM94CW9ijZr):\n![image|690x452](upload://b31maZQ83E27eFYSAwvpXtJPxf2.png)\n\nMy first question is: _why_? This seems like it should be equivalent, but it seems that setting the content and rotating the content are not commutative, which is what I would expect the `reflow: true` option to enforce.\n\nMy next question is: the show rule then nullifies the align keyword in the table, is this intentional?\n\nAt the link you can see a show rule (rightmost in the image), which nests the rotation inside an alignment and produces a nice result (perhaps slightly different to the first one?) but still ignores the align table option; this somehow splits the difference, but is also somewhat obscured -- is this the preferred method of achieving this layout?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 30,
+      "score": 511.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 270
+    },
+    {
+      "id": 6109,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-11-26T09:00:31.565Z",
+      "updated_at": "2024-11-26T09:00:31.565Z",
+      "cooked": "<p>I don’t know the exact mechanics of how layout happens here, but the two things are not equivalent: if you put <code>rotate()</code> in a cell, then the cell’s <em>content</em> is rotated. in the show rule you rotate <code>it</code>, which is the whole cell. I would say that in general, the cell should not be rotated. I could e.g. imagine that this leads to the <code>top</code> border actually being the left one; you can test whether that prediction is correct.</p>\n<p>You can however (unless there are specific limitations with table cells, which may be the case) write a show rule that replaces the cell’s body. The technique is basically the same as the one used in <a href=\"https://forum.typst.app/t/how-to-avoid-nested-enum-items-breaking-at-the-end-of-the-page/1890/2\" class=\"inline-onebox\">How to avoid nested enum items breaking at the end of the page? - #2 by SillyFreak</a> or <a href=\"https://forum.typst.app/t/how-can-i-manipulate-content-values/1099/2\" class=\"inline-onebox\">How can I manipulate content values? - #2 by SillyFreak</a> (bottom code sample).</p>",
+      "raw": "I don't know the exact mechanics of how layout happens here, but the two things are not equivalent: if you put `rotate()` in a cell, then the cell's _content_ is rotated. in the show rule you rotate `it`, which is the whole cell. I would say that in general, the cell should not be rotated. I could e.g. imagine that this leads to the `top` border actually being the left one; you can test whether that prediction is correct.\n\nYou can however (unless there are specific limitations with table cells, which may be the case) write a show rule that replaces the cell's body. The technique is basically the same as the one used in https://forum.typst.app/t/how-to-avoid-nested-enum-items-breaking-at-the-end-of-the-page/1890/2?u=sillyfreak or https://forum.typst.app/t/how-can-i-manipulate-content-values/1099/2?u=sillyfreak (bottom code sample).",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 22,
+      "score": 44.4,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 6120,
+      "post_number": 3,
+      "username": "Christopher_Marcotte",
+      "name": "Christopher Marcotte",
+      "created_at": "2024-11-26T14:45:36.126Z",
+      "updated_at": "2024-11-26T14:45:36.126Z",
+      "cooked": "<p>Ah – this distinction between rotating the cell <em>content</em> versus rotating the cell is what I had misunderstood. Indeed, unpacking the fields to manipulate the context from within the show rule works well and is pretty legible, here is a solution for anyone interested:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let tab4 = {\n  show table.cell.where(x: 0): it =&gt; {\n    let (body, ..fields) = it.fields();\n    return align(fields.align)[#rotate(-90deg, reflow: true)[#strong(body)]]\n  }\n  table(\n    columns: (2em,1fr,1fr), \n    align: (center+horizon, center+horizon, center+horizon), \n    rows: (2em, (13em,)*3).flatten()\n  )[][1][2][Longer title][][][Another Long Title][][][Very long title][][]\n}\n</code></pre>",
+      "raw": "Ah -- this distinction between rotating the cell _content_ versus rotating the cell is what I had misunderstood. Indeed, unpacking the fields to manipulate the context from within the show rule works well and is pretty legible, here is a solution for anyone interested:\n\n```typ\n#let tab4 = {\n  show table.cell.where(x: 0): it => {\n    let (body, ..fields) = it.fields();\n    return align(fields.align)[#rotate(-90deg, reflow: true)[#strong(body)]]\n  }\n  table(\n    columns: (2em,1fr,1fr), \n    align: (center+horizon, center+horizon, center+horizon), \n    rows: (2em, (13em,)*3).flatten()\n  )[][1][2][Longer title][][][Another Long Title][][][Very long title][][]\n}\n```",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 22,
+      "score": 64.4,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 270
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:27.607845"
+}

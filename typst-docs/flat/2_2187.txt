@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2187,
+    "title": "How can I get rid of the spacing after an in document reference?",
+    "slug": "how-can-i-get-rid-of-the-spacing-after-an-in-document-reference",
+    "posts_count": 3,
+    "created_at": "2024-12-23T15:23:48.770Z",
+    "last_posted_at": "2024-12-24T11:16:03.652Z",
+    "views": 182,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 433
+  },
+  "posts": [
+    {
+      "id": 6876,
+      "post_number": 1,
+      "username": "Timo",
+      "name": "Timo",
+      "created_at": "2024-12-23T15:23:48.881Z",
+      "updated_at": "2024-12-25T03:11:03.094Z",
+      "cooked": "<p>I am trying to reference a chapter which I labeled e.g.:<br>\n<code>== Chapter &lt;chapter_label&gt;</code></p>\n<p>Now when I try to reference it and use a supplement, it will add a whitespace afterwards like this:<br>\n<strong>Code</strong></p>\n<pre><code class=\"lang-auto\">#set heading(\n  numbering: none\n)\nDummy Text (@chapter_label[Chapter x,y,z - text]). More Text\n</code></pre>\n<p><strong>It will look like this:</strong></p>\n<pre><code class=\"lang-auto\">Dummy Text (Chapter x,y,z - text ). More Text\n</code></pre>\n<p>How can I remove that whitespace? I think that is has something to do with the numbering being set to none, but I am not sure. I need the numbering to be set to none, so I can supply my own description of the ref. Anyone got an idea?</p>\n<p>Thanks!</p>",
+      "raw": "I am trying to reference a chapter which I labeled e.g.:\n`== Chapter <chapter_label>`\n\nNow when I try to reference it and use a supplement, it will add a whitespace afterwards like this:\n**Code**\n```\n#set heading(\n  numbering: none\n)\nDummy Text (@chapter_label[Chapter x,y,z - text]). More Text\n```\n\n**It will look like this:**\n```\nDummy Text (Chapter x,y,z - text ). More Text\n```\n\nHow can I remove that whitespace? I think that is has something to do with the numbering being set to none, but I am not sure. I need the numbering to be set to none, so I can supply my own description of the ref. Anyone got an idea?\n\nThanks!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 38,
+      "score": 587.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 130
+    },
+    {
+      "id": 6894,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2024-12-24T09:15:31.673Z",
+      "updated_at": "2024-12-24T09:15:31.673Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/timo\">@Timo</a>,</p>\n<p>I think you want to customize the <a href=\"https://typst.app/docs/reference/model/ref/#customization\">reference</a> element to show only your supplement.</p>\n<h2><a name=\"p-6894-direct-solution-1\" class=\"anchor\" href=\"#p-6894-direct-solution-1\"></a>Direct Solution</h2>\n<p>The 1:1 solution would be the following, but I would recommend taking a look at the second solution.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set heading(numbering: \"1.1\")\n\n#show ref: it =&gt; {\n  if it.element != none and it.element.func() == heading {\n    if it.supplement != auto {\n     link(it.element.location(), it.supplement)\n    }\n  } else {\n    it\n  }\n}\n\n= MyChapter &lt;chapter_label&gt;\n\nDummy Text (@chapter_label[Chapter x,y,z - text]). More Text\n</code></pre>\n<details>\n<summary>\nOutput</summary>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/6/656d68de9082e81390335a41cce951527b7aefdf.png\" alt=\"test\" data-base62-sha1=\"etgDhyQKkzFem4dZSCwwOHrF2ub\" width=\"521\" height=\"164\"></p>\n</details>\n<h2><a name=\"p-6894-alternative-solution-2\" class=\"anchor\" href=\"#p-6894-alternative-solution-2\"></a>Alternative Solution</h2>\n<p>I think, depending on your use case, this solution is probably better.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set heading(numbering: \"1.1\")\n\n#show ref: it =&gt; {\n  if it.element != none and it.element.func() == heading {\n    link(it.element.location(), {\n      it.element.body\n      \" \"\n      numbering(\n        it.element.numbering, \n        ..counter(heading).at(it.element.location())\n      )\n      if it.supplement != auto {\n        \" - \" + it.supplement\n      }\n    })\n  } else {\n    it\n  }\n}\n\n= MyChapter &lt;chapter_label&gt;\n\nDummy Text (@chapter_label[my supplement text]). More Text\n</code></pre>\n<details>\n<summary>\nOutput</summary>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/2/2b6e67fabfe214e8cbd355551e37ed44c7a32e86.png\" alt=\"test\" data-base62-sha1=\"6cd4FFLCFzwMJf0F8iIXD0T9Gmy\" width=\"668\" height=\"164\"></p>\n</details>",
+      "raw": "Hello @Timo,\n\nI think you want to customize the [reference](https://typst.app/docs/reference/model/ref/#customization) element to show only your supplement.\n\n## Direct Solution\nThe 1:1 solution would be the following, but I would recommend taking a look at the second solution.\n```typst\n#set heading(numbering: \"1.1\")\n\n#show ref: it => {\n  if it.element != none and it.element.func() == heading {\n    if it.supplement != auto {\n     link(it.element.location(), it.supplement)\n    }\n  } else {\n    it\n  }\n}\n\n= MyChapter <chapter_label>\n\nDummy Text (@chapter_label[Chapter x,y,z - text]). More Text\n```\n\n[details=\"Output\"]\n![test|521x164](upload://etgDhyQKkzFem4dZSCwwOHrF2ub.png)\n[/details]\n\n## Alternative Solution\nI think, depending on your use case, this solution is probably better.\n```typst\n#set heading(numbering: \"1.1\")\n\n#show ref: it => {\n  if it.element != none and it.element.func() == heading {\n    link(it.element.location(), {\n      it.element.body\n      \" \"\n      numbering(\n        it.element.numbering, \n        ..counter(heading).at(it.element.location())\n      )\n      if it.supplement != auto {\n        \" - \" + it.supplement\n      }\n    })\n  } else {\n    it\n  }\n}\n\n= MyChapter <chapter_label>\n\nDummy Text (@chapter_label[my supplement text]). More Text\n```\n\n[details=\"Output\"]\n![test|668x164](upload://6cd4FFLCFzwMJf0F8iIXD0T9Gmy.png)\n\n[/details]",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 50.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    },
+    {
+      "id": 6895,
+      "post_number": 3,
+      "username": "Timo",
+      "name": "Timo",
+      "created_at": "2024-12-24T11:16:03.652Z",
+      "updated_at": "2024-12-24T11:18:08.517Z",
+      "cooked": "<p>Thank you very much <a class=\"mention\" href=\"/u/flokl\">@flokl</a>. I opted to use your first option as this worked better for me, but modified it to suit my needs better. It now looks like this:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show ref: it =&gt; {\n  if it.element != none and it.supplement != none and it.element.func() == heading {\n    if it.supplement != auto {\n     link(it.element.location(), it.supplement)\n    } else {\n      it\n    }\n  } else {\n    it\n  }\n}\n</code></pre>\n<p>I have three types of references that I have to manage: .bib references, normal chapter references and attachment references (which is were I had the problem with).</p>\n<p>I added the condition that if no supplement is specified, it will go to the default case. Also I had some custom auto supplements which I needed to add an else statement for to have them shown correctly. Right now it looks like it works just fine. If I find a more elegant solution to my problem, I will post it here.</p>",
+      "raw": "Thank you very much @flokl. I opted to use your first option as this worked better for me, but modified it to suit my needs better. It now looks like this:\n\n```typst\n#show ref: it => {\n  if it.element != none and it.supplement != none and it.element.func() == heading {\n    if it.supplement != auto {\n     link(it.element.location(), it.supplement)\n    } else {\n      it\n    }\n  } else {\n    it\n  }\n}\n```\nI have three types of references that I have to manage: .bib references, normal chapter references and attachment references (which is were I had the problem with).\n\nI added the condition that if no supplement is specified, it will go to the default case. Also I had some custom auto supplements which I needed to add an else statement for to have them shown correctly. Right now it looks like it works just fine. If I find a more elegant solution to my problem, I will post it here.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 14.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 130
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:27.249938"
+}

@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 3391,
+    "title": "How to align terms vertically in math mode?",
+    "slug": "how-to-align-terms-vertically-in-math-mode",
+    "posts_count": 2,
+    "created_at": "2025-03-25T04:19:56.279Z",
+    "last_posted_at": "2025-03-25T06:30:06.651Z",
+    "views": 51,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "math",
+      "alignment"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 193
+  },
+  "posts": [
+    {
+      "id": 10204,
+      "post_number": 1,
+      "username": "Abastro",
+      "name": "JH L",
+      "created_at": "2025-03-25T04:19:56.413Z",
+      "updated_at": "2025-03-25T09:02:45.438Z",
+      "cooked": "<p>Hello!<br>\nI would like to ask for a better alternative of an idiom I’ve been using.</p>\n<p>To create the definition of a map with terms and arrows aligned as follows,</p>\n<pre><code class=\"lang-auto\">K * A * N -&gt; G\n(k, a, n) |-&gt; k a n\n</code></pre>\n<p>I often use <code>mat(delim: #none, ...)</code></p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">$\n  mat(\n      delim: #none,\n      K times A times N, -&gt;, G;\n      (k, a, n), mapsto, k a n;\n   )\n$\n</code></pre>\n<p>As you can see, it has some issues.</p>\n<ol>\n<li>Specifying <code>delim: #none</code> is rather verbose.</li>\n<li>This abuses <code>mat</code> for different purpose.<br>\nI wonder if there is more canonical or better way to achieve the alignment in math mode.<br>\nThanks in advance!</li>\n</ol>",
+      "raw": "Hello!\nI would like to ask for a better alternative of an idiom I've been using.\n\nTo create the definition of a map with terms and arrows aligned as follows,\n```\nK * A * N -> G\n(k, a, n) |-> k a n\n```\nI often use `mat(delim: #none, ...)`\n```typ\n$\n  mat(\n      delim: #none,\n      K times A times N, ->, G;\n      (k, a, n), mapsto, k a n;\n   )\n$\n```\nAs you can see, it has some issues.\n1. Specifying `delim: #none` is rather verbose.\n2. This abuses `mat` for different purpose.\nI wonder if there is more canonical or better way to achieve the alignment in math mode.\nThanks in advance!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 74.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1385
+    },
+    {
+      "id": 10208,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-03-25T06:30:06.651Z",
+      "updated_at": "2025-03-25T06:30:46.350Z",
+      "cooked": "<p>Hello. Welcome to the forum. There is a section about alignment in math mode: <a href=\"https://typst.app/docs/reference/math/#alignment\" class=\"inline-onebox\">Math – Typst Documentation</a>.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">$\n  K times A times N &amp; -&gt; &amp; G \\\n  (k, a, n) &amp; |-&gt; &amp; k a n\n$\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/6/65ca85f017df1343e16aa92296ccfbcb319a60bb.png\" alt=\"image\" data-base62-sha1=\"ewu7XNnOxnYmJHFe2EKLcJQpoJt\" width=\"196\" height=\"63\"></p>\n<p>But if you need the “cell” center alignment, I think <code>mat()</code> is your best bet. But you can simplify your example with a substitution:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">// matrix align\n#let malign = math.mat.with(delim: none)\n\n$\n  malign(\n    K times A times N, -&gt;, G;\n    (k, a, n), |-&gt;, k a n;\n  )\n$\n</code></pre>",
+      "raw": "Hello. Welcome to the forum. There is a section about alignment in math mode: https://typst.app/docs/reference/math/#alignment.\n\n```typ\n$\n  K times A times N & -> & G \\\n  (k, a, n) & |-> & k a n\n$\n```\n\n![image|262x85, 75%](upload://ewu7XNnOxnYmJHFe2EKLcJQpoJt.png)\n\nBut if you need the \"cell\" center alignment, I think `mat()` is your best bet. But you can simplify your example with a substitution:\n\n```typ\n// matrix align\n#let malign = math.mat.with(delim: none)\n\n$\n  malign(\n    K times A times N, ->, G;\n    (k, a, n), |->, k a n;\n  )\n$\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 23,
+      "score": 19.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:03.868160"
+}

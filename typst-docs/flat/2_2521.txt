@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2521,
+    "title": "Why are some fields missing in bibliography when using a BibLaTeX file?",
+    "slug": "why-are-some-fields-missing-in-bibliography-when-using-a-biblatex-file",
+    "posts_count": 3,
+    "created_at": "2025-01-24T08:33:29.232Z",
+    "last_posted_at": "2025-01-24T12:22:43.728Z",
+    "views": 107,
+    "like_count": 0,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "literature",
+      "biblatex"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 213
+  },
+  "posts": [
+    {
+      "id": 7813,
+      "post_number": 1,
+      "username": "Mathieu_Aucejo",
+      "name": "Mathieu Aucejo",
+      "created_at": "2025-01-24T08:33:29.357Z",
+      "updated_at": "2025-02-05T14:55:19.268Z",
+      "cooked": "<p>Hi all,</p>\n<p>I am facing a problem when importing my <code>bibliography</code>, since some fields are not displayed when it is in *bib format, while they are displayed when it is in the *yml format.</p>\n<p>To illustrate the problem I am facing, let’s take the following *bib and *yml files</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">% biblio.bib\n@phdthesis{Auc07,\n  author  = {M. Aucejo},\n  title   = {Vibro-acoustique des structures immergées sous écoulement turbulent},\n  type = {Thèse de doctorat},\n  school  = {Insa de Lyon},\n  year    = {2007}\n}\n\n// biblio.yml\nAuc07:\n  type: thesis\n  title: Vibro-acoustique des structures immergées sous écoulement turbulent\n  author: M. Aucejo\n  genre: Thèse de doctorat\n  publisher: Insa de Lyon\n  date: 2007\n\n// Note that I have to put the school name in the publisher field, since the field organization doesn't display\n</code></pre>\n<p>Here are the results. For the *bib file</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">@Auc07\n\n#bibliography(\"biblio.bib/yml\")\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/0/0f197b2e532678e54eee063548aa4858787220e0.png\" data-download-href=\"https://forum.typst.app/uploads/default/0f197b2e532678e54eee063548aa4858787220e0\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/0/0f197b2e532678e54eee063548aa4858787220e0_2_690x118.png\" alt=\"image\" data-base62-sha1=\"29zKP4X9eDKtmfNLwPiXmMqs2xq\" width=\"690\" height=\"118\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/0/0f197b2e532678e54eee063548aa4858787220e0_2_690x118.png, https://forum.typst.app/uploads/default/original/2X/0/0f197b2e532678e54eee063548aa4858787220e0.png 1.5x, https://forum.typst.app/uploads/default/original/2X/0/0f197b2e532678e54eee063548aa4858787220e0.png 2x\" data-dominant-color=\"F7F7F7\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">872×150 21.4 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>For the *.yml file</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/f/fb3750d0c1eb564d21dd64c26696b6754e45b23e.png\" data-download-href=\"https://forum.typst.app/uploads/default/fb3750d0c1eb564d21dd64c26696b6754e45b23e\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/f/fb3750d0c1eb564d21dd64c26696b6754e45b23e_2_690x118.png\" alt=\"image\" data-base62-sha1=\"zQmmdERJa1LMQZRu5VzV2G8Siuy\" width=\"690\" height=\"118\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/f/fb3750d0c1eb564d21dd64c26696b6754e45b23e_2_690x118.png, https://forum.typst.app/uploads/default/original/2X/f/fb3750d0c1eb564d21dd64c26696b6754e45b23e.png 1.5x, https://forum.typst.app/uploads/default/original/2X/f/fb3750d0c1eb564d21dd64c26696b6754e45b23e.png 2x\" data-dominant-color=\"F6F6F6\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">872×150 26.9 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>As you can see, when using the *bib file some information is missing and I don’t figure out why.</p>\n<p>Do you have any explanation ?</p>\n<p>Thank you !</p>",
+      "raw": "Hi all,\n\nI am facing a problem when importing my `bibliography`, since some fields are not displayed when it is in *bib format, while they are displayed when it is in the *yml format.\n\nTo illustrate the problem I am facing, let's take the following *bib and *yml files\n```typ\n% biblio.bib\n@phdthesis{Auc07,\n  author  = {M. Aucejo},\n  title   = {Vibro-acoustique des structures immergées sous écoulement turbulent},\n  type = {Thèse de doctorat},\n  school  = {Insa de Lyon},\n  year    = {2007}\n}\n\n// biblio.yml\nAuc07:\n  type: thesis\n  title: Vibro-acoustique des structures immergées sous écoulement turbulent\n  author: M. Aucejo\n  genre: Thèse de doctorat\n  publisher: Insa de Lyon\n  date: 2007\n\n// Note that I have to put the school name in the publisher field, since the field organization doesn't display\n```\n\nHere are the results. For the *bib file\n```typ\n@Auc07\n\n#bibliography(\"biblio.bib/yml\")\n```\n![image|690x118](upload://29zKP4X9eDKtmfNLwPiXmMqs2xq.png)\n\nFor the *.yml file\n\n![image|690x118](upload://zQmmdERJa1LMQZRu5VzV2G8Siuy.png)\n\nAs you can see, when using the *bib file some information is missing and I don't figure out why.\n\nDo you have any explanation ?\n\nThank you !",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 22,
+      "score": 359.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1090
+    },
+    {
+      "id": 7814,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-01-24T08:51:28.526Z",
+      "updated_at": "2025-01-24T08:51:28.526Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/mathieu_aucejo\">@Mathieu_Aucejo</a>,</p>\n<p>I can reproduce your issue. I think it’s best if you open an issue at <a href=\"https://github.com/typst/biblatex\" class=\"inline-onebox\">GitHub - typst/biblatex: A Rust crate for parsing and writing BibTeX and BibLaTeX files.</a>.</p>",
+      "raw": "Hello @Mathieu_Aucejo,\n\nI can reproduce your issue. I think it's best if you open an issue at https://github.com/typst/biblatex.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 9.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 7819,
+      "post_number": 3,
+      "username": "Mathieu_Aucejo",
+      "name": "Mathieu Aucejo",
+      "created_at": "2025-01-24T12:22:43.728Z",
+      "updated_at": "2025-01-24T12:22:43.728Z",
+      "cooked": "<p><a class=\"mention\" href=\"/u/quachpas\">@quachpas</a> Thank you for your answer. I will open an issue.</p>",
+      "raw": "@quachpas Thank you for your answer. I will open an issue.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 21,
+      "score": 9.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1090
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:32.339631"
+}

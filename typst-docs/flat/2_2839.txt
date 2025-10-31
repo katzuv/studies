@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2839,
+    "title": "Is it possible to have the equations shown aligned left with an indentation?",
+    "slug": "is-it-possible-to-have-the-equations-shown-aligned-left-with-an-indentation",
+    "posts_count": 3,
+    "created_at": "2025-02-15T11:40:06.312Z",
+    "last_posted_at": "2025-02-15T14:50:02.475Z",
+    "views": 129,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Eric",
+    "tags": [
+      "layout",
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 148
+  },
+  "posts": [
+    {
+      "id": 8704,
+      "post_number": 1,
+      "username": "Staffan_Chr",
+      "name": "Staffan Christoffersson",
+      "created_at": "2025-02-15T11:40:06.513Z",
+      "updated_at": "2025-02-16T13:22:05.495Z",
+      "cooked": "<p>With the following one will get the equation to left.<br>\n<span class=\"hashtag-raw\">#show</span> math.equation: set align(left)</p>\n<p>text<br>\n$ a = b +c $<br>\ntext</p>\n<p>But how give the equation an indentation?</p>",
+      "raw": "With the following one will get the equation to left.\n#show math.equation: set align(left)\n\ntext\n$ a = b +c $\ntext\n\nBut how give the equation an indentation?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 340.8,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1202
+    },
+    {
+      "id": 8706,
+      "post_number": 2,
+      "username": "Eric",
+      "name": "Eric Biedert",
+      "created_at": "2025-02-15T12:53:42.284Z",
+      "updated_at": "2025-02-15T12:53:57.317Z",
+      "cooked": "<p>You can simply wrap equations in a <a href=\"https://typst.app/docs/reference/layout/pad/\"><code>pad</code></a> element using a show rule. I would also recommend only applying the show-set rule to block equations as otherwise, inline equations might be put in a new paragraph when the surrounding paragraph isn’t already left-aligned.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show math.equation.where(block: true): pad.with(left: 1cm)\n#show math.equation.where(block: true): set align(left)\n</code></pre>\n<hr>\n<p><em>On an unrelated note, please try to keep questions in the <a class=\"hashtag-cooked\" href=\"/c/questions/5\" data-type=\"category\" data-slug=\"questions\" data-id=\"5\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>Questions</span></a> category and check out the <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">“How to post questions?”</a> post for a guide on proper formatting.</em></p>",
+      "raw": "You can simply wrap equations in a [`pad`](https://typst.app/docs/reference/layout/pad/) element using a show rule. I would also recommend only applying the show-set rule to block equations as otherwise, inline equations might be put in a new paragraph when the surrounding paragraph isn't already left-aligned.\n\n```typ\n#show math.equation.where(block: true): pad.with(left: 1cm)\n#show math.equation.where(block: true): set align(left)\n```\n\n---\n\n_On an unrelated note, please try to keep questions in the #questions category and check out the [\"How to post questions?\"](https://forum.typst.app/t/how-to-post-in-the-questions-category/11?u=eric) post for a guide on proper formatting._",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 27,
+      "score": 25.4,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 88
+    },
+    {
+      "id": 8711,
+      "post_number": 3,
+      "username": "Staffan_Chr",
+      "name": "Staffan Christoffersson",
+      "created_at": "2025-02-15T14:50:02.475Z",
+      "updated_at": "2025-02-15T14:50:02.475Z",
+      "cooked": "<p>Thanks, much appreciated.</p>",
+      "raw": "Thanks, much appreciated.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 5.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1202
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:33.427251"
+}

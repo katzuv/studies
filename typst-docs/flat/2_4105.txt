@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 4105,
+    "title": "How to display \"Chapter X\" above level 1 heading name?",
+    "slug": "how-to-display-chapter-x-above-level-1-heading-name",
+    "posts_count": 3,
+    "created_at": "2025-05-15T12:40:36.964Z",
+    "last_posted_at": "2025-05-15T13:54:06.604Z",
+    "views": 56,
+    "like_count": 4,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "styling"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 361
+  },
+  "posts": [
+    {
+      "id": 12511,
+      "post_number": 1,
+      "username": "nice_trie",
+      "name": "",
+      "created_at": "2025-05-15T12:40:37.062Z",
+      "updated_at": "2025-05-15T14:05:33.128Z",
+      "cooked": "<p>When I type a new depth 1 heading e.g. <code>= Discussion</code> , I want to create something that looks like this:<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/a/aabd696d66ea1b140b70bf19d798f8d3179a2a9d.png\" alt=\"image\" data-base62-sha1=\"omqYWqnGaIn3m3hyRMlmmHPcaLz\" width=\"461\" height=\"215\"></p>\n<p>Here is the code I currently have:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">// Pagebreak on new chap start\n#show heading.where(level: 1): it =&gt; {\n  set text(28pt)\n  pagebreak(weak: true) + it\n}\n</code></pre>\n<p>which results in simply:</p>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/4/46dccc837c162e893247a799c4d7475791975614.png\" alt=\"image\" data-base62-sha1=\"a6StUackmFgIIQoWdx8tlG9WdHS\" width=\"288\" height=\"74\"></p>\n<p>I’m not sure how to extract the chapter number (e.g. 7, in this case) from <code>it</code></p>",
+      "raw": "When I type a new depth 1 heading e.g. `= Discussion` , I want to create something that looks like this:\n![image|461x215](upload://omqYWqnGaIn3m3hyRMlmmHPcaLz.png)\n\nHere is the code I currently have:\n\n```typst\n// Pagebreak on new chap start\n#show heading.where(level: 1): it => {\n  set text(28pt)\n  pagebreak(weak: true) + it\n}\n```\n\nwhich results in simply:\n\n![image|288x74](upload://a6StUackmFgIIQoWdx8tlG9WdHS.png)\n\nI'm not sure how to extract the chapter number (e.g. 7, in this case) from `it`",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 50.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1603
+    },
+    {
+      "id": 12533,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-05-15T13:39:56.615Z",
+      "updated_at": "2025-05-15T13:40:20.564Z",
+      "cooked": "<p>You can get the heading number from the <a href=\"https://typst.app/docs/reference/introspection/counter/\"><code>counter()</code></a>. And if you only want the actual title of the heading, you can access this with <code>it.body</code>.</p>\n<p>The show rule below should be close to your requirements. You can still change the font sizes (or other properties) by wrapping “Chapter N” in the <code>text()</code> function. Ideally you would use a relative size, e.g. <code>0.9em</code> to automatically scale the annotation “Chapter N” with the font size of the heading.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set heading(numbering: \"1.1\")\n\n#show heading.where(level: 1): it =&gt; block[\n  Chapter #counter(heading).display()\n \n  #it.body\n]\n\n= Discussion\n</code></pre>",
+      "raw": "You can get the heading number from the [`counter()`](https://typst.app/docs/reference/introspection/counter/). And if you only want the actual title of the heading, you can access this with `it.body`.\n\nThe show rule below should be close to your requirements. You can still change the font sizes (or other properties) by wrapping \"Chapter N\" in the `text()` function. Ideally you would use a relative size, e.g. `0.9em` to automatically scale the annotation \"Chapter N\" with the font size of the heading.\n\n```\n#set heading(numbering: \"1.1\")\n\n#show heading.where(level: 1): it => block[\n  Chapter #counter(heading).display()\n \n  #it.body\n]\n\n= Discussion\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 25,
+      "score": 35.0,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 69
+    },
+    {
+      "id": 12536,
+      "post_number": 3,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-15T13:54:06.604Z",
+      "updated_at": "2025-05-15T13:56:58.814Z",
+      "cooked": "<p>Hello. The image shows 2 text parts that use different font size, while you’re only specifying one. Which one is supposed to be 28 pt? Do you need to have both of these texts appear on the same page?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set heading(numbering: \"1.1\")\n#show heading.where(level: 1): set text(28pt)\n\n#show heading.where(level: 1): it =&gt; {\n  block(sticky: true, below: 2em)[Chapter #counter(heading).display()]\n  text(1.5em, it.body)\n}\n\n// #show heading.where(level: 1): it =&gt; {\n//   block(sticky: true, below: 1.5em, {\n//     text(0.65em)[Chapter #counter(heading).display()]\n//   })\n//   it.body\n// }\n\n= Discussion\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/9/99873e7b4719422b653e702afbacb4c18342cca6.png\" alt=\"image\" data-base62-sha1=\"lUaOlyst0T9j1xgGhbKFW7FByiW\" width=\"281\" height=\"150\"></p>\n<p>If you are using <code>pagebreak</code>, then I guess you don’t need <code>sticky</code>, then you can use this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set heading(numbering: \"1.1\")\n#show heading.where(level: 1): set text(28pt)\n#show heading.where(level: 1): it =&gt; {\n  pagebreak(weak: true)\n  block(below: 2em)[Chapter #counter(heading).display()]\n  text(1.5em, it.body)\n}\n\n// #show heading.where(level: 1): it =&gt; {\n//   pagebreak(weak: true)\n//   block(below: 1.5em, text(0.65em)[Chapter #counter(heading).display()])\n//   it.body\n// }\n\n= Discussion\n</code></pre>",
+      "raw": "Hello. The image shows 2 text parts that use different font size, while you're only specifying one. Which one is supposed to be 28 pt? Do you need to have both of these texts appear on the same page?\n\n```typ\n#set heading(numbering: \"1.1\")\n#show heading.where(level: 1): set text(28pt)\n\n#show heading.where(level: 1): it => {\n  block(sticky: true, below: 2em)[Chapter #counter(heading).display()]\n  text(1.5em, it.body)\n}\n\n// #show heading.where(level: 1): it => {\n//   block(sticky: true, below: 1.5em, {\n//     text(0.65em)[Chapter #counter(heading).display()]\n//   })\n//   it.body\n// }\n\n= Discussion\n```\n\n![image|281x150](upload://lUaOlyst0T9j1xgGhbKFW7FByiW.png)\n\nIf you are using `pagebreak`, then I guess you don't need `sticky`, then you can use this:\n\n```typ\n#set heading(numbering: \"1.1\")\n#show heading.where(level: 1): set text(28pt)\n#show heading.where(level: 1): it => {\n  pagebreak(weak: true)\n  block(below: 2em)[Chapter #counter(heading).display()]\n  text(1.5em, it.body)\n}\n\n// #show heading.where(level: 1): it => {\n//   pagebreak(weak: true)\n//   block(below: 1.5em, text(0.65em)[Chapter #counter(heading).display()])\n//   it.body\n// }\n\n= Discussion\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 20,
+      "score": 34.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:48.235263"
+}

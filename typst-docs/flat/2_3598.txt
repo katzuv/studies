@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 3598,
+    "title": "Is there an easy way to create edge between edges on fletcher?",
+    "slug": "is-there-an-easy-way-to-create-edge-between-edges-on-fletcher",
+    "posts_count": 2,
+    "created_at": "2025-04-10T14:36:26.356Z",
+    "last_posted_at": "2025-04-10T15:15:59.041Z",
+    "views": 71,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Jollywatt",
+    "tags": [
+      "packages",
+      "fletcher"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 162
+  },
+  "posts": [
+    {
+      "id": 10884,
+      "post_number": 1,
+      "username": "Kass",
+      "name": "",
+      "created_at": "2025-04-10T14:36:26.496Z",
+      "updated_at": "2025-04-18T15:25:36.907Z",
+      "cooked": "<p>I’ve checked the manual, and it seems the only way to create an edge between edges is by doing it manually.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#diagram(spacing: 2cm, {\nlet (A, B) = ((0,0), (1,0))\nnode(A, $cal(A)$)\nnode(B, $cal(B)$)\nedge(A, B, $F$, \"-&gt;\", bend: +35deg)\nedge(A, B, $G$, \"-&gt;\", bend: -35deg)\nlet h = 0.2\nedge((.5,-h), (.5,+h), $alpha$, \"=&gt;\")\n})\n</code></pre>\n<p>Is there a way to get the coordinates of the midpoint of an edge? Or maybe a trick to pass an edge as an argument to another edge?</p>",
+      "raw": "I've checked the manual, and it seems the only way to create an edge between edges is by doing it manually.\n```typst\n#diagram(spacing: 2cm, {\nlet (A, B) = ((0,0), (1,0))\nnode(A, $cal(A)$)\nnode(B, $cal(B)$)\nedge(A, B, $F$, \"->\", bend: +35deg)\nedge(A, B, $G$, \"->\", bend: -35deg)\nlet h = 0.2\nedge((.5,-h), (.5,+h), $alpha$, \"=>\")\n})\n```\nIs there a way to get the coordinates of the midpoint of an edge? Or maybe a trick to pass an edge as an argument to another edge?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 170.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1391
+    },
+    {
+      "id": 10888,
+      "post_number": 2,
+      "username": "Jollywatt",
+      "name": "Joseph Wilson",
+      "created_at": "2025-04-10T15:15:59.041Z",
+      "updated_at": "2025-04-10T15:16:13.285Z",
+      "cooked": "<p>Currently not, sadly. However, now that fletcher has support for cetz anchors, this could be easily added by allowing edges to be named and giving them path anchors, like in cetz:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#cetz.canvas({\n\timport cetz.draw\n\tdraw.line((0,0), (1,2), (3,1), stroke: 1pt, name: \"hi\")\n\tdraw.content(\"hi.75%\", $ circle $)\n})\n</code></pre>\n<p>I’ve just made a feature request for it: <a href=\"https://github.com/Jollywatt/typst-fletcher/issues/96\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">Edge names and anchors · Issue #96 · Jollywatt/typst-fletcher · GitHub</a></p>",
+      "raw": "Currently not, sadly. However, now that fletcher has support for cetz anchors, this could be easily added by allowing edges to be named and giving them path anchors, like in cetz:\n```typ\n#cetz.canvas({\n\timport cetz.draw\n\tdraw.line((0,0), (1,2), (3,1), stroke: 1pt, name: \"hi\")\n\tdraw.content(\"hi.75%\", $ circle $)\n})\n``` \nI've just made a feature request for it: https://github.com/Jollywatt/typst-fletcher/issues/96",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 24,
+      "score": 19.6,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 713
+    }
+  ],
+  "scraped_at": "2025-06-10T09:49:24.586864"
+}

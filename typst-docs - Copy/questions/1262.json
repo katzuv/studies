@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 1262,
+    "title": "Is it correct that `#set page(...)` only applies to current document.typ?",
+    "slug": "is-it-correct-that-set-page-only-applies-to-current-document-typ",
+    "posts_count": 2,
+    "created_at": "2024-10-21T14:11:07.146Z",
+    "last_posted_at": "2024-10-21T14:48:17.965Z",
+    "views": 89,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "layout",
+      "page"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 172
+  },
+  "posts": [
+    {
+      "id": 4408,
+      "post_number": 1,
+      "username": "SebastianJL",
+      "name": "Johannes Lade",
+      "created_at": "2024-10-21T14:11:07.241Z",
+      "updated_at": "2024-10-25T15:19:34.779Z",
+      "cooked": "<p>Hi<br>\nI have a master document that includes other documents to be part of it with</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#include \"inputs/section1.typ\"\n#include \"inputs/section2.typ\"\n...etc\n</code></pre>\n<p>I wanted to figure out how I can have a different page margin on a single page in the document.</p>\n<p>I tried this</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#pagebreak()\n#set page(margin: (top: 1in))\n\n...page content\n</code></pre>\n<p>To my surprise, this already only changed the margin of a single page. After some testing I realised that the effect of the <span class=\"hashtag-raw\">#set</span> rule is local to the .typ file that gets included by the master document. Is this intended behaviour?</p>",
+      "raw": "Hi\nI have a master document that includes other documents to be part of it with\n```typst\n#include \"inputs/section1.typ\"\n#include \"inputs/section2.typ\"\n...etc\n````\n I wanted to figure out how I can have a different page margin on a single page in the document.\n\nI tried this\n```typst\n#pagebreak()\n#set page(margin: (top: 1in))\n\n...page content\n```\nTo my surprise, this already only changed the margin of a single page. After some testing I realised that the effect of the #set rule is local to the .typ file that gets included by the master document. Is this intended behaviour?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 216.0,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 591
+    },
+    {
+      "id": 4415,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2024-10-21T14:48:17.965Z",
+      "updated_at": "2024-10-21T14:48:17.965Z",
+      "cooked": "<p>Yes, show rules and set rules affect only the current scope. The current scope is the current file when you write at the top level, but it can be even smaller, for example you could do</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let f() = {\n  set page(margin: 0pt, width: 3cm, height: 2cm)\n  [x]\n}\n\n#f()\n\nText...\n</code></pre>\n<p>and this will apply the page settings only for the content produced by <code>f()</code> (so only one page, with “x” on it).</p>",
+      "raw": "Yes, show rules and set rules affect only the current scope. The current scope is the current file when you write at the top level, but it can be even smaller, for example you could do\n\n```typ\n#let f() = {\n  set page(margin: 0pt, width: 3cm, height: 2cm)\n  [x]\n}\n\n#f()\n\nText...\n```\n\nand this will apply the page settings only for the content produced by `f()` (so only one page, with \"x\" on it).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 5.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:17.112809"
+}

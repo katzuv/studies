@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 630,
+    "title": "Is it possible to make a breakable box or inline?",
+    "slug": "is-it-possible-to-make-a-breakable-box-or-inline",
+    "posts_count": 3,
+    "created_at": "2024-09-24T05:07:30.255Z",
+    "last_posted_at": "2024-09-24T08:42:36.612Z",
+    "views": 248,
+    "like_count": 4,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Blaz",
+    "tags": [
+      "layout",
+      "layout-containers"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 186
+  },
+  "posts": [
+    {
+      "id": 2421,
+      "post_number": 1,
+      "username": "JosiNeto",
+      "name": "Josí Neto",
+      "created_at": "2024-09-24T05:07:30.371Z",
+      "updated_at": "2024-09-24T05:07:30.371Z",
+      "cooked": "<p>I’ve tried to use <code>box</code> to add a background to any <code>link</code> in my document. Problem is: there’s no <code>breakable</code> argument in <code>box</code> (allowing the box to break between lines). This argument only exists for <code>block</code> element.</p>\n<p>Is it possible to make a breakable inline? I’ve searched through docs, forum and repository and didn’t find any mention to that…</p>\n<p>Thank you in advance!</p>",
+      "raw": "I've tried to use `box` to add a background to any `link` in my document. Problem is: there's no `breakable` argument in `box` (allowing the box to break between lines). This argument only exists for `block` element.\n\nIs it possible to make a breakable inline? I've searched through docs, forum and repository and didn't find any mention to that...\n\nThank you in advance!",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 45,
+      "score": 1079.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 376
+    },
+    {
+      "id": 2423,
+      "post_number": 2,
+      "username": "Blaz",
+      "name": "Blaz",
+      "created_at": "2024-09-24T05:39:30.068Z",
+      "updated_at": "2024-09-24T05:39:30.068Z",
+      "cooked": "<p>I’m not sure if you can achieve that with a box, but if you want to add a background color to your links you can combine a <a href=\"https://typst.app/docs/reference/styling/#show-rules\">show rule</a> with <a href=\"https://typst.app/docs/reference/text/highlight/\">highlight</a>:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show link: it =&gt; highlight(fill: blue, it)\n\nBreakable link with background:\n#link(\"https://typst.app\")[#lorem(50)]\n</code></pre>",
+      "raw": "I'm not sure if you can achieve that with a box, but if you want to add a background color to your links you can combine a [show rule](https://typst.app/docs/reference/styling/#show-rules) with [highlight](https://typst.app/docs/reference/text/highlight/):\n\n```typ\n#show link: it => highlight(fill: blue, it)\n\nBreakable link with background:\n#link(\"https://typst.app\")[#lorem(50)]\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 44,
+      "score": 203.8,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 98
+    },
+    {
+      "id": 2436,
+      "post_number": 3,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2024-09-24T08:42:36.612Z",
+      "updated_at": "2024-09-24T08:42:36.612Z",
+      "cooked": "<aside class=\"quote no-group\" data-username=\"JosiNeto\" data-post=\"1\" data-topic=\"630\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/josineto/48/393_2.png\" class=\"avatar\"> JosiNeto:</div>\n<blockquote>\n<p>Is it possible to make a breakable inline?</p>\n</blockquote>\n</aside>\n<p>No, <code>box</code> can’t be broken, that’s the point. You only want to break blocks, hence <code>block</code> has a parameter for that.</p>\n<p>FYI, a slightly simpler way to do this is:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show link: highlight.with(fill: blue)\n</code></pre>",
+      "raw": "[quote=\"JosiNeto, post:1, topic:630\"]\nIs it possible to make a breakable inline?\n[/quote]\n\nNo, `box` can't be broken, that's the point. You only want to break blocks, hence `block` has a parameter for that.\n\nFYI, a slightly simpler way to do this is:\n\n```typ\n#show link: highlight.with(fill: blue)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 2,
+      "reads": 37,
+      "score": 47.4,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:58:14.974545"
+}

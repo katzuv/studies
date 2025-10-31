@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 3788,
+    "title": "How to place a symbol under or over another symbol in an equation?",
+    "slug": "how-to-place-a-symbol-under-or-over-another-symbol-in-an-equation",
+    "posts_count": 2,
+    "created_at": "2025-04-24T02:53:33.575Z",
+    "last_posted_at": "2025-04-24T06:29:23.318Z",
+    "views": 49,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 72
+  },
+  "posts": [
+    {
+      "id": 11542,
+      "post_number": 1,
+      "username": "nhanncv",
+      "name": "Nhan",
+      "created_at": "2025-04-24T02:53:33.735Z",
+      "updated_at": "2025-04-24T06:27:41.686Z",
+      "cooked": "<p><img src=\"https://forum.typst.app/uploads/default/original/2X/8/892928064bc5eff398fcfb4728917a4cec47e5ca.png\" alt=\"image\" data-base62-sha1=\"jznABWzl0ftAu30OSDcVwGRwb8u\" width=\"362\" height=\"96\"><br>\nI want to place <code>d in D</code> under <code>max</code> like in the picture</p>",
+      "raw": "![image|362x96](upload://jznABWzl0ftAu30OSDcVwGRwb8u.png)\n I want to place `d in D` under `max` like in the picture",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 20,
+      "score": 99.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1502
+    },
+    {
+      "id": 11548,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-04-24T06:29:23.318Z",
+      "updated_at": "2025-04-24T06:29:23.318Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/nhanncv\">@nhanncv</a>! Don’t hesitate to take a look at the maths documentation at <a href=\"https://typst.app/docs/reference/math/\" class=\"inline-onebox\">Math – Typst Documentation</a>.</p>\n<p>Are you having a particular issue? It would help if you share your current code.</p>\n<p>I can reproduce your picture below</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">$\nmax_(d in D) min_(s in S(d)) f(d, s)\n$\n</code></pre>",
+      "raw": "Hello @nhanncv! Don't hesitate to take a look at the maths documentation at https://typst.app/docs/reference/math/.\n\nAre you having a particular issue? It would help if you share your current code.\n\nI can reproduce your picture below\n```typ\n$\nmax_(d in D) min_(s in S(d)) f(d, s)\n$\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 19,
+      "score": 8.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:45.916416"
+}

@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 491,
+    "title": "How to draw a vertically centered horizontal line?",
+    "slug": "how-to-draw-a-vertically-centered-horizontal-line",
+    "posts_count": 3,
+    "created_at": "2024-09-19T11:16:33.594Z",
+    "last_posted_at": "2024-09-19T11:35:37.986Z",
+    "views": 399,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Tinger",
+    "tags": [
+      "graphics"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 558
+  },
+  "posts": [
+    {
+      "id": 1910,
+      "post_number": 1,
+      "username": "kotfind",
+      "name": "",
+      "created_at": "2024-09-19T11:16:33.711Z",
+      "updated_at": "2024-09-19T11:16:33.711Z",
+      "cooked": "<p>I want to draw a vertically centered horizontal line that would fill all the empty space on the line. It should look like this:<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/1X/d4d29f4fa40c9d980f90484dd40f90d5a44f3fcd.png\" data-download-href=\"https://forum.typst.app/uploads/default/d4d29f4fa40c9d980f90484dd40f90d5a44f3fcd\" title=\"1726744175\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/d4d29f4fa40c9d980f90484dd40f90d5a44f3fcd_2_690x179.png\" alt=\"1726744175\" data-base62-sha1=\"umItKVLg3vnXPx2aLpGl5S7K6zX\" width=\"690\" height=\"179\" srcset=\"https://forum.typst.app/uploads/default/optimized/1X/d4d29f4fa40c9d980f90484dd40f90d5a44f3fcd_2_690x179.png, https://forum.typst.app/uploads/default/optimized/1X/d4d29f4fa40c9d980f90484dd40f90d5a44f3fcd_2_1035x268.png 1.5x, https://forum.typst.app/uploads/default/optimized/1X/d4d29f4fa40c9d980f90484dd40f90d5a44f3fcd_2_1380x358.png 2x\" data-dominant-color=\"EBEAEA\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">1726744175</span><span class=\"informations\">1484×385 97.5 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div><br>\nNow I’m using this code to generate it:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#grid(\n    columns: (auto, 1fr, auto),\n    align: horizon + center,\n    column-gutter: 5pt,\n    text(fill: red)[abc],\n    line(length: 100%, stroke: 0.5pt + red),\n    text(fill: red)[def],\n)\n</code></pre>\n<p>But using <code>grid</code> feels like an overkill. Also <code>grid</code> seems to add margins at the top and at the bottom. Is there any better solution?</p>",
+      "raw": "I want to draw a vertically centered horizontal line that would fill all the empty space on the line. It should look like this:\n![1726744175|690x179, 100%](upload://umItKVLg3vnXPx2aLpGl5S7K6zX.png)\nNow I'm using this code to generate it:\n```typ\n#grid(\n    columns: (auto, 1fr, auto),\n    align: horizon + center,\n    column-gutter: 5pt,\n    text(fill: red)[abc],\n    line(length: 100%, stroke: 0.5pt + red),\n    text(fill: red)[def],\n)\n```\nBut using `grid` feels like an overkill. Also `grid` seems to add margins at the top and at the bottom. Is there any better solution?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 52,
+      "score": 1530.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 386
+    },
+    {
+      "id": 1912,
+      "post_number": 2,
+      "username": "Tinger",
+      "name": "Tinger",
+      "created_at": "2024-09-19T11:30:54.568Z",
+      "updated_at": "2024-09-19T11:32:30.881Z",
+      "cooked": "<p><code>line</code> is a block-level element, this means that it basically introduces a <code>parbreak</code> if necessary. Usually, to put a block level element inline you wrap it in <code>box</code>, which is the defacto inline container. However, this will actually require you to adjust the baseline of the line manually because it will be bottom aligned. You’re solution is already spot on.</p>\n<p>The <code>margins</code> at the top and bottom are introduced by <code>block.spacing</code> as the grid itself is a block-level element, and the solution for this is to introduce a box to make it inline:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#box(grid(\n    columns: (auto, 1fr, auto),\n    align: horizon + center,\n    column-gutter: 5pt,\n    text(fill: red)[abc],\n    line(length: 100%, stroke: 0.5pt + red),\n    text(fill: red)[def],\n))\n</code></pre>\n<p>This also has the effect of being able to put this within text if you add other fractionally spaced elements beside it.</p>\n<p>Here’s an image showing the left side with the the box-wrapping and the right without it:<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/1X/d274ca3ede583f55c5834be78c14f4d7e67f4b6b.jpeg\" data-download-href=\"https://forum.typst.app/uploads/default/d274ca3ede583f55c5834be78c14f4d7e67f4b6b\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/d274ca3ede583f55c5834be78c14f4d7e67f4b6b_2_488x500.jpeg\" alt=\"image\" data-base62-sha1=\"u1Muoz9WF4OKugymfYLYUBv7vAv\" width=\"488\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/1X/d274ca3ede583f55c5834be78c14f4d7e67f4b6b_2_488x500.jpeg, https://forum.typst.app/uploads/default/original/1X/d274ca3ede583f55c5834be78c14f4d7e67f4b6b.jpeg 1.5x, https://forum.typst.app/uploads/default/original/1X/d274ca3ede583f55c5834be78c14f4d7e67f4b6b.jpeg 2x\" data-dominant-color=\"E9E8E8\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">668×684 172 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>If that’s a common separator you can of course define a function that does it for you:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let sep(left, right) = box(grid(\n    columns: (auto, 1fr, auto),\n    align: horizon + center,\n    column-gutter: 5pt,\n    left,\n    line(length: 100%, stroke: 0.5pt),\n    right,\n))\n</code></pre>\n<p>Keep in mind that <code>grid</code> is subject to set rules and something like <code>grid.inset</code> may be something you want to explicitly set to nothing for this to avoid any other spacing issues.</p>",
+      "raw": "`line` is a block-level element, this means that it basically introduces a `parbreak` if necessary. Usually, to put a block level element inline you wrap it in `box`, which is the defacto inline container. However, this will actually require you to adjust the baseline of the line manually because it will be bottom aligned. You're solution is already spot on.\n\nThe `margins` at the top and bottom are introduced by `block.spacing` as the grid itself is a block-level element, and the solution for this is to introduce a box to make it inline:\n```typ\n#box(grid(\n    columns: (auto, 1fr, auto),\n    align: horizon + center,\n    column-gutter: 5pt,\n    text(fill: red)[abc],\n    line(length: 100%, stroke: 0.5pt + red),\n    text(fill: red)[def],\n))\n```\nThis also has the effect of being able to put this within text if you add other fractionally spaced elements beside it. \n\nHere's an image showing the left side with the the box-wrapping and the right without it:\n![image|488x500](upload://u1Muoz9WF4OKugymfYLYUBv7vAv.jpeg)\n\nIf that's a common separator you can of course define a function that does it for you:\n```typ\n#let sep(left, right) = box(grid(\n    columns: (auto, 1fr, auto),\n    align: horizon + center,\n    column-gutter: 5pt,\n    left,\n    line(length: 100%, stroke: 0.5pt),\n    right,\n))\n```\n\nKeep in mind that `grid` is subject to set rules and something like `grid.inset` may be something you want to explicitly set to nothing for this to avoid any other spacing issues.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 49,
+      "score": 69.8,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 29
+    },
+    {
+      "id": 1913,
+      "post_number": 3,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2024-09-19T11:35:37.986Z",
+      "updated_at": "2024-09-19T11:41:20.891Z",
+      "cooked": "<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set par(justify: true)\n#lorem(20)\n\n// Simplified example:\n#grid(\n  columns: (auto, 1fr, auto),\n  align: horizon,\n  column-gutter: 5pt,\n  text(red)[abc],\n  line(length: 100%, stroke: 0.5pt + red),\n  text(red)[def],\n)\n\n// Reusable wrapper:\n#let hline = {\n  let color = red\n  set text(color)\n  set line(stroke: color)\n  grid(\n    columns: (auto, 1fr, auto),\n    align: horizon,\n    column-gutter: 5pt,\n    [abc],\n    line(length: 100%, stroke: 0.5pt),\n    [def],\n  )\n}\n#hline\n\n// Quick and dirty one-liner:\n#let hline = text(red)[abc #box(width: 1fr, baseline: -0.25em, stroke: (bottom: 0.5pt + red)) def]\n#hline\n\n// Same as above, but more structured:\n#let hline = {\n  let color = red\n  set text(color)\n  set box(stroke: (bottom: 0.5pt + color))\n  \"abc \" + box(width: 1fr, baseline: -0.25em) + \" def\"\n}\n#hline\n\n#lorem(20)\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/1X/7f293483bb375975f5452ac786860b06c1770d00.png\" data-download-href=\"https://forum.typst.app/uploads/default/7f293483bb375975f5452ac786860b06c1770d00\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/7f293483bb375975f5452ac786860b06c1770d00_2_690x225.png\" alt=\"image\" data-base62-sha1=\"i8UV3NcSgO3KJ0UphO0DMqrKt8s\" width=\"690\" height=\"225\" srcset=\"https://forum.typst.app/uploads/default/optimized/1X/7f293483bb375975f5452ac786860b06c1770d00_2_690x225.png, https://forum.typst.app/uploads/default/optimized/1X/7f293483bb375975f5452ac786860b06c1770d00_2_1035x337.png 1.5x, https://forum.typst.app/uploads/default/original/1X/7f293483bb375975f5452ac786860b06c1770d00.png 2x\" data-dominant-color=\"0A0707\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">1338×438 53 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>Note that output line thickness depends on PDF viewer and its settings/zoom level. Also, I used <code>-0.25em</code> just because it looks centered, not sure if this is the exact value that always will work.</p>\n<p>Since I don’t know if you need to change the text on the sides of the horizontal line, I didn’t make them settable via function arguments. But if you need something like that, then you can take a look at <a class=\"mention\" href=\"/u/tinger\">@Tinger</a>’s <a href=\"https://forum.typst.app/t/how-to-draw-a-vertically-centered-horizontal-line/491/2\">solution</a>.</p>",
+      "raw": "```typ\n#set par(justify: true)\n#lorem(20)\n\n// Simplified example:\n#grid(\n  columns: (auto, 1fr, auto),\n  align: horizon,\n  column-gutter: 5pt,\n  text(red)[abc],\n  line(length: 100%, stroke: 0.5pt + red),\n  text(red)[def],\n)\n\n// Reusable wrapper:\n#let hline = {\n  let color = red\n  set text(color)\n  set line(stroke: color)\n  grid(\n    columns: (auto, 1fr, auto),\n    align: horizon,\n    column-gutter: 5pt,\n    [abc],\n    line(length: 100%, stroke: 0.5pt),\n    [def],\n  )\n}\n#hline\n\n// Quick and dirty one-liner:\n#let hline = text(red)[abc #box(width: 1fr, baseline: -0.25em, stroke: (bottom: 0.5pt + red)) def]\n#hline\n\n// Same as above, but more structured:\n#let hline = {\n  let color = red\n  set text(color)\n  set box(stroke: (bottom: 0.5pt + color))\n  \"abc \" + box(width: 1fr, baseline: -0.25em) + \" def\"\n}\n#hline\n\n#lorem(20)\n```\n\n![image|690x225](upload://i8UV3NcSgO3KJ0UphO0DMqrKt8s.png)\n\nNote that output line thickness depends on PDF viewer and its settings/zoom level. Also, I used `-0.25em` just because it looks centered, not sure if this is the exact value that always will work.\n\nSince I don't know if you need to change the text on the sides of the horizontal line, I didn't make them settable via function arguments. But if you need something like that, then you can take a look at @Tinger's [solution](https://forum.typst.app/t/how-to-draw-a-vertically-centered-horizontal-line/491/2).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 42,
+      "score": 23.4,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:58:38.065294"
+}

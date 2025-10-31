@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1994,
+    "title": "Define new math classes, or default attachment styles",
+    "slug": "define-new-math-classes-or-default-attachment-styles",
+    "posts_count": 3,
+    "created_at": "2024-12-05T15:41:31.693Z",
+    "last_posted_at": "2024-12-05T16:14:04.180Z",
+    "views": 65,
+    "like_count": 0,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 164
+  },
+  "posts": [
+    {
+      "id": 6363,
+      "post_number": 1,
+      "username": "Simerylop",
+      "name": "Lucas",
+      "created_at": "2024-12-05T15:41:31.842Z",
+      "updated_at": "2024-12-05T15:41:59.165Z",
+      "cooked": "<p>Is there a way to set a default attachment style for a symbol? I would<br>\nlike to <code>$&lt;_A$</code> always look like <code>$script(&lt;)_A$</code> or <code>$attach(&lt;,br: A)$</code>.<br>\nOr in general do this kind of things, like creating new math classes. For example the following works to some extent:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let mylt = math.class(\"normal\", sym.lt)\n#show sym.lt: mylt\n\n$a &lt;_A b$\n</code></pre>\n<p>The problem is that then, $&lt;$ looses its properties of the “relation” class,<br>\nso the spacing gets weird.</p>",
+      "raw": "Is there a way to set a default attachment style for a symbol? I would\nlike to `$<_A$` always look like `$script(<)_A$` or `$attach(<,br: A)$`.\nOr in general do this kind of things, like creating new math classes. For example the following works to some extent:\n\n```typ\n#let mylt = math.class(\"normal\", sym.lt)\n#show sym.lt: mylt\n\n$a <_A b$\n```\n\nThe problem is that then, $<$ looses its properties of the \"relation\" class,\nso the spacing gets weird.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 65.0,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 893
+    },
+    {
+      "id": 6364,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2024-12-05T15:57:31.842Z",
+      "updated_at": "2024-12-05T15:57:31.842Z",
+      "cooked": "<p>Hi, welcome to the Typst forum!</p>\n<p>You can use <code>scripts</code> and <code>limits</code> to change the attachment behavior (see doc <a href=\"https://typst.app/docs/reference/math/attach/\">here</a>):</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show sym.lt: math.scripts\n$a &lt;_A b$\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/f/f7e5e72e8aef320569468827d284df0aaa4ff5e7.png\" alt=\"image\" data-base62-sha1=\"zn0v0QYACdcnjk0IjEZzzWo0f8X\" width=\"78\" height=\"39\"></p>\n<p>I think this preserves the relation class of <code>&lt;</code>.</p>",
+      "raw": "Hi, welcome to the Typst forum!\n\nYou can use `scripts` and `limits` to change the attachment behavior (see doc [here](https://typst.app/docs/reference/math/attach/)):\n\n```typ\n#show sym.lt: math.scripts\n$a <_A b$\n```\n![image|105x53, 75%](upload://zn0v0QYACdcnjk0IjEZzzWo0f8X.png)\n\nI think this preserves the relation class of `<`.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 14.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    },
+    {
+      "id": 6365,
+      "post_number": 3,
+      "username": "Simerylop",
+      "name": "Lucas",
+      "created_at": "2024-12-05T16:14:04.180Z",
+      "updated_at": "2024-12-05T16:14:04.180Z",
+      "cooked": "<aside class=\"quote no-group\" data-username=\"sijo\" data-post=\"2\" data-topic=\"1994\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/letter_avatar_proxy/v4/letter/s/0A3649/48.png\" class=\"avatar\"> sijo:</div>\n<blockquote>\n<p><code>#show sym.lt: math.scripts</code></p>\n</blockquote>\n</aside>\n<p>Oh, that was easy. Thanks!, it does preserve the other aspects of the relation class. I missed that possibility from the docs.</p>",
+      "raw": "[quote=\"sijo, post:2, topic:1994\"]\n`#show sym.lt: math.scripts`\n[/quote]\n\nOh, that was easy. Thanks!, it does preserve the other aspects of the relation class. I missed that possibility from the docs.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 0,
+      "reads": 23,
+      "score": 14.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 893
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:52.280341"
+}

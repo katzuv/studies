@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 4400,
+    "title": "How can I generate a list of image (paths) from command line?",
+    "slug": "how-can-i-generate-a-list-of-image-paths-from-command-line",
+    "posts_count": 2,
+    "created_at": "2025-05-31T17:16:29.424Z",
+    "last_posted_at": "2025-05-31T17:37:39.338Z",
+    "views": 38,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 411
+  },
+  "posts": [
+    {
+      "id": 13504,
+      "post_number": 1,
+      "username": "typer",
+      "name": "",
+      "created_at": "2025-05-31T17:16:29.486Z",
+      "updated_at": "2025-05-31T17:37:53.432Z",
+      "cooked": "<p>I’ve previously done a pretty brute-force <code>grep</code>-and-<code>sed</code> to generate a list of images a document uses (for use in a dependency graph generator for a build system), but this has failed in all kinds of wonderful scenarios.  While looking for a way to make this more robust I recently discovered that there’s a <code>query</code> subcommand in the <code>typst</code> command.  And by the looks if it, I should be able to generate a list of all images in a document using it.</p>\n<p>If I run <code>typst query mytest.typst figure</code>, I get a json blob with what looks like mostly what I’m looking for, apart from that there are not mentions of the image files.  If I instead use <code>image</code> instead of <code>figure</code> I get:</p>\n<pre><code class=\"lang-plaintext\">error: image is not locatable\n</code></pre>\n<p>I’m wondering if this is the way it should be done, and if it is – why is it failing?</p>\n<p>I suspect the reason could be because I’m including my images in a rather unconventional way:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let img = image(\"s-to-ts.svg\")\n#figure(\n  scaled-image(img, DIA_SCALE),\n  caption: [Blah, blah, blah],\n) &lt;s-to-ts&gt;\n</code></pre>\n<p>This is basically a way to be able to scale all images (made in Dia) in a simple unified way – but is it interfering with manner in which images must be included in order for them to be query:able, or is there some other issue?</p>",
+      "raw": "I've previously done a pretty brute-force `grep`-and-`sed` to generate a list of images a document uses (for use in a dependency graph generator for a build system), but this has failed in all kinds of wonderful scenarios.  While looking for a way to make this more robust I recently discovered that there's a `query` subcommand in the `typst` command.  And by the looks if it, I should be able to generate a list of all images in a document using it.\n\nIf I run `typst query mytest.typst figure`, I get a json blob with what looks like mostly what I'm looking for, apart from that there are not mentions of the image files.  If I instead use `image` instead of `figure` I get:\n\n```plain\nerror: image is not locatable\n```\n\nI'm wondering if this is the way it should be done, and if it is -- why is it failing?\n\nI suspect the reason could be because I'm including my images in a rather unconventional way:\n\n```\n#let img = image(\"s-to-ts.svg\")\n#figure(\n  scaled-image(img, DIA_SCALE),\n  caption: [Blah, blah, blah],\n) <s-to-ts>\n```\n\nThis is basically a way to be able to scale all images (made in Dia) in a simple unified way -- but is it interfering with manner in which images must be included in order for them to be query:able, or is there some other issue?",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 20,
+      "score": 29.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1629
+    },
+    {
+      "id": 13505,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-05-31T17:37:39.338Z",
+      "updated_at": "2025-05-31T17:37:39.338Z",
+      "cooked": "<aside class=\"quote no-group\" data-username=\"typer\" data-post=\"1\" data-topic=\"4400\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/letter_avatar_proxy/v4/letter/t/EA3E47/48.png\" class=\"avatar\"> typer:</div>\n<blockquote>\n<p>I’m wondering if this is the way it should be done, and if it is – why is it failing?</p>\n</blockquote>\n</aside>\n<p>In general it is, but for performance reasons not all elements carry the necessary information to be queried.</p>\n<p>The easiest way around this is to query <code>metadata</code> instead of the images directly. For example, you could define your own function for this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let my-image(path, ..args) = {\n  image(path, ..args)\n  [#metadata(path)&lt;image&gt;]\n}\n</code></pre>\n<p>or, more automated by doing this by a show rule:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show image: it =&gt; {\n  it\n  [#metadata(it.source)&lt;image&gt;]\n}\n</code></pre>\n<p>There is a general caveat: the paths you get will be relative to the source file they appear in, but you won’t know what file that is. For example, depending on whether an image appears in <code>main.typ</code> or <code>chapters/intro.typ</code>, the query will give you <code>image.jpg</code> or <code>../image.jpg</code>; you’ll need to figure that out on your own. One option could be to consistently use absolute paths, like <code>/image.jpg</code>.</p>",
+      "raw": "[quote=\"typer, post:1, topic:4400\"]\nI’m wondering if this is the way it should be done, and if it is – why is it failing?\n[/quote]\n\nIn general it is, but for performance reasons not all elements carry the necessary information to be queried.\n\nThe easiest way around this is to query `metadata` instead of the images directly. For example, you could define your own function for this:\n\n```\n#let my-image(path, ..args) = {\n  image(path, ..args)\n  [#metadata(path)<image>]\n}\n```\nor, more automated by doing this by a show rule:\n```\n#show image: it => {\n  it\n  [#metadata(it.source)<image>]\n}\n```\nThere is a general caveat: the paths you get will be relative to the source file they appear in, but you won't know what file that is. For example, depending on whether an image appears in `main.typ` or `chapters/intro.typ`, the query will give you `image.jpg` or `../image.jpg`; you'll need to figure that out on your own. One option could be to consistently use absolute paths, like `/image.jpg`.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 3,
+      "reads": 19,
+      "score": 48.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:46:58.243980"
+}

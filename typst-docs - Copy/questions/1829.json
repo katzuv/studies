@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1829,
+    "title": "How to prevent newlines from creating par breaks",
+    "slug": "how-to-prevent-newlines-from-creating-par-breaks",
+    "posts_count": 2,
+    "created_at": "2024-11-21T12:58:43.474Z",
+    "last_posted_at": "2024-11-22T09:00:59.190Z",
+    "views": 338,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "text-formatting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 123
+  },
+  "posts": [
+    {
+      "id": 5965,
+      "post_number": 1,
+      "username": "SirJoe",
+      "name": "SirJoe",
+      "created_at": "2024-11-21T12:58:43.690Z",
+      "updated_at": "2024-11-22T10:59:23.306Z",
+      "cooked": "<p>Hello, my question is pretty simple but I couldn’t find a answer easily. How do you prevent newlines in typst source code from creating paragraph breaks automatically? I want to avoid or override the behaviour discussed here <a href=\"https://typst.app/docs/reference/model/parbreak/\" class=\"inline-onebox\">Paragraph Break Function – Typst Documentation</a>.</p>",
+      "raw": "Hello, my question is pretty simple but I couldn't find a answer easily. How do you prevent newlines in typst source code from creating paragraph breaks automatically? I want to avoid or override the behaviour discussed here https://typst.app/docs/reference/model/parbreak/.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 44,
+      "score": 1623.8,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 839
+    },
+    {
+      "id": 5984,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-11-22T09:00:59.190Z",
+      "updated_at": "2024-11-22T09:00:59.190Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/sirjoe\">@SirJoe</a>! Welcome <img src=\"https://forum.typst.app/images/emoji/apple/smiley.png?v=12\" title=\":smiley:\" class=\"emoji\" alt=\":smiley:\" loading=\"lazy\" width=\"20\" height=\"20\">!</p>\n<p>technically speaking, all you need is</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show parbreak: none\n</code></pre>\n<p>Unfortunately, that would remove many features and you would have to rely on <a href=\"https://typst.app/docs/reference/text/linebreak/\"><code>linebreak</code></a>.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">中文测试\n\n中文\n测试\n\nabcd\n\nab\ncd\n\n#show parbreak: none\nabcd\\\nab\ncd\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/0/0496538fb42ff90be1d7d93228a0b2104871a619.png\" alt=\"image\" data-base62-sha1=\"EzYVCNEPDkUSTUmWADqZ7SDuxr\" width=\"106\" height=\"198\"></p>\n<p>this is tracked in [1], [2] is also related.</p>\n<p>[1] <a href=\"https://github.com/typst/typst/issues/710\" class=\"inline-onebox\">Customizing source line break behavior · Issue #710 · typst/typst · GitHub</a><br>\n[2] <a href=\"https://github.com/typst/typst/issues/792\" class=\"inline-onebox\">Ignore linebreaks between CJK characters in source code · Issue #792 · typst/typst · GitHub</a></p>",
+      "raw": "Hello @SirJoe! Welcome :smiley:!\n\ntechnically speaking, all you need is\n\n```typ\n#show parbreak: none\n```\n\nUnfortunately, that would remove many features and you would have to rely on [`linebreak`](https://typst.app/docs/reference/text/linebreak/).\n\n\n```typ\n中文测试\n\n中文\n测试\n\nabcd\n\nab\ncd\n\n#show parbreak: none\nabcd\\\nab\ncd\n```\n![image|106x198](upload://EzYVCNEPDkUSTUmWADqZ7SDuxr.png)\n\n\nthis is tracked in [1], [2] is also related.\n\n[1] https://github.com/typst/typst/issues/710\n[2] https://github.com/typst/typst/issues/792",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 36,
+      "score": 102.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:33.761195"
+}

@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3743,
+    "title": "How to use a double-sided document layout?",
+    "slug": "how-to-use-a-double-sided-document-layout",
+    "posts_count": 3,
+    "created_at": "2025-04-21T14:50:25.778Z",
+    "last_posted_at": "2025-04-21T16:07:07.616Z",
+    "views": 86,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "vmartel08",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 141
+  },
+  "posts": [
+    {
+      "id": 11395,
+      "post_number": 1,
+      "username": "Btjk16",
+      "name": "Btjk16",
+      "created_at": "2025-04-21T14:50:25.969Z",
+      "updated_at": "2025-04-21T14:52:50.872Z",
+      "cooked": "<p>Hello everyone!</p>\n<p>I am learning Typst and trying to move from LaTeX. Just a quick question about layout config. How can I define a double-sided document?</p>\n<p>For reference, in LaTeX it is done with <code>\\documentclass[twoside]{article}</code> or as default with the <code>book</code> class, but I couldn’t figured it out with Typst and the <code>page</code> function.</p>\n<p>Thanks.</p>",
+      "raw": "Hello everyone!\n\nI am learning Typst and trying to move from LaTeX. Just a quick question about layout config. How can I define a double-sided document?\n\nFor reference, in LaTeX it is done with `\\documentclass[twoside]{article}` or as default with the `book` class, but I couldn't figured it out with Typst and the `page` function.\n\nThanks.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 28,
+      "score": 310.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1480
+    },
+    {
+      "id": 11396,
+      "post_number": 2,
+      "username": "vmartel08",
+      "name": "Vincent Martel",
+      "created_at": "2025-04-21T15:13:59.940Z",
+      "updated_at": "2025-04-21T15:22:08.218Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/btjk16\">@Btjk16</a>, you can start by having a look at the Typst documentation:</p>\n<ul>\n<li><a href=\"https://typst.app/docs/guides/page-setup-guide/#alternating-margins\">Page setup guide - Alternating margins</a></li>\n<li><a href=\"https://typst.app/docs/guides/page-setup-guide/#specific-pages\">Page setup guide - Different header and footer on specific pages</a></li>\n</ul>\n<p>Typst Universe is a good place to find some examples. I particularly like <a href=\"https://typst.app/universe/package/hydra\">Hydra</a>.</p>",
+      "raw": "Hi @Btjk16, you can start by having a look at the Typst documentation:\n- [Page setup guide - Alternating margins](https://typst.app/docs/guides/page-setup-guide/#alternating-margins)  \n- [Page setup guide - Different header and footer on specific pages](https://typst.app/docs/guides/page-setup-guide/#specific-pages)  \n\nTypst Universe is a good place to find some examples. I particularly like [Hydra](https://typst.app/universe/package/hydra).",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 45.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 936
+    },
+    {
+      "id": 11398,
+      "post_number": 3,
+      "username": "Btjk16",
+      "name": "Btjk16",
+      "created_at": "2025-04-21T16:07:07.616Z",
+      "updated_at": "2025-04-21T16:07:07.616Z",
+      "cooked": "<p>Thank you very much, I will take a look at the documentation you shared.</p>",
+      "raw": "Thank you very much, I will take a look at the documentation you shared.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 26,
+      "score": 20.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1480
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:53.226044"
+}

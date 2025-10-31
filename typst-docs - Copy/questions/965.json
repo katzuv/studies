@@ -1,0 +1,65 @@
+{
+  "topic_metadata": {
+    "id": 965,
+    "title": "How to use context instead of a callback function in locate function calls?",
+    "slug": "how-to-use-context-instead-of-a-callback-function-in-locate-function-calls",
+    "posts_count": 2,
+    "created_at": "2024-10-07T01:37:33.066Z",
+    "last_posted_at": "2024-10-07T07:22:59.131Z",
+    "views": 938,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "context",
+      "introspection",
+      "locate"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 635
+  },
+  "posts": [
+    {
+      "id": 3513,
+      "post_number": 1,
+      "username": "Akshay_Raj_Gollahall",
+      "name": "Akshay Raj Gollahalli",
+      "created_at": "2024-10-07T01:37:33.209Z",
+      "updated_at": "2024-10-10T15:55:36.037Z",
+      "cooked": "<p>I am trying to test the new <code>0.12.0-rc1</code> and I keep getting this:</p>\n<pre><code class=\"lang-auto\">warning: `locate` with callback function is deprecated\n    ┌─ template/template.typ:305:12\n    │  \n305 │       header: locate(\n    │ ╭─────────────^\n306 │ │       loc =&gt; {\n307 │ │         // Retrieve the current page number\n308 │ │         let pageNumber = counter(page).at(loc).first()\n    · │\n329 │ │       },\n330 │ │     ),\n    │ ╰─────^\n    │  \n    = hint: use a `context` expression instead\n</code></pre>\n<p>And the code I have essentially adds footer and header page numbers:</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">set page(\n    header: locate(\n      loc =&gt; {\n        // Retrieve the current page number\n        let pageNumber = counter(page).at(loc).first()\n\n        // Check if the current page starts with a non-chapter heading\n        let headings = query(heading.where(level: 1))\n        let isSectionPage = headings.any(it =&gt; it.location().page() == pageNumber)\n        if (not isSectionPage) {\n          let before = query(selector(heading.where(level: 1)).before(loc))\n\n          // Create the heading numbering.\n          let number = if before.last().numbering != none {\n            counter(heading.where(level: 1)).display(before.last().numbering)\n            // h(7pt, weak: true)\n          }\n\n          return [\n            #set text(8pt)\n            #smallcaps[Chapter #number. #before.last().body]\n            #h(1fr) #pageNumber\n            #line(length: 100%)\n          ]\n        }\n      },\n    ),\n    footer: locate(\n      loc =&gt; {\n        // Retrieve the current page number\n        let pageNumber = counter(page).at(loc).first()\n\n        // Check if the current page starts with a non-chapter heading\n        let headings = query(heading.where(level: 1))\n        let isSectionPage = headings.any(it =&gt; it.location().page() == pageNumber)\n        if (isSectionPage) {\n          return align(center, text(0.95em, str(pageNumber)));\n        }\n\n        // If the page is not a section page, don't display anything\n        return;\n      },\n    ),\n  )\n</code></pre>\n<p>I couldn’t find an example on how to replace <code>loc =&gt; {}</code> with context. How should I do that?</p>",
+      "raw": "I am trying to test the new `0.12.0-rc1` and I keep getting this:\n\n```\nwarning: `locate` with callback function is deprecated\n    ┌─ template/template.typ:305:12\n    │  \n305 │       header: locate(\n    │ ╭─────────────^\n306 │ │       loc => {\n307 │ │         // Retrieve the current page number\n308 │ │         let pageNumber = counter(page).at(loc).first()\n    · │\n329 │ │       },\n330 │ │     ),\n    │ ╰─────^\n    │  \n    = hint: use a `context` expression instead\n```\n\nAnd the code I have essentially adds footer and header page numbers:\n\n```typc\nset page(\n    header: locate(\n      loc => {\n        // Retrieve the current page number\n        let pageNumber = counter(page).at(loc).first()\n\n        // Check if the current page starts with a non-chapter heading\n        let headings = query(heading.where(level: 1))\n        let isSectionPage = headings.any(it => it.location().page() == pageNumber)\n        if (not isSectionPage) {\n          let before = query(selector(heading.where(level: 1)).before(loc))\n\n          // Create the heading numbering.\n          let number = if before.last().numbering != none {\n            counter(heading.where(level: 1)).display(before.last().numbering)\n            // h(7pt, weak: true)\n          }\n\n          return [\n            #set text(8pt)\n            #smallcaps[Chapter #number. #before.last().body]\n            #h(1fr) #pageNumber\n            #line(length: 100%)\n          ]\n        }\n      },\n    ),\n    footer: locate(\n      loc => {\n        // Retrieve the current page number\n        let pageNumber = counter(page).at(loc).first()\n\n        // Check if the current page starts with a non-chapter heading\n        let headings = query(heading.where(level: 1))\n        let isSectionPage = headings.any(it => it.location().page() == pageNumber)\n        if (isSectionPage) {\n          return align(center, text(0.95em, str(pageNumber)));\n        }\n\n        // If the page is not a section page, don't display anything\n        return;\n      },\n    ),\n  )\n```\n\nI couldn't find an example on how to replace `loc => {}` with context. How should I do that?",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 76,
+      "score": 4260.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 106
+    },
+    {
+      "id": 3515,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-10-07T07:22:59.131Z",
+      "updated_at": "2024-10-07T07:29:06.078Z",
+      "cooked": "<p>Hello!<br>\nDon’t hesitate to provide a minimal working example in your post in the future, it helps to reproduce your exact issue and solve the underlying problem.<br>\nIn this case, the migration from <code>locate(loc =&gt; {...})</code> to a <code>context</code> expression is relatively straightforward:</p>\n<ul>\n<li>Replace <code>locate(...)</code> with <code>context { ... }</code></li>\n<li>Replace <code>loc</code> with <code>here()</code>, although, technically speaking you may even use <code>counter(page).get().first()</code>. See <a href=\"https://typst.app/docs/reference/introspection/counter/#definitions-get\">get</a>.</li>\n</ul>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(\n    header: context {\n        // Retrieve the current page number\n        let pageNumber = counter(page).at(here()).first()\n\n        // Check if the current page starts with a non-chapter heading\n        let headings = query(heading.where(level: 1))\n        let isSectionPage = headings.any(it =&gt; it.location().page() == pageNumber)\n        if (not isSectionPage) {\n          let before = query(selector(heading.where(level: 1)).before(loc))\n\n          // Create the heading numbering.\n          let number = if before.last().numbering != none {\n            counter(heading.where(level: 1)).display(before.last().numbering)\n            // h(7pt, weak: true)\n          }\n\n          return [\n            #set text(8pt)\n            #smallcaps[Chapter #number. #before.last().body]\n            #h(1fr) #pageNumber\n            #line(length: 100%)\n          ]\n        }\n    },\n    footer: context {\n        // Retrieve the current page number\n        let pageNumber = counter(page).at(here()).first()\n\n        // Check if the current page starts with a non-chapter heading\n        let headings = query(heading.where(level: 1))\n        let isSectionPage = headings.any(it =&gt; it.location().page() == pageNumber)\n        if (isSectionPage) {\n          return align(center, text(0.95em, str(pageNumber)));\n        }\n\n        // If the page is not a section page, don't display anything\n        return;\n   },\n)\n</code></pre>\n<aside class=\"quote no-group\" data-username=\"Akshay_Raj_Gollahall\" data-post=\"1\" data-topic=\"965\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/akshay_raj_gollahall/48/118_2.png\" class=\"avatar\"> Akshay_Raj_Gollahall:</div>\n<blockquote>\n<p>I couldn’t find an example on how to replace <code>loc =&gt; {}</code> with context.</p>\n</blockquote>\n</aside>\n<p>I don’t think I’ve seen an explicit guide in the official documentation, but in small text you can <a href=\"https://typst.app/docs/reference/introspection/locate/\">read</a></p>\n<blockquote>\n<p>In Typst 0.10 and lower, the <code>locate</code> function took a closure that made the current location in the document available (like <a href=\"https://typst.app/docs/reference/introspection/here/\"><code>here</code></a> does now).</p>\n</blockquote>\n<p>For a more detailed explanation and comparison, you can take a look at <a class=\"mention\" href=\"/u/laurmaedje\">@laurmaedje</a>’s <a href=\"https://laurmaedje.github.io/posts/types-and-context/#:~:text=Consider%20this%20piece%20of%20code%3A\" rel=\"noopener nofollow ugc\">blog post</a> on the topic.</p>\n<p>For page numbers, you can take a look at this post, which gives a good example of a context expression <a href=\"https://forum.typst.app/t/how-can-i-use-different-page-number-locations-on-alternating-pages/870/2\" class=\"inline-onebox\">How can I use different page number locations on alternating pages? - #2 by Andrew</a>.</p>",
+      "raw": "Hello!\nDon't hesitate to provide a minimal working example in your post in the future, it helps to reproduce your exact issue and solve the underlying problem.\nIn this case, the migration from `locate(loc => {...})` to a `context` expression is relatively straightforward:\n- Replace `locate(...)` with `context { ... }`\n- Replace `loc` with `here()`, although, technically speaking you may even use `counter(page).get().first()`. See [get](https://typst.app/docs/reference/introspection/counter/#definitions-get).\n\n```typ\n#set page(\n    header: context {\n        // Retrieve the current page number\n        let pageNumber = counter(page).at(here()).first()\n\n        // Check if the current page starts with a non-chapter heading\n        let headings = query(heading.where(level: 1))\n        let isSectionPage = headings.any(it => it.location().page() == pageNumber)\n        if (not isSectionPage) {\n          let before = query(selector(heading.where(level: 1)).before(loc))\n\n          // Create the heading numbering.\n          let number = if before.last().numbering != none {\n            counter(heading.where(level: 1)).display(before.last().numbering)\n            // h(7pt, weak: true)\n          }\n\n          return [\n            #set text(8pt)\n            #smallcaps[Chapter #number. #before.last().body]\n            #h(1fr) #pageNumber\n            #line(length: 100%)\n          ]\n        }\n    },\n    footer: context {\n        // Retrieve the current page number\n        let pageNumber = counter(page).at(here()).first()\n\n        // Check if the current page starts with a non-chapter heading\n        let headings = query(heading.where(level: 1))\n        let isSectionPage = headings.any(it => it.location().page() == pageNumber)\n        if (isSectionPage) {\n          return align(center, text(0.95em, str(pageNumber)));\n        }\n\n        // If the page is not a section page, don't display anything\n        return;\n   },\n)\n```\n\n[quote=\"Akshay_Raj_Gollahall, post:1, topic:965\"]\nI couldn’t find an example on how to replace `loc => {}` with context.\n[/quote]\n\nI don't think I've seen an explicit guide in the official documentation, but in small text you can [read](https://typst.app/docs/reference/introspection/locate/)\n> In Typst 0.10 and lower, the `locate` function took a closure that made the current location in the document available (like [`here`](https://typst.app/docs/reference/introspection/here/) does now).\n\nFor a more detailed explanation and comparison, you can take a look at @laurmaedje's [blog post](https://laurmaedje.github.io/posts/types-and-context/#:~:text=Consider%20this%20piece%20of%20code%3A) on the topic.\n\nFor page numbers, you can take a look at this post, which gives a good example of a context expression https://forum.typst.app/t/how-can-i-use-different-page-number-locations-on-alternating-pages/870/2.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 2,
+      "reads": 69,
+      "score": 493.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:16.103671"
+}

@@ -1,0 +1,66 @@
+{
+  "topic_metadata": {
+    "id": 2747,
+    "title": "Is there a way to replace Hexo/other CMS's formula system with typst's formula?",
+    "slug": "is-there-a-way-to-replace-hexo-other-cmss-formula-system-with-typsts-formula",
+    "posts_count": 2,
+    "created_at": "2025-02-10T06:20:32.560Z",
+    "last_posted_at": "2025-02-10T09:51:02.829Z",
+    "views": 60,
+    "like_count": 4,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "scripting",
+      "math",
+      "tooling",
+      "latex-migration"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 91
+  },
+  "posts": [
+    {
+      "id": 8413,
+      "post_number": 1,
+      "username": "Dexter_Chen",
+      "name": "Dexter Chen",
+      "created_at": "2025-02-10T06:20:32.727Z",
+      "updated_at": "2025-02-10T06:20:32.727Z",
+      "cooked": "<p>I’ve been using typst for nearly 8 months and I now found it har to use the LaTeX formula in my hexo blog. Is it possible to replace it with typst’s formula system? Or is there a a way to output typst’s formula as an svg file and insert it manually as a temporary solution? Thx.</p>",
+      "raw": "I've been using typst for nearly 8 months and I now found it har to use the LaTeX formula in my hexo blog. Is it possible to replace it with typst's formula system? Or is there a a way to output typst's formula as an svg file and insert it manually as a temporary solution? Thx.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 25,
+      "score": 110.0,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1166
+    },
+    {
+      "id": 8421,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-02-10T09:51:02.829Z",
+      "updated_at": "2025-02-10T09:51:02.829Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/dexter_chen\">@Dexter_Chen</a>, you can take a look at this blog which explains how to do this using <a href=\"https://myriad-dreamin.github.io/typst.ts/\">typst.ts</a>.</p>\n<p><a href=\"https://hanwen.io/en/posts/use_typst_for_math_in_blog/\" class=\"onebox\" target=\"_blank\" rel=\"noopener\">https://hanwen.io/en/posts/use_typst_for_math_in_blog/</a></p>",
+      "raw": "Hello @Dexter_Chen, you can take a look at this blog which explains how to do this using [typst.ts](https://myriad-dreamin.github.io/typst.ts/).\n\nhttps://hanwen.io/en/posts/use_typst_for_math_in_blog/",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 23,
+      "score": 84.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:51.780188"
+}

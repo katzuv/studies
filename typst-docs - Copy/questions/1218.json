@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1218,
+    "title": "How to extend header towards the text?",
+    "slug": "how-to-extend-header-towards-the-text",
+    "posts_count": 3,
+    "created_at": "2024-10-19T16:56:22.787Z",
+    "last_posted_at": "2024-10-20T13:00:32.041Z",
+    "views": 240,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "header-footer"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 197
+  },
+  "posts": [
+    {
+      "id": 4267,
+      "post_number": 1,
+      "username": "mgholam",
+      "name": "mgholam",
+      "created_at": "2024-10-19T16:56:22.876Z",
+      "updated_at": "2024-10-23T13:34:45.997Z",
+      "cooked": "<p>Given the following:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(\n\tpaper: \"a4\",\n\tflipped: true,\n\tmargin: (x: 1cm, y: 1cm, top: 6cm, bottom: 1.5cm)\n)\n#set page(header: context {\n\t\trect(height: 4cm, width: 27.5cm, [hello])\n})\n#show table.cell.where(y:0):set text(weight:\"extrabold\")\n#set table(\n\tstroke: none,\n)\n#let results = csv.decode(\"\nHeader1,Header2,Header3\nA,B,15000\nC,D,32000\nE,F,16270\nG,H,17209\n\")\n#let (header, ..data) = results\n#table(\n\tcolumns: header.map(x=&gt;1fr),\n  align:(left,left,right),\n\n\ttable.hline(),\n\ttable.header(..header),\n\ttable.hline(),\n\n\t..data.flatten(),\n\ttable.hline()\n)\n</code></pre>\n<p>The page top is set to 6cm, but the <code>rect</code> can only be fully visible at 4cm height.<br>\nHow can I extend the rect to be the same as the header height (i.e. the rect should touch the table top)?</p>",
+      "raw": "Given the following:\n```typ\n#set page(\n\tpaper: \"a4\",\n\tflipped: true,\n\tmargin: (x: 1cm, y: 1cm, top: 6cm, bottom: 1.5cm)\n)\n#set page(header: context {\n\t\trect(height: 4cm, width: 27.5cm, [hello])\n})\n#show table.cell.where(y:0):set text(weight:\"extrabold\")\n#set table(\n\tstroke: none,\n)\n#let results = csv.decode(\"\nHeader1,Header2,Header3\nA,B,15000\nC,D,32000\nE,F,16270\nG,H,17209\n\")\n#let (header, ..data) = results\n#table(\n\tcolumns: header.map(x=>1fr),\n  align:(left,left,right),\n\n\ttable.hline(),\n\ttable.header(..header),\n\ttable.hline(),\n\n\t..data.flatten(),\n\ttable.hline()\n)\n```\nThe page top is set to 6cm, but the `rect` can only be fully visible at 4cm height.\nHow can I extend the rect to be the same as the header height (i.e. the rect should touch the table top)?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 1030.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 608
+    },
+    {
+      "id": 4273,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2024-10-19T17:39:38.166Z",
+      "updated_at": "2024-10-19T17:43:09.378Z",
+      "cooked": "<p>You are probably looking for the page parameter <a href=\"https://typst.app/docs/reference/layout/page/#parameters-header-ascent\">header-ascent</a>.<br>\n<code>#set page(header-ascent: 0pt)</code></p>",
+      "raw": "You are probably looking for the page parameter [header-ascent](https://typst.app/docs/reference/layout/page/#parameters-header-ascent).\n`#set page(header-ascent: 0pt)`",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 26,
+      "score": 30.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    },
+    {
+      "id": 4300,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-10-20T13:00:32.041Z",
+      "updated_at": "2024-10-20T13:00:32.041Z",
+      "cooked": "<p>Hey <a class=\"mention\" href=\"/u/mgholam\">@mgholam</a>, I’ve updated your post title to better suit our question guidelines: <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\" class=\"inline-onebox\">How to post in the Questions category</a></p>\n<p>Make sure your title is a question you’d ask a friend about Typst. <img src=\"https://forum.typst.app/images/emoji/apple/wink.png?v=12\" title=\":wink:\" class=\"emoji\" alt=\":wink:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Hey @mgholam, I've updated your post title to better suit our question guidelines: https://forum.typst.app/t/how-to-post-in-the-questions-category/11\n\nMake sure your title is a question you'd ask a friend about Typst. :wink:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 19,
+      "score": 8.8,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:23.106036"
+}

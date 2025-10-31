@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 3031,
+    "title": "How to add center-aligned columns in math mode?",
+    "slug": "how-to-add-center-aligned-columns-in-math-mode",
+    "posts_count": 3,
+    "created_at": "2025-02-27T18:49:42.010Z",
+    "last_posted_at": "2025-03-03T15:36:53.235Z",
+    "views": 139,
+    "like_count": 0,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "layout",
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 135
+  },
+  "posts": [
+    {
+      "id": 9140,
+      "post_number": 1,
+      "username": "jeanas",
+      "name": "Jean Abou Samra",
+      "created_at": "2025-02-27T18:49:42.118Z",
+      "updated_at": "2025-03-03T15:36:12.570Z",
+      "cooked": "<p>In math mode, <code>&amp;</code> creates alternatively left-aligned and right-aligned columns. Is it possible to make a column centered?</p>",
+      "raw": "In math mode, `&` creates alternatively left-aligned and right-aligned columns. Is it possible to make a column centered?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 28,
+      "score": 420.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 485
+    },
+    {
+      "id": 9157,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-02-28T09:43:42.225Z",
+      "updated_at": "2025-02-28T09:43:42.225Z",
+      "cooked": "<p>Hello and welcome <a class=\"mention\" href=\"/u/jeanas\">@jeanas</a>, don’t hesitate to read <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\" class=\"inline-onebox\">How to post in the Questions category</a> and change your topic’s title appropriately, and optionally add some tags.</p>\n<p>As for center-aligning equations, you can do that using a <a href=\"https://typst.app/docs/reference/layout/grid/\">grid</a> instead, as pure equations only alternate alignment left and right.</p>\n<p>eg</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#grid(\n    align: (center, center),\n    row-gutter: 1em,\n    column-gutter: .5em,\n    columns: 2,\n    $a + b$, $=1$,\n    $d$, $=2$\n)\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/7/78caa52277d6d15df8968dbdd6c559f713a8a199.png\" alt=\"image\" data-base62-sha1=\"hezsBXaEfCYZ1zBijnriIIHe6UN\" width=\"238\" height=\"160\"></p>",
+      "raw": "Hello and welcome @jeanas, don't hesitate to read https://forum.typst.app/t/how-to-post-in-the-questions-category/11 and change your topic's title appropriately, and optionally add some tags.\n\nAs for center-aligning equations, you can do that using a [grid](https://typst.app/docs/reference/layout/grid/) instead, as pure equations only alternate alignment left and right.\n\neg\n```typ\n#grid(\n    align: (center, center),\n    row-gutter: 1em,\n    column-gutter: .5em,\n    columns: 2,\n    $a + b$, $=1$,\n    $d$, $=2$\n)\n```\n![image|238x160](upload://hezsBXaEfCYZ1zBijnriIIHe6UN.png)",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 20.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 9320,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2025-03-03T15:36:53.235Z",
+      "updated_at": "2025-03-03T15:36:53.235Z",
+      "cooked": "<p>Hey <a class=\"mention\" href=\"/u/jeanas\">@jeanas</a>, please let us know if <a class=\"mention\" href=\"/u/quachpas\">@quachpas</a>’s answer solved your problem (and, if so, mark it as a solution) or you’d like more help. Thank you!</p>",
+      "raw": "Hey @jeanas, please let us know if @quachpas's answer solved your problem (and, if so, mark it as a solution) or you'd like more help. Thank you!",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 16,
+      "score": 3.2,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:02.729221"
+}

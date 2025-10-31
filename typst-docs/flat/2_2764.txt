@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2764,
+    "title": "Is it possible to remove indent for next lines in enum?",
+    "slug": "is-it-possible-to-remove-indent-for-next-lines-in-enum",
+    "posts_count": 2,
+    "created_at": "2025-02-10T22:50:21.637Z",
+    "last_posted_at": "2025-02-10T23:07:06.182Z",
+    "views": 63,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "ra4ina",
+    "tags": [
+      "lists"
+    ],
+    "category_id": 5,
+    "participant_count": 1,
+    "word_count": 22
+  },
+  "posts": [
+    {
+      "id": 8446,
+      "post_number": 1,
+      "username": "ra4ina",
+      "name": "ra4ina",
+      "created_at": "2025-02-10T22:50:21.740Z",
+      "updated_at": "2025-02-11T08:51:24.843Z",
+      "cooked": "<p><img src=\"https://forum.typst.app/uploads/default/original/2X/9/9abe14c32e5011aeccc53a5cad7a37338f0c1dc7.png\" alt=\"image\" data-base62-sha1=\"m4UMc4BnsLbmA2G9NM2C6ejdNLp\" width=\"599\" height=\"492\"></p>",
+      "raw": "![image|599x492](upload://m4UMc4BnsLbmA2G9NM2C6ejdNLp.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 105.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1175
+    },
+    {
+      "id": 8447,
+      "post_number": 2,
+      "username": "ra4ina",
+      "name": "ra4ina",
+      "created_at": "2025-02-10T23:07:06.182Z",
+      "updated_at": "2025-02-10T23:07:06.182Z",
+      "cooked": "<p>Found a workaround of this</p>\n<pre><code class=\"lang-auto\">#set enum(body-indent: -1.11cm)\n+ #h(1.25cm) something #lorem(25)\n</code></pre>",
+      "raw": "Found a workaround of this\n```\n#set enum(body-indent: -1.11cm)\n+ #h(1.25cm) something #lorem(25)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 5.2,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 1175
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:49.639153"
+}

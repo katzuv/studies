@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2422,
+    "title": "How to keep a consistent figure caption and outline after changing the style of the figure caption?",
+    "slug": "how-to-keep-a-consistent-figure-caption-and-outline-after-changing-the-style-of-the-figure-caption",
+    "posts_count": 3,
+    "created_at": "2025-01-15T09:43:46.807Z",
+    "last_posted_at": "2025-01-31T09:57:10.075Z",
+    "views": 339,
+    "like_count": 0,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "chxp",
+    "tags": [
+      "outline",
+      "figures"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 816
+  },
+  "posts": [
+    {
+      "id": 7535,
+      "post_number": 1,
+      "username": "chxp",
+      "name": "chxp",
+      "created_at": "2025-01-15T09:43:46.991Z",
+      "updated_at": "2025-02-21T20:57:33.269Z",
+      "cooked": "<p>I am trying to write the supporting information of the paper by using <code>typst</code>.  The code is provided as follows.</p>\n<p>However, the format of the outline is not consistent with figure captions, for example:</p>\n<ul>\n<li><code>Figure 1:</code> in the outline, but <code>Figure S1. </code> in the figure caption.</li>\n<li>Normal font of <code>Figure 1:</code> in the outline, but bold in the figure caption. I want the <code>Figure 1:</code> in the outline changed into a bold font as that in the figure caption.</li>\n</ul>\n<p>Thanks for your help.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set page(\"a4\", margin: auto)\n\n// Long and short captions for the outline\n#let in-outline = state(\"in-outline\", false)\n#show outline: it =&gt; {\n  in-outline.update(true)\n  it\n  in-outline.update(false)\n}\n#let ffcaption(long, short) = context if in-outline.get() { short } else { long }\n\n// table\n#show table.cell.where(y: 0): strong\n\n// Change figure caption from Figure 1: to *Figure 1.*\n#show figure.caption: it =&gt; [\n    #text(weight: \"bold\")[\n        #it.supplement S#it.counter.display(it.numbering).\n    ~]#it.body\n]\n\n// make tabel caption on the top\n#show figure.where(\n    kind: table\n): set figure.caption(position: top)\n\n// outline for image and table\n#outline(\n    target: figure.where(kind: image).or(figure.where(kind: table)),\n)\n\n// figure\n#figure(\n    rect(height:6cm, width: 11cm, fill: red),\n    caption: ffcaption([A curious figure.], [Short1]),\n) &lt;fig1&gt;\n\n\n#figure(\n    rect(height:10cm, width: 5cm, fill: blue),\n    caption: ffcaption([A curious figure.], [Short2 for]),\n) &lt;fig2&gt;\n\n\n#figure(\n    table(\n        columns: 2,\n        stroke: (_, y) =&gt; (\n            top: if y &lt;= 1 { 1pt } else { 0pt },\n            bottom: 1pt,\n        ),\n        [*Amount*], [*Ingredient*],\n        [360g], [Baking flour],\n        [Drizzle], [Vanilla extract],\n    ),\n    caption: ffcaption([a caption],[Table short]),\n) &lt;tbl1&gt;\n\n\n#figure(\n    table(\n        columns: 2,\n        stroke: (_, y) =&gt; (\n            top: if y &lt;= 1 { 1pt } else { 0pt },\n            bottom: 1pt,\n        ),\n        [*Amount*], [*Ingredient*],\n        [360g], [Baking flour],\n    ),\n    caption: ffcaption([a caption with very very very much much long long long long of of of new new new text is o with out a n ew c],\n        [table, short2])\n) &lt;tbl2&gt;\n\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/6/682e74361cee15f31268b45aa3ec16713f484120.png\" data-download-href=\"https://forum.typst.app/uploads/default/682e74361cee15f31268b45aa3ec16713f484120\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/6/682e74361cee15f31268b45aa3ec16713f484120_2_347x500.png\" alt=\"image\" data-base62-sha1=\"eRDbpvWXugMZ7chJUNpqpOrnRT2\" width=\"347\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/6/682e74361cee15f31268b45aa3ec16713f484120_2_347x500.png, https://forum.typst.app/uploads/default/optimized/2X/6/682e74361cee15f31268b45aa3ec16713f484120_2_520x750.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/6/682e74361cee15f31268b45aa3ec16713f484120_2_694x1000.png 2x\" data-dominant-color=\"D4C3D1\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">725×1043 36.7 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "I am trying to write the supporting information of the paper by using `typst`.  The code is provided as follows.\n\nHowever, the format of the outline is not consistent with figure captions, for example:\n- `Figure 1:` in the outline, but `Figure S1. ` in the figure caption.\n- Normal font of `Figure 1:` in the outline, but bold in the figure caption. I want the `Figure 1:` in the outline changed into a bold font as that in the figure caption.\n\nThanks for your help.\n\n```typst\n#set page(\"a4\", margin: auto)\n\n// Long and short captions for the outline\n#let in-outline = state(\"in-outline\", false)\n#show outline: it => {\n  in-outline.update(true)\n  it\n  in-outline.update(false)\n}\n#let ffcaption(long, short) = context if in-outline.get() { short } else { long }\n\n// table\n#show table.cell.where(y: 0): strong\n\n// Change figure caption from Figure 1: to *Figure 1.*\n#show figure.caption: it => [\n    #text(weight: \"bold\")[\n        #it.supplement S#it.counter.display(it.numbering).\n    ~]#it.body\n]\n\n// make tabel caption on the top\n#show figure.where(\n    kind: table\n): set figure.caption(position: top)\n\n// outline for image and table\n#outline(\n    target: figure.where(kind: image).or(figure.where(kind: table)),\n)\n\n// figure\n#figure(\n    rect(height:6cm, width: 11cm, fill: red),\n    caption: ffcaption([A curious figure.], [Short1]),\n) <fig1>\n\n\n#figure(\n    rect(height:10cm, width: 5cm, fill: blue),\n    caption: ffcaption([A curious figure.], [Short2 for]),\n) <fig2>\n\n\n#figure(\n    table(\n        columns: 2,\n        stroke: (_, y) => (\n            top: if y <= 1 { 1pt } else { 0pt },\n            bottom: 1pt,\n        ),\n        [*Amount*], [*Ingredient*],\n        [360g], [Baking flour],\n        [Drizzle], [Vanilla extract],\n    ),\n    caption: ffcaption([a caption],[Table short]),\n) <tbl1>\n\n\n#figure(\n    table(\n        columns: 2,\n        stroke: (_, y) => (\n            top: if y <= 1 { 1pt } else { 0pt },\n            bottom: 1pt,\n        ),\n        [*Amount*], [*Ingredient*],\n        [360g], [Baking flour],\n    ),\n    caption: ffcaption([a caption with very very very much much long long long long of of of new new new text is o with out a n ew c],\n        [table, short2])\n) <tbl2>\n\n```\n![image|347x500](upload://eRDbpvWXugMZ7chJUNpqpOrnRT2.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 40,
+      "score": 1638.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1055
+    },
+    {
+      "id": 7586,
+      "post_number": 2,
+      "username": "chxp",
+      "name": "chxp",
+      "created_at": "2025-01-16T14:55:36.212Z",
+      "updated_at": "2025-01-16T14:55:36.212Z",
+      "cooked": "<p>I found I must restyle the content of the <code>outline</code> by myself. I found the following solutions, although I do not fully understand the following script.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">// from: https://github.com/typst/typst/discussions/4515\n#show outline.entry: it=&gt; if &lt;no-prefix&gt; != it.fields().at(\n    default: {},\n    \"label\",\n) [#outline.entry(\n    it.level,\n    it.element,\n    {\n        [*#it.element.caption.supplement *]\n        [*#numbering(\n            it.element.numbering,\n            ..it.element.counter.at(it.element.location()),\n        )*]\n        [*.* ]\n        // figure.caption.separator\n        it.element.caption.body\n    },\n    it.fill,\n    [#it.page]\n)&lt;no-prefix&gt;] else {it}\n\n</code></pre>",
+      "raw": "I found I must restyle the content of the `outline` by myself. I found the following solutions, although I do not fully understand the following script.\n\n```typst\n// from: https://github.com/typst/typst/discussions/4515\n#show outline.entry: it=> if <no-prefix> != it.fields().at(\n    default: {},\n    \"label\",\n) [#outline.entry(\n    it.level,\n    it.element,\n    {\n        [*#it.element.caption.supplement *]\n        [*#numbering(\n            it.element.numbering,\n            ..it.element.counter.at(it.element.location()),\n        )*]\n        [*.* ]\n        // figure.caption.separator\n        it.element.caption.body\n    },\n    it.fill,\n    [#it.page]\n)<no-prefix>] else {it}\n\n```",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 32,
+      "score": 56.4,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 1055
+    },
+    {
+      "id": 8059,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-31T09:57:10.075Z",
+      "updated_at": "2025-01-31T09:57:10.075Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/chxp\">@chxp</a>, if the solution you found was sufficient to you, feel free to mark your reply as the accepted answer. It makes it easier for future readers to find the solution.</p>\n<hr>\n<aside class=\"quote no-group\" data-username=\"chxp\" data-post=\"2\" data-topic=\"2422\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/letter_avatar_proxy/v4/letter/c/B7441C/48.png\" class=\"avatar\"> chxp:</div>\n<blockquote>\n<p>although I do not fully understand the following script</p>\n</blockquote>\n</aside>\n<p>Here’s an explanation that hopefully makes sense to you. First, I tried to “clean up” (which is subjective of course) the code and try to bring both the caption and outline styling in a similar form, so that it’s easier to compare them.</p>\n<p>Here they are:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show figure.caption: it =&gt; {\n  text(weight: \"bold\", {\n    [#it.supplement S]\n    context it.counter.display(it.numbering)\n    [.~]\n  })\n  it.body\n}\n\n#show outline.entry: it =&gt; {\n  let entry-label = it.fields().at(\"label\", default: none)\n  if entry-label == &lt;no-prefix&gt; {\n    return it\n  }\n\n  let elem = it.element\n  let new-entry = outline.entry(\n    it.level,\n    it.element,\n    {\n      text(weight: \"bold\", {\n        [#it.element.caption.supplement S]\n        numbering(it.element.numbering, ..it.element.counter.at(it.element.location()))\n        [.~]\n      })\n      // figure.caption.separator\n      it.element.caption.body\n    },\n    it.fill,\n    [#it.page]\n  )\n  [#new-entry&lt;no-prefix&gt;]\n}\n</code></pre>\n<p>The cleanup mostly consisted of</p>\n<ul>\n<li>using <code>{...}</code> instead of <code>[...]</code> in a few places so that whitespace doesn’t change the result\n<ul>\n<li>thus also breaking some of the code over multiple lines</li>\n</ul>\n</li>\n<li>use variables <code>entry-label</code>, <code>elem</code> and <code>new-entry</code> to make the code “flatter”</li>\n</ul>\n<p>Both snippets now contain a <code>text(weight: \"bold\", {...})</code> part that is in charge of the supplement and numbering; I assume that’s not the problem, but the surrounding code.</p>\n<p>This code contains a show rule for <code>outline.entry</code> that creates a new <code>outline.entry</code> when it runs. Without any countermeasures, this would lead to infinite recursion: There is a new entry? Run the show rule! Now there’s an <em>even newer</em> entry, so run the show rule again!</p>\n<p>To solve this, the show rule must recognize whether it is processing an entry that it itself created. The following code does this:</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">// get the label of the entry. a regular entry won't have one\nlet entry-label = it.fields().at(\"label\", default: none)\n// if the label is present, return the entry unmodified, preventing another run of the show rule\nif entry-label == &lt;no-prefix&gt; {\n  return it\n}\n\nlet new-entry = ...\n// return the new entry, but first attach a label to it\n[#new-entry&lt;no-prefix&gt;]\n</code></pre>\n<p>(the old code had a big <code>if ... [...] else {it}</code> that achieved the same, but this way I think it’s more obvious what the <code>return it</code> is connected to)</p>",
+      "raw": "Hi @chxp, if the solution you found was sufficient to you, feel free to mark your reply as the accepted answer. It makes it easier for future readers to find the solution.\n\n---\n\n[quote=\"chxp, post:2, topic:2422\"]\nalthough I do not fully understand the following script\n[/quote]\n\nHere's an explanation that hopefully makes sense to you. First, I tried to \"clean up\" (which is subjective of course) the code and try to bring both the caption and outline styling in a similar form, so that it's easier to compare them.\n\nHere they are:\n\n```typ\n#show figure.caption: it => {\n  text(weight: \"bold\", {\n    [#it.supplement S]\n    context it.counter.display(it.numbering)\n    [.~]\n  })\n  it.body\n}\n\n#show outline.entry: it => {\n  let entry-label = it.fields().at(\"label\", default: none)\n  if entry-label == <no-prefix> {\n    return it\n  }\n\n  let elem = it.element\n  let new-entry = outline.entry(\n    it.level,\n    it.element,\n    {\n      text(weight: \"bold\", {\n        [#it.element.caption.supplement S]\n        numbering(it.element.numbering, ..it.element.counter.at(it.element.location()))\n        [.~]\n      })\n      // figure.caption.separator\n      it.element.caption.body\n    },\n    it.fill,\n    [#it.page]\n  )\n  [#new-entry<no-prefix>]\n}\n```\n\nThe cleanup mostly consisted of\n- using `{...}` instead of `[...]` in a few places so that whitespace doesn't change the result\n  - thus also breaking some of the code over multiple lines\n- use variables `entry-label`, `elem` and `new-entry` to make the code \"flatter\"\n\nBoth snippets now contain a `text(weight: \"bold\", {...})` part that is in charge of the supplement and numbering; I assume that's not the problem, but the surrounding code.\n\nThis code contains a show rule for `outline.entry` that creates a new `outline.entry` when it runs. Without any countermeasures, this would lead to infinite recursion: There is a new entry? Run the show rule! Now there's an _even newer_ entry, so run the show rule again!\n\nTo solve this, the show rule must recognize whether it is processing an entry that it itself created. The following code does this:\n\n```typc\n// get the label of the entry. a regular entry won't have one\nlet entry-label = it.fields().at(\"label\", default: none)\n// if the label is present, return the entry unmodified, preventing another run of the show rule\nif entry-label == <no-prefix> {\n  return it\n}\n\nlet new-entry = ...\n// return the new entry, but first attach a label to it\n[#new-entry<no-prefix>]\n```\n(the old code had a big `if ... [...] else {it}` that achieved the same, but this way I think it's more obvious what the `return it` is connected to)",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 0,
+      "reads": 26,
+      "score": 30.2,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:49.513839"
+}

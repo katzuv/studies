@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2790,
+    "title": "How to make a single list numbered with letters, without using the `#set` command?",
+    "slug": "how-to-make-a-single-list-numbered-with-letters-without-using-the-set-command",
+    "posts_count": 2,
+    "created_at": "2025-02-12T14:11:35.888Z",
+    "last_posted_at": "2025-02-12T14:22:54.892Z",
+    "views": 102,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "layout",
+      "lists"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 149
+  },
+  "posts": [
+    {
+      "id": 8513,
+      "post_number": 1,
+      "username": "jsx97",
+      "name": "jsx97",
+      "created_at": "2025-02-12T14:11:36.253Z",
+      "updated_at": "2025-02-12T14:24:04.728Z",
+      "cooked": "<p>Hello! How to make a single list to be numbered with letters without using the <code>#set</code> command?</p>\n<p>I tried this:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#enum(numbering: \"a)\")[\n  + foo\n  + bar\n]\n\n+ foo\n+ bar\n</code></pre>\n<p>but the output doesn’t look correct. Currently, the output is</p>\n<pre data-code-wrap=\"none\"><code class=\"lang-none\">a) 1. foo\n   2. bar\n</code></pre>\n<p>whereas I expected</p>\n<pre data-code-wrap=\"none\"><code class=\"lang-none\">a) foo\nb) bar \n</code></pre>\n<p>I also tried</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#enum(numbering: \"a)\",\n  enum.item[foo],\n  enum.item[bar]\n)\n\n+ foo\n+ bar\n</code></pre>\n<p>and it works fine, but maybe there is a simpler syntax for this?</p>",
+      "raw": "Hello! How to make a single list to be numbered with letters without using the `#set` command?\n\nI tried this:\n\n```typst\n#enum(numbering: \"a)\")[\n  + foo\n  + bar\n]\n\n+ foo\n+ bar\n```\n\nbut the output doesn't look correct. Currently, the output is \n\n```none\na) 1. foo\n   2. bar\n```\n\nwhereas I expected\n\n```none\na) foo\nb) bar \n```\n\nI also tried\n\n```typst\n#enum(numbering: \"a)\",\n  enum.item[foo],\n  enum.item[bar]\n)\n\n+ foo\n+ bar\n```\n\nand it works fine, but maybe there is a simpler syntax for this?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 17,
+      "score": 428.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 477
+    },
+    {
+      "id": 8514,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-02-12T14:22:54.892Z",
+      "updated_at": "2025-02-12T14:23:41.218Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/jsx97\">@jsx97</a>,</p>\n<p>this is a bit tricky, but <code>enum</code> is defined as <code>enum(..children)</code>, where the <code>..</code> is very important. It is a variadic argument, meaning it can be accepted multiple times. The simpler syntax is</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#enum(numbering: \"a)\")[foo][bar]\n</code></pre>\n<p>which is equivalent to</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#enum(numbering: \"a)\", \"foo\", \"bar\")\n</code></pre>\n<p>By writing your first example, you actually write the following</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#enum(numbering: \"a)\", enum[foo][bar])\n</code></pre>",
+      "raw": "Hello @jsx97,\n\nthis is a bit tricky, but `enum` is defined as `enum(..children)`, where the `..` is very important. It is a variadic argument, meaning it can be accepted multiple times. The simpler syntax is\n\n```typ\n#enum(numbering: \"a)\")[foo][bar]\n```\nwhich is equivalent to\n```typ\n#enum(numbering: \"a)\", \"foo\", \"bar\")\n```\n\nBy writing your first example, you actually write the following\n```typ\n#enum(numbering: \"a)\", enum[foo][bar])\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 17,
+      "score": 33.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:43.868454"
+}

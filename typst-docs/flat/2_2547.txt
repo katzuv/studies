@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2547,
+    "title": "Why is '#table(' producing incorrect output?",
+    "slug": "why-is-table-producing-incorrect-output",
+    "posts_count": 3,
+    "created_at": "2025-01-26T15:41:39.684Z",
+    "last_posted_at": "2025-01-26T16:50:02.090Z",
+    "views": 61,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "tables",
+      "syntax"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 247
+  },
+  "posts": [
+    {
+      "id": 7879,
+      "post_number": 1,
+      "username": "Andrew_van_der_Spuy",
+      "name": "Andrew van der Spuy",
+      "created_at": "2025-01-26T15:41:39.944Z",
+      "updated_at": "2025-01-26T16:17:42.614Z",
+      "cooked": "<p>I’m experiencing a problem with the ‘table’ code.</p>\n<p>My input looks like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#table(\n\tcolumns: 4,\n\tstroke: none,\n\ttable.header[X], […], [Y],[ ],\n\t[ ], [W], […], [Z]\n)\n</code></pre>\n<p>The preview looks like this:</p>\n<pre><code class=\"lang-auto\">X\n… Y\nW … Z\n</code></pre>\n<p>But what it should look like is this:</p>\n<pre><code class=\"lang-auto\">X … Y\n  W … Z\n</code></pre>\n<p>And yet another table comes out perfectly:</p>\n<p>Input:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#table(\n    columns: 5,\n    stroke: none,\n    table.header[A][bigger][house][than][mine],\n    \t[\\[D], […], [N\\]], [ ], [ ],\n    \t[ ], [\\[A], [N\\]], [ ],[ ],\n\t[ ], [\\[A], […], [P],[Prn\\]]\t\n)\n</code></pre>\n<p>Output:</p>\n<pre><code class=\"lang-auto\">A   bigger  house  than  mine\n[D  …       N]\n    [A      N]\n    [A      …      P     Prn]\n</code></pre>\n<p>What is wrong with the first table code above?</p>",
+      "raw": "I'm experiencing a problem with the 'table' code.\n\nMy input looks like this:\n\n```typ\n#table(\n\tcolumns: 4,\n\tstroke: none,\n\ttable.header[X], […], [Y],[ ],\n\t[ ], [W], […], [Z]\n)\n```\nThe preview looks like this:\n```\nX\n… Y\nW … Z\n```\n\nBut what it should look like is this:\n```\nX … Y\n  W … Z\n```\nAnd yet another table comes out perfectly:\n\nInput:\n\n```typ\n#table(\n    columns: 5,\n    stroke: none,\n    table.header[A][bigger][house][than][mine],\n    \t[\\[D], […], [N\\]], [ ], [ ],\n    \t[ ], [\\[A], [N\\]], [ ],[ ],\n\t[ ], [\\[A], […], [P],[Prn\\]]\t\n)\n```\nOutput:\n```\nA   bigger  house  than  mine\n[D  …       N]\n    [A      N]\n    [A      …      P     Prn]\n```\nWhat is wrong with the first table code above?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 55.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1093
+    },
+    {
+      "id": 7884,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-26T16:41:02.848Z",
+      "updated_at": "2025-01-27T19:06:42.674Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/andrew_van_der_spuy\">@Andrew_van_der_Spuy</a>, I have tagged and formatted the post. Please check your DMs as I have sent you a notice on how to properly post on this forum.</p>",
+      "raw": "Hi @Andrew_van_der_Spuy, I have tagged and formatted the post. Please check your DMs as I have sent you a notice on how to properly post on this forum.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 14.8,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 7886,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-26T16:50:02.090Z",
+      "updated_at": "2025-01-26T16:50:02.090Z",
+      "cooked": "<pre><code class=\"lang-auto\">    table.header[X], […], [Y],[ ],\n</code></pre>\n<p>&nbsp;</p>\n<pre><code class=\"lang-auto\">    table.header[A][bigger][house][than][mine],\n</code></pre>\n<p>These two headers are different: the first has commas while the second doesn’t. Both are using a <a href=\"https://typst.app/docs/reference/foundations/function/#example\">trailing content block</a>, but the second variant has multiple of them.</p>\n<p>Written in code, the two lines of code are equivalent to the following:</p>\n<pre><code class=\"lang-auto\">    // header with one cell\n    table.header([X]),\n    // three cells in the next row\n    […], [Y],[ ],\n</code></pre>\n<p>&nbsp;</p>\n<pre><code class=\"lang-auto\">    // header with five cells\n    table.header([A], [bigger], [house], [than], [mine]),\n</code></pre>\n<p>Although multiple trailing content blocks are allowed, here they result in code that is less readable, so I would recommend using parentheses for your header, which should fix your code:</p>\n<pre><code class=\"lang-auto\">    table.header([X], […], [Y],[ ]),\n</code></pre>",
+      "raw": "```\n    table.header[X], […], [Y],[ ],\n```\n&nbsp;\n```\n    table.header[A][bigger][house][than][mine],\n```\n\nThese two headers are different: the first has commas while the second doesn't. Both are using a [trailing content block](https://typst.app/docs/reference/foundations/function/#example), but the second variant has multiple of them.\n\nWritten in code, the two lines of code are equivalent to the following:\n\n```\n    // header with one cell\n    table.header([X]),\n    // three cells in the next row\n    […], [Y],[ ],\n```\n&nbsp;\n```\n    // header with five cells\n    table.header([A], [bigger], [house], [than], [mine]),\n```\n\nAlthough multiple trailing content blocks are allowed, here they result in code that is less readable, so I would recommend using parentheses for your header, which should fix your code:\n```\n    table.header([X], […], [Y],[ ]),\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 25,
+      "score": 25.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:27.969730"
+}

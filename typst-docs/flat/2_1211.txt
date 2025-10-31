@@ -1,0 +1,65 @@
+{
+  "topic_metadata": {
+    "id": 1211,
+    "title": "How to customize outline.entry filling per level?",
+    "slug": "how-to-customize-outline-entry-filling-per-level",
+    "posts_count": 2,
+    "created_at": "2024-10-19T14:23:55.198Z",
+    "last_posted_at": "2024-10-20T11:13:55.077Z",
+    "views": 540,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "alimgyeniyt",
+    "tags": [
+      "scripting",
+      "layout",
+      "outline"
+    ],
+    "category_id": 5,
+    "participant_count": 1,
+    "word_count": 227
+  },
+  "posts": [
+    {
+      "id": 4253,
+      "post_number": 1,
+      "username": "alimgyeniyt",
+      "name": "Alimgyehr Uuhniyt",
+      "created_at": "2024-10-19T14:23:55.301Z",
+      "updated_at": "2024-10-19T14:23:55.301Z",
+      "cooked": "<p>this is my current show rule, i want to remove the filling for entries of level: 1. is there an easy way to do this ?</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">show outline: it =&gt; {\n  state(\"in-outline\").update(true)\n  it\n  state(\"in-outline\").update(false)\n}\n\nshow outline.entry : it =&gt; {\n  if it.level == 1 {\n    v(0.25em)\n    smallcaps(strong(it))\n  }\n  else if it.level == 2 {\n    strong(it)\n  }\n  else {\n    text(style: \"italic\", it)\n  }\n} \n</code></pre>\n<p>some of what i tried what i tried</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">// before the `v(0.25em)`\nset outline(fill: none) \nshow outline.entry: set outline(fill: none)\nset outline.entry(fill: none)\n// ...\n</code></pre>\n<p>the docs say that all arguments for <code>outline.entry()</code> are positional and required and i don’t know how to fill all of them.</p>",
+      "raw": "this is my current show rule, i want to remove the filling for entries of level: 1. is there an easy way to do this ?\n\n```typc\nshow outline: it => {\n  state(\"in-outline\").update(true)\n  it\n  state(\"in-outline\").update(false)\n}\n\nshow outline.entry : it => {\n  if it.level == 1 {\n    v(0.25em)\n    smallcaps(strong(it))\n  }\n  else if it.level == 2 {\n    strong(it)\n  }\n  else {\n    text(style: \"italic\", it)\n  }\n} \n```\n\nsome of what i tried what i tried\n\n```typc\n// before the `v(0.25em)`\nset outline(fill: none) \nshow outline.entry: set outline(fill: none)\nset outline.entry(fill: none)\n// ...\n```\nthe docs say that all arguments for `outline.entry()` are positional and required and i don't know how to fill all of them.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 60,
+      "score": 2492.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 605
+    },
+    {
+      "id": 4296,
+      "post_number": 2,
+      "username": "alimgyeniyt",
+      "name": "Alimgyehr Uuhniyt",
+      "created_at": "2024-10-20T11:13:55.077Z",
+      "updated_at": "2024-10-20T11:13:55.077Z",
+      "cooked": "<p>this solution simply shows anything related to the repeat function as none if the entry level is 1, a bit hacky.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show outline.entry.where(level: 1): it =&gt; {\n  show repeat: none\n  it\n}\n\n\n#outline()\n\n= Level 1 Heading\n\n== Level 2 Heading\n\n= Another Level 1 Heading\n\n== Another Heading here\n\n== And another one\n</code></pre>\n<p>a longer “appropriate” solution is to reconstruct the entry fully.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show outline.entry.where(level: 1): it =&gt; {\n  v(0.1em)\n  box(grid(\n    columns: (auto, 1fr, auto),\n    strong(link(it.element.location())[#it.element.body]),\n    h(1fr),\n    strong(it.page),\n  ))\n}\n\n\n#outline()\n\n= Level 1 Heading\n\n== Level 2 Heading\n\n= Another Level 1 Heading\n\n== Another Heading here\n\n== And another one\n</code></pre>",
+      "raw": "this solution simply shows anything related to the repeat function as none if the entry level is 1, a bit hacky.\n\n```typ\n#show outline.entry.where(level: 1): it => {\n  show repeat: none\n  it\n}\n\n\n#outline()\n\n= Level 1 Heading\n\n== Level 2 Heading\n\n= Another Level 1 Heading\n\n== Another Heading here\n\n== And another one\n```\n\na longer \"appropriate\" solution is to reconstruct the entry fully.\n\n```typ\n#show outline.entry.where(level: 1): it => {\n  v(0.1em)\n  box(grid(\n    columns: (auto, 1fr, auto),\n    strong(link(it.element.location())[#it.element.body]),\n    h(1fr),\n    strong(it.page),\n  ))\n}\n\n\n#outline()\n\n= Level 1 Heading\n\n== Level 2 Heading\n\n= Another Level 1 Heading\n\n== Another Heading here\n\n== And another one\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 55,
+      "score": 106.0,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 605
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:24.553083"
+}

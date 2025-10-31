@@ -1,0 +1,3057 @@
+= Calculation
+
+Module for calculations and processing of numeric values.
+
+These definitions are part of the `calc` module and not imported by default. In addition to the functions listed below, the `calc` module also defines the constants `pi`, `tau`, `e`, and `inf`.
+
+== Functions
+
+=== `abs`
+
+Calculates the absolute value of a numeric value.
+
+```
+abs(
+  int: int | float | length | angle | ratio | fraction | decimal
+) -> decimal
+```
+
+```typst
+#calc.abs(-5) \
+#calc.abs(5pt - 2cm) \
+#calc.abs(2fr) \
+#calc.abs(decimal("-342.440"))
+```
+
+==== `value`: int | float | length | angle | ratio | fraction | decimal (Required, Positional)
+
+The value whose absolute value to calculate.
+
+=== `pow`
+
+Raises a value to some exponent.
+
+```
+pow(
+  int: int | float | decimal,
+  int: int | float
+) -> decimal
+```
+
+```typst
+#calc.pow(2, 3) \
+#calc.pow(decimal("2.5"), 2)
+```
+
+==== `base`: int | float | decimal (Required, Positional)
+
+The base of the power.
+
+If this is a #link("/docs/reference/foundations/decimal/")[decimal], the exponent can only be an #link("/docs/reference/foundations/int/")[integer].
+
+==== `exponent`: int | float (Required, Positional)
+
+The exponent of the power.
+
+=== `exp`
+
+Raises a value to some exponent of e.
+
+```
+exp(
+  int: int | float
+) -> float
+```
+
+```typst
+#calc.exp(1)
+```
+
+==== `exponent`: int | float (Required, Positional)
+
+The exponent of the power.
+
+=== `sqrt`
+
+Calculates the square root of a number.
+
+```
+sqrt(
+  int: int | float
+) -> float
+```
+
+```typst
+#calc.sqrt(16) \
+#calc.sqrt(2.5)
+```
+
+==== `value`: int | float (Required, Positional)
+
+The number whose square root to calculate. Must be non-negative.
+
+=== `root`
+
+Calculates the real nth root of a number.
+
+If the number is negative, then n must be odd.
+
+```
+root(
+  float: float,
+  int: int
+) -> float
+```
+
+```typst
+#calc.root(16.0, 4) \
+#calc.root(27.0, 3)
+```
+
+==== `radicand`: float (Required, Positional)
+
+The expression to take the root of
+
+==== `index`: int (Required, Positional)
+
+Which root of the radicand to take
+
+=== `sin`
+
+Calculates the sine of an angle.
+
+When called with an integer or a float, they will be interpreted as radians.
+
+```
+sin(
+  int: int | float | angle
+) -> float
+```
+
+```typst
+#calc.sin(1.5) \
+#calc.sin(90deg)
+```
+
+==== `angle`: int | float | angle (Required, Positional)
+
+The angle whose sine to calculate.
+
+=== `cos`
+
+Calculates the cosine of an angle.
+
+When called with an integer or a float, they will be interpreted as radians.
+
+```
+cos(
+  int: int | float | angle
+) -> float
+```
+
+```typst
+#calc.cos(1.5) \
+#calc.cos(90deg)
+```
+
+==== `angle`: int | float | angle (Required, Positional)
+
+The angle whose cosine to calculate.
+
+=== `tan`
+
+Calculates the tangent of an angle.
+
+When called with an integer or a float, they will be interpreted as radians.
+
+```
+tan(
+  int: int | float | angle
+) -> float
+```
+
+```typst
+#calc.tan(1.5) \
+#calc.tan(90deg)
+```
+
+==== `angle`: int | float | angle (Required, Positional)
+
+The angle whose tangent to calculate.
+
+=== `asin`
+
+Calculates the arcsine of a number.
+
+```
+asin(
+  int: int | float
+) -> angle
+```
+
+```typst
+#calc.asin(0) \
+#calc.asin(1)
+```
+
+==== `value`: int | float (Required, Positional)
+
+The number whose arcsine to calculate. Must be between -1 and 1.
+
+=== `acos`
+
+Calculates the arccosine of a number.
+
+```
+acos(
+  int: int | float
+) -> angle
+```
+
+```typst
+#calc.acos(0) \
+#calc.acos(1)
+```
+
+==== `value`: int | float (Required, Positional)
+
+The number whose arcsine to calculate. Must be between -1 and 1.
+
+=== `atan`
+
+Calculates the arctangent of a number.
+
+```
+atan(
+  int: int | float
+) -> angle
+```
+
+```typst
+#calc.atan(0) \
+#calc.atan(1)
+```
+
+==== `value`: int | float (Required, Positional)
+
+The number whose arctangent to calculate.
+
+=== `atan2`
+
+Calculates the four-quadrant arctangent of a coordinate.
+
+The arguments are `(x, y)`, not `(y, x)`.
+
+```
+atan2(
+  int: int | float,
+  int: int | float
+) -> angle
+```
+
+```typst
+#calc.atan2(1, 1) \
+#calc.atan2(-2, -3)
+```
+
+==== `x`: int | float (Required, Positional)
+
+The X coordinate.
+
+==== `y`: int | float (Required, Positional)
+
+The Y coordinate.
+
+=== `sinh`
+
+Calculates the hyperbolic sine of a hyperbolic angle.
+
+```
+sinh(
+  float: float
+) -> float
+```
+
+```typst
+#calc.sinh(0) \
+#calc.sinh(1.5)
+```
+
+==== `value`: float (Required, Positional)
+
+The hyperbolic angle whose hyperbolic sine to calculate.
+
+=== `cosh`
+
+Calculates the hyperbolic cosine of a hyperbolic angle.
+
+```
+cosh(
+  float: float
+) -> float
+```
+
+```typst
+#calc.cosh(0) \
+#calc.cosh(1.5)
+```
+
+==== `value`: float (Required, Positional)
+
+The hyperbolic angle whose hyperbolic cosine to calculate.
+
+=== `tanh`
+
+Calculates the hyperbolic tangent of an hyperbolic angle.
+
+```
+tanh(
+  float: float
+) -> float
+```
+
+```typst
+#calc.tanh(0) \
+#calc.tanh(1.5)
+```
+
+==== `value`: float (Required, Positional)
+
+The hyperbolic angle whose hyperbolic tangent to calculate.
+
+=== `log`
+
+Calculates the logarithm of a number.
+
+If the base is not specified, the logarithm is calculated in base 10.
+
+```
+log(
+  int: int | float,
+  base: float
+) -> float
+```
+
+```typst
+#calc.log(100)
+```
+
+==== `value`: int | float (Required, Positional)
+
+The number whose logarithm to calculate. Must be strictly positive.
+
+==== `base`: float
+
+The base of the logarithm. May not be zero.
+
+Default: `10.0`
+
+=== `ln`
+
+Calculates the natural logarithm of a number.
+
+```
+ln(
+  int: int | float
+) -> float
+```
+
+```typst
+#calc.ln(calc.e)
+```
+
+==== `value`: int | float (Required, Positional)
+
+The number whose logarithm to calculate. Must be strictly positive.
+
+=== `fact`
+
+Calculates the factorial of a number.
+
+```
+fact(
+  int: int
+) -> int
+```
+
+```typst
+#calc.fact(5)
+```
+
+==== `number`: int (Required, Positional)
+
+The number whose factorial to calculate. Must be non-negative.
+
+=== `perm`
+
+Calculates a permutation.
+
+Returns the `k`-permutation of `n`, or the number of ways to choose `k` items from a set of `n` with regard to order.
+
+```
+perm(
+  int: int,
+  int: int
+) -> int
+```
+
+```typst
+$ "perm"(n, k) &= n!/((n - k)!) \
+  "perm"(5, 3) &= #calc.perm(5, 3) $
+```
+
+==== `base`: int (Required, Positional)
+
+The base number. Must be non-negative.
+
+==== `numbers`: int (Required, Positional)
+
+The number of permutations. Must be non-negative.
+
+=== `binom`
+
+Calculates a binomial coefficient.
+
+Returns the `k`-combination of `n`, or the number of ways to choose `k` items from a set of `n` without regard to order.
+
+```
+binom(
+  int: int,
+  int: int
+) -> int
+```
+
+```typst
+#calc.binom(10, 5)
+```
+
+==== `n`: int (Required, Positional)
+
+The upper coefficient. Must be non-negative.
+
+==== `k`: int (Required, Positional)
+
+The lower coefficient. Must be non-negative.
+
+=== `gcd`
+
+Calculates the greatest common divisor of two integers.
+
+```
+gcd(
+  int: int,
+  int: int
+) -> int
+```
+
+```typst
+#calc.gcd(7, 42)
+```
+
+==== `a`: int (Required, Positional)
+
+The first integer.
+
+==== `b`: int (Required, Positional)
+
+The second integer.
+
+=== `lcm`
+
+Calculates the least common multiple of two integers.
+
+```
+lcm(
+  int: int,
+  int: int
+) -> int
+```
+
+```typst
+#calc.lcm(96, 13)
+```
+
+==== `a`: int (Required, Positional)
+
+The first integer.
+
+==== `b`: int (Required, Positional)
+
+The second integer.
+
+=== `floor`
+
+Rounds a number down to the nearest integer.
+
+If the number is already an integer, it is returned unchanged.
+
+Note that this function will always return an #link("/docs/reference/foundations/int/")[integer], and will error if the resulting #link("/docs/reference/foundations/float/")[float] or #link("/docs/reference/foundations/decimal/")[decimal] is larger than the maximum 64-bit signed integer or smaller than the minimum for that type.
+
+```
+floor(
+  int: int | float | decimal
+) -> int
+```
+
+```typst
+#calc.floor(500.1)
+#assert(calc.floor(3) == 3)
+#assert(calc.floor(3.14) == 3)
+#assert(calc.floor(decimal("-3.14")) == -4)
+```
+
+==== `value`: int | float | decimal (Required, Positional)
+
+The number to round down.
+
+=== `ceil`
+
+Rounds a number up to the nearest integer.
+
+If the number is already an integer, it is returned unchanged.
+
+Note that this function will always return an #link("/docs/reference/foundations/int/")[integer], and will error if the resulting #link("/docs/reference/foundations/float/")[float] or #link("/docs/reference/foundations/decimal/")[decimal] is larger than the maximum 64-bit signed integer or smaller than the minimum for that type.
+
+```
+ceil(
+  int: int | float | decimal
+) -> int
+```
+
+```typst
+#calc.ceil(500.1)
+#assert(calc.ceil(3) == 3)
+#assert(calc.ceil(3.14) == 4)
+#assert(calc.ceil(decimal("-3.14")) == -3)
+```
+
+==== `value`: int | float | decimal (Required, Positional)
+
+The number to round up.
+
+=== `trunc`
+
+Returns the integer part of a number.
+
+If the number is already an integer, it is returned unchanged.
+
+Note that this function will always return an #link("/docs/reference/foundations/int/")[integer], and will error if the resulting #link("/docs/reference/foundations/float/")[float] or #link("/docs/reference/foundations/decimal/")[decimal] is larger than the maximum 64-bit signed integer or smaller than the minimum for that type.
+
+```
+trunc(
+  int: int | float | decimal
+) -> int
+```
+
+```typst
+#calc.trunc(15.9)
+#assert(calc.trunc(3) == 3)
+#assert(calc.trunc(-3.7) == -3)
+#assert(calc.trunc(decimal("8493.12949582390")) == 8493)
+```
+
+==== `value`: int | float | decimal (Required, Positional)
+
+The number to truncate.
+
+=== `fract`
+
+Returns the fractional part of a number.
+
+If the number is an integer, returns `0`.
+
+```
+fract(
+  int: int | float | decimal
+) -> decimal
+```
+
+```typst
+#calc.fract(-3.1)
+#assert(calc.fract(3) == 0)
+#assert(calc.fract(decimal("234.23949211")) == decimal("0.23949211"))
+```
+
+==== `value`: int | float | decimal (Required, Positional)
+
+The number to truncate.
+
+=== `round`
+
+Rounds a number to the nearest integer away from zero.
+
+Optionally, a number of decimal places can be specified.
+
+If the number of digits is negative, its absolute value will indicate the amount of significant integer digits to remove before the decimal point.
+
+Note that this function will return the same type as the operand. That is, applying `round` to a #link("/docs/reference/foundations/float/")[float] will return a `float`, and to a #link("/docs/reference/foundations/decimal/")[decimal], another `decimal`. You may explicitly convert the output of this function to an integer with #link("/docs/reference/foundations/int/")[int], but note that such a conversion will error if the `float` or `decimal` is larger than the maximum 64-bit signed integer or smaller than the minimum integer.
+
+In addition, this function can error if there is an attempt to round beyond the maximum or minimum integer or `decimal`. If the number is a `float`, such an attempt will cause `float.inf` or `-float.inf` to be returned for maximum and minimum respectively.
+
+```
+round(
+  int: int | float | decimal,
+  digits: int
+) -> decimal
+```
+
+```typst
+#calc.round(3.1415, digits: 2)
+#assert(calc.round(3) == 3)
+#assert(calc.round(3.14) == 3)
+#assert(calc.round(3.5) == 4.0)
+#assert(calc.round(3333.45, digits: -2) == 3300.0)
+#assert(calc.round(-48953.45, digits: -3) == -49000.0)
+#assert(calc.round(3333, digits: -2) == 3300)
+#assert(calc.round(-48953, digits: -3) == -49000)
+#assert(calc.round(decimal("-6.5")) == decimal("-7"))
+#assert(calc.round(decimal("7.123456789"), digits: 6) == decimal("7.123457"))
+#assert(calc.round(decimal("3333.45"), digits: -2) == decimal("3300"))
+#assert(calc.round(decimal("-48953.45"), digits: -3) == decimal("-49000"))
+```
+
+==== `value`: int | float | decimal (Required, Positional)
+
+The number to round.
+
+==== `digits`: int
+
+If positive, the number of decimal places.
+
+If negative, the number of significant integer digits that should be removed before the decimal point.
+
+Default: `0`
+
+=== `clamp`
+
+Clamps a number between a minimum and maximum value.
+
+```
+clamp(
+  int: int | float | decimal,
+  int: int | float | decimal,
+  int: int | float | decimal
+) -> decimal
+```
+
+```typst
+#calc.clamp(5, 0, 4)
+#assert(calc.clamp(5, 0, 10) == 5)
+#assert(calc.clamp(5, 6, 10) == 6)
+#assert(calc.clamp(decimal("5.45"), 2, decimal("45.9")) == decimal("5.45"))
+#assert(calc.clamp(decimal("5.45"), decimal("6.75"), 12) == decimal("6.75"))
+```
+
+==== `value`: int | float | decimal (Required, Positional)
+
+The number to clamp.
+
+==== `min`: int | float | decimal (Required, Positional)
+
+The inclusive minimum value.
+
+==== `max`: int | float | decimal (Required, Positional)
+
+The inclusive maximum value.
+
+=== `min`
+
+Determines the minimum of a sequence of values.
+
+```
+min(
+  ..: any
+) -> 
+```
+
+```typst
+#calc.min(1, -3, -5, 20, 3, 6) \
+#calc.min("typst", "is", "cool")
+```
+
+==== `values`: any (Required, Positional, Variadic)
+
+The sequence of values from which to extract the minimum. Must not be empty.
+
+=== `max`
+
+Determines the maximum of a sequence of values.
+
+```
+max(
+  ..: any
+) -> 
+```
+
+```typst
+#calc.max(1, -3, -5, 20, 3, 6) \
+#calc.max("typst", "is", "cool")
+```
+
+==== `values`: any (Required, Positional, Variadic)
+
+The sequence of values from which to extract the maximum. Must not be empty.
+
+=== `even`
+
+Determines whether an integer is even.
+
+```
+even(
+  int: int
+) -> bool
+```
+
+```typst
+#calc.even(4) \
+#calc.even(5) \
+#range(10).filter(calc.even)
+```
+
+==== `value`: int (Required, Positional)
+
+The number to check for evenness.
+
+=== `odd`
+
+Determines whether an integer is odd.
+
+```
+odd(
+  int: int
+) -> bool
+```
+
+```typst
+#calc.odd(4) \
+#calc.odd(5) \
+#range(10).filter(calc.odd)
+```
+
+==== `value`: int (Required, Positional)
+
+The number to check for oddness.
+
+=== `rem`
+
+Calculates the remainder of two numbers.
+
+The value `calc.rem(x, y)` always has the same sign as `x`, and is smaller in magnitude than `y`.
+
+This can error if given a #link("/docs/reference/foundations/decimal/")[decimal] input and the dividend is too small in magnitude compared to the divisor.
+
+```
+rem(
+  int: int | float | decimal,
+  int: int | float | decimal
+) -> decimal
+```
+
+```typst
+#calc.rem(7, 3) \
+#calc.rem(7, -3) \
+#calc.rem(-7, 3) \
+#calc.rem(-7, -3) \
+#calc.rem(1.75, 0.5)
+```
+
+==== `dividend`: int | float | decimal (Required, Positional)
+
+The dividend of the remainder.
+
+==== `divisor`: int | float | decimal (Required, Positional)
+
+The divisor of the remainder.
+
+=== `div-euclid`
+
+Performs euclidean division of two numbers.
+
+The result of this computation is that of a division rounded to the integer `n` such that the dividend is greater than or equal to `n` times the divisor.
+
+```
+div-euclid(
+  int: int | float | decimal,
+  int: int | float | decimal
+) -> decimal
+```
+
+```typst
+#calc.div-euclid(7, 3) \
+#calc.div-euclid(7, -3) \
+#calc.div-euclid(-7, 3) \
+#calc.div-euclid(-7, -3) \
+#calc.div-euclid(1.75, 0.5) \
+#calc.div-euclid(decimal("1.75"), decimal("0.5"))
+```
+
+==== `dividend`: int | float | decimal (Required, Positional)
+
+The dividend of the division.
+
+==== `divisor`: int | float | decimal (Required, Positional)
+
+The divisor of the division.
+
+=== `rem-euclid`
+
+This calculates the least nonnegative remainder of a division.
+
+Warning: Due to a floating point round-off error, the remainder may equal the absolute value of the divisor if the dividend is much smaller in magnitude than the divisor and the dividend is negative. This only applies for floating point inputs.
+
+In addition, this can error if given a #link("/docs/reference/foundations/decimal/")[decimal] input and the dividend is too small in magnitude compared to the divisor.
+
+```
+rem-euclid(
+  int: int | float | decimal,
+  int: int | float | decimal
+) -> decimal
+```
+
+```typst
+#calc.rem-euclid(7, 3) \
+#calc.rem-euclid(7, -3) \
+#calc.rem-euclid(-7, 3) \
+#calc.rem-euclid(-7, -3) \
+#calc.rem-euclid(1.75, 0.5) \
+#calc.rem-euclid(decimal("1.75"), decimal("0.5"))
+```
+
+==== `dividend`: int | float | decimal (Required, Positional)
+
+The dividend of the remainder.
+
+==== `divisor`: int | float | decimal (Required, Positional)
+
+The divisor of the remainder.
+
+=== `quo`
+
+Calculates the quotient (floored division) of two numbers.
+
+Note that this function will always return an #link("/docs/reference/foundations/int/")[integer], and will error if the resulting #link("/docs/reference/foundations/float/")[float] or #link("/docs/reference/foundations/decimal/")[decimal] is larger than the maximum 64-bit signed integer or smaller than the minimum for that type.
+
+```
+quo(
+  int: int | float | decimal,
+  int: int | float | decimal
+) -> int
+```
+
+```typst
+$ "quo"(a, b) &= floor(a/b) \
+  "quo"(14, 5) &= #calc.quo(14, 5) \
+  "quo"(3.46, 0.5) &= #calc.quo(3.46, 0.5) $
+```
+
+==== `dividend`: int | float | decimal (Required, Positional)
+
+The dividend of the quotient.
+
+==== `divisor`: int | float | decimal (Required, Positional)
+
+The divisor of the quotient.
+
+=== `norm`
+
+Calculates the p-norm of a sequence of values.
+
+```
+norm(
+  p: float,
+  ..: float
+) -> float
+```
+
+```typst
+#calc.norm(1, 2, -3, 0.5) \
+#calc.norm(p: 3, 1, 2)
+```
+
+==== `p`: float
+
+The p value to calculate the p-norm of.
+
+Default: `2.0`
+
+==== `values`: float (Required, Positional, Variadic)
+
+The sequence of values from which to calculate the p-norm. Returns `0.0` if empty.
+= content
+
+A piece of document content.
+
+This type is at the heart of Typst. All markup you write and most #link("/docs/reference/foundations/function/")[functions] you call produce content values. You can create a content value by enclosing markup in square brackets. This is also how you pass content to functions.
+
+== Example
+
+```typst
+Type of *Hello!* is
+#type([*Hello!*])
+```
+
+Content can be added with the `+` operator, #link("/docs/reference/scripting/#blocks")[joined together] and multiplied with integers. Wherever content is expected, you can also pass a #link("/docs/reference/foundations/str/")[string] or `none`.
+
+== Representation
+
+Content consists of elements with fields. When constructing an element with its _element function,_ you provide these fields as arguments and when you have a content value, you can access its fields with #link("/docs/reference/scripting/#field-access")[field access syntax].
+
+Some fields are required: These must be provided when constructing an element and as a consequence, they are always available through field access on content of that type. Required fields are marked as such in the documentation.
+
+Most fields are optional: Like required fields, they can be passed to the element function to configure them for a single element. However, these can also be configured with #link("/docs/reference/styling/#set-rules")[set rules] to apply them to all elements within a scope. Optional fields are only available with field access syntax when they were explicitly passed to the element function, not when they result from a set rule.
+
+Each element has a default appearance. However, you can also completely customize its appearance with a #link("/docs/reference/styling/#show-rules")[show rule]. The show rule is passed the element. It can access the element's field and produce arbitrary content from it.
+
+In the web app, you can hover over a content variable to see exactly which elements the content is composed of and what fields they have. Alternatively, you can inspect the output of the #link("/docs/reference/foundations/repr/")[repr] function.
+
+== Definitions
+
+=== `func`
+
+The content's element function. This function can be used to create the element contained in this content. It can be used in set and show rules for the element. Can be compared with global functions to check whether you have a specific kind of element.
+
+```
+func(
+  
+) -> function
+```
+
+=== `has`
+
+Whether the content has the specified field.
+
+```
+has(
+  str: str
+) -> bool
+```
+
+==== `field`: str (Required, Positional)
+
+The field to look for.
+
+=== `at`
+
+Access the specified field on the content. Returns the default value if the field does not exist or fails with an error if no default value was specified.
+
+```
+at(
+  str: str,
+  default: any
+) -> str
+```
+
+==== `field`: str (Required, Positional)
+
+The field to access.
+
+==== `default`: any
+
+A default value to return if the field does not exist.
+
+=== `fields`
+
+Returns the fields of this content.
+
+```
+fields(
+  
+) -> dictionary
+```
+
+```typst
+#rect(
+  width: 10cm,
+  height: 10cm,
+).fields()
+```
+
+=== `location`
+
+The location of the content. This is only available on content returned by #link("/docs/reference/introspection/query/")[query] or provided by a #link("/docs/reference/styling/#show-rules")[show rule], for other content it will be `none`. The resulting location can be used with #link("/docs/reference/introspection/counter/")[counters], #link("/docs/reference/introspection/state/")[state] and #link("/docs/reference/introspection/query/")[queries].
+
+```
+location(
+  
+) -> location
+```
+= datetime
+
+Represents a date, a time, or a combination of both.
+
+Can be created by either specifying a custom datetime using this type's constructor function or getting the current date with #link("/docs/reference/foundations/datetime/#definitions-today")[datetime.today].
+
+== Example
+
+```typst
+#let date = datetime(
+  year: 2020,
+  month: 10,
+  day: 4,
+)
+
+#date.display() \
+#date.display(
+  "y:[year repr:last_two]"
+)
+
+#let time = datetime(
+  hour: 18,
+  minute: 2,
+  second: 23,
+)
+
+#time.display() \
+#time.display(
+  "h:[hour repr:12][period]"
+)
+```
+
+== Datetime and Duration
+
+You can get a #link("/docs/reference/foundations/duration/")[duration] by subtracting two datetime:
+
+```typst
+#let first-of-march = datetime(day: 1, month: 3, year: 2024)
+#let first-of-jan = datetime(day: 1, month: 1, year: 2024)
+#let distance = first-of-march - first-of-jan
+#distance.hours()
+```
+
+You can also add/subtract a datetime and a duration to retrieve a new, offset datetime:
+
+```typst
+#let date = datetime(day: 1, month: 3, year: 2024)
+#let two-days = duration(days: 2)
+#let two-days-earlier = date - two-days
+#let two-days-later = date + two-days
+
+#date.display() \
+#two-days-earlier.display() \
+#two-days-later.display()
+```
+
+== Format
+
+You can specify a customized formatting using the #link("/docs/reference/foundations/datetime/#definitions-display")[display] method. The format of a datetime is specified by providing _components_ with a specified number of _modifiers_. A component represents a certain part of the datetime that you want to display, and with the help of modifiers you can define how you want to display that component. In order to display a component, you wrap the name of the component in square brackets (e.g. `[year]` will display the year). In order to add modifiers, you add a space after the component name followed by the name of the modifier, a colon and the value of the modifier (e.g. `[month repr:short]` will display the short representation of the month).
+
+The possible combination of components and their respective modifiers is as follows:
+
+- `year`: Displays the year of the datetime. padding: Can be either zero, space or none. Specifies how the year is padded. repr Can be either full in which case the full year is displayed or last_two in which case only the last two digits are displayed. sign: Can be either automatic or mandatory. Specifies when the sign should be displayed.
+- `month`: Displays the month of the datetime. padding: Can be either zero, space or none. Specifies how the month is padded. repr: Can be either numerical, long or short. Specifies if the month should be displayed as a number or a word. Unfortunately, when choosing the word representation, it can currently only display the English version. In the future, it is planned to support localization.
+- `day`: Displays the day of the datetime. padding: Can be either zero, space or none. Specifies how the day is padded.
+- `week_number`: Displays the week number of the datetime. padding: Can be either zero, space or none. Specifies how the week number is padded. repr: Can be either ISO, sunday or monday. In the case of ISO, week numbers are between 1 and 53, while the other ones are between 0 and 53.
+- `weekday`: Displays the weekday of the date. repr Can be either long, short, sunday or monday. In the case of long and short, the corresponding English name will be displayed (same as for the month, other languages are currently not supported). In the case of sunday and monday, the numerical value will be displayed (assuming Sunday and Monday as the first day of the week, respectively). one_indexed: Can be either true or false. Defines whether the numerical representation of the week starts with 0 or 1.
+- `hour`: Displays the hour of the date. padding: Can be either zero, space or none. Specifies how the hour is padded. repr: Can be either 24 or 12. Changes whether the hour is displayed in the 24-hour or 12-hour format.
+- `period`: The AM/PM part of the hour case: Can be lower to display it in lower case and upper to display it in upper case.
+- `minute`: Displays the minute of the date. padding: Can be either zero, space or none. Specifies how the minute is padded.
+- `second`: Displays the second of the date. padding: Can be either zero, space or none. Specifies how the second is padded.
+
+Keep in mind that not always all components can be used. For example, if you create a new datetime with `datetime(year: 2023, month: 10, day: 13)`, it will be stored as a plain date internally, meaning that you cannot use components such as `hour` or `minute`, which would only work on datetimes that have a specified time.
+
+== Constructor
+
+Creates a new datetime.
+
+You can specify the #link("/docs/reference/foundations/datetime/")[datetime] using a year, month, day, hour, minute, and second.
+
+_Note_: Depending on which components of the datetime you specify, Typst will store it in one of the following three ways:
+
+- If you specify year, month and day, Typst will store just a date.
+- If you specify hour, minute and second, Typst will store just a time.
+- If you specify all of year, month, day, hour, minute and second, Typst will store a full datetime.
+
+Depending on how it is stored, the #link("/docs/reference/foundations/datetime/#definitions-display")[display] method will choose a different formatting by default.
+
+```
+datetime(
+  year: int,
+  month: int,
+  day: int,
+  hour: int,
+  minute: int,
+  second: int
+) -> datetime
+```
+
+```typst
+#datetime(
+  year: 2012,
+  month: 8,
+  day: 3,
+).display()
+```
+
+==== `year`: int
+
+The year of the datetime.
+
+==== `month`: int
+
+The month of the datetime.
+
+==== `day`: int
+
+The day of the datetime.
+
+==== `hour`: int
+
+The hour of the datetime.
+
+==== `minute`: int
+
+The minute of the datetime.
+
+==== `second`: int
+
+The second of the datetime.
+
+== Definitions
+
+=== `today`
+
+Returns the current date.
+
+```
+today(
+  offset: auto | int
+) -> datetime
+```
+
+```typst
+Today's date is
+#datetime.today().display().
+```
+
+==== `offset`: auto | int
+
+An offset to apply to the current UTC date. If set to `auto`, the offset will be the local offset.
+
+Default: `auto`
+
+=== `display`
+
+Displays the datetime in a specified format.
+
+Depending on whether you have defined just a date, a time or both, the default format will be different. If you specified a date, it will be `[year]-[month]-[day]`. If you specified a time, it will be `[hour]:[minute]:[second]`. In the case of a datetime, it will be `[year]-[month]-[day] [hour]:[minute]:[second]`.
+
+See the #link("/docs/reference/foundations/datetime/#format")[format syntax] for more information.
+
+```
+display(
+  auto: auto | str
+) -> str
+```
+
+==== `pattern`: auto | str (Positional)
+
+The format used to display the datetime.
+
+Default: `auto`
+
+=== `year`
+
+The year if it was specified, or `none` for times without a date.
+
+```
+year(
+  
+) -> int
+```
+
+=== `month`
+
+The month if it was specified, or `none` for times without a date.
+
+```
+month(
+  
+) -> int
+```
+
+=== `weekday`
+
+The weekday (counting Monday as 1) or `none` for times without a date.
+
+```
+weekday(
+  
+) -> int
+```
+
+=== `day`
+
+The day if it was specified, or `none` for times without a date.
+
+```
+day(
+  
+) -> int
+```
+
+=== `hour`
+
+The hour if it was specified, or `none` for dates without a time.
+
+```
+hour(
+  
+) -> int
+```
+
+=== `minute`
+
+The minute if it was specified, or `none` for dates without a time.
+
+```
+minute(
+  
+) -> int
+```
+
+=== `second`
+
+The second if it was specified, or `none` for dates without a time.
+
+```
+second(
+  
+) -> int
+```
+
+=== `ordinal`
+
+The ordinal (day of the year), or `none` for times without a date.
+
+```
+ordinal(
+  
+) -> int
+```
+= decimal
+
+A fixed-point decimal number type.
+
+This type should be used for precise arithmetic operations on numbers represented in base 10. A typical use case is representing currency.
+
+== Example
+
+```typst
+Decimal: #(decimal("0.1") + decimal("0.2")) \
+Float: #(0.1 + 0.2)
+```
+
+== Construction and casts
+
+To create a decimal number, use the `decimal(string)` constructor, such as in `decimal("3.141592653")` *(note the double quotes!)*. This constructor preserves all given fractional digits, provided they are representable as per the limits specified below (otherwise, an error is raised).
+
+You can also convert any #link("/docs/reference/foundations/int/")[integer] to a decimal with the `decimal(int)` constructor, e.g. `decimal(59)`. However, note that constructing a decimal from a #link("/docs/reference/foundations/float/")[floating-point number], while supported, *is an imprecise conversion and therefore discouraged.* A warning will be raised if Typst detects that there was an accidental `float` to `decimal` cast through its constructor, e.g. if writing `decimal(3.14)` (note the lack of double quotes, indicating this is an accidental `float` cast and therefore imprecise). It is recommended to use strings for constant decimal values instead (e.g. `decimal("3.14")`).
+
+The precision of a `float` to `decimal` cast can be slightly improved by rounding the result to 15 digits with #link("/docs/reference/foundations/calc/#functions-round")[calc.round], but there are still no precision guarantees for that kind of conversion.
+
+== Operations
+
+Basic arithmetic operations are supported on two decimals and on pairs of decimals and integers.
+
+Built-in operations between `float` and `decimal` are not supported in order to guard against accidental loss of precision. They will raise an error instead.
+
+Certain `calc` functions, such as trigonometric functions and power between two real numbers, are also only supported for `float` (although raising `decimal` to integer exponents is supported). You can opt into potentially imprecise operations with the `float(decimal)` constructor, which casts the `decimal` number into a `float`, allowing for operations without precision guarantees.
+
+== Displaying decimals
+
+To display a decimal, simply insert the value into the document. To only display a certain number of digits, #link("/docs/reference/foundations/calc/#functions-round")[round] the decimal first. Localized formatting of decimals and other numbers is not yet supported, but planned for the future.
+
+You can convert decimals to strings using the #link("/docs/reference/foundations/str/")[str] constructor. This way, you can post-process the displayed representation, e.g. to replace the period with a comma (as a stand-in for proper built-in localization to languages that use the comma).
+
+== Precision and limits
+
+A `decimal` number has a limit of 28 to 29 significant base-10 digits. This includes the sum of digits before and after the decimal point. As such, numbers with more fractional digits have a smaller range. The maximum and minimum `decimal` numbers have a value of `79228162514264337593543950335` and `-79228162514264337593543950335` respectively. In contrast with #link("/docs/reference/foundations/float/")[float], this type does not support infinity or NaN, so overflowing or underflowing operations will raise an error.
+
+Typical operations between `decimal` numbers, such as addition, multiplication, and #link("/docs/reference/foundations/calc/#functions-pow")[power] to an integer, will be highly precise due to their fixed-point representation. Note, however, that multiplication and division may not preserve all digits in some edge cases: while they are considered precise, digits past the limits specified above are rounded off and lost, so some loss of precision beyond the maximum representable digits is possible. Note that this behavior can be observed not only when dividing, but also when multiplying by numbers between 0 and 1, as both operations can push a number's fractional digits beyond the limits described above, leading to rounding. When those two operations do not surpass the digit limits, they are fully precise.
+
+== Constructor
+
+Converts a value to a `decimal`.
+
+It is recommended to use a string to construct the decimal number, or an #link("/docs/reference/foundations/int/")[integer] (if desired). The string must contain a number in the format `"3.14159"` (or `"-3.141519"` for negative numbers). The fractional digits are fully preserved; if that's not possible due to the limit of significant digits (around 28 to 29) having been reached, an error is raised as the given decimal number wouldn't be representable.
+
+While this constructor can be used with #link("/docs/reference/foundations/float/")[floating-point numbers] to cast them to `decimal`, doing so is *discouraged* as *this cast is inherently imprecise.* It is easy to accidentally perform this cast by writing `decimal(1.234)` (note the lack of double quotes), which is why Typst will emit a warning in that case. Please write `decimal("1.234")` instead for that particular case (initialization of a constant decimal). Also note that floats that are NaN or infinite cannot be cast to decimals and will raise an error.
+
+```
+decimal(
+  bool: bool | int | float | str | decimal
+) -> decimal
+```
+
+```typst
+#decimal("1.222222222222222")
+```
+
+==== `value`: bool | int | float | str | decimal (Required, Positional)
+
+The value that should be converted to a decimal.
+= dictionary
+
+A map from string keys to values.
+
+You can construct a dictionary by enclosing comma-separated `key: value` pairs in parentheses. The values do not have to be of the same type. Since empty parentheses already yield an empty array, you have to use the special `(:)` syntax to create an empty dictionary.
+
+A dictionary is conceptually similar to an array, but it is indexed by strings instead of integers. You can access and create dictionary entries with the `.at()` method. If you know the key statically, you can alternatively use #link("/docs/reference/scripting/#fields")[field access notation] (`.key`) to access the value. Dictionaries can be added with the `+` operator and #link("/docs/reference/scripting/#blocks")[joined together]. To check whether a key is present in the dictionary, use the `in` keyword.
+
+You can iterate over the pairs in a dictionary using a #link("/docs/reference/scripting/#loops")[for loop]. This will iterate in the order the pairs were inserted / declared.
+
+== Example
+
+```typst
+#let dict = (
+  name: "Typst",
+  born: 2019,
+)
+
+#dict.name \
+#(dict.launch = 20)
+#dict.len() \
+#dict.keys() \
+#dict.values() \
+#dict.at("born") \
+#dict.insert("city", "Berlin ")
+#("name" in dict)
+```
+
+== Constructor
+
+Converts a value into a dictionary.
+
+Note that this function is only intended for conversion of a dictionary-like value to a dictionary, not for creation of a dictionary from individual pairs. Use the dictionary syntax `(key: value)` instead.
+
+```
+dictionary(
+  module: module
+) -> dictionary
+```
+
+```typst
+#dictionary(sys).at("version")
+```
+
+==== `value`: module (Required, Positional)
+
+The value that should be converted to a dictionary.
+
+== Definitions
+
+=== `len`
+
+The number of pairs in the dictionary.
+
+```
+len(
+  
+) -> int
+```
+
+=== `at`
+
+Returns the value associated with the specified key in the dictionary. May be used on the left-hand side of an assignment if the key is already present in the dictionary. Returns the default value if the key is not part of the dictionary or fails with an error if no default value was specified.
+
+```
+at(
+  str: str,
+  default: any
+) -> str
+```
+
+==== `key`: str (Required, Positional)
+
+The key at which to retrieve the item.
+
+==== `default`: any
+
+A default value to return if the key is not part of the dictionary.
+
+=== `insert`
+
+Inserts a new pair into the dictionary. If the dictionary already contains this key, the value is updated.
+
+```
+insert(
+  str: str,
+  any
+) -> str
+```
+
+==== `key`: str (Required, Positional)
+
+The key of the pair that should be inserted.
+
+==== `value`: any (Required, Positional)
+
+The value of the pair that should be inserted.
+
+=== `remove`
+
+Removes a pair from the dictionary by key and return the value.
+
+```
+remove(
+  str: str,
+  default: any
+) -> str
+```
+
+==== `key`: str (Required, Positional)
+
+The key of the pair to remove.
+
+==== `default`: any
+
+A default value to return if the key does not exist.
+
+=== `keys`
+
+Returns the keys of the dictionary as an array in insertion order.
+
+```
+keys(
+  
+) -> array
+```
+
+=== `values`
+
+Returns the values of the dictionary as an array in insertion order.
+
+```
+values(
+  
+) -> array
+```
+
+=== `pairs`
+
+Returns the keys and values of the dictionary as an array of pairs. Each pair is represented as an array of length two.
+
+```
+pairs(
+  
+) -> array
+```
+= duration
+
+Represents a positive or negative span of time.
+
+== Constructor
+
+Creates a new duration.
+
+You can specify the #link("/docs/reference/foundations/duration/")[duration] using weeks, days, hours, minutes and seconds. You can also get a duration by subtracting two #link("/docs/reference/foundations/datetime/")[datetimes].
+
+```
+duration(
+  seconds: int,
+  minutes: int,
+  hours: int,
+  days: int,
+  weeks: int
+) -> duration
+```
+
+```typst
+#duration(
+  days: 3,
+  hours: 12,
+).hours()
+```
+
+==== `seconds`: int
+
+The number of seconds.
+
+Default: `0`
+
+==== `minutes`: int
+
+The number of minutes.
+
+Default: `0`
+
+==== `hours`: int
+
+The number of hours.
+
+Default: `0`
+
+==== `days`: int
+
+The number of days.
+
+Default: `0`
+
+==== `weeks`: int
+
+The number of weeks.
+
+Default: `0`
+
+== Definitions
+
+=== `seconds`
+
+The duration expressed in seconds.
+
+This function returns the total duration represented in seconds as a floating-point number rather than the second component of the duration.
+
+```
+seconds(
+  
+) -> float
+```
+
+=== `minutes`
+
+The duration expressed in minutes.
+
+This function returns the total duration represented in minutes as a floating-point number rather than the second component of the duration.
+
+```
+minutes(
+  
+) -> float
+```
+
+=== `hours`
+
+The duration expressed in hours.
+
+This function returns the total duration represented in hours as a floating-point number rather than the second component of the duration.
+
+```
+hours(
+  
+) -> float
+```
+
+=== `days`
+
+The duration expressed in days.
+
+This function returns the total duration represented in days as a floating-point number rather than the second component of the duration.
+
+```
+days(
+  
+) -> float
+```
+
+=== `weeks`
+
+The duration expressed in weeks.
+
+This function returns the total duration represented in weeks as a floating-point number rather than the second component of the duration.
+
+```
+weeks(
+  
+) -> float
+```
+= eval
+
+Evaluates a string as Typst code.
+
+This function should only be used as a last resort.
+
+== Example
+
+```typst
+#eval("1 + 1") \
+#eval("(1, 2, 3, 4)").len() \
+#eval("*Markup!*", mode: "markup") \
+```
+
+== Parameters
+
+```
+eval(
+  str: str,
+  mode: str,
+  scope: dictionary
+) -> dictionary
+```
+
+=== `source`: str (Required, Positional)
+
+A string of Typst code to evaluate.
+
+=== `mode`: str
+
+The #link("/docs/reference/syntax/#modes")[syntactical mode] in which the string is parsed.
+
+Default: `"code"`
+
+*Example:*
+```typst
+#eval("= Heading", mode: "markup")
+#eval("1_2^3", mode: "math")
+```
+
+=== `scope`: dictionary
+
+A scope of definitions that are made available.
+
+Default: `(:)`
+
+*Example:*
+```typst
+#eval("x + 1", scope: (x: 2)) \
+#eval(
+  "abc/xyz",
+  mode: "math",
+  scope: (
+    abc: $a + b + c$,
+    xyz: $x + y + z$,
+  ),
+)
+```
+= float
+
+A floating-point number.
+
+A limited-precision representation of a real number. Typst uses 64 bits to store floats. Wherever a float is expected, you can also pass an #link("/docs/reference/foundations/int/")[integer].
+
+You can convert a value to a float with this type's constructor.
+
+NaN and positive infinity are available as `float.nan` and `float.inf` respectively.
+
+== Example
+
+```typst
+#3.14 \
+#1e4 \
+#(10 / 4)
+```
+
+== Constructor
+
+Converts a value to a float.
+
+- Booleans are converted to `0.0` or `1.0`.
+- Integers are converted to the closest 64-bit float. For integers with absolute value less than `calc.pow(2, 53)`, this conversion is exact.
+- Ratios are divided by 100%.
+- Strings are parsed in base 10 to the closest 64-bit float. Exponential notation is supported.
+
+```
+float(
+  bool: bool | int | float | ratio | str | decimal
+) -> float
+```
+
+```typst
+#float(false) \
+#float(true) \
+#float(4) \
+#float(40%) \
+#float("2.7") \
+#float("1e5")
+```
+
+==== `value`: bool | int | float | ratio | str | decimal (Required, Positional)
+
+The value that should be converted to a float.
+
+== Definitions
+
+=== `is-nan`
+
+Checks if a float is not a number.
+
+In IEEE 754, more than one bit pattern represents a NaN. This function returns `true` if the float is any of those bit patterns.
+
+```
+is-nan(
+  
+) -> bool
+```
+
+```typst
+#float.is-nan(0) \
+#float.is-nan(1) \
+#float.is-nan(float.nan)
+```
+
+=== `is-infinite`
+
+Checks if a float is infinite.
+
+Floats can represent positive infinity and negative infinity. This function returns `true` if the float is an infinity.
+
+```
+is-infinite(
+  
+) -> bool
+```
+
+```typst
+#float.is-infinite(0) \
+#float.is-infinite(1) \
+#float.is-infinite(float.inf)
+```
+
+=== `signum`
+
+Calculates the sign of a floating point number.
+
+- If the number is positive (including `+0.0`), returns `1.0`.
+- If the number is negative (including `-0.0`), returns `-1.0`.
+- If the number is NaN, returns `float.nan`.
+
+```
+signum(
+  
+) -> float
+```
+
+```typst
+#(5.0).signum() \
+#(-5.0).signum() \
+#(0.0).signum() \
+#float.nan.signum()
+```
+
+=== `from-bytes`
+
+Interprets bytes as a float.
+
+```
+from-bytes(
+  bytes: bytes,
+  endian: str
+) -> float
+```
+
+```typst
+#float.from-bytes(bytes((0, 0, 0, 0, 0, 0, 240, 63))) \
+#float.from-bytes(bytes((63, 240, 0, 0, 0, 0, 0, 0)), endian: "big")
+```
+
+==== `bytes`: bytes (Required, Positional)
+
+The bytes that should be converted to a float.
+
+Must have a length of either 4 or 8. The bytes are then interpreted in #link("https://en.wikipedia.org/wiki/IEEE_754")[IEEE 754]'s binary32 (single-precision) or binary64 (double-precision) format depending on the length of the bytes.
+
+==== `endian`: str
+
+The endianness of the conversion.
+
+Default: `"little"`
+
+=== `to-bytes`
+
+Converts a float to bytes.
+
+```
+to-bytes(
+  endian: str,
+  size: int
+) -> bytes
+```
+
+```typst
+#array(1.0.to-bytes(endian: "big")) \
+#array(1.0.to-bytes())
+```
+
+==== `endian`: str
+
+The endianness of the conversion.
+
+Default: `"little"`
+
+==== `size`: int
+
+The size of the resulting bytes.
+
+This must be either 4 or 8. The call will return the representation of this float in either #link("https://en.wikipedia.org/wiki/IEEE_754")[IEEE 754]'s binary32 (single-precision) or binary64 (double-precision) format depending on the provided size.
+
+Default: `8`
+= function
+
+A mapping from argument values to a return value.
+
+You can call a function by writing a comma-separated list of function _arguments_ enclosed in parentheses directly after the function name. Additionally, you can pass any number of trailing content blocks arguments to a function _after_ the normal argument list. If the normal argument list would become empty, it can be omitted. Typst supports positional and named arguments. The former are identified by position and type, while the latter are written as `name: value`.
+
+Within math mode, function calls have special behaviour. See the #link("/docs/reference/math/")[math documentation] for more details.
+
+== Example
+
+```typst
+// Call a function.
+#list([A], [B])
+
+// Named arguments and trailing
+// content blocks.
+#enum(start: 2)[A][B]
+
+// Version without parentheses.
+#list[A][B]
+```
+
+Functions are a fundamental building block of Typst. Typst provides functions for a variety of typesetting tasks. Moreover, the markup you write is backed by functions and all styling happens through functions. This reference lists all available functions and how you can use them. Please also refer to the documentation about #link("/docs/reference/styling/#set-rules")[set] and #link("/docs/reference/styling/#show-rules")[show] rules to learn about additional ways you can work with functions in Typst.
+
+== Element functions
+
+Some functions are associated with _elements_ like #link("/docs/reference/model/heading/")[headings] or #link("/docs/reference/model/table/")[tables]. When called, these create an element of their respective kind. In contrast to normal functions, they can further be used in #link("/docs/reference/styling/#set-rules")[set rules], #link("/docs/reference/styling/#show-rules")[show rules], and #link("/docs/reference/foundations/selector/")[selectors].
+
+== Function scopes
+
+Functions can hold related definitions in their own scope, similar to a #link("/docs/reference/scripting/#modules")[module]. Examples of this are #link("/docs/reference/foundations/assert/#definitions-eq")[assert.eq] or #link("/docs/reference/model/list/#definitions-item")[list.item]. However, this feature is currently only available for built-in functions.
+
+== Defining functions
+
+You can define your own function with a #link("/docs/reference/scripting/#bindings")[let binding] that has a parameter list after the binding's name. The parameter list can contain mandatory positional parameters, named parameters with default values and #link("/docs/reference/foundations/arguments/")[argument sinks].
+
+The right-hand side of a function binding is the function body, which can be a block or any other expression. It defines the function's return value and can depend on the parameters. If the function body is a #link("/docs/reference/scripting/#blocks")[code block], the return value is the result of joining the values of each expression in the block.
+
+Within a function body, the `return` keyword can be used to exit early and optionally specify a return value. If no explicit return value is given, the body evaluates to the result of joining all expressions preceding the `return`.
+
+Functions that don't return any meaningful value return #link("/docs/reference/foundations/none/")[none] instead. The return type of such functions is not explicitly specified in the documentation. (An example of this is #link("/docs/reference/foundations/array/#definitions-push")[array.push]).
+
+```typst
+#let alert(body, fill: red) = {
+  set text(white)
+  set align(center)
+  rect(
+    fill: fill,
+    inset: 8pt,
+    radius: 4pt,
+    [*Warning:\ #body*],
+  )
+}
+
+#alert[
+  Danger is imminent!
+]
+
+#alert(fill: blue)[
+  KEEP OFF TRACKS
+]
+```
+
+== Importing functions
+
+Functions can be imported from one file (#link("/docs/reference/scripting/#modules")[module]) into another using `import`. For example, assume that we have defined the `alert` function from the previous example in a file called `foo.typ`. We can import it into another file by writing `import "foo.typ": alert`.
+
+== Unnamed functions
+
+You can also created an unnamed function without creating a binding by specifying a parameter list followed by `=>` and the function body. If your function has just one parameter, the parentheses around the parameter list are optional. Unnamed functions are mainly useful for show rules, but also for settable properties that take functions like the page function's #link("/docs/reference/layout/page/#parameters-footer")[footer] property.
+
+```typst
+#show "once?": it => [#it #it]
+once?
+```
+
+== Note on function purity
+
+In Typst, all functions are _pure._ This means that for the same arguments, they always return the same result. They cannot "remember" things to produce another value when they are called a second time.
+
+The only exception are built-in methods like #link("/docs/reference/foundations/array/#definitions-push")[array.push(value)]. These can modify the values they are called on.
+
+== Definitions
+
+=== `with`
+
+Returns a new function that has the given arguments pre-applied.
+
+```
+with(
+  ..: any
+) -> function
+```
+
+==== `arguments`: any (Required, Positional, Variadic)
+
+The arguments to apply to the function.
+
+=== `where`
+
+Returns a selector that filters for elements belonging to this function whose fields have the values of the given arguments.
+
+```
+where(
+  ..: any
+) -> selector
+```
+
+```typst
+#show heading.where(level: 2): set text(blue)
+= Section
+== Subsection
+=== Sub-subsection
+```
+
+==== `fields`: any (Required, Positional, Variadic)
+
+The fields to filter for.
+= int
+
+A whole number.
+
+The number can be negative, zero, or positive. As Typst uses 64 bits to store integers, integers cannot be smaller than `-9223372036854775808` or larger than `9223372036854775807`. Integer literals are always positive, so a negative integer such as `-1` is semantically the negation `-` of the positive literal `1`. A positive integer greater than the maximum value and a negative integer less than or equal to the minimum value cannot be represented as an integer literal, and are instead parsed as a `float`. The minimum integer value can still be obtained through integer arithmetic.
+
+The number can also be specified as hexadecimal, octal, or binary by starting it with a zero followed by either `x`, `o`, or `b`.
+
+You can convert a value to an integer with this type's constructor.
+
+== Example
+
+```typst
+#(1 + 2) \
+#(2 - 5) \
+#(3 + 4 < 8)
+
+#0xff \
+#0o10 \
+#0b1001
+```
+
+== Constructor
+
+Converts a value to an integer. Raises an error if there is an attempt to produce an integer larger than the maximum 64-bit signed integer or smaller than the minimum 64-bit signed integer.
+
+- Booleans are converted to `0` or `1`.
+- Floats and decimals are truncated to the next 64-bit integer.
+- Strings are parsed in base 10.
+
+```
+int(
+  bool: bool | int | float | str | decimal
+) -> int
+```
+
+```typst
+#int(false) \
+#int(true) \
+#int(2.7) \
+#int(decimal("3.8")) \
+#(int("27") + int("4"))
+```
+
+==== `value`: bool | int | float | str | decimal (Required, Positional)
+
+The value that should be converted to an integer.
+
+== Definitions
+
+=== `signum`
+
+Calculates the sign of an integer.
+
+- If the number is positive, returns `1`.
+- If the number is negative, returns `-1`.
+- If the number is zero, returns `0`.
+
+```
+signum(
+  
+) -> int
+```
+
+```typst
+#(5).signum() \
+#(-5).signum() \
+#(0).signum()
+```
+
+=== `bit-not`
+
+Calculates the bitwise NOT of an integer.
+
+For the purposes of this function, the operand is treated as a signed integer of 64 bits.
+
+```
+bit-not(
+  
+) -> int
+```
+
+```typst
+#4.bit-not() \
+#(-1).bit-not()
+```
+
+=== `bit-and`
+
+Calculates the bitwise AND between two integers.
+
+For the purposes of this function, the operands are treated as signed integers of 64 bits.
+
+```
+bit-and(
+  int: int
+) -> int
+```
+
+```typst
+#128.bit-and(192)
+```
+
+==== `rhs`: int (Required, Positional)
+
+The right-hand operand of the bitwise AND.
+
+=== `bit-or`
+
+Calculates the bitwise OR between two integers.
+
+For the purposes of this function, the operands are treated as signed integers of 64 bits.
+
+```
+bit-or(
+  int: int
+) -> int
+```
+
+```typst
+#64.bit-or(32)
+```
+
+==== `rhs`: int (Required, Positional)
+
+The right-hand operand of the bitwise OR.
+
+=== `bit-xor`
+
+Calculates the bitwise XOR between two integers.
+
+For the purposes of this function, the operands are treated as signed integers of 64 bits.
+
+```
+bit-xor(
+  int: int
+) -> int
+```
+
+```typst
+#64.bit-xor(96)
+```
+
+==== `rhs`: int (Required, Positional)
+
+The right-hand operand of the bitwise XOR.
+
+=== `bit-lshift`
+
+Shifts the operand's bits to the left by the specified amount.
+
+For the purposes of this function, the operand is treated as a signed integer of 64 bits. An error will occur if the result is too large to fit in a 64-bit integer.
+
+```
+bit-lshift(
+  int: int
+) -> int
+```
+
+```typst
+#33.bit-lshift(2) \
+#(-1).bit-lshift(3)
+```
+
+==== `shift`: int (Required, Positional)
+
+The amount of bits to shift. Must not be negative.
+
+=== `bit-rshift`
+
+Shifts the operand's bits to the right by the specified amount. Performs an arithmetic shift by default (extends the sign bit to the left, such that negative numbers stay negative), but that can be changed by the `logical` parameter.
+
+For the purposes of this function, the operand is treated as a signed integer of 64 bits.
+
+```
+bit-rshift(
+  int: int,
+  logical: bool
+) -> int
+```
+
+```typst
+#64.bit-rshift(2) \
+#(-8).bit-rshift(2) \
+#(-8).bit-rshift(2, logical: true)
+```
+
+==== `shift`: int (Required, Positional)
+
+The amount of bits to shift. Must not be negative.
+
+Shifts larger than 63 are allowed and will cause the return value to saturate. For non-negative numbers, the return value saturates at `0`, while, for negative numbers, it saturates at `-1` if `logical` is set to `false`, or `0` if it is `true`. This behavior is consistent with just applying this operation multiple times. Therefore, the shift will always succeed.
+
+==== `logical`: bool
+
+Toggles whether a logical (unsigned) right shift should be performed instead of arithmetic right shift. If this is `true`, negative operands will not preserve their sign bit, and bits which appear to the left after the shift will be `0`. This parameter has no effect on non-negative operands.
+
+Default: `false`
+
+=== `from-bytes`
+
+Converts bytes to an integer.
+
+```
+from-bytes(
+  bytes: bytes,
+  endian: str,
+  signed: bool
+) -> int
+```
+
+```typst
+#int.from-bytes(bytes((0, 0, 0, 0, 0, 0, 0, 1))) \
+#int.from-bytes(bytes((1, 0, 0, 0, 0, 0, 0, 0)), endian: "big")
+```
+
+==== `bytes`: bytes (Required, Positional)
+
+The bytes that should be converted to an integer.
+
+Must be of length at most 8 so that the result fits into a 64-bit signed integer.
+
+==== `endian`: str
+
+The endianness of the conversion.
+
+Default: `"little"`
+
+==== `signed`: bool
+
+Whether the bytes should be treated as a signed integer. If this is `true` and the most significant bit is set, the resulting number will negative.
+
+Default: `true`
+
+=== `to-bytes`
+
+Converts an integer to bytes.
+
+```
+to-bytes(
+  endian: str,
+  size: int
+) -> bytes
+```
+
+```typst
+#array(10000.to-bytes(endian: "big")) \
+#array(10000.to-bytes(size: 4))
+```
+
+==== `endian`: str
+
+The endianness of the conversion.
+
+Default: `"little"`
+
+==== `size`: int
+
+The size in bytes of the resulting bytes (must be at least zero). If the integer is too large to fit in the specified size, the conversion will truncate the remaining bytes based on the endianness. To keep the same resulting value, if the endianness is big-endian, the truncation will happen at the rightmost bytes. Otherwise, if the endianness is little-endian, the truncation will happen at the leftmost bytes.
+
+Be aware that if the integer is negative and the size is not enough to make the number fit, when passing the resulting bytes to `int.from-bytes`, the resulting number might be positive, as the most significant bit might not be set to 1.
+
+Default: `8`
+= label
+
+A label for an element.
+
+Inserting a label into content attaches it to the closest preceding element that is not a space. The preceding element must be in the same scope as the label, which means that `Hello #[<label>]`, for instance, wouldn't work.
+
+A labelled element can be #link("/docs/reference/model/ref/")[referenced], #link("/docs/reference/introspection/query/")[queried] for, and #link("/docs/reference/styling/")[styled] through its label.
+
+Once constructed, you can get the name of a label using #link("/docs/reference/foundations/str/#constructor")[str].
+
+== Example
+
+```typst
+#show <a>: set text(blue)
+#show label("b"): set text(red)
+
+= Heading <a>
+*Strong* #label("b")
+```
+
+== Syntax
+
+This function also has dedicated syntax: You can create a label by enclosing its name in angle brackets. This works both in markup and code. A label's name can contain letters, numbers, `_`, `-`, `:`, and `.`.
+
+Note that there is a syntactical difference when using the dedicated syntax for this function. In the code below, the `<a>` terminates the heading and thus attaches to the heading itself, whereas the `#label("b")` is part of the heading and thus attaches to the heading's text.
+
+Currently, labels can only be attached to elements in markup mode, not in code mode. This might change in the future.
+
+== Constructor
+
+Creates a label from a string.
+
+```
+label(
+  str: str
+) -> label
+```
+
+==== `name`: str (Required, Positional)
+
+The name of the label.
+= module
+
+An module of definitions.
+
+A module
+
+- be built-in
+- stem from a #link("/docs/reference/scripting/#modules")[file import]
+- stem from a #link("/docs/reference/scripting/#packages")[package import] (and thus indirectly its entrypoint file)
+- result from a call to the #link("/docs/reference/foundations/plugin/")[plugin] function
+
+You can access definitions from the module using #link("/docs/reference/scripting/#fields")[field access notation] and interact with it using the #link("/docs/reference/scripting/#modules")[import and include syntaxes]. Alternatively, it is possible to convert a module to a dictionary, and therefore access its contents dynamically, using the #link("/docs/reference/foundations/dictionary/#constructor")[dictionary constructor].
+
+== Example
+
+```typst
+#import "utils.typ"
+#utils.add(2, 5)
+
+#import utils: sub
+#sub(1, 4)
+```
+= none
+
+A value that indicates the absence of any other value.
+
+The none type has exactly one value: `none`.
+
+When inserted into the document, it is not visible. This is also the value that is produced by empty code blocks. It can be #link("/docs/reference/scripting/#blocks")[joined] with any value, yielding the other value.
+
+== Example
+
+```typst
+Not visible: #none
+```
+= panic
+
+Fails with an error.
+
+Arguments are displayed to the user (not rendered in the document) as strings, converting with `repr` if necessary.
+
+== Example
+
+The code below produces the error `panicked with: "this is wrong"`.
+
+== Parameters
+
+```
+panic(
+  ..: any
+) -> 
+```
+
+=== `values`: any (Required, Positional, Variadic)
+
+The values to panic with and display to the user.
+= plugin
+
+Loads a WebAssembly module.
+
+The resulting #link("/docs/reference/foundations/module/")[module] will contain one Typst #link("/docs/reference/foundations/function/")[function] for each function export of the loaded WebAssembly module.
+
+Typst WebAssembly plugins need to follow a specific #link("/docs/reference/foundations/plugin/#protocol")[protocol]. To run as a plugin, a program needs to be compiled to a 32-bit shared WebAssembly library. Plugin functions may accept multiple #link("/docs/reference/foundations/bytes/")[byte buffers] as arguments and return a single byte buffer. They should typically be wrapped in idiomatic Typst functions that perform the necessary conversions between native Typst types and bytes.
+
+For security reasons, plugins run in isolation from your system. This means that printing, reading files, or similar things are not supported.
+
+== Example
+
+```typst
+#let myplugin = plugin("hello.wasm")
+#let concat(a, b) = str(
+  myplugin.concatenate(
+    bytes(a),
+    bytes(b),
+  )
+)
+
+#concat("hello", "world")
+```
+
+Since the plugin function returns a module, it can be used with import syntax:
+
+== Purity
+
+Plugin functions *must be pure:* A plugin function call most not have any observable side effects on future plugin calls and given the same arguments, it must always return the same value.
+
+The reason for this is that Typst functions must be pure (which is quite fundamental to the language design) and, since Typst function can call plugin functions, this requirement is inherited. In particular, if a plugin function is called twice with the same arguments, Typst might cache the results and call your function only once. Moreover, Typst may run multiple instances of your plugin in multiple threads, with no state shared between them.
+
+Typst does not enforce plugin function purity (for efficiency reasons), but calling an impure function will lead to unpredictable and irreproducible results and must be avoided.
+
+That said, mutable operations _can be_ useful for plugins that require costly runtime initialization. Due to the purity requirement, such initialization cannot be performed through a normal function call. Instead, Typst exposes a #link("/docs/reference/foundations/plugin/#definitions-transition")[plugin transition API], which executes a function call and then creates a derived module with new functions which will observe the side effects produced by the transition call. The original plugin remains unaffected.
+
+== Plugins and Packages
+
+Any Typst code can make use of a plugin simply by including a WebAssembly file and loading it. However, because the byte-based plugin interface is quite low-level, plugins are typically exposed through a package containing the plugin and idiomatic wrapper functions.
+
+== WASI
+
+Many compilers will use the #link("https://wasi.dev/")[WASI ABI] by default or as their only option (e.g. emscripten), which allows printing, reading files, etc. This ABI will not directly work with Typst. You will either need to compile to a different target or #link("https://github.com/astrale-sharp/wasm-minimal-protocol/tree/master/crates/wasi-stub")[stub all functions].
+
+== Protocol
+
+To be used as a plugin, a WebAssembly module must conform to the following protocol:
+
+A plugin module can export functions to make them callable from Typst. To conform to the protocol, an exported function should:
+
+- Take n 32-bit integer arguments a_1, a_2, ..., a_n (interpreted as lengths, so usize/size_t may be preferable), and return one 32-bit integer.
+- The function should first allocate a buffer buf of length a_1 + a_2 + ... + a_n, and then call wasm_minimal_protocol_write_args_to_buffer(buf.ptr).
+- The a_1 first bytes of the buffer now constitute the first argument, the a_2 next bytes the second argument, and so on.
+- The function can now do its job with the arguments and produce an output buffer. Before returning, it should call wasm_minimal_protocol_send_result_to_host to send its result back to the host.
+- To signal success, the function should return 0.
+- To signal an error, the function should return 1. The written buffer is then interpreted as an UTF-8 encoded error message.
+
+Plugin modules need to import two functions that are provided by the runtime. (Types and functions are described using WAT syntax.)
+
+- (import "typst_env" "wasm_minimal_protocol_write_args_to_buffer" (func (param i32))) Writes the arguments for the current function into a plugin-allocated buffer. When a plugin function is called, it receives the lengths of its input buffers as arguments. It should then allocate a buffer whose capacity is at least the sum of these lengths. It should then call this function with a ptr to the buffer to fill it with the arguments, one after another.
+- (import "typst_env" "wasm_minimal_protocol_send_result_to_host" (func (param i32 i32))) Sends the output of the current function to the host (Typst). The first parameter shall be a pointer to a buffer (ptr), while the second is the length of that buffer (len). The memory pointed at by ptr can be freed immediately after this function returns. If the message should be interpreted as an error message, it should be encoded as UTF-8.
+
+== Resources
+
+For more resources, check out the #link("https://github.com/astrale-sharp/wasm-minimal-protocol")[wasm-minimal-protocol repository]. It contains:
+
+- A list of example plugin implementations and a test runner for these examples
+- Wrappers to help you write your plugin in Rust (Zig wrapper in development)
+- A stubber for WASI
+
+== Parameters
+
+```
+plugin(
+  str: str | bytes
+) -> module
+```
+
+=== `source`: str | bytes (Required, Positional)
+
+A #link("/docs/reference/syntax/#paths")[path] to a WebAssembly file or raw WebAssembly bytes.
+
+== Definitions
+
+=== `transition`
+
+Calls a plugin function that has side effects and returns a new module with plugin functions that are guaranteed to have observed the results of the mutable call.
+
+Note that calling an impure function through a normal function call (without use of the transition API) is forbidden and leads to unpredictable behaviour. Read the #link("/docs/reference/foundations/plugin/#purity")[section on purity] for more details.
+
+In the example below, we load the plugin `hello-mut.wasm` which exports two functions: The `get()` function retrieves a global array as a string. The `add(value)` function adds a value to the global array.
+
+We call `add` via the transition API. The call `mutated.get()` on the derived module will observe the addition. Meanwhile the original module remains untouched as demonstrated by the `base.get()` call.
+
+_Note:_ Due to limitations in the internal WebAssembly implementation, the transition API can only guarantee to reflect changes in the plugin's memory, not in WebAssembly globals. If your plugin relies on changes to globals being visible after transition, you might want to avoid use of the transition API for now. We hope to lift this limitation in the future.
+
+```
+transition(
+  function: function,
+  ..: bytes
+) -> module
+```
+
+==== `func`: function (Required, Positional)
+
+The plugin function to call.
+
+==== `arguments`: bytes (Required, Positional, Variadic)
+
+The byte buffers to call the function with.
+= regex
+
+A regular expression.
+
+Can be used as a #link("/docs/reference/styling/#show-rules")[show rule selector] and with #link("/docs/reference/foundations/str/")[string methods] like `find`, `split`, and `replace`.
+
+#link("https://docs.rs/regex/latest/regex/#syntax")[See here] for a specification of the supported syntax.
+
+== Example
+
+```typst
+// Works with string methods.
+#"a,b;c".split(regex("[,;]"))
+
+// Works with show rules.
+#show regex("\d+"): set text(red)
+
+The numbers 1 to 10.
+```
+
+== Constructor
+
+Create a regular expression from a string.
+
+```
+regex(
+  str: str
+) -> regex
+```
+
+==== `regex`: str (Required, Positional)
+
+The regular expression as a string.
+
+Most regex escape sequences just work because they are not valid Typst escape sequences. To produce regex escape sequences that are also valid in Typst (e.g. `\\`), you need to escape twice. Thus, to match a verbatim backslash, you would need to write `regex("\\\\")`.
+
+If you need many escape sequences, you can also create a raw element and extract its text to use it for your regular expressions:
+= repr
+
+Returns the string representation of a value.
+
+When inserted into content, most values are displayed as this representation in monospace with syntax-highlighting. The exceptions are `none`, integers, floats, strings, content, and functions.
+
+*Note:* This function is for debugging purposes. Its output should not be considered stable and may change at any time!
+
+== Example
+
+```typst
+#none vs #repr(none) \
+#"hello" vs #repr("hello") \
+#(1, 2) vs #repr((1, 2)) \
+#[*Hi*] vs #repr([*Hi*])
+```
+
+== Parameters
+
+```
+repr(
+  any
+) -> str
+```
+
+=== `value`: any (Required, Positional)
+
+The value whose string representation to produce.
+= selector
+
+A filter for selecting elements within the document.
+
+You can construct a selector in the following ways:
+
+- you can use an element #link("/docs/reference/foundations/function/")[function]
+- you can filter for an element function with #link("/docs/reference/foundations/function/#definitions-where")[specific fields]
+- you can use a #link("/docs/reference/foundations/str/")[string] or #link("/docs/reference/foundations/regex/")[regular expression]
+- you can use a #link("/docs/reference/foundations/label/")[<label>]
+- you can use a #link("/docs/reference/introspection/location/")[location]
+- call the #link("/docs/reference/foundations/selector/")[selector] constructor to convert any of the above types into a selector value and use the methods below to refine it
+
+Selectors are used to #link("/docs/reference/styling/#show-rules")[apply styling rules] to elements. You can also use selectors to #link("/docs/reference/introspection/query/")[query] the document for certain types of elements.
+
+Furthermore, you can pass a selector to several of Typst's built-in functions to configure their behaviour. One such example is the #link("/docs/reference/model/outline/")[outline] where it can be used to change which elements are listed within the outline.
+
+Multiple selectors can be combined using the methods shown below. However, not all kinds of selectors are supported in all places, at the moment.
+
+== Example
+
+```typst
+#context query(
+  heading.where(level: 1)
+    .or(heading.where(level: 2))
+)
+
+= This will be found
+== So will this
+=== But this will not.
+```
+
+== Constructor
+
+Turns a value into a selector. The following values are accepted:
+
+- An element function like a `heading` or `figure`.
+- A `<label>`.
+- A more complex selector like `heading.where(level: 1)`.
+
+```
+selector(
+  str: str | regex | label | selector | location | function
+) -> selector
+```
+
+==== `target`: str | regex | label | selector | location | function (Required, Positional)
+
+Can be an element function like a `heading` or `figure`, a `<label>` or a more complex selector like `heading.where(level: 1)`.
+
+== Definitions
+
+=== `or`
+
+Selects all elements that match this or any of the other selectors.
+
+```
+or(
+  ..: str | regex | label | selector | location | function
+) -> selector
+```
+
+==== `others`: str | regex | label | selector | location | function (Required, Positional, Variadic)
+
+The other selectors to match on.
+
+=== `and`
+
+Selects all elements that match this and all of the other selectors.
+
+```
+and(
+  ..: str | regex | label | selector | location | function
+) -> selector
+```
+
+==== `others`: str | regex | label | selector | location | function (Required, Positional, Variadic)
+
+The other selectors to match on.
+
+=== `before`
+
+Returns a modified selector that will only match elements that occur before the first match of `end`.
+
+```
+before(
+  label: label | selector | location | function,
+  inclusive: bool
+) -> selector
+```
+
+==== `end`: label | selector | location | function (Required, Positional)
+
+The original selection will end at the first match of `end`.
+
+==== `inclusive`: bool
+
+Whether `end` itself should match or not. This is only relevant if both selectors match the same type of element. Defaults to `true`.
+
+Default: `true`
+
+=== `after`
+
+Returns a modified selector that will only match elements that occur after the first match of `start`.
+
+```
+after(
+  label: label | selector | location | function,
+  inclusive: bool
+) -> selector
+```
+
+==== `start`: label | selector | location | function (Required, Positional)
+
+The original selection will start at the first match of `start`.
+
+==== `inclusive`: bool
+
+Whether `start` itself should match or not. This is only relevant if both selectors match the same type of element. Defaults to `true`.
+
+Default: `true`
+= str
+
+A sequence of Unicode codepoints.
+
+You can iterate over the grapheme clusters of the string using a #link("/docs/reference/scripting/#loops")[for loop]. Grapheme clusters are basically characters but keep together things that belong together, e.g. multiple codepoints that together form a flag emoji. Strings can be added with the `+` operator, #link("/docs/reference/scripting/#blocks")[joined together] and multiplied with integers.
+
+Typst provides utility methods for string manipulation. Many of these methods (e.g., `split`, `trim` and `replace`) operate on _patterns:_ A pattern can be either a string or a #link("/docs/reference/foundations/regex/")[regular expression]. This makes the methods quite versatile.
+
+All lengths and indices are expressed in terms of UTF-8 bytes. Indices are zero-based and negative indices wrap around to the end of the string.
+
+You can convert a value to a string with this type's constructor.
+
+== Example
+
+```typst
+#"hello world!" \
+#"\"hello\n  world\"!" \
+#"1 2 3".split() \
+#"1,2;3".split(regex("[,;]")) \
+#(regex("\d+") in "ten euros") \
+#(regex("\d+") in "10 euros")
+```
+
+== Escape sequences
+
+Just like in markup, you can escape a few symbols in strings:
+
+- `\\` for a backslash
+- `\"` for a quote
+- `\n` for a newline
+- `\r` for a carriage return
+- `\t` for a tab
+- `\u{1f600}` for a hexadecimal Unicode escape sequence
+
+== Constructor
+
+Converts a value to a string.
+
+- Integers are formatted in base 10. This can be overridden with the optional `base` parameter.
+- Floats are formatted in base 10 and never in exponential notation.
+- Negative integers and floats are formatted with the Unicode minus sign ("−" U+2212) instead of the ASCII minus sign ("-" U+002D).
+- From labels the name is extracted.
+- Bytes are decoded as UTF-8.
+
+If you wish to convert from and to Unicode code points, see the #link("/docs/reference/foundations/str/#definitions-to-unicode")[to-unicode] and #link("/docs/reference/foundations/str/#definitions-from-unicode")[from-unicode] functions.
+
+```
+str(
+  int: int | float | str | bytes | label | decimal | version | type,
+  base: int
+) -> str
+```
+
+```typst
+#str(10) \
+#str(4000, base: 16) \
+#str(2.7) \
+#str(1e8) \
+#str(<intro>)
+```
+
+==== `value`: int | float | str | bytes | label | decimal | version | type (Required, Positional)
+
+The value that should be converted to a string.
+
+==== `base`: int
+
+The base (radix) to display integers in, between 2 and 36.
+
+Default: `10`
+
+== Definitions
+
+=== `len`
+
+The length of the string in UTF-8 encoded bytes.
+
+```
+len(
+  
+) -> int
+```
+
+=== `first`
+
+Extracts the first grapheme cluster of the string. Fails with an error if the string is empty.
+
+```
+first(
+  
+) -> str
+```
+
+=== `last`
+
+Extracts the last grapheme cluster of the string. Fails with an error if the string is empty.
+
+```
+last(
+  
+) -> str
+```
+
+=== `at`
+
+Extracts the first grapheme cluster after the specified index. Returns the default value if the index is out of bounds or fails with an error if no default value was specified.
+
+```
+at(
+  int: int,
+  default: any
+) -> int
+```
+
+==== `index`: int (Required, Positional)
+
+The byte index. If negative, indexes from the back.
+
+==== `default`: any
+
+A default value to return if the index is out of bounds.
+
+=== `slice`
+
+Extracts a substring of the string. Fails with an error if the start or end index is out of bounds.
+
+```
+slice(
+  int: int,
+  none: none | int,
+  count: int
+) -> str
+```
+
+==== `start`: int (Required, Positional)
+
+The start byte index (inclusive). If negative, indexes from the back.
+
+==== `end`: none | int (Positional)
+
+The end byte index (exclusive). If omitted, the whole slice until the end of the string is extracted. If negative, indexes from the back.
+
+Default: `none`
+
+==== `count`: int
+
+The number of bytes to extract. This is equivalent to passing `start + count` as the `end` position. Mutually exclusive with `end`.
+
+=== `clusters`
+
+Returns the grapheme clusters of the string as an array of substrings.
+
+```
+clusters(
+  
+) -> array
+```
+
+=== `codepoints`
+
+Returns the Unicode codepoints of the string as an array of substrings.
+
+```
+codepoints(
+  
+) -> array
+```
+
+=== `to-unicode`
+
+Converts a character into its corresponding code point.
+
+```
+to-unicode(
+  str: str
+) -> int
+```
+
+```typst
+#"a".to-unicode() \
+#("a\u{0300}"
+   .codepoints()
+   .map(str.to-unicode))
+```
+
+==== `character`: str (Required, Positional)
+
+The character that should be converted.
+
+=== `from-unicode`
+
+Converts a unicode code point into its corresponding string.
+
+```
+from-unicode(
+  int: int
+) -> str
+```
+
+```typst
+#str.from-unicode(97)
+```
+
+==== `value`: int (Required, Positional)
+
+The code point that should be converted.
+
+=== `contains`
+
+Whether the string contains the specified pattern.
+
+This method also has dedicated syntax: You can write `"bc" in "abcd"` instead of `"abcd".contains("bc")`.
+
+```
+contains(
+  str: str | regex
+) -> bool
+```
+
+==== `pattern`: str | regex (Required, Positional)
+
+The pattern to search for.
+
+=== `starts-with`
+
+Whether the string starts with the specified pattern.
+
+```
+starts-with(
+  str: str | regex
+) -> bool
+```
+
+==== `pattern`: str | regex (Required, Positional)
+
+The pattern the string might start with.
+
+=== `ends-with`
+
+Whether the string ends with the specified pattern.
+
+```
+ends-with(
+  str: str | regex
+) -> bool
+```
+
+==== `pattern`: str | regex (Required, Positional)
+
+The pattern the string might end with.
+
+=== `find`
+
+Searches for the specified pattern in the string and returns the first match as a string or `none` if there is no match.
+
+```
+find(
+  str: str | regex
+) -> str
+```
+
+==== `pattern`: str | regex (Required, Positional)
+
+The pattern to search for.
+
+=== `position`
+
+Searches for the specified pattern in the string and returns the index of the first match as an integer or `none` if there is no match.
+
+```
+position(
+  str: str | regex
+) -> int
+```
+
+==== `pattern`: str | regex (Required, Positional)
+
+The pattern to search for.
+
+=== `match`
+
+Searches for the specified pattern in the string and returns a dictionary with details about the first match or `none` if there is no match.
+
+The returned dictionary has the following keys:
+
+- `start`: The start offset of the match
+- `end`: The end offset of the match
+- `text`: The text that matched.
+- `captures`: An array containing a string for each matched capturing group. The first item of the array contains the first matched capturing, not the whole match! This is empty unless the `pattern` was a regex with capturing groups.
+
+```
+match(
+  str: str | regex
+) -> dictionary
+```
+
+==== `pattern`: str | regex (Required, Positional)
+
+The pattern to search for.
+
+=== `matches`
+
+Searches for the specified pattern in the string and returns an array of dictionaries with details about all matches. For details about the returned dictionaries, see above.
+
+```
+matches(
+  str: str | regex
+) -> array
+```
+
+==== `pattern`: str | regex (Required, Positional)
+
+The pattern to search for.
+
+=== `replace`
+
+Replace at most `count` occurrences of the given pattern with a replacement string or function (beginning from the start). If no count is given, all occurrences are replaced.
+
+```
+replace(
+  str: str | regex,
+  str: str | function,
+  count: int
+) -> str
+```
+
+==== `pattern`: str | regex (Required, Positional)
+
+The pattern to search for.
+
+==== `replacement`: str | function (Required, Positional)
+
+The string to replace the matches with or a function that gets a dictionary for each match and can return individual replacement strings.
+
+==== `count`: int
+
+If given, only the first `count` matches of the pattern are placed.
+
+=== `trim`
+
+Removes matches of a pattern from one or both sides of the string, once or repeatedly and returns the resulting string.
+
+```
+trim(
+  none: none | str | regex,
+  at: alignment,
+  repeat: bool
+) -> str
+```
+
+==== `pattern`: none | str | regex (Positional)
+
+The pattern to search for. If `none`, trims white spaces.
+
+Default: `none`
+
+==== `at`: alignment
+
+Can be `start` or `end` to only trim the start or end of the string. If omitted, both sides are trimmed.
+
+==== `repeat`: bool
+
+Whether to repeatedly removes matches of the pattern or just once. Defaults to `true`.
+
+Default: `true`
+
+=== `split`
+
+Splits a string at matches of a specified pattern and returns an array of the resulting parts.
+
+When the empty string is used as a separator, it separates every character (i.e., Unicode code point) in the string, along with the beginning and end of the string. In practice, this means that the resulting list of parts will contain the empty string at the start and end of the list.
+
+```
+split(
+  none: none | str | regex
+) -> array
+```
+
+==== `pattern`: none | str | regex (Positional)
+
+The pattern to split at. Defaults to whitespace.
+
+Default: `none`
+
+=== `rev`
+
+Reverse the string.
+
+```
+rev(
+  
+) -> str
+```
+= symbol
+
+A Unicode symbol.
+
+Typst defines common symbols so that they can easily be written with standard keyboards. The symbols are defined in modules, from which they can be accessed using #link("/docs/reference/scripting/#fields")[field access notation]:
+
+- General symbols are defined in the #link("/docs/reference/symbols/sym/")[sym module]
+- Emoji are defined in the #link("/docs/reference/symbols/emoji/")[emoji module]
+
+Moreover, you can define custom symbols with this type's constructor function.
+
+```typst
+#sym.arrow.r \
+#sym.gt.eq.not \
+$gt.eq.not$ \
+#emoji.face.halo
+```
+
+Many symbols have different variants, which can be selected by appending the modifiers with dot notation. The order of the modifiers is not relevant. Visit the documentation pages of the symbol modules and click on a symbol to see its available variants.
+
+```typst
+$arrow.l$ \
+$arrow.r$ \
+$arrow.t.quad$
+```
+
+== Constructor
+
+Create a custom symbol with modifiers.
+
+```
+symbol(
+  ..: str | array
+) -> symbol
+```
+
+```typst
+#let envelope = symbol(
+  "🖂",
+  ("stamped", "🖃"),
+  ("stamped.pen", "🖆"),
+  ("lightning", "🖄"),
+  ("fly", "🖅"),
+)
+
+#envelope
+#envelope.stamped
+#envelope.stamped.pen
+#envelope.lightning
+#envelope.fly
+```
+
+==== `variants`: str | array (Required, Positional, Variadic)
+
+The variants of the symbol.
+
+Can be a just a string consisting of a single character for the modifierless variant or an array with two strings specifying the modifiers and the symbol. Individual modifiers should be separated by dots. When displaying a symbol, Typst selects the first from the variants that have all attached modifiers and the minimum number of other modifiers.
+= System
+
+Module for system interactions.
+
+This module defines the following items:
+
+- The sys.version constant (of type version) that specifies the currently active Typst compiler version.
+- The sys.inputs dictionary, which makes external inputs available to the project. An input specified in the command line as --input key=value becomes available under sys.inputs.key as "value". To include spaces in the value, it may be enclosed with single or double quotes. The value is always of type string. More complex data may be parsed manually using functions like json.decode.
+= target
+
+Returns the current export target.
+
+This function returns either
+
+- `"paged"` (for PDF, PNG, and SVG export), or
+- `"html"` (for HTML export).
+
+The design of this function is not yet finalized and for this reason it is guarded behind the `html` feature. Visit the #link("/docs/reference/html/")[HTML documentation page] for more details.
+
+== When to use it
+
+This function allows you to format your document properly across both HTML and paged export targets. It should primarily be used in templates and show rules, rather than directly in content. This way, the document's contents can be fully agnostic to the export target and content can be shared between PDF and HTML export.
+
+== Varying targets
+
+This function is #link("/docs/reference/context/")[contextual] as the target can vary within a single compilation: When exporting to HTML, the target will be `"paged"` while within an #link("/docs/reference/html/frame/")[html.frame].
+
+== Example
+
+```typst
+#let kbd(it) = context {
+  if target() == "html" {
+    html.elem("kbd", it)
+  } else {
+    set text(fill: rgb("#1f2328"))
+    let r = 3pt
+    box(
+      fill: rgb("#f6f8fa"),
+      stroke: rgb("#d1d9e0b3"),
+      outset: (y: r),
+      inset: (x: r),
+      radius: r,
+      raw(it)
+    )
+  }
+}
+
+Press #kbd("F1") for help.
+```
+
+== Parameters
+
+```
+target(
+  
+) -> str
+```

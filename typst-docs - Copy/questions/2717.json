@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2717,
+    "title": "How to Fix Broken Hyperlinks in Typst Bibliography When Links Break Across Lines?",
+    "slug": "how-to-fix-broken-hyperlinks-in-typst-bibliography-when-links-break-across-lines",
+    "posts_count": 2,
+    "created_at": "2025-02-07T13:52:58.716Z",
+    "last_posted_at": "2025-02-07T13:58:12.972Z",
+    "views": 83,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "laurmaedje",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 125
+  },
+  "posts": [
+    {
+      "id": 8331,
+      "post_number": 1,
+      "username": "Daniel1",
+      "name": "Daniel",
+      "created_at": "2025-02-07T13:52:58.843Z",
+      "updated_at": "2025-02-07T13:52:58.843Z",
+      "cooked": "<p>I’m encountering an issue with my Typst bibliography where hyperlinks (or DOIs) that break across multiple lines aren’t functioning properly. Sometimes, when a link spans multiple lines, only part of it remains clickable, breaking the hyperlink functionality.</p>\n<p>Does anyone know:</p>\n<ol>\n<li>Is this a known issue in Typst?</li>\n<li>Are there any workarounds or solutions to ensure hyperlinks remain intact even when they break across lines?</li>\n<li>Are there any specific bibliography settings or configurations that might help resolve this?</li>\n</ol>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/e/e779e911c027c8e4f306609d04860113675f1cc8.png\" alt=\"image\" data-base62-sha1=\"x1Jueb0tWl3ohFe4ov6MHpJvble\" width=\"556\" height=\"222\"><br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/d/d396025dd209772e10e570289981b732261dd056.png\" alt=\"image\" data-base62-sha1=\"ubM8EzIwZQk3mDIn5VicdnLyonA\" width=\"565\" height=\"192\"></p>",
+      "raw": "I'm encountering an issue with my Typst bibliography where hyperlinks (or DOIs) that break across multiple lines aren't functioning properly. Sometimes, when a link spans multiple lines, only part of it remains clickable, breaking the hyperlink functionality.\n\nDoes anyone know:\n\n1. Is this a known issue in Typst?\n2. Are there any workarounds or solutions to ensure hyperlinks remain intact even when they break across lines?\n3. Are there any specific bibliography settings or configurations that might help resolve this?\n\n![image|556x222](upload://x1Jueb0tWl3ohFe4ov6MHpJvble.png)\n![image|565x192](upload://ubM8EzIwZQk3mDIn5VicdnLyonA.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 21,
+      "score": 274.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 440
+    },
+    {
+      "id": 8334,
+      "post_number": 2,
+      "username": "laurmaedje",
+      "name": "Laurenz Mädje",
+      "created_at": "2025-02-07T13:58:12.972Z",
+      "updated_at": "2025-02-07T13:58:12.972Z",
+      "cooked": "<p>This is a problem with PDF viewers (that try detect links automatically), but possibly we can work around it. There is an issue for it here: <a href=\"https://github.com/typst/typst/issues/3620\" class=\"inline-onebox\">Bibliography URL flakyness · Issue #3620 · typst/typst · GitHub</a></p>",
+      "raw": "This is a problem with PDF viewers (that try detect links automatically), but possibly we can work around it. There is an issue for it here: https://github.com/typst/typst/issues/3620",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 21,
+      "score": 34.2,
+      "accepted_answer": true,
+      "trust_level": 4,
+      "user_id": 2
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:56.098895"
+}

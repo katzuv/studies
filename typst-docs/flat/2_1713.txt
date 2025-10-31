@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1713,
+    "title": "How to customize styling of `heading` and control its look in table of contents?",
+    "slug": "how-to-customize-styling-of-heading-and-control-its-look-in-table-of-contents",
+    "posts_count": 3,
+    "created_at": "2024-11-13T20:23:59.145Z",
+    "last_posted_at": "2024-11-15T19:59:12.570Z",
+    "views": 188,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "jbirnick",
+    "tags": [
+      "outline",
+      "styling"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 188
+  },
+  "posts": [
+    {
+      "id": 5604,
+      "post_number": 1,
+      "username": "AhmedSalih",
+      "name": "",
+      "created_at": "2024-11-13T20:23:59.265Z",
+      "updated_at": "2024-12-19T04:59:57.006Z",
+      "cooked": "<p>Hello!</p>\n<p>I am trying to make a custom heading style which should look something like this:</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/4/42532b117bc0392f986d8dea867b65be4b48bb99.png\" data-download-href=\"https://forum.typst.app/uploads/default/42532b117bc0392f986d8dea867b65be4b48bb99\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/4/42532b117bc0392f986d8dea867b65be4b48bb99_2_690x82.png\" alt=\"image\" data-base62-sha1=\"9sJHpsHxn6fRUsWEcRSareyiUtz\" width=\"690\" height=\"82\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/4/42532b117bc0392f986d8dea867b65be4b48bb99_2_690x82.png, https://forum.typst.app/uploads/default/optimized/2X/4/42532b117bc0392f986d8dea867b65be4b48bb99_2_1035x123.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/4/42532b117bc0392f986d8dea867b65be4b48bb99_2_1380x164.png 2x\" data-dominant-color=\"FBFCFC\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">1438×172 12.1 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>I think the real way to do it is using:</p>\n<p><code>set heading(numbering(\"1.1 |\"))</code></p>\n<p>But I am finding that this produces:</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/6/68823234d33f8534518f0842c5ecfa92555c7d65.png\" data-download-href=\"https://forum.typst.app/uploads/default/68823234d33f8534518f0842c5ecfa92555c7d65\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/original/2X/6/68823234d33f8534518f0842c5ecfa92555c7d65.png\" alt=\"image\" data-base62-sha1=\"eUwBfzeuxciavy4mNvVV3gmVv0h\" width=\"690\" height=\"50\" data-dominant-color=\"E9E9E9\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">831×61 3.37 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>Where i have increased the text size of the heading. Then I realized that my table of contents also increase in size:</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/f/fce5a535ee2dadb08b29113910775c1845e8ea22.png\" data-download-href=\"https://forum.typst.app/uploads/default/fce5a535ee2dadb08b29113910775c1845e8ea22\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/f/fce5a535ee2dadb08b29113910775c1845e8ea22_2_690x432.png\" alt=\"image\" data-base62-sha1=\"A5ekNuorLpKgXuWSTWzWnrXDVqq\" width=\"690\" height=\"432\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/f/fce5a535ee2dadb08b29113910775c1845e8ea22_2_690x432.png, https://forum.typst.app/uploads/default/original/2X/f/fce5a535ee2dadb08b29113910775c1845e8ea22.png 1.5x, https://forum.typst.app/uploads/default/original/2X/f/fce5a535ee2dadb08b29113910775c1845e8ea22.png 2x\" data-dominant-color=\"FAF8F9\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">814×510 34.8 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>Could anyone provide me some info on:</p>\n<ol>\n<li>How to keep the outline text formatting irrelevant of the actual heading?</li>\n<li>How to produce a custom style for all top-level headers as I want?</li>\n</ol>\n<p>Kind regards</p>",
+      "raw": "Hello!\n\nI am trying to make a custom heading style which should look something like this:\n\n![image|690x82](upload://9sJHpsHxn6fRUsWEcRSareyiUtz.png)\n\nI think the real way to do it is using:\n\n`set heading(numbering(\"1.1 |\"))`\n\nBut I am finding that this produces:\n\n![image|690x50](upload://eUwBfzeuxciavy4mNvVV3gmVv0h.png)\n\nWhere i have increased the text size of the heading. Then I realized that my table of contents also increase in size:\n\n![image|690x432](upload://A5ekNuorLpKgXuWSTWzWnrXDVqq.png)\n\nCould anyone provide me some info on:\n\n1. How to keep the outline text formatting irrelevant of the actual heading?\n2. How to produce a custom style for all top-level headers as I want?\n\nKind regards",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 545.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 786
+    },
+    {
+      "id": 5655,
+      "post_number": 2,
+      "username": "jbirnick",
+      "name": "Johann Birnick",
+      "created_at": "2024-11-15T02:41:21.326Z",
+      "updated_at": "2024-11-15T02:41:42.107Z",
+      "cooked": "<p>Well how did you increase the text size? Please always share your code, otherwise we can’t fix it.</p>\n<p>The correct way to increase the size of a heading is this</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show heading: set text(30pt)\n</code></pre>\n<p>and this will not affect the table of contents.</p>",
+      "raw": "Well how did you increase the text size? Please always share your code, otherwise we can't fix it.\n\nThe correct way to increase the size of a heading is this\n```typ\n#show heading: set text(30pt)\n```\nand this will not affect the table of contents.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 23,
+      "score": 29.6,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 218
+    },
+    {
+      "id": 5682,
+      "post_number": 3,
+      "username": "AhmedSalih",
+      "name": "",
+      "created_at": "2024-11-15T19:59:12.570Z",
+      "updated_at": "2024-11-15T19:59:12.570Z",
+      "cooked": "<p>Perfect, this should be highlighted more clearly (or I might have overlooked it completely)</p>\n<p>You made me realize that for visuals only, of course <code>show</code> should be used</p>\n<p>Kind regards</p>",
+      "raw": "Perfect, this should be highlighted more clearly (or I might have overlooked it completely)\n\nYou made me realize that for visuals only, of course `show` should be used\n\nKind regards",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 14.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 786
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:59.671659"
+}

@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2984,
+    "title": "How to use `where` selector on multiple \"levels\" of an element?",
+    "slug": "how-to-use-where-selector-on-multiple-levels-of-an-element",
+    "posts_count": 3,
+    "created_at": "2025-02-25T14:55:26.695Z",
+    "last_posted_at": "2025-02-25T15:22:03.968Z",
+    "views": 110,
+    "like_count": 3,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 143
+  },
+  "posts": [
+    {
+      "id": 9050,
+      "post_number": 1,
+      "username": "Leon",
+      "name": "Leon",
+      "created_at": "2025-02-25T14:55:26.798Z",
+      "updated_at": "2025-03-07T21:25:30.668Z",
+      "cooked": "<p>I’d like to make level 1 entries in an outline bold, but only if the outline contains headings, not figures or anything else:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#show outline.where(target: heading.where(outlined: true)).entry.where(level: 1): it =&gt; {\n  set text(weight: \"bold\")\n}\n</code></pre>\n<p>Unfortunately, this doesn’t seem to be allowed: <code>cannot access fields on type selector</code></p>\n<p>Is there a way to get around this?</p>",
+      "raw": "I'd like to make level 1 entries in an outline bold, but only if the outline contains headings, not figures or anything else:\n```typst\n#show outline.where(target: heading.where(outlined: true)).entry.where(level: 1): it => {\n  set text(weight: \"bold\")\n}\n```\n\nUnfortunately, this doesn't seem to be allowed: `cannot access fields on type selector`\n\nIs there a way to get around this?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 32,
+      "score": 341.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1252
+    },
+    {
+      "id": 9054,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-02-25T15:11:56.233Z",
+      "updated_at": "2025-02-25T15:11:56.233Z",
+      "cooked": "<p>Hi, welcome to the Typst forum!</p>\n<p>I think normally the solution should be</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show outline.where(target: heading): it =&gt; {\n  show outline.entry.where(level: 1): set text(weight: \"bold\")\n  it\n}\n</code></pre>\n<p>but due to <a href=\"https://github.com/typst/typst/issues/4741\">a bug</a> you need to wrap <code>heading</code> in a <code>selector</code> call:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show outline.where(target: selector(heading)): it =&gt; {\n  show outline.entry.where(level: 1): set text(weight: \"bold\")\n  it\n}\n</code></pre>",
+      "raw": "Hi, welcome to the Typst forum!\n\nI think normally the solution should be\n\n```typ\n#show outline.where(target: heading): it => {\n  show outline.entry.where(level: 1): set text(weight: \"bold\")\n  it\n}\n```\n\nbut due to [a bug](https://github.com/typst/typst/issues/4741) you need to wrap `heading` in a `selector` call:\n\n```typ\n#show outline.where(target: selector(heading)): it => {\n  show outline.entry.where(level: 1): set text(weight: \"bold\")\n  it\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 32,
+      "score": 41.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    },
+    {
+      "id": 9055,
+      "post_number": 3,
+      "username": "Leon",
+      "name": "Leon",
+      "created_at": "2025-02-25T15:22:03.968Z",
+      "updated_at": "2025-02-25T15:22:03.968Z",
+      "cooked": "<p>Thank you very much for your quick reply :)</p>",
+      "raw": "Thank you very much for your quick reply :)",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 32,
+      "score": 21.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1252
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:08.178673"
+}

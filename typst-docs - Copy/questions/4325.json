@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 4325,
+    "title": "How do I set a custom heading in the \"abbr\"-package?",
+    "slug": "how-do-i-set-a-custom-heading-in-the-abbr-package",
+    "posts_count": 2,
+    "created_at": "2025-05-27T09:17:19.620Z",
+    "last_posted_at": "2025-05-27T12:26:38.959Z",
+    "views": 20,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "packages"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 166
+  },
+  "posts": [
+    {
+      "id": 13236,
+      "post_number": 1,
+      "username": "jenny",
+      "name": "jenny",
+      "created_at": "2025-05-27T09:17:19.719Z",
+      "updated_at": "2025-05-27T09:17:19.719Z",
+      "cooked": "<p>I’m using abbr 0.2.3 to  manage my abbreviations. In the package info there is <code>list (title)</code> written. I thought I could add a title with that but it doesn’t allow anything within the brackets. The package creates a heading but I want to set my own.  How can I do that?</p>",
+      "raw": "I'm using abbr 0.2.3 to  manage my abbreviations. In the package info there is `list (title)` written. I thought I could add a title with that but it doesn't allow anything within the brackets. The package creates a heading but I want to set my own.  How can I do that?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 11,
+      "score": 37.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1633
+    },
+    {
+      "id": 13261,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-27T12:26:38.959Z",
+      "updated_at": "2025-05-27T12:26:38.959Z",
+      "cooked": "<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/abbr:0.2.3\"\n\n#abbr.list(title: [Custom title])\n// alternative: #abbr.load(\"example.csv\")\n#abbr.make(\n  (\"PDE\", \"Partial Differential Equation\"),\n  (\"BC\", \"Boundary Condition\"),\n  (\"DOF\", \"Degree of Freedom\", \"Degrees of Freedom\"),\n)\n\n\n= Constrained Equations\n\n#abbr.pla[BC] constrain the #abbr.pla[DOF] of the #abbr.pla[PDE] they act on.\n\n#abbr.config(style: it =&gt; text(red, it), space-char: sym.arrow.l.r)\n\n#abbr.pla[BC] constrain the #abbr.pla[DOF] of the #abbr.pla[PDE] they act on.\n\n#abbr.add(\"MOL\", \"Method of Lines\")\nThe #abbr.a[MOL] is a procedure to solve #abbr.pla[PDE] in time.\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/b/b0c5d07a7dfa720d053dce33f8de857e4f0eedf0.png\" data-download-href=\"https://forum.typst.app/uploads/default/b0c5d07a7dfa720d053dce33f8de857e4f0eedf0\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/original/2X/b/b0c5d07a7dfa720d053dce33f8de857e4f0eedf0.png\" alt=\"image\" data-base62-sha1=\"pdNQHTP6cj3FJBZgzgBxnLahsFq\" width=\"535\" height=\"209\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">535×209 32.9 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<aside class=\"onebox allowlistedgeneric\" data-onebox-src=\"https://typst.app/universe/package/abbr\">\n  <header class=\"source\">\n      <img src=\"https://forum.typst.app/uploads/default/original/1X/098187a593d51c4db99324614e2baeeb1bb355cc.png\" class=\"site-icon\" data-dominant-color=\"3CA8B6\" width=\"32\" height=\"32\">\n\n      <a href=\"https://typst.app/universe/package/abbr\" target=\"_blank\" rel=\"noopener\">Typst</a>\n  </header>\n\n  <article class=\"onebox-body\">\n    <div class=\"aspect-image\" style=\"--aspect-ratio:690/361;\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/db1c18ed802fe6841bee62606931f352da10ed09_2_690x362.png\" class=\"thumbnail\" data-dominant-color=\"7CC2C5\" width=\"690\" height=\"362\"></div>\n\n<h3><a href=\"https://typst.app/universe/package/abbr\" target=\"_blank\" rel=\"noopener\">abbr – Typst Universe</a></h3>\n\n  <p>An Abbreviations package.</p>\n\n\n  </article>\n\n  <div class=\"onebox-metadata\">\n    \n    \n  </div>\n\n  <div style=\"clear: both\"></div>\n</aside>\n",
+      "raw": "```typ\n#import \"@preview/abbr:0.2.3\"\n\n#abbr.list(title: [Custom title])\n// alternative: #abbr.load(\"example.csv\")\n#abbr.make(\n  (\"PDE\", \"Partial Differential Equation\"),\n  (\"BC\", \"Boundary Condition\"),\n  (\"DOF\", \"Degree of Freedom\", \"Degrees of Freedom\"),\n)\n\n\n= Constrained Equations\n\n#abbr.pla[BC] constrain the #abbr.pla[DOF] of the #abbr.pla[PDE] they act on.\n\n#abbr.config(style: it => text(red, it), space-char: sym.arrow.l.r)\n\n#abbr.pla[BC] constrain the #abbr.pla[DOF] of the #abbr.pla[PDE] they act on.\n\n#abbr.add(\"MOL\", \"Method of Lines\")\nThe #abbr.a[MOL] is a procedure to solve #abbr.pla[PDE] in time.\n```\n\n![image|535x209](upload://pdNQHTP6cj3FJBZgzgBxnLahsFq.png)\n\nhttps://typst.app/universe/package/abbr",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 9,
+      "score": 31.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:12.014715"
+}

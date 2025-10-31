@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2496,
+    "title": "How can I continue frontmatter numbering in backmatter?",
+    "slug": "how-can-i-continue-frontmatter-numbering-in-backmatter",
+    "posts_count": 3,
+    "created_at": "2025-01-21T11:14:09.306Z",
+    "last_posted_at": "2025-01-21T13:38:08.772Z",
+    "views": 84,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "numbering"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 218
+  },
+  "posts": [
+    {
+      "id": 7736,
+      "post_number": 1,
+      "username": "JohnDough",
+      "name": "John Dough",
+      "created_at": "2025-01-21T11:14:09.507Z",
+      "updated_at": "2025-01-21T17:04:41.008Z",
+      "cooked": "<p>Hey there,</p>\n<p>Is there any possibility to continue the numbering of the frontmatter also in the backmatter? Lets say I got the last page in the frontmatter as IV, then I write my main part with Arabic Numbering and when I switch to the Backmatter I want to continue with V.<br>\nI know that I can update the page counter with <code>counter(page).update(5)</code> but I want to make it dynamically if something changes in the frontmatter, for example the outline.</p>\n<p>It is probably a very simple solution like everything in Typst, but as a beginner coming from LaTeX, you don’t always think as straightforward as Typst <img src=\"https://forum.typst.app/images/emoji/apple/smile.png?v=12\" title=\":smile:\" class=\"emoji\" alt=\":smile:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>\n<p>Thanks in advance</p>",
+      "raw": "Hey there,\n\nIs there any possibility to continue the numbering of the frontmatter also in the backmatter? Lets say I got the last page in the frontmatter as IV, then I write my main part with Arabic Numbering and when I switch to the Backmatter I want to continue with V. \nI know that I can update the page counter with `counter(page).update(5)` but I want to make it dynamically if something changes in the frontmatter, for example the outline.\n\nIt is probably a very simple solution like everything in Typst, but as a beginner coming from LaTeX, you don't always think as straightforward as Typst :smile: \n\nThanks in advance",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 205.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1021
+    },
+    {
+      "id": 7741,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-01-21T12:49:30.647Z",
+      "updated_at": "2025-01-21T12:51:21.808Z",
+      "cooked": "<p>You can look at the package <a href=\"https://typst.app/universe/package/anti-matter/\" class=\"inline-onebox\">anti-matter – Typst Universe</a>.</p>\n<p>If you don’t want to use a package, then a simple PoC would be</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let frontmatter(body) = {\n    set page(numbering: \"i\")\n    body\n}\n#let mainmatter(body) = {\n    set page(numbering: \"1\")\n    context counter(\"antimatter\").update(counter(page).get())\n    body\n}\n#let backmatter(body) = {\n    set page(numbering: \"i\")\n    context counter(page).update(counter(\"antimatter\").get())\n    body    \n}\n\n#show: frontmatter\n#lorem(100)\n#pagebreak()\n#lorem(100)\n\n#show: mainmatter\n#lorem(100)\n#pagebreak()\n#lorem(100)\n\n#show: backmatter\n#lorem(100)\n#pagebreak()\n#lorem(100)\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/6/6308b332e85a7f8b2f4b550a9f83f440806a0da4.png\" data-download-href=\"https://forum.typst.app/uploads/default/6308b332e85a7f8b2f4b550a9f83f440806a0da4\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/6/6308b332e85a7f8b2f4b550a9f83f440806a0da4_2_235x500.png\" alt=\"image\" data-base62-sha1=\"e85Un4IdhqBqgQue1PqN3qZGXGc\" width=\"235\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/6/6308b332e85a7f8b2f4b550a9f83f440806a0da4_2_235x500.png, https://forum.typst.app/uploads/default/optimized/2X/6/6308b332e85a7f8b2f4b550a9f83f440806a0da4_2_352x750.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/6/6308b332e85a7f8b2f4b550a9f83f440806a0da4_2_470x1000.png 2x\" data-dominant-color=\"F3F3F3\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">843×1788 199 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "You can look at the package https://typst.app/universe/package/anti-matter/.\n\nIf you don't want to use a package, then a simple PoC would be \n\n```typ\n#let frontmatter(body) = {\n    set page(numbering: \"i\")\n    body\n}\n#let mainmatter(body) = {\n    set page(numbering: \"1\")\n    context counter(\"antimatter\").update(counter(page).get())\n    body\n}\n#let backmatter(body) = {\n    set page(numbering: \"i\")\n    context counter(page).update(counter(\"antimatter\").get())\n    body    \n}\n\n#show: frontmatter\n#lorem(100)\n#pagebreak()\n#lorem(100)\n\n#show: mainmatter\n#lorem(100)\n#pagebreak()\n#lorem(100)\n\n#show: backmatter\n#lorem(100)\n#pagebreak()\n#lorem(100)\n```\n![image|235x500](upload://e85Un4IdhqBqgQue1PqN3qZGXGc.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 26,
+      "score": 90.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 7744,
+      "post_number": 3,
+      "username": "JohnDough",
+      "name": "John Dough",
+      "created_at": "2025-01-21T13:38:08.772Z",
+      "updated_at": "2025-01-21T13:38:08.772Z",
+      "cooked": "<p>thank you very much, this is exactly what I was looking for</p>",
+      "raw": "thank you very much, this is exactly what I was looking for",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 4.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1021
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:36.669912"
+}

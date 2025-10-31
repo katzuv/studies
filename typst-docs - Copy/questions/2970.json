@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2970,
+    "title": "How to override the behavior of '=' (heading)?",
+    "slug": "how-to-override-the-behavior-of-heading",
+    "posts_count": 2,
+    "created_at": "2025-02-25T06:53:06.421Z",
+    "last_posted_at": "2025-02-25T07:09:09.040Z",
+    "views": 72,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "gezepi",
+    "tags": [
+      "styling"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 155
+  },
+  "posts": [
+    {
+      "id": 9023,
+      "post_number": 1,
+      "username": "hyoo",
+      "name": "Hyunbin Yoo",
+      "created_at": "2025-02-25T06:53:06.560Z",
+      "updated_at": "2025-02-25T08:47:14.624Z",
+      "cooked": "<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set text(\n  font: \"New Computer Modern\",\n  size: 12pt\n)\n</code></pre>\n<p>How can I override the font size of =, ==, ===, … so that they all obey the size set in <code>#set text?</code> Also, is the line spacing between a = and a non-= same as the global setting? Are there any other special treatments that = gets?</p>",
+      "raw": "```typ\n#set text(\n  font: \"New Computer Modern\",\n  size: 12pt\n)\n```\n\nHow can I override the font size of =, ==, ===, ... so that they all obey the size set in ```#set text?``` Also, is the line spacing between a = and a non-= same as the global setting? Are there any other special treatments that = gets?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 134.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 806
+    },
+    {
+      "id": 9024,
+      "post_number": 2,
+      "username": "gezepi",
+      "name": "",
+      "created_at": "2025-02-25T07:09:09.040Z",
+      "updated_at": "2025-02-25T07:09:42.750Z",
+      "cooked": "<p>What a <code>=</code> or <code>==</code> in the source file does is create a <a href=\"https://typst.app/docs/reference/model/heading/\">heading</a>.</p>\n<p>The styling of a heading can be controlled with <code>show</code> rules:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">= Normal Level 1\n== Normal Level 2\n\n#show heading: set text(1.5em)\n\n= Larger Level 1\n== Larger Level 2\n\n#show heading: set block(above: 0mm)\n#show heading: set text(spacing: 0mm)\n\n= Larger and Spacing Changed Level 1\n== Larger and Spacing Changed Level 2\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/2/28a65efd670cc54c0b67a75812b8610df7979f4d.png\" alt=\"image\" data-base62-sha1=\"5NBxVgWOIQGT9MPhyO4fsc8YEoZ\" width=\"505\" height=\"257\"></p>\n<p>There are a lot of spacing options available in <a href=\"https://typst.app/docs/reference/text/text/\"><code>text</code></a> and <a href=\"https://typst.app/docs/reference/layout/block/\"><code>block</code></a>.</p>",
+      "raw": "What a `=` or `==` in the source file does is create a [heading](https://typst.app/docs/reference/model/heading/).\n\nThe styling of a heading can be controlled with `show` rules:\n```typ\n= Normal Level 1\n== Normal Level 2\n\n#show heading: set text(1.5em)\n\n= Larger Level 1\n== Larger Level 2\n\n#show heading: set block(above: 0mm)\n#show heading: set text(spacing: 0mm)\n\n= Larger and Spacing Changed Level 1\n== Larger and Spacing Changed Level 2\n```\n![image|505x257](upload://5NBxVgWOIQGT9MPhyO4fsc8YEoZ.png)\n\n\nThere are a lot of spacing options available in [`text`](https://typst.app/docs/reference/text/text/) and [`block`](https://typst.app/docs/reference/layout/block/).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 23,
+      "score": 34.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 326
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:10.458288"
+}

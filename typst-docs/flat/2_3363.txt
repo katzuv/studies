@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 3363,
+    "title": "How to make centralized formulae in enums",
+    "slug": "how-to-make-centralized-formulae-in-enums",
+    "posts_count": 2,
+    "created_at": "2025-03-21T13:22:55.664Z",
+    "last_posted_at": "2025-03-21T13:47:11.545Z",
+    "views": 99,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "layout",
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 182
+  },
+  "posts": [
+    {
+      "id": 10080,
+      "post_number": 1,
+      "username": "AprilGrimoire",
+      "name": "AprilGrimoire",
+      "created_at": "2025-03-21T13:22:55.868Z",
+      "updated_at": "2025-03-21T13:26:21.308Z",
+      "cooked": "<pre><code class=\"lang-auto\">+ + Let $R=FF_p (epsilon) slash (epsilon^2)$. Prove that\n    $\n      F(X, Y) = X + Y + epsilon X Y^p\n    $\n    defines a noncommutative formal group\n</code></pre>\n<p>gives</p>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/5/53f88afa45f3485049d91cc893a97e593b50301a.png\" alt=\"image\" data-base62-sha1=\"bYQ86sYOdTVOMNIb6lafnw1neu6\" width=\"596\" height=\"136\"></p>\n<p>Instead of</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/8/8a6b869346b701c9c6b641bd3acafec610db4c03.png\" data-download-href=\"https://forum.typst.app/uploads/default/8a6b869346b701c9c6b641bd3acafec610db4c03\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/8/8a6b869346b701c9c6b641bd3acafec610db4c03_2_690x135.png\" alt=\"image\" data-base62-sha1=\"jKwglqzPiCWMw5zhiQdMcXibb1N\" width=\"690\" height=\"135\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/8/8a6b869346b701c9c6b641bd3acafec610db4c03_2_690x135.png, https://forum.typst.app/uploads/default/optimized/2X/8/8a6b869346b701c9c6b641bd3acafec610db4c03_2_1035x202.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/8/8a6b869346b701c9c6b641bd3acafec610db4c03_2_1380x270.png 2x\" data-dominant-color=\"F8F8F8\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">1649×323 87.7 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>How can I make an enum take as much horizontal space as possible? I hope there’s an option in enums to toggle this behavior, but there seemingly isn’t.</p>",
+      "raw": "```\n+ + Let $R=FF_p (epsilon) slash (epsilon^2)$. Prove that\n    $\n      F(X, Y) = X + Y + epsilon X Y^p\n    $\n    defines a noncommutative formal group\n```\n\ngives\n\n![image|596x136](upload://bYQ86sYOdTVOMNIb6lafnw1neu6.png)\n\nInstead of\n\n![image|690x135](upload://jKwglqzPiCWMw5zhiQdMcXibb1N.png)\n\nHow can I make an enum take as much horizontal space as possible? I hope there's an option in enums to toggle this behavior, but there seemingly isn't.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 28,
+      "score": 100.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1309
+    },
+    {
+      "id": 10093,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-03-21T13:47:11.545Z",
+      "updated_at": "2025-03-21T13:47:11.545Z",
+      "cooked": "<p>This is a known issue: <a href=\"https://github.com/typst/typst/issues/529\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">Center alignment broken in lists · Issue #529 · typst/typst · GitHub</a>. <em>I think</em> <a href=\"https://github.com/typst/typst/issues/529#issuecomment-2387094936\" rel=\"noopener nofollow ugc\">my fix at the bottom</a> should still be the best solution yet, since no one corrected it. Though I’m not sure in which cases you would need to use <code>inset: 0pt</code>, because, IIUC, <a href=\"https://typst.app/docs/reference/layout/block/#parameters-inset\"><code>block</code> has no inset by default</a>.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show math.equation.where(block: true): eq =&gt; {\n  block(width: 100%, inset: 0pt, align(center, eq))\n}\n\n+ + Let $R=FF_p (epsilon) slash (epsilon^2)$. Prove that\n    $\n      F(X, Y) = X + Y + epsilon X Y^p\n    $\n    defines a noncommutative formal group\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/f/fe0c359a8ec843b413477203ed411ff22e2b4d29.png\" data-download-href=\"https://forum.typst.app/uploads/default/fe0c359a8ec843b413477203ed411ff22e2b4d29\" title=\"output\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/f/fe0c359a8ec843b413477203ed411ff22e2b4d29_2_690x130.png\" alt=\"output\" data-base62-sha1=\"Afpr1WMzkeevG7SHcmfa9XwwO25\" width=\"690\" height=\"130\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/f/fe0c359a8ec843b413477203ed411ff22e2b4d29_2_690x130.png, https://forum.typst.app/uploads/default/original/2X/f/fe0c359a8ec843b413477203ed411ff22e2b4d29.png 1.5x, https://forum.typst.app/uploads/default/original/2X/f/fe0c359a8ec843b413477203ed411ff22e2b4d29.png 2x\" data-dominant-color=\"121212\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">output</span><span class=\"informations\">796×150 13.3 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "This is a known issue: https://github.com/typst/typst/issues/529. _I think_ [my fix at the bottom](https://github.com/typst/typst/issues/529#issuecomment-2387094936) should still be the best solution yet, since no one corrected it. Though I'm not sure in which cases you would need to use `inset: 0pt`, because, IIUC, [`block` has no inset by default](https://typst.app/docs/reference/layout/block/#parameters-inset).\n\n\n```typ\n#show math.equation.where(block: true): eq => {\n  block(width: 100%, inset: 0pt, align(center, eq))\n}\n\n+ + Let $R=FF_p (epsilon) slash (epsilon^2)$. Prove that\n    $\n      F(X, Y) = X + Y + epsilon X Y^p\n    $\n    defines a noncommutative formal group\n```\n\n![output|690x130](upload://Afpr1WMzkeevG7SHcmfa9XwwO25.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 28,
+      "score": 260.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:50:07.587195"
+}

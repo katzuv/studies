@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3701,
+    "title": "How do I access `target()` function without HTML feature flag?",
+    "slug": "how-do-i-access-target-function-without-html-feature-flag",
+    "posts_count": 3,
+    "created_at": "2025-04-17T12:54:40.949Z",
+    "last_posted_at": "2025-04-17T13:01:57.521Z",
+    "views": 48,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 151
+  },
+  "posts": [
+    {
+      "id": 11230,
+      "post_number": 1,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-04-17T12:54:41.116Z",
+      "updated_at": "2025-04-17T12:54:41.116Z",
+      "cooked": "<p>Currently, the <a href=\"https://typst.app/docs/reference/foundations/target/\"><code>target()</code></a> function doesn’t exist if you don’t enable HTML feature flag, but some default show rules (like for heading) <em>do</em> check for the HTML target. Is there a way to check for it without enabling the flag?</p>",
+      "raw": "Currently, the [`target()`](https://typst.app/docs/reference/foundations/target/) function doesn't exist if you don't enable HTML feature flag, but some default show rules (like for heading) *do* check for the HTML target. Is there a way to check for it without enabling the flag?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 23,
+      "score": 109.6,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 51
+    },
+    {
+      "id": 11231,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-04-17T12:55:16.872Z",
+      "updated_at": "2025-04-17T13:13:08.789Z",
+      "cooked": "<p>Yes, thanks to <a class=\"mention\" href=\"/u/sillyfreak\">@SillyFreak</a> for the answer:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let target = dictionary(std).at(\"target\", default: () =&gt; \"paged\")\n</code></pre>\n<p>You would then use it like normal:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#context target()\n</code></pre>\n<p>A side effect is that it’s available outside context when HTML feature flag is not enabled.</p>",
+      "raw": "Yes, thanks to @SillyFreak for the answer:\n\n```typ\n#let target = dictionary(std).at(\"target\", default: () => \"paged\")\n```\n\nYou would then use it like normal:\n\n```typ\n#context target()\n```\n\nA side effect is that it's available outside context when HTML feature flag is not enabled.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 23,
+      "score": 14.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    },
+    {
+      "id": 11232,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-04-17T13:01:57.521Z",
+      "updated_at": "2025-04-17T13:01:57.521Z",
+      "cooked": "<aside class=\"quote no-group\" data-username=\"Andrew\" data-post=\"2\" data-topic=\"3701\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/andrew/48/62_2.png\" class=\"avatar\"> Andrew:</div>\n<blockquote>\n<p>it’s available outside context when not exported to HTML</p>\n</blockquote>\n</aside>\n<p>I think more accurately, when HTML export is not <em>available</em>. If the feature is enabled (or you’re coming from the future where it’s enabled by default), context is required even when exporting to PDF, so I wouldn’t depend on that.</p>",
+      "raw": "[quote=\"Andrew, post:2, topic:3701\"]\nit’s available outside context when not exported to HTML\n[/quote]\n\nI think more accurately, when HTML export is not _available_. If the feature is enabled (or you're coming from the future where it's enabled by default), context is required even when exporting to PDF, so I wouldn't depend on that.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 1,
+      "like_count": 0,
+      "reads": 23,
+      "score": 9.6,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:49:02.285821"
+}

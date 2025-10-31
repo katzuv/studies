@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1722,
+    "title": "How to force inner variable to resolve first?",
+    "slug": "how-to-force-inner-variable-to-resolve-first",
+    "posts_count": 2,
+    "created_at": "2024-11-14T06:00:37.249Z",
+    "last_posted_at": "2024-11-14T06:44:32.855Z",
+    "views": 42,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 144
+  },
+  "posts": [
+    {
+      "id": 5621,
+      "post_number": 1,
+      "username": "hyoo",
+      "name": "Hyunbin Yoo",
+      "created_at": "2024-11-14T06:00:37.484Z",
+      "updated_at": "2024-11-14T06:01:01.297Z",
+      "cooked": "<p><code>inner</code> is a dictionary that resolves to text. <code>outer</code> is a function that receives two strings, <code>name</code> and <code>attitude</code>. <code>attitude</code> is one of “kind” and “rude”. However I get this error:</p>\n<blockquote>\n<p>Dictionary does not contain key “attitude” (line 6)</p>\n</blockquote>\n<p>Is this because <code>attitude</code> is being considered a key of <code>inner</code> rather than a parameter of <code>outer</code>? How can I fix my code?</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let inner = (\n  kind: \"Hello,\",\n  rude: \"What up,\"\n)\n\n#let outer(name, attitude) = inner.attitude + name\n\n#outer(\"Steve\", \"rude\")\n</code></pre>",
+      "raw": "```inner``` is a dictionary that resolves to text. ```outer``` is a function that receives two strings, ```name``` and ```attitude```. ```attitude``` is one of \"kind\" and \"rude\". However I get this error:\n> Dictionary does not contain key \"attitude\" (line 6)\n\nIs this because ```attitude``` is being considered a key of ```inner``` rather than a parameter of ```outer```? How can I fix my code?\n\n\n``` typst\n#let inner = (\n  kind: \"Hello,\",\n  rude: \"What up,\"\n)\n\n#let outer(name, attitude) = inner.attitude + name\n\n#outer(\"Steve\", \"rude\")\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 22,
+      "score": 34.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 806
+    },
+    {
+      "id": 5622,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2024-11-14T06:44:32.855Z",
+      "updated_at": "2024-11-14T06:44:32.855Z",
+      "cooked": "<p>Hello,</p>\n<p>you are correct, if you write it like that Typst tries to access the key <code>attitude</code>. You have to use <code>at</code>: <code>inner.at(attitude)</code></p>\n<p>From the <a href=\"https://typst.app/docs/reference/foundations/dictionary/\">documentation</a>:</p>\n<blockquote>\n<p>You can access and create dictionary entries with the .at() method. If you know the key statically, you can alternatively use field access notation (.key) to access the value.</p>\n</blockquote>",
+      "raw": "Hello,\n\nyou are correct, if you write it like that Typst tries to access the key `attitude`. You have to use `at`: `inner.at(attitude)`\n\nFrom the [documentation](https://typst.app/docs/reference/foundations/dictionary/):\n> You can access and create dictionary entries with the .at() method. If you know the key statically, you can alternatively use field access notation (.key) to access the value.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 21,
+      "score": 19.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:57.473050"
+}

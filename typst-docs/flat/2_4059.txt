@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 4059,
+    "title": "Is there a way to override math symbol shorthands",
+    "slug": "is-there-a-way-to-override-math-symbol-shorthands",
+    "posts_count": 2,
+    "created_at": "2025-05-13T06:24:57.181Z",
+    "last_posted_at": "2025-05-13T06:28:42.008Z",
+    "views": 36,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "math",
+      "symbols"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 25
+  },
+  "posts": [
+    {
+      "id": 12371,
+      "post_number": 1,
+      "username": "mndtr",
+      "name": "mndtr",
+      "created_at": "2025-05-13T06:24:57.270Z",
+      "updated_at": "2025-05-13T19:25:39.761Z",
+      "cooked": "<p>I would like to have <code>⩾</code> instead of <code>≥</code> via <code>&gt;=</code> command.</p>",
+      "raw": "I would like to have `⩾` instead of `≥` via `>=` command.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 17,
+      "score": 43.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1586
+    },
+    {
+      "id": 12372,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-13T06:28:42.008Z",
+      "updated_at": "2025-05-13T06:28:42.008Z",
+      "cooked": "<p>Use <a href=\"https://typst.app/universe/package/quick-maths\" class=\"inline-onebox\">quick-maths – Typst Universe</a> and <a href=\"https://typst.app/docs/reference/symbols/sym/\">https://typst.app/docs/reference/symbols/sym/</a>.</p>",
+      "raw": "Use https://typst.app/universe/package/quick-maths and https://typst.app/docs/reference/symbols/sym/.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 17,
+      "score": 18.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:54.228580"
+}

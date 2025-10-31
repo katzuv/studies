@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 3933,
+    "title": "How to change the spacing between elements?",
+    "slug": "how-to-change-the-spacing-between-elements",
+    "posts_count": 2,
+    "created_at": "2025-05-04T22:11:01.783Z",
+    "last_posted_at": "2025-05-04T22:29:00.323Z",
+    "views": 65,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 158
+  },
+  "posts": [
+    {
+      "id": 11985,
+      "post_number": 1,
+      "username": "Hasan",
+      "name": "Hasan",
+      "created_at": "2025-05-04T22:11:01.894Z",
+      "updated_at": "2025-05-04T22:11:01.894Z",
+      "cooked": "<p>Hi<br>\nIs there a general way to change how much do elements in Typst take space either by shrinking or widening the space it takes?</p>\n<p>For instance, let’s take two lines:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(height: 5cm, width: 10cm)\n\n#line(length: 100%)\n#line(length: 100%, stroke: 1pt + blue)\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/7/7608b966b023209e79d4e3f2e6bf9c9f05f8cb3f.png\" data-download-href=\"https://forum.typst.app/uploads/default/7608b966b023209e79d4e3f2e6bf9c9f05f8cb3f\" title=\"hh\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/7/7608b966b023209e79d4e3f2e6bf9c9f05f8cb3f_2_689x345.png\" alt=\"hh\" data-base62-sha1=\"gQb238FqakjfYxCnF1Sszhd1xdJ\" width=\"689\" height=\"345\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/7/7608b966b023209e79d4e3f2e6bf9c9f05f8cb3f_2_689x345.png, https://forum.typst.app/uploads/default/optimized/2X/7/7608b966b023209e79d4e3f2e6bf9c9f05f8cb3f_2_1033x517.png 1.5x, https://forum.typst.app/uploads/default/original/2X/7/7608b966b023209e79d4e3f2e6bf9c9f05f8cb3f.png 2x\" data-dominant-color=\"FCFDFD\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">hh</span><span class=\"informations\">1181×591 16.5 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div><br>\nWhat would be the best way to control the space between the black line and the blue line and make them closer? Are <code>move()</code> and <code>place()</code> functions my best options?</p>",
+      "raw": "Hi\nIs there a general way to change how much do elements in Typst take space either by shrinking or widening the space it takes?\n\nFor instance, let's take two lines:\n\n```typ\n#set page(height: 5cm, width: 10cm)\n\n#line(length: 100%)\n#line(length: 100%, stroke: 1pt + blue)\n```\n ![hh|689x345](upload://gQb238FqakjfYxCnF1Sszhd1xdJ.png)\nWhat would be the best way to control the space between the black line and the blue line and make them closer? Are `move()` and `place()` functions my best options?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 60.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 766
+    },
+    {
+      "id": 11986,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-04T22:29:00.323Z",
+      "updated_at": "2025-05-04T22:29:24.029Z",
+      "cooked": "<p>Hi. Depends on your end goal, but block-level elements can be changed by <a href=\"https://typst.app/docs/reference/layout/block/#parameters-spacing\"><code>block</code></a> set rule, and also sometimes by <a href=\"https://typst.app/docs/reference/model/par/#parameters-spacing\"><code>par.spacing</code></a>, so either one works here:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(height: 5cm, width: 10cm)\n\n#{\n  // set block(spacing: 2pt)\n  set par(spacing: 2pt)\n\n  line(length: 100%)\n  line(length: 100%, stroke: 1pt + blue)\n}\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/8/8cd96cd7c22e1dee96b9c9f2937a0999fbdba0d8.png\" data-download-href=\"https://forum.typst.app/uploads/default/8cd96cd7c22e1dee96b9c9f2937a0999fbdba0d8\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/original/2X/8/8cd96cd7c22e1dee96b9c9f2937a0999fbdba0d8.png\" alt=\"image\" data-base62-sha1=\"k60FYUhHH8mZ9lyDmwx5xcRXPdK\" width=\"690\" height=\"36\" data-dominant-color=\"2A3338\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">876×46 456 Bytes</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "Hi. Depends on your end goal, but block-level elements can be changed by [`block`](https://typst.app/docs/reference/layout/block/#parameters-spacing) set rule, and also sometimes by [`par.spacing`](https://typst.app/docs/reference/model/par/#parameters-spacing), so either one works here:\n\n```typ\n#set page(height: 5cm, width: 10cm)\n\n#{\n  // set block(spacing: 2pt)\n  set par(spacing: 2pt)\n\n  line(length: 100%)\n  line(length: 100%, stroke: 1pt + blue)\n}\n```\n\n![image|690x36](upload://k60FYUhHH8mZ9lyDmwx5xcRXPdK.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 20.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:18.775429"
+}

@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3830,
+    "title": "How can I create two differently formatted, reusable types of table?",
+    "slug": "how-can-i-create-two-differently-formatted-reusable-types-of-table",
+    "posts_count": 3,
+    "created_at": "2025-04-27T18:01:06.827Z",
+    "last_posted_at": "2025-05-04T11:30:22.564Z",
+    "views": 80,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "bluss",
+    "tags": [
+      "tables"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 353
+  },
+  "posts": [
+    {
+      "id": 11686,
+      "post_number": 1,
+      "username": "Kapati",
+      "name": "Kapati",
+      "created_at": "2025-04-27T18:01:06.993Z",
+      "updated_at": "2025-04-27T21:42:22.842Z",
+      "cooked": "<p>Hi, I am currently trying to create two different specially styled tables. One with e.g. all text in bold for all cells and one with e.g. no visible strokes.<br>\nThroughout the document I want to reuse these styles for some tables.<br>\nHow could I implement this?<br>\nKind regards,<br>\nKapati</p>",
+      "raw": "Hi, I am currently trying to create two different specially styled tables. One with e.g. all text in bold for all cells and one with e.g. no visible strokes.\nThroughout the document I want to reuse these styles for some tables.\nHow could I implement this?\nKind regards,\nKapati",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 25,
+      "score": 100.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1519
+    },
+    {
+      "id": 11687,
+      "post_number": 2,
+      "username": "bluss",
+      "name": "Ulrik",
+      "created_at": "2025-04-27T18:50:50.761Z",
+      "updated_at": "2025-04-27T18:50:50.761Z",
+      "cooked": "<p>Here are two different ways to do it. We can define functions - <code>#bold-table()</code> and <code>#no-stroke-table()</code>  that are wrappers for <code>table</code>.</p>\n<p>You can also style tables without wrapping them in functions and marking them by labels instead. The same label can be applied to one or more tables.</p>\n<p>The two tables in the example look like this:</p>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/3/34e44be9c4df3d4be4eb4a80458a09a8ce42649c.png\" alt=\"bild\" data-base62-sha1=\"7xTWZHxzjvpP7SHNbsMpV1Z7Bs8\" width=\"94\" height=\"218\"></p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">These are prototypes - first implement the styles you want\n\n#let headers = ([A], [B])\n#let data = range(4).map(str)\n#let hrule = table.hline(stroke: 0.08em)\n\n#{\nshow table: set text(weight: \"bold\")\ntable(\n  columns: 2,\n  stroke: (x, y) =&gt; if y == 0 { (top: 0.08em, bottom: 0.04em) } else { none },\n  table.header(..headers),\n  ..data,\n  hrule\n)\n}\n\n#table(\n  columns: 2,\n  stroke: none,\n  table.header(..headers),\n  ..data,\n)\n\n---\n\nFinished versions: using functions - translate the style into functions\n\n#let bold-table(..args) = {\n  show table: set text(weight: \"bold\")\n  table(\n    stroke: (x, y) =&gt; if y == 0 { (top: 0.08em, bottom: 0.04em) } else { none },\n    ..args\n  )\n}\n#let no-stroke-table = table.with(stroke: none)\n\n#bold-table(\n  columns: 2,\n  table.header(..headers),\n  ..data,\n  hrule\n)\n\n#no-stroke-table(\n  columns: 2,\n  table.header(..headers),\n  ..data\n)\n\n---\n\nFinished versions - using labels to set style\n\n#show &lt;bold-table&gt;: set text(weight: \"bold\")\n#show &lt;bold-table&gt;: set table(stroke: (x, y) =&gt; if y == 0 { (top: 0.08em, bottom: 0.04em) } else { none })\n\n#show &lt;no-stroke-table&gt;: set table(stroke: none)\n\n#table(\n  columns: 2,\n  table.header(..headers),\n  ..data,\n  hrule\n)&lt;bold-table&gt;\n\n\n#table(\n  columns: 2,\n  table.header(..headers),\n  ..data\n)&lt;no-stroke-table&gt;\n</code></pre>",
+      "raw": "Here are two different ways to do it. We can define functions - `#bold-table()` and `#no-stroke-table()`  that are wrappers for `table`.\n\nYou can also style tables without wrapping them in functions and marking them by labels instead. The same label can be applied to one or more tables.\n\nThe two tables in the example look like this:\n\n![bild|94x218](upload://7xTWZHxzjvpP7SHNbsMpV1Z7Bs8.png)\n\n\n\n```typst\nThese are prototypes - first implement the styles you want\n\n#let headers = ([A], [B])\n#let data = range(4).map(str)\n#let hrule = table.hline(stroke: 0.08em)\n\n#{\nshow table: set text(weight: \"bold\")\ntable(\n  columns: 2,\n  stroke: (x, y) => if y == 0 { (top: 0.08em, bottom: 0.04em) } else { none },\n  table.header(..headers),\n  ..data,\n  hrule\n)\n}\n\n#table(\n  columns: 2,\n  stroke: none,\n  table.header(..headers),\n  ..data,\n)\n\n---\n\nFinished versions: using functions - translate the style into functions\n\n#let bold-table(..args) = {\n  show table: set text(weight: \"bold\")\n  table(\n    stroke: (x, y) => if y == 0 { (top: 0.08em, bottom: 0.04em) } else { none },\n    ..args\n  )\n}\n#let no-stroke-table = table.with(stroke: none)\n\n#bold-table(\n  columns: 2,\n  table.header(..headers),\n  ..data,\n  hrule\n)\n\n#no-stroke-table(\n  columns: 2,\n  table.header(..headers),\n  ..data\n)\n\n---\n\nFinished versions - using labels to set style\n\n#show <bold-table>: set text(weight: \"bold\")\n#show <bold-table>: set table(stroke: (x, y) => if y == 0 { (top: 0.08em, bottom: 0.04em) } else { none })\n\n#show <no-stroke-table>: set table(stroke: none)\n\n#table(\n  columns: 2,\n  table.header(..headers),\n  ..data,\n  hrule\n)<bold-table>\n\n\n#table(\n  columns: 2,\n  table.header(..headers),\n  ..data\n)<no-stroke-table>\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 23,
+      "score": 29.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 1272
+    },
+    {
+      "id": 11950,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-05-04T11:30:22.564Z",
+      "updated_at": "2025-05-04T11:30:22.564Z",
+      "cooked": "<p>Hi <a class=\"mention\" href=\"/u/kapati\">@Kapati</a>, thanks for your question! If you feel the response you got has sufficiently answered your question, be sure to give it a checkmark <img src=\"https://forum.typst.app/images/emoji/apple/ballot_box_with_check.png?v=12\" title=\":ballot_box_with_check:\" class=\"emoji\" alt=\":ballot_box_with_check:\" loading=\"lazy\" width=\"20\" height=\"20\">. This will help others find the solution in the future. If something is missing, please let us know what so we can resolve your issue. Thanks!</p>",
+      "raw": "Hi @Kapati, thanks for your question! If you feel the response you got has sufficiently answered your question, be sure to give it a checkmark :ballot_box_with_check:. This will help others find the solution in the future. If something is missing, please let us know what so we can resolve your issue. Thanks!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 16,
+      "score": 3.2,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:37.415716"
+}

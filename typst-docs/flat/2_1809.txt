@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 1809,
+    "title": "How to avoid item separators at linebreaks when printing lists?",
+    "slug": "how-to-avoid-item-separators-at-linebreaks-when-printing-lists",
+    "posts_count": 3,
+    "created_at": "2024-11-20T11:29:46.557Z",
+    "last_posted_at": "2024-12-19T04:59:11.490Z",
+    "views": 125,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "wisperwind",
+    "tags": [
+      "scripting",
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 337
+  },
+  "posts": [
+    {
+      "id": 5892,
+      "post_number": 1,
+      "username": "wisperwind",
+      "name": "",
+      "created_at": "2024-11-20T11:29:46.729Z",
+      "updated_at": "2024-11-20T11:30:15.234Z",
+      "cooked": "<p>Consider the following code which prints an array of items, which may not fit into a single line:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(paper: \"a6\")\n\n#let sep = h(1em) + sym.bullet + h(1em)\n\n= Actual output\n\n#let items = \"Lorem ipsum dolor sit amet consectetur adipiscing elit sed do\".split()\n#items.join(sep)\n\n= Desired output\n\n#let items1 = \"Lorem ipsum dolor sit\".split()\n#let items2 = \"amet consectetur adipiscing elit\".split()\n#let items3 = \"sed do\".split()\n#items1.join(sep) \\\n#items2.join(sep) \\\n#items3.join(sep) \\\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/c/c8d5fc615acbe84b59241bb33c34178db8959339.png\" data-download-href=\"https://forum.typst.app/uploads/default/c8d5fc615acbe84b59241bb33c34178db8959339\" title=\"main\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/c/c8d5fc615acbe84b59241bb33c34178db8959339_2_354x500.png\" alt=\"main\" data-base62-sha1=\"sEFXju07byHK0URBUH87qvlVEc9\" width=\"354\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/c/c8d5fc615acbe84b59241bb33c34178db8959339_2_354x500.png, https://forum.typst.app/uploads/default/optimized/2X/c/c8d5fc615acbe84b59241bb33c34178db8959339_2_531x750.png 1.5x, https://forum.typst.app/uploads/default/original/2X/c/c8d5fc615acbe84b59241bb33c34178db8959339.png 2x\" data-dominant-color=\"FBFBFB\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">main</span><span class=\"informations\">595×839 67.2 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>Is there a built-in way or an existing package that would allow achieving the “Desired output”, i.e. avoid inserting the separator at linebreaks? I’d guess that this could be done by measuring the item sizes and building lines accordingly, but I’d rather avoid rolling my own code here.</p>",
+      "raw": "Consider the following code which prints an array of items, which may not fit into a single line:\n\n```typ\n#set page(paper: \"a6\")\n\n#let sep = h(1em) + sym.bullet + h(1em)\n\n= Actual output\n\n#let items = \"Lorem ipsum dolor sit amet consectetur adipiscing elit sed do\".split()\n#items.join(sep)\n\n= Desired output\n\n#let items1 = \"Lorem ipsum dolor sit\".split()\n#let items2 = \"amet consectetur adipiscing elit\".split()\n#let items3 = \"sed do\".split()\n#items1.join(sep) \\\n#items2.join(sep) \\\n#items3.join(sep) \\\n```\n\n![main|354x500](upload://sEFXju07byHK0URBUH87qvlVEc9.png)\n\n\nIs there a built-in way or an existing package that would allow achieving the \"Desired output\", i.e. avoid inserting the separator at linebreaks? I'd guess that this could be done by measuring the item sizes and building lines accordingly, but I'd rather avoid rolling my own code here.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 176.0,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 750
+    },
+    {
+      "id": 6703,
+      "post_number": 2,
+      "username": "wisperwind",
+      "name": "",
+      "created_at": "2024-12-17T14:12:18.730Z",
+      "updated_at": "2024-12-17T14:12:18.730Z",
+      "cooked": "<p>Implemented this layout myself now:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(paper: \"a6\")\n\n#let sep = h(1em) + sym.bullet + h(1em)\n\n#let join-with-linebreaks(container-size, items, sep) = {\n  let sep-width = measure(sep).width\n\n  let lines = ()\n  let line = ()\n  let line-len = 0pt\n\n  for it in items {\n    let item-width = measure(it).width\n    line-len += item-width + sep-width\n    if line-len &gt; container-size.width {\n      lines.push(line.join(sep))\n      line = ()\n      line-len = item-width\n    }\n    line.push(it)\n  }\n  if line.len() &gt; 0 {\n    lines.push(line.join(sep))\n  }\n\n  lines.join(\"\\n\")\n}\n\n\n= Actual output\n\n#let items = \"Lorem ipsum dolor sit amet consectetur adipiscing elit sed do\".split()\n// Could also include `layout` in the function, but for my actual usecase, it makes sense to separate it.\n#layout(size =&gt; {\n  join-with-linebreaks(size, items, sep)\n})\n\n= Desired output\n\n#let items1 = \"Lorem ipsum dolor sit\".split()\n#let items2 = \"amet consectetur adipiscing elit\".split()\n#let items3 = \"sed do\".split()\n#items1.join(sep) \\\n#items2.join(sep) \\\n#items3.join(sep) \\\n</code></pre>\n<p>Result:<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/4/423c567b4bacf828805bbf39e550d1223c24b70c.png\" data-download-href=\"https://forum.typst.app/uploads/default/423c567b4bacf828805bbf39e550d1223c24b70c\" title=\"workaround\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/4/423c567b4bacf828805bbf39e550d1223c24b70c_2_354x500.png\" alt=\"workaround\" data-base62-sha1=\"9rWMKgH9fGXYi6LLxozD9eQnZve\" width=\"354\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/4/423c567b4bacf828805bbf39e550d1223c24b70c_2_354x500.png, https://forum.typst.app/uploads/default/optimized/2X/4/423c567b4bacf828805bbf39e550d1223c24b70c_2_531x750.png 1.5x, https://forum.typst.app/uploads/default/original/2X/4/423c567b4bacf828805bbf39e550d1223c24b70c.png 2x\" data-dominant-color=\"FBFBFB\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">workaround</span><span class=\"informations\">595×839 66.9 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "Implemented this layout myself now:\n```typ\n#set page(paper: \"a6\")\n\n#let sep = h(1em) + sym.bullet + h(1em)\n\n#let join-with-linebreaks(container-size, items, sep) = {\n  let sep-width = measure(sep).width\n\n  let lines = ()\n  let line = ()\n  let line-len = 0pt\n\n  for it in items {\n    let item-width = measure(it).width\n    line-len += item-width + sep-width\n    if line-len > container-size.width {\n      lines.push(line.join(sep))\n      line = ()\n      line-len = item-width\n    }\n    line.push(it)\n  }\n  if line.len() > 0 {\n    lines.push(line.join(sep))\n  }\n\n  lines.join(\"\\n\")\n}\n\n\n= Actual output\n\n#let items = \"Lorem ipsum dolor sit amet consectetur adipiscing elit sed do\".split()\n// Could also include `layout` in the function, but for my actual usecase, it makes sense to separate it.\n#layout(size => {\n  join-with-linebreaks(size, items, sep)\n})\n\n= Desired output\n\n#let items1 = \"Lorem ipsum dolor sit\".split()\n#let items2 = \"amet consectetur adipiscing elit\".split()\n#let items3 = \"sed do\".split()\n#items1.join(sep) \\\n#items2.join(sep) \\\n#items3.join(sep) \\\n```\n\nResult:\n![workaround|354x500, 100%](upload://9rWMKgH9fGXYi6LLxozD9eQnZve.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 22,
+      "score": 14.4,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 750
+    },
+    {
+      "id": 6764,
+      "post_number": 3,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-12-19T04:59:11.490Z",
+      "updated_at": "2024-12-19T04:59:11.490Z",
+      "cooked": "<p>Hey <a class=\"mention\" href=\"/u/wisperwind\">@wisperwind</a>, if you believe you’ve found a solution to your request, please press the <img src=\"https://forum.typst.app/images/emoji/apple/white_check_mark.png?v=12\" title=\":white_check_mark:\" class=\"emoji\" alt=\":white_check_mark:\" loading=\"lazy\" width=\"20\" height=\"20\"> button to mark your reply as a solution, otherwise let us know if you still need help. Thanks! <img src=\"https://forum.typst.app/images/emoji/apple/slight_smile.png?v=12\" title=\":slight_smile:\" class=\"emoji\" alt=\":slight_smile:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Hey @wisperwind, if you believe you've found a solution to your request, please press the :white_check_mark: button to mark your reply as a solution, otherwise let us know if you still need help. Thanks! :slight_smile:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 17,
+      "score": 3.4,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:54:38.101609"
+}

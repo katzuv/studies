@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1050,
+    "title": "How to create a note margin?",
+    "slug": "how-to-create-a-note-margin",
+    "posts_count": 3,
+    "created_at": "2024-10-12T19:20:12.188Z",
+    "last_posted_at": "2024-10-13T15:36:05.431Z",
+    "views": 472,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 259
+  },
+  "posts": [
+    {
+      "id": 3756,
+      "post_number": 1,
+      "username": "Olaf",
+      "name": "Olaf",
+      "created_at": "2024-10-12T19:20:12.335Z",
+      "updated_at": "2024-10-12T19:20:12.335Z",
+      "cooked": "<p>Some (not all) pages in my document should have a margin for notes. The notes should be at the same height as the relevant parts of the text. I can specify the width of the note margin and I can determine whether the note margin is on the left or right. Is this possible with Typst?</p>",
+      "raw": "Some (not all) pages in my document should have a margin for notes. The notes should be at the same height as the relevant parts of the text. I can specify the width of the note margin and I can determine whether the note margin is on the left or right. Is this possible with Typst?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 56,
+      "score": 2056.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 418
+    },
+    {
+      "id": 3764,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-10-12T21:26:34.326Z",
+      "updated_at": "2024-10-12T21:26:34.326Z",
+      "cooked": "<p>The left and right <a href=\"https://typst.app/docs/reference/layout/page/#parameters-margin\">page margins</a> can be specified in terms of <code>inside</code> and <code>outside</code> in case you want a book layout where the notes are always outside.</p>\n<p>However, if you only want a big margin on <em>some</em> pages, this is currently not possible. Typst’s layout (currently) assumes that text only flows between containers that all have the same width. For example, when Typst computes where to put the line breaks within a paragraph, it looks at all lines and how they will look. At that time, Typst does not consider on what page (or in what column) the individual lines will line up, which it would have to do if a page break could change the width of a line.</p>\n<p>As long as you’re ok with a wide margin that is there even if a page has no notes, that should work fine. The <a href=\"https://typst.app/universe/package/drafting\">drafting package</a> for example puts content in the margin, at the height where it was inserted.</p>",
+      "raw": "The left and right [page margins](https://typst.app/docs/reference/layout/page/#parameters-margin) can be specified in terms of `inside` and `outside` in case you want a book layout where the notes are always outside.\n\nHowever, if you only want a big margin on _some_ pages, this is currently not possible. Typst's layout (currently) assumes that text only flows between containers that all have the same width. For example, when Typst computes where to put the line breaks within a paragraph, it looks at all lines and how they will look. At that time, Typst does not consider on what page (or in what column) the individual lines will line up, which it would have to do if a page break could change the width of a line.\n\nAs long as you're ok with a wide margin that is there even if a page has no notes, that should work fine. The [drafting package](https://typst.app/universe/package/drafting) for example puts content in the margin, at the height where it was inserted.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 56,
+      "score": 221.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 3820,
+      "post_number": 3,
+      "username": "Sinthoras",
+      "name": "",
+      "created_at": "2024-10-13T15:36:05.431Z",
+      "updated_at": "2024-10-13T15:36:05.431Z",
+      "cooked": "<p>Maybe it helps to take a look at the code of the <a href=\"https://typst.app/universe/package/tufte-memo\">tufte-memo</a> template, which contains marginnotes.</p>",
+      "raw": "Maybe it helps to take a look at the code of the [tufte-memo](https://typst.app/universe/package/tufte-memo) template, which contains marginnotes.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 45,
+      "score": 29.0,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 511
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:00.713247"
+}

@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3539,
+    "title": "How to remove spacing after colon in math?",
+    "slug": "how-to-remove-spacing-after-colon-in-math",
+    "posts_count": 3,
+    "created_at": "2025-04-07T13:04:04.124Z",
+    "last_posted_at": "2025-04-08T13:51:45.095Z",
+    "views": 70,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 67
+  },
+  "posts": [
+    {
+      "id": 10715,
+      "post_number": 1,
+      "username": "jeanas",
+      "name": "Jean Abou Samra",
+      "created_at": "2025-04-07T13:04:04.536Z",
+      "updated_at": "2025-04-08T14:05:23.496Z",
+      "cooked": "<p>This feels like a silly question, but… <code>$u[:n]$</code> renders like this:<br>\n<img src=\"https://forum.typst.app/uploads/default/original/2X/2/28fe8a325029638c84c0fca1d2b5f65e005fab0f.png\" alt=\"image\" data-base62-sha1=\"5QErLGvxneFZE29HoG8pv1GwVqv\" width=\"75\" height=\"38\">. What is the most elegant way to remove the spacing between <code>:</code> and <code>n</code>?</p>",
+      "raw": "This feels like a silly question, but… `$u[:n]$` renders like this: \n![image|75x38](upload://5QErLGvxneFZE29HoG8pv1GwVqv.png). What is the most elegant way to remove the spacing between `:` and `n`?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 90.6,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 485
+    },
+    {
+      "id": 10717,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-04-07T13:12:48.795Z",
+      "updated_at": "2025-04-07T13:14:30.006Z",
+      "cooked": "<aside class=\"onebox allowlistedgeneric\" data-onebox-src=\"https://typst.app/docs/reference/math/class/\">\n  <header class=\"source\">\n      <img src=\"https://forum.typst.app/uploads/default/original/1X/098187a593d51c4db99324614e2baeeb1bb355cc.png\" class=\"site-icon\" data-dominant-color=\"3CA8B6\" width=\"32\" height=\"32\">\n\n      <a href=\"https://typst.app/docs/reference/math/class/\" target=\"_blank\" rel=\"noopener\">Typst</a>\n  </header>\n\n  <article class=\"onebox-body\">\n    <div class=\"aspect-image\" style=\"--aspect-ratio:690/361;\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/db1c18ed802fe6841bee62606931f352da10ed09_2_690x362.png\" class=\"thumbnail\" data-dominant-color=\"7CC2C5\" width=\"690\" height=\"362\"></div>\n\n<h3><a href=\"https://typst.app/docs/reference/math/class/\" target=\"_blank\" rel=\"noopener\">Class Function – Typst Documentation</a></h3>\n\n  <p>Documentation for the `class` function.</p>\n\n\n  </article>\n\n  <div class=\"onebox-metadata\">\n    \n    \n  </div>\n\n  <div style=\"clear: both\"></div>\n</aside>\n\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show math.equation: it =&gt; {\n  show \":\": math.class.with(\"normal\")\n  it\n}\n\n$u[:n]$\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/8/8f84931a6a8c0e2fc82328dd858b3229d246d201.png\" alt=\"image\" data-base62-sha1=\"ktCjIK6YiuhpKkvqQAzYW6Fz42Z\" width=\"74\" height=\"42\"></p>",
+      "raw": "https://typst.app/docs/reference/math/class/\n\n```typ\n#show math.equation: it => {\n  show \":\": math.class.with(\"normal\")\n  it\n}\n\n$u[:n]$\n```\n\n![image|74x42](upload://ktCjIK6YiuhpKkvqQAzYW6Fz42Z.png)",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 25.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    },
+    {
+      "id": 10782,
+      "post_number": 3,
+      "username": "jeanas",
+      "name": "Jean Abou Samra",
+      "created_at": "2025-04-08T13:51:45.095Z",
+      "updated_at": "2025-04-08T13:51:45.095Z",
+      "cooked": "<p>Thanks! Not sure how I managed to miss it in the docs…</p>",
+      "raw": "Thanks! Not sure how I managed to miss it in the docs…",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 21,
+      "score": 4.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 485
+    }
+  ],
+  "scraped_at": "2025-06-10T09:49:36.637669"
+}

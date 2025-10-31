@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 3791,
+    "title": "How to continue balanced column layout on the last page?",
+    "slug": "how-to-continue-balanced-column-layout-on-the-last-page",
+    "posts_count": 3,
+    "created_at": "2025-04-24T05:21:58.919Z",
+    "last_posted_at": "2025-04-25T01:24:15.884Z",
+    "views": 87,
+    "like_count": 4,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "layout-containers"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 362
+  },
+  "posts": [
+    {
+      "id": 11546,
+      "post_number": 1,
+      "username": "AndreKR",
+      "name": "",
+      "created_at": "2025-04-24T05:21:59.141Z",
+      "updated_at": "2025-04-26T20:15:45.034Z",
+      "cooked": "<p>I want to fill two columns with blocks (in my case tables with a heading) but I want them to use two columns also on the last page. Here’s an example:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set page(\"a4\")\n#columns(2)[\n  #for b in range(17) [\n    #block(breakable: false)[\n      #grid(columns: (1fr, 5em), row-gutter: 0.6em,\n        grid.cell(colspan: 2, [#text(fill: rgb(\"#666\"), ligatures: false, tracking: .12em, \"Header\")]),\n        ..for _ in range(5 + calc.rem(b,3)) {\n          ([Foo],[sdfsdf])\n        }\n      )\n    ]\n  ]\n]\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/6/6a417366d5eb3b0f6313e0b9053966b5a8a5d80d.png\" alt=\"image\" data-base62-sha1=\"f9YQ3arFtjdgSOfzjA4c1IYsUeF\" width=\"538\" height=\"373\"></p>\n<p>As you can see the columns are built from contents like this:</p>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/e/e284bc1925f425860e200731d96db521d8fcb616.png\" alt=\"\" data-base62-sha1=\"wjSi3unRbIJpx3gaatFtLwYGito\" role=\"presentation\" width=\"232\" height=\"164\"><br>\nBut I would rather have them built like this:</p>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/2/2427710c21c4fbbc4263141188d7a9154f4d9d22.png\" alt=\"\" data-base62-sha1=\"59PGUE8QDebbjnkjSifDZFIIN9M\" role=\"presentation\" width=\"232\" height=\"163\"></p>",
+      "raw": "I want to fill two columns with blocks (in my case tables with a heading) but I want them to use two columns also on the last page. Here's an example:\n\n```typst\n#set page(\"a4\")\n#columns(2)[\n  #for b in range(17) [\n    #block(breakable: false)[\n      #grid(columns: (1fr, 5em), row-gutter: 0.6em,\n        grid.cell(colspan: 2, [#text(fill: rgb(\"#666\"), ligatures: false, tracking: .12em, \"Header\")]),\n        ..for _ in range(5 + calc.rem(b,3)) {\n          ([Foo],[sdfsdf])\n        }\n      )\n    ]\n  ]\n]\n```\n\n![image|538x373](upload://f9YQ3arFtjdgSOfzjA4c1IYsUeF.png)\n\nAs you can see the columns are built from contents like this:\n\n![](upload://wjSi3unRbIJpx3gaatFtLwYGito.png)\nBut I would rather have them built like this:\n\n![](upload://59PGUE8QDebbjnkjSifDZFIIN9M.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 33,
+      "score": 71.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1504
+    },
+    {
+      "id": 11547,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-04-24T06:26:32.324Z",
+      "updated_at": "2025-04-24T06:26:32.324Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/andrekr\">@AndreKR</a>! Since this is the <a class=\"hashtag-cooked\" href=\"/c/questions/5\" data-type=\"category\" data-slug=\"questions\" data-id=\"5\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>Questions</span></a> category, it’s best if your topic title is a question. I can suggest “How do I balance content in columns?”</p>\n<p>Your issue here is that the column on the last page is not fully completed, hence your content is not split into two columns.</p>\n<p>Searching for relevant topics, you can read the solution at <a href=\"https://forum.typst.app/t/is-there-a-way-to-automatically-determine-the-page-height-for-balanced-two-column-page/3195\" class=\"inline-onebox-loading\">https://forum.typst.app/t/is-there-a-way-to-automatically-determine-the-page-height-for-balanced-two-column-page/3195</a>, which suggests to use <code>eqcolumns</code>.</p>\n<p>It’s not working out of the box, but you can simply change the height of the box to compensate for errors, more or less 10%.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(\"a4\")\n#let eqcolumns(n, gutter: 4%, content) = {\n  layout(size =&gt; [\n    #let (height,) = measure(\n      block(\n        width: (1/n) * size.width * (1 - float(gutter)*n), \n        content\n      )\n    )\n    #block(\n      height: height / n + 10%,\n      columns(n, gutter: gutter, content)\n    )\n  ])\n}\n#eqcolumns(2)[\n  #for b in range(17) [\n    #block(breakable: false)[\n      #grid(columns: (1fr, 5em), row-gutter: 0.6em,\n        grid.cell(colspan: 2, [#text(fill: rgb(\"#666\"), ligatures: false, tracking: .12em, \"Header\")]),\n        ..for _ in range(5 + calc.rem(b,3)) {\n          ([Foo],[sdfsdf])\n        }\n      )\n    ]\n  ]\n]\n</code></pre>\n<p><img src=\"/uploads/default/original/2X/1/14d2a797933da8e7f74f33bea63d31672b5bdbed.png\" alt=\"image\" data-base62-sha1=\"2YcSfe8LnpEc89ahfp5crXE2Lmd\" width=\"690\" height=\"490\"></p>",
+      "raw": "Hello @AndreKR! Since this is the #questions category, it's best if your topic title is a question. I can suggest \"How do I balance content in columns?\"\n\nYour issue here is that the column on the last page is not fully completed, hence your content is not split into two columns.\n\nSearching for relevant topics, you can read the solution at https://forum.typst.app/t/is-there-a-way-to-automatically-determine-the-page-height-for-balanced-two-column-page/3195, which suggests to use `eqcolumns`.\n\nIt's not working out of the box, but you can simply change the height of the box to compensate for errors, more or less 10%.\n\n```typ\n#set page(\"a4\")\n#let eqcolumns(n, gutter: 4%, content) = {\n  layout(size => [\n    #let (height,) = measure(\n      block(\n        width: (1/n) * size.width * (1 - float(gutter)*n), \n        content\n      )\n    )\n    #block(\n      height: height / n + 10%,\n      columns(n, gutter: gutter, content)\n    )\n  ])\n}\n#eqcolumns(2)[\n  #for b in range(17) [\n    #block(breakable: false)[\n      #grid(columns: (1fr, 5em), row-gutter: 0.6em,\n        grid.cell(colspan: 2, [#text(fill: rgb(\"#666\"), ligatures: false, tracking: .12em, \"Header\")]),\n        ..for _ in range(5 + calc.rem(b,3)) {\n          ([Foo],[sdfsdf])\n        }\n      )\n    ]\n  ]\n]\n```\n\n![image|690x490](upload://2YcSfe8LnpEc89ahfp5crXE2Lmd.png)",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 31,
+      "score": 56.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 11593,
+      "post_number": 3,
+      "username": "AndreKR",
+      "name": "",
+      "created_at": "2025-04-25T01:24:15.884Z",
+      "updated_at": "2025-04-25T01:24:15.884Z",
+      "cooked": "<p>Thanks for the solution.</p>\n<p>I didn’t know that this is called “balancing columns”, if I had known that, I probably would have found the existing discussions. That’s why I also avoided the term when changing the title, I wanted to make this more discoverable for people who don’t know the term either.</p>",
+      "raw": "Thanks for the solution.\n\nI didn't know that this is called \"balancing columns\", if I had known that, I probably would have found the existing discussions. That's why I also avoided the term when changing the title, I wanted to make this more discoverable for people who don't know the term either.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 23,
+      "score": 19.4,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1504
+    }
+  ],
+  "scraped_at": "2025-06-10T09:48:45.205888"
+}

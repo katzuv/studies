@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 4189,
+    "title": "How to make appendix optional in template, and how to hide it from \"main\" contents?",
+    "slug": "how-to-make-appendix-optional-in-template-and-how-to-hide-it-from-main-contents",
+    "posts_count": 3,
+    "created_at": "2025-05-20T17:07:05.235Z",
+    "last_posted_at": "2025-05-21T13:37:30.397Z",
+    "views": 42,
+    "like_count": 5,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "aarnent",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 421
+  },
+  "posts": [
+    {
+      "id": 12824,
+      "post_number": 1,
+      "username": "typer",
+      "name": "",
+      "created_at": "2025-05-20T17:07:05.419Z",
+      "updated_at": "2025-05-20T17:10:17.760Z",
+      "cooked": "<p>I’m working on a template that for illustration I’ve reduced to the following:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let conf(\n  title: none,\n  doc,\n) = {\n  set heading(numbering: (..nums) =&gt; nums.pos().map(str).join(\".\"))\n  v(15%, weak: false)\n  align(center, text(17pt, weight: \"bold\", title))\n\n  pagebreak()\n\n  set page(numbering: \"1\")\n\n  show outline.entry.where(\n    level: 1\n  ): it =&gt; {\n    v(12pt, weak: true)\n    strong(it)\n  }\n\n  outline(indent: auto)\n\n  pagebreak()\n  outline(target: heading.where(supplement: [Appendix]), title: [Appendix])\n\n  pagebreak()\n\n  doc\n}\n\n#let appendix(body) = {\n  counter(heading).update(0)\n\n  set heading(\n    numbering: \"A\",\n    supplement: [Appendix]\n  );\n\n  body\n}\n\n#show: doc =&gt; conf(\n  title: \"Lorem\",\n  doc\n)\n\n= About\n#lorem(16)\n\n== References\n#lorem(32)\n\n= Introduction\n#lorem(16)\n\n#show: appendix\n\n= Tables\n#lorem(16)\n\n= Graphs\n#lorem(16)\n</code></pre>\n<p>I have two questions:</p>\n<ol>\n<li>How can I make the appendix outline generation dependent on whether the document contains <code>#show: appendix</code>?  I.e. if document doesn’t contain an <code>#show appendix</code>, it shouldn’t generate the appendix’es outline or the pagebreak related to it.</li>\n<li>How do I hide the appendix’es headings from the regular <em>Contents</em> outline?</li>\n</ol>",
+      "raw": "I'm working on a template that for illustration I've reduced to the following:\n\n```\n#let conf(\n  title: none,\n  doc,\n) = {\n  set heading(numbering: (..nums) => nums.pos().map(str).join(\".\"))\n  v(15%, weak: false)\n  align(center, text(17pt, weight: \"bold\", title))\n\n  pagebreak()\n\n  set page(numbering: \"1\")\n\n  show outline.entry.where(\n    level: 1\n  ): it => {\n    v(12pt, weak: true)\n    strong(it)\n  }\n\n  outline(indent: auto)\n\n  pagebreak()\n  outline(target: heading.where(supplement: [Appendix]), title: [Appendix])\n\n  pagebreak()\n\n  doc\n}\n\n#let appendix(body) = {\n  counter(heading).update(0)\n\n  set heading(\n    numbering: \"A\",\n    supplement: [Appendix]\n  );\n\n  body\n}\n\n#show: doc => conf(\n  title: \"Lorem\",\n  doc\n)\n\n= About\n#lorem(16)\n\n== References\n#lorem(32)\n\n= Introduction\n#lorem(16)\n\n#show: appendix\n\n= Tables\n#lorem(16)\n\n= Graphs\n#lorem(16)\n```\n\nI have two questions:\n\n1. How can I make the appendix outline generation dependent on whether the document contains `#show: appendix`?  I.e. if document doesn't contain an `#show appendix`, it shouldn't generate the appendix'es outline or the pagebreak related to it.\n2. How do I hide the appendix'es headings from the regular _Contents_ outline?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 15,
+      "score": 73.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1629
+    },
+    {
+      "id": 12826,
+      "post_number": 2,
+      "username": "aarnent",
+      "name": "",
+      "created_at": "2025-05-20T18:08:15.271Z",
+      "updated_at": "2025-05-20T18:08:15.271Z",
+      "cooked": "<p>One way to easily detect whether the <code>#show: appendix</code> rule has been applied is to make the appendix function insert <a href=\"https://typst.app/docs/reference/introspection/metadata/\">metadata</a> into the document, which you can then <a href=\"https://typst.app/docs/reference/introspection/query/\">query</a> . Note that queries should be inside <a href=\"https://typst.app/docs/reference/context/\">contextual blocks</a>. Finally, you can use conditionals to choose what should be displayed.</p>\n<p>Something like this:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let conf(\n  title: none,\n  doc,\n) = {\n  // stuff here\n\n  context {\n    if query(metadata.where(value: \"appendix\")).len() == 0 {\n      outline(indent: auto)\n    }\n    else {\n      let appendix-pos = query(metadata.where(value: \"appendix\")).first().location()\n      \n      outline(\n        indent: auto,\n        target: selector(heading).before(appendix-pos)\n      )\n      pagebreak()\n      outline(\n        target: heading.where(supplement: [Appendix]), \n        title: [Appendix]\n      )\n    }\n  }\n\n  pagebreak()\n\n  doc\n}\n\n#let appendix(body) = {\n  // stuff here\n\n  metadata(\"appendix\")\n\n  body\n}\n\n</code></pre>",
+      "raw": "One way to easily detect whether the `#show: appendix` rule has been applied is to make the appendix function insert [metadata](https://typst.app/docs/reference/introspection/metadata/) into the document, which you can then [query](https://typst.app/docs/reference/introspection/query/) . Note that queries should be inside [contextual blocks](https://typst.app/docs/reference/context/). Finally, you can use conditionals to choose what should be displayed.\n\nSomething like this:\n\n```typst\n#let conf(\n  title: none,\n  doc,\n) = {\n  // stuff here\n\n  context {\n    if query(metadata.where(value: \"appendix\")).len() == 0 {\n      outline(indent: auto)\n    }\n    else {\n      let appendix-pos = query(metadata.where(value: \"appendix\")).first().location()\n      \n      outline(\n        indent: auto,\n        target: selector(heading).before(appendix-pos)\n      )\n      pagebreak()\n      outline(\n        target: heading.where(supplement: [Appendix]), \n        title: [Appendix]\n      )\n    }\n  }\n\n  pagebreak()\n\n  doc\n}\n\n#let appendix(body) = {\n  // stuff here\n\n  metadata(\"appendix\")\n\n  body\n}\n\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 4,
+      "reads": 13,
+      "score": 107.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 501
+    },
+    {
+      "id": 12872,
+      "post_number": 3,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2025-05-21T13:37:30.397Z",
+      "updated_at": "2025-05-21T13:37:30.397Z",
+      "cooked": "<p>Hello. Here is an optimized version for your code + solution:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let conf(title: none, doc) = {\n  set heading(numbering: \"1.1\")\n  set pagebreak(weak: true)\n\n  v(15%)\n  align(center, text(17pt, strong(title)))\n  pagebreak()\n\n  set page(numbering: \"1\")\n  show outline.entry.where(level: 1): set block(above: 12pt)\n  show outline.entry.where(level: 1): strong\n\n  context if query(&lt;appendix-exists&gt;).len() == 0 { outline() } else {\n    outline(target: selector(heading).before(locate(&lt;appendix-exists&gt;)))\n    pagebreak()\n\n    outline(title: [Appendix], target: heading.where(supplement: [Appendix]))\n  }\n  pagebreak()\n\n  doc\n}\n\n#let appendix(body) = {\n  set heading(numbering: \"A\", supplement: [Appendix])\n  counter(heading).update(0)\n  [#metadata(none)&lt;appendix-exists&gt;]\n  body\n}\n\n#show: conf.with(title: \"Lorem\")\n\n= About\n#lorem(16)\n\n== References\n#lorem(32)\n\n= Introduction\n#lorem(16)\n\n#show: appendix\n\n= Tables\n#lorem(16)\n\n= Graphs\n#lorem(16)\n</code></pre>",
+      "raw": "Hello. Here is an optimized version for your code + solution:\n\n```typ\n#let conf(title: none, doc) = {\n  set heading(numbering: \"1.1\")\n  set pagebreak(weak: true)\n\n  v(15%)\n  align(center, text(17pt, strong(title)))\n  pagebreak()\n\n  set page(numbering: \"1\")\n  show outline.entry.where(level: 1): set block(above: 12pt)\n  show outline.entry.where(level: 1): strong\n\n  context if query(<appendix-exists>).len() == 0 { outline() } else {\n    outline(target: selector(heading).before(locate(<appendix-exists>)))\n    pagebreak()\n\n    outline(title: [Appendix], target: heading.where(supplement: [Appendix]))\n  }\n  pagebreak()\n\n  doc\n}\n\n#let appendix(body) = {\n  set heading(numbering: \"A\", supplement: [Appendix])\n  counter(heading).update(0)\n  [#metadata(none)<appendix-exists>]\n  body\n}\n\n#show: conf.with(title: \"Lorem\")\n\n= About\n#lorem(16)\n\n== References\n#lorem(32)\n\n= Introduction\n#lorem(16)\n\n#show: appendix\n\n= Tables\n#lorem(16)\n\n= Graphs\n#lorem(16)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 8,
+      "score": 16.6,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:34.363595"
+}

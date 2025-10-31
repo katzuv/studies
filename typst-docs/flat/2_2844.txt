@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2844,
+    "title": "How to import variables from a Python file?",
+    "slug": "how-to-import-variables-from-a-python-file",
+    "posts_count": 3,
+    "created_at": "2025-02-15T18:58:26.312Z",
+    "last_posted_at": "2025-02-21T22:56:32.429Z",
+    "views": 143,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 252
+  },
+  "posts": [
+    {
+      "id": 8718,
+      "post_number": 1,
+      "username": "Mathieu",
+      "name": "Mathieu",
+      "created_at": "2025-02-15T18:58:26.417Z",
+      "updated_at": "2025-03-03T15:42:09.346Z",
+      "cooked": "<p>Say I have a file <code>foo.py</code> with the following contents:</p>\n<pre><code class=\"lang-auto\">a = 1\nb = 2\nc = 'xyz'\n</code></pre>\n<p>Is there a way to “import” these variables in my document dynamically? I’d like to avoid going through json or another intermediate format if possible.</p>",
+      "raw": "Say I have a file `foo.py` with the following contents:\n\n```\na = 1\nb = 2\nc = 'xyz'\n```\n\nIs there a way to \"import\" these variables in my document dynamically? I'd like to avoid going through json or another intermediate format if possible.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 34,
+      "score": 321.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1200
+    },
+    {
+      "id": 8729,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-02-16T09:24:30.177Z",
+      "updated_at": "2025-02-16T09:24:52.703Z",
+      "cooked": "<p>If the source file is so simple you could parse it as TOML data:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#toml(\"a.py\")\n</code></pre>\n<p>or write your own parser:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let load-vars(file) = {\n  let source = read(file)\n  let vars = (:)\n  for line in source.split(\"\\n\") {\n    let assignment = line.match(regex(\"^\\s*(.*?)\\s*=\\s*(.*?)\\s*$\"))\n    if assignment != none {\n      vars.insert(..assignment.captures)\n    }\n  }\n  return vars\n}\n\n#load-vars(\"a.py\")\n</code></pre>\n<p>For more complex cases the pyrunner package might do the job:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#import \"@preview/pyrunner:0.2.0\" as py\n\n// Equivalent to #let source = read(\"a.py\")\n#let source = ```\na = 1\nb = 2\nc = 'xyz'\n```.text\n\n#py.block(source + \"\\na\")\n\n#py.block(source + \"\\nb\")\n\n#py.block(source + \"\\nc\")\n</code></pre>\n<p>but see the package documentation for limitations (in particular you can’t run Python code that uses third-party packages).</p>",
+      "raw": "If the source file is so simple you could parse it as TOML data:\n\n```typ\n#toml(\"a.py\")\n```\n\nor write your own parser:\n\n```typ\n#let load-vars(file) = {\n  let source = read(file)\n  let vars = (:)\n  for line in source.split(\"\\n\") {\n    let assignment = line.match(regex(\"^\\s*(.*?)\\s*=\\s*(.*?)\\s*$\"))\n    if assignment != none {\n      vars.insert(..assignment.captures)\n    }\n  }\n  return vars\n}\n\n#load-vars(\"a.py\")\n```\n\nFor more complex cases the pyrunner package might do the job:\n\n```typ\n#import \"@preview/pyrunner:0.2.0\" as py\n\n// Equivalent to #let source = read(\"a.py\")\n#let source = ```\na = 1\nb = 2\nc = 'xyz'\n```.text\n\n#py.block(source + \"\\na\")\n\n#py.block(source + \"\\nb\")\n\n#py.block(source + \"\\nc\")\n```\n\nbut see the package documentation for limitations (in particular you can't run Python code that uses third-party packages).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 29,
+      "score": 45.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    },
+    {
+      "id": 8852,
+      "post_number": 3,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-02-21T22:56:32.429Z",
+      "updated_at": "2025-02-21T22:56:32.429Z",
+      "cooked": "<p>This is more Python than Typst, but the following can give you all the variables from the current module, which may be useful:</p>\n<pre data-code-wrap=\"py\"><code class=\"lang-py\">{k: v for k, v in globals().items() if not k.startswith('__')}\n</code></pre>\n<p>applied to your example, you’ll get</p>\n<pre data-code-wrap=\"py\"><code class=\"lang-py\">{'a': 1, 'b': 2, 'c': 'xyz'}\n</code></pre>\n<p>I think the easiest way from there would still be converting that to JSON (or another Typst readable format), but there are probably other paths open as well.</p>",
+      "raw": "This is more Python than Typst, but the following can give you all the variables from the current module, which may be useful:\n```py\n{k: v for k, v in globals().items() if not k.startswith('__')}\n```\napplied to your example, you'll get\n```py\n{'a': 1, 'b': 2, 'c': 'xyz'}\n```\nI think the easiest way from there would still be converting that to JSON (or another Typst readable format), but there are probably other paths open as well.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 15,
+      "score": 3.0,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:31.308425"
+}

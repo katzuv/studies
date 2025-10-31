@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 972,
+    "title": "Is it possible to make an outline record different from the heading itslef?",
+    "slug": "is-it-possible-to-make-an-outline-record-different-from-the-heading-itslef",
+    "posts_count": 2,
+    "created_at": "2024-10-07T23:43:51.520Z",
+    "last_posted_at": "2024-10-08T06:29:54.706Z",
+    "views": 80,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "outline"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 170
+  },
+  "posts": [
+    {
+      "id": 3533,
+      "post_number": 1,
+      "username": "jsx97",
+      "name": "jsx97",
+      "created_at": "2024-10-07T23:43:51.632Z",
+      "updated_at": "2024-10-10T16:09:43.025Z",
+      "cooked": "<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">// this is an outline\n#outline()\n\n= This is a simple example of a level-1 heading\n\nAnd this is a body text.\n\n= This is another one level-1 heading\n\nAnd this is a body text.\n</code></pre>\n<p>Is it possible to make outline records different from the headings themselves? For example:</p>\n<pre data-code-wrap=\"none\"><code class=\"lang-none\">Simple heading .........\nAnother one ............\n</code></pre>",
+      "raw": "```typ\n// this is an outline\n#outline()\n\n= This is a simple example of a level-1 heading\n\nAnd this is a body text.\n\n= This is another one level-1 heading\n\nAnd this is a body text.\n```\n\nIs it possible to make outline records different from the headings themselves? For example:\n\n``` none\nSimple heading .........\nAnother one ............\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 66.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 477
+    },
+    {
+      "id": 3536,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-10-08T06:29:54.706Z",
+      "updated_at": "2024-10-08T06:31:24.571Z",
+      "cooked": "<p>Hello,</p>\n<p>This is not possible <em>out of the box</em> at the moment. This is in discussion, and <a class=\"mention\" href=\"/u/eric\">@Eric</a> is working on an implementation IRCC. In the meantime <a class=\"mention\" href=\"/u/andrew\">@Andrew</a> suggests something ilke this.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#outline()\n\n#heading(outlined: false)[Introduction]\n#{\n  show heading: none\n  heading[Secret heading]\n}\n\n= Background\n</code></pre>\n<p><img src=\"https://forum.typst.app/uploads/default/original/1X/835b5326773d75fa53e1b3af8f8f82371f40dc22.png\" alt=\"image\" data-base62-sha1=\"iK2d5yqYinFpGrOW9Oaet6wAHxo\" width=\"204\" height=\"209\"></p>\n<p>A related topic for figure captions has also been arised. If you want a more automatic solution, you can take a look at <a class=\"mention\" href=\"/u/laurmaedje\">@laurmaedje</a>’s solution <a href=\"https://github.com/typst/typst/issues/1295#issuecomment-1853762154\" rel=\"noopener nofollow ugc\">here</a>, which you can adapt for headings.</p>\n<p>[1] <a href=\"https://github.com/typst/typst/issues/1889\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">Different heading text for outline/bookmark and displaying · Issue #1889 · typst/typst · GitHub</a><br>\n[2] <a href=\"https://github.com/typst/typst/issues/1295\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">Short figure caption for outline · Issue #1295 · typst/typst · GitHub</a><br>\n[3] <a href=\"https://github.com/typst/typst/pull/4643\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">Allow different headings and captions in outline and bookmark by EpicEricEE · Pull Request #4643 · typst/typst · GitHub</a></p>",
+      "raw": "Hello,\n\nThis is not possible *out of the box* at the moment. This is in discussion, and @Eric is working on an implementation IRCC. In the meantime @Andrew suggests something ilke this.\n```typ\n#outline()\n\n#heading(outlined: false)[Introduction]\n#{\n  show heading: none\n  heading[Secret heading]\n}\n\n= Background\n```\n![image|204x209](upload://iK2d5yqYinFpGrOW9Oaet6wAHxo.png)\n\n\nA related topic for figure captions has also been arised. If you want a more automatic solution, you can take a look at @laurmaedje's solution [here](https://github.com/typst/typst/issues/1295#issuecomment-1853762154), which you can adapt for headings.\n\n[1] https://github.com/typst/typst/issues/1889\n[2] https://github.com/typst/typst/issues/1295\n[3] https://github.com/typst/typst/pull/4643",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 30.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:14.633866"
+}

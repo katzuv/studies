@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1549,
+    "title": "How do I reference plain text with tags to be used later in the document?",
+    "slug": "how-do-i-reference-plain-text-with-tags-to-be-used-later-in-the-document",
+    "posts_count": 2,
+    "created_at": "2024-11-05T10:39:10.684Z",
+    "last_posted_at": "2025-03-05T08:13:11.054Z",
+    "views": 297,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "Adrian_Weitkemper",
+    "tags": [
+      "referencing"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 401
+  },
+  "posts": [
+    {
+      "id": 5154,
+      "post_number": 1,
+      "username": "YellowSeas",
+      "name": "John Joy",
+      "created_at": "2024-11-05T10:39:10.772Z",
+      "updated_at": "2025-03-08T20:28:35.941Z",
+      "cooked": "<p>Good day!</p>\n<p>I’ve been using Typst for the past couple weeks for creating template reports and have been loving it since!</p>\n<p>I’m trying to tackle a scenario where I have a text listed in a table, and I want that exact text to be referenced below, perhaps as a heading or text. Below is an example code of what I am trying to achieve.</p>\n<pre><code class=\"lang-auto\">The below @tab:SimulationsPerformed describes the scenarios run as per the requirements:\n#figure(\n  caption: \"Simulations performed\",\n  table(\n    columns:(15%,35%,50%), \n    table.header([*CASE*],[*VALUES*],[*REMARKS*]),\n    [A.1 &lt;0.9Case&gt;],[0.9],[All units in operation],\n    [A.2],[1],[All units in operation],\n    [A.3],[1.1],[All units in operation],\n    )\n  )&lt;tab:SimulationsPerformed&gt;\n\nAs per @0.9Case, blah blah blah.\nOr I want a heading from the referenced text.\n=== @0.9Case\n</code></pre>\n<p>Hope you case see here from the example that, I want the text “A.1” to be referenceable as text or to be part of a heading.<br>\nCurrently with the above example, I’m getting an error at the referencing point as  “cannot reference text”.</p>\n<p>I’ve checked the Typst documentation and it seems like only headings, equations, etc. can be referenced, and that too by the heading/eqn. number?</p>\n<p>I would appreciate any inputs to help out here.</p>\n<p>Thank you in advance!</p>",
+      "raw": "Good day!\n\nI've been using Typst for the past couple weeks for creating template reports and have been loving it since!\n\nI'm trying to tackle a scenario where I have a text listed in a table, and I want that exact text to be referenced below, perhaps as a heading or text. Below is an example code of what I am trying to achieve.\n\n```\nThe below @tab:SimulationsPerformed describes the scenarios run as per the requirements:\n#figure(\n  caption: \"Simulations performed\",\n  table(\n    columns:(15%,35%,50%), \n    table.header([*CASE*],[*VALUES*],[*REMARKS*]),\n    [A.1 <0.9Case>],[0.9],[All units in operation],\n    [A.2],[1],[All units in operation],\n    [A.3],[1.1],[All units in operation],\n    )\n  )<tab:SimulationsPerformed>\n\nAs per @0.9Case, blah blah blah.\nOr I want a heading from the referenced text.\n=== @0.9Case\n```\nHope you case see here from the example that, I want the text \"A.1\" to be referenceable as text or to be part of a heading.\nCurrently with the above example, I'm getting an error at the referencing point as  \"cannot reference text\".\n\nI've checked the Typst documentation and it seems like only headings, equations, etc. can be referenced, and that too by the heading/eqn. number?\n\nI would appreciate any inputs to help out here.\n\nThank you in advance!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 49,
+      "score": 1059.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 645
+    },
+    {
+      "id": 9394,
+      "post_number": 3,
+      "username": "Adrian_Weitkemper",
+      "name": "Adron",
+      "created_at": "2025-03-05T08:13:11.054Z",
+      "updated_at": "2025-03-08T18:00:42.836Z",
+      "cooked": "<p>Hi there! In the documentation it also says</p>\n<blockquote>\n<p>To create a custom referenceable element like a theorem, you can create a figure of a custom <a href=\"https://typst.app/docs/reference/model/figure/#parameters-kind\"><code>kind</code></a> and write a show rule for it. In the future, there might be a more direct way to define a custom referenceable element.</p>\n</blockquote>\n<p>So instead of <code>[A.1] &lt;0.9Case&gt;</code> you can write <code>#figure(kind: \"table\", supplement: \"value\")[A.1] &lt;0.9Case&gt;]</code>. The kind is important for the counting. Image, table, heading are examples for pre-implemented kinds I think. The supplement is the text that is displayed at the reference. In my example it would say <code>value 1</code>, <code>value 2</code>, and so on.<br>\nIf you would like to have just the value shown as text, you could use the <a href=\"https://typst.app/docs/reference/model/link/\">link function</a>:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">As per #link(&lt;0.9Case&gt;)[0.9], blah blah blah.\nOr I want a heading from the referenced text.\n=== #link(&lt;0.9Case&gt;)[0.9]\n</code></pre>\n<p>If you have further questions don’t hesitate to ask again <img src=\"https://forum.typst.app/images/emoji/apple/slight_smile.png?v=12\" title=\":slight_smile:\" class=\"emoji\" alt=\":slight_smile:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Hi there! In the documentation it also says\n\n> To create a custom referenceable element like a theorem, you can create a figure of a custom [`kind`](https://typst.app/docs/reference/model/figure/#parameters-kind) and write a show rule for it. In the future, there might be a more direct way to define a custom referenceable element.\n\nSo instead of `[A.1] <0.9Case>` you can write `#figure(kind: \"table\", supplement: \"value\")[A.1] <0.9Case>]`. The kind is important for the counting. Image, table, heading are examples for pre-implemented kinds I think. The supplement is the text that is displayed at the reference. In my example it would say `value 1`, `value 2`, and so on. \nIf you would like to have just the value shown as text, you could use the [link function](https://typst.app/docs/reference/model/link/): \n```typst\nAs per #link(<0.9Case>)[0.9], blah blah blah.\nOr I want a heading from the referenced text.\n=== #link(<0.9Case>)[0.9]\n```\nIf you have further questions don't hesitate to ask again :slight_smile:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 28,
+      "score": 10.6,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 277
+    }
+  ],
+  "scraped_at": "2025-06-10T09:55:29.192282"
+}

@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2078,
+    "title": "How to get the entire title when referencing headings?",
+    "slug": "how-to-get-the-entire-title-when-referencing-headings",
+    "posts_count": 2,
+    "created_at": "2024-12-13T06:27:11.846Z",
+    "last_posted_at": "2024-12-13T07:02:53.992Z",
+    "views": 242,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 217
+  },
+  "posts": [
+    {
+      "id": 6577,
+      "post_number": 1,
+      "username": "Akshay_Raj_Gollahall",
+      "name": "Akshay Raj Gollahalli",
+      "created_at": "2024-12-13T06:27:11.982Z",
+      "updated_at": "2024-12-13T06:57:40.050Z",
+      "cooked": "<p>For example, here is a code that references a title:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set heading(numbering: \"1.\")\n\n== Colours &lt;sub:colours&gt;\n\n@sub:colours is a title\n</code></pre>\n<p>Instead of referencing as <code>Section 0.1 is a title</code> can I get something like - <code>Colours is a title</code>?</p>",
+      "raw": "For example, here is a code that references a title:\n\n```typ\n#set heading(numbering: \"1.\")\n\n== Colours <sub:colours>\n\n@sub:colours is a title\n```\n\nInstead of referencing as `Section 0.1 is a title` can I get something like - `Colours is a title`?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 37,
+      "score": 947.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 106
+    },
+    {
+      "id": 6578,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2024-12-13T07:02:53.992Z",
+      "updated_at": "2024-12-13T07:02:53.992Z",
+      "cooked": "<p>Hello!<br>\nI have changed your question to “How to get the entire title when referencing headings?”, if that’s wrong, please correct it!</p>\n<p>The syntax <code>@label</code> is called a reference. See <a href=\"https://typst.app/docs/reference/model/ref/\"><code>ref</code></a> for more details, and in particular, you can read the section on <a href=\"https://typst.app/docs/reference/model/ref/#:~:text=Chapter%5D.-,Customization,-If%20you%20write\">Customization</a>.</p>\n<p>Inspecting the content of <code>it</code> inside the conditional statement, gives you</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">ref(\n    target: &lt;sub:colours&gt;,\n    supplement: auto, \n    form: \"normal\",\n    citation: cite(key: &lt;sub:colours&gt;, supplement: none),\n    element: heading(\n        level: 2,\n        depth: 2,\n        offset: 0,\n        numbering: \"1.\",\n        supplement: [Section],\n        outlined: true,\n        bookmarked: auto,\n        hanging-indent: auto,\n        body: [Colours],\n    ),\n)\n</code></pre>\n<p>where you can see that the <code>heading</code> is in fact the <code>element</code> of <code>ref</code> (<code>it</code>). Accessing the title of the heading is as simple as writing <code>it.element.body</code>.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set heading(numbering: \"1.\")\n#show ref: it =&gt; {\n  let el = it.element\n  if el != none and el.func() == heading {\n    link(el.location(), el.body)\n  }\n}\n== Colours &lt;sub:colours&gt;\n@sub:colours is a title\n</code></pre>",
+      "raw": "Hello!\nI have changed your question to \"How to get the entire title when referencing headings?\", if that's wrong, please correct it!\n\nThe syntax `@label` is called a reference. See [`ref`](https://typst.app/docs/reference/model/ref/) for more details, and in particular, you can read the section on [Customization](https://typst.app/docs/reference/model/ref/#:~:text=Chapter%5D.-,Customization,-If%20you%20write).\n\nInspecting the content of `it` inside the conditional statement, gives you\n\n```typ\nref(\n    target: <sub:colours>,\n    supplement: auto, \n    form: \"normal\",\n    citation: cite(key: <sub:colours>, supplement: none),\n    element: heading(\n        level: 2,\n        depth: 2,\n        offset: 0,\n        numbering: \"1.\",\n        supplement: [Section],\n        outlined: true,\n        bookmarked: auto,\n        hanging-indent: auto,\n        body: [Colours],\n    ),\n)\n```\n\nwhere you can see that the `heading` is in fact the `element` of `ref` (`it`). Accessing the title of the heading is as simple as writing `it.element.body`.\n\n```typ\n#set heading(numbering: \"1.\")\n#show ref: it => {\n  let el = it.element\n  if el != none and el.func() == heading {\n    link(el.location(), el.body)\n  }\n}\n== Colours <sub:colours>\n@sub:colours is a title\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 36,
+      "score": 52.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:40.287264"
+}

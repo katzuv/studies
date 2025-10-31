@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2342,
+    "title": "How to extend a rectangle across a new page?",
+    "slug": "how-to-extend-a-rectangle-across-a-new-page",
+    "posts_count": 2,
+    "created_at": "2025-01-08T11:01:58.483Z",
+    "last_posted_at": "2025-01-09T01:21:05.419Z",
+    "views": 114,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "scripting",
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 395
+  },
+  "posts": [
+    {
+      "id": 7293,
+      "post_number": 1,
+      "username": "Alex",
+      "name": "Alex",
+      "created_at": "2025-01-08T11:01:58.732Z",
+      "updated_at": "2025-01-08T11:01:58.732Z",
+      "cooked": "<p>Hello everyone,</p>\n<p>I’m working on a personal project where I’m building an index and positioning a rectangle along the edge of the page. Here’s the code I’ve written so far:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#let fullindex() = context{\n  \n  // page number and alignement based on oddity \n  let page_number = utils._page.get().first() \n  let page_alignment = utils.get_footer_alignemnt()\n  \n  set page(...) // a6 format\n...\n  // position of the rectangle based on alignment. Here \"index\" refer to rect along the page\n  let position = utils.get_rectangle_position(\"index\", page_alignment)\n  place(constant.rectangle,dx : position.dx, dy : position.dy, page_alignment)\n\n  ...\n}\n\n</code></pre>\n<p>The issue arises when the index becomes too long and overflows onto a new page. In this case, I can’t figure out how to extend the rectangle to the new page and align it properly.</p>\n<p>Here’s an example where rect should be on the right of the page<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/e/e9a779d868b68bd24953a9305ef789a58d960a48.png\" data-download-href=\"https://forum.typst.app/uploads/default/e9a779d868b68bd24953a9305ef789a58d960a48\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/e/e9a779d868b68bd24953a9305ef789a58d960a48_2_196x250.png\" alt=\"image\" data-base62-sha1=\"xl046tsTBO167662z6etBL87QCs\" width=\"196\" height=\"250\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/e/e9a779d868b68bd24953a9305ef789a58d960a48_2_196x250.png, https://forum.typst.app/uploads/default/optimized/2X/e/e9a779d868b68bd24953a9305ef789a58d960a48_2_294x375.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/e/e9a779d868b68bd24953a9305ef789a58d960a48_2_392x500.png 2x\" data-dominant-color=\"F0F1F2\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">680×863 105 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>How can I ensure the rectangle continues on subsequent pages and remains aligned correctly?</p>\n<p>For more insight you can check the project here (Warning it is quite big) :<br>\n<a href=\"https://typst.app/project/rKVgshBN8cbSlquzx4diaG\" class=\"onebox\" target=\"_blank\" rel=\"noopener\">https://typst.app/project/rKVgshBN8cbSlquzx4diaG</a></p>\n<ul>\n<li>Relevant files are :\n<ul>\n<li>main.typ</li>\n<li>format/index_format.typ</li>\n</ul>\n</li>\n</ul>\n<p>Thanks in advance for your help!</p>",
+      "raw": "Hello everyone,\n\nI’m working on a personal project where I’m building an index and positioning a rectangle along the edge of the page. Here’s the code I’ve written so far:\n\n```typst\n#let fullindex() = context{\n  \n  // page number and alignement based on oddity \n  let page_number = utils._page.get().first() \n  let page_alignment = utils.get_footer_alignemnt()\n  \n  set page(...) // a6 format\n...\n  // position of the rectangle based on alignment. Here \"index\" refer to rect along the page\n  let position = utils.get_rectangle_position(\"index\", page_alignment)\n  place(constant.rectangle,dx : position.dx, dy : position.dy, page_alignment)\n\n  ...\n}\n\n```\nThe issue arises when the index becomes too long and overflows onto a new page. In this case, I can’t figure out how to extend the rectangle to the new page and align it properly.\n\nHere's an example where rect should be on the right of the page\n![image|393x500, 50%](upload://xl046tsTBO167662z6etBL87QCs.png)\n\n\nHow can I ensure the rectangle continues on subsequent pages and remains aligned correctly?\n\nFor more insight you can check the project here (Warning it is quite big) : \nhttps://typst.app/project/rKVgshBN8cbSlquzx4diaG\n\n- Relevant files are : \n   - main.typ\n   - format/index_format.typ \n\n\nThanks in advance for your help!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 35,
+      "score": 331.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 987
+    },
+    {
+      "id": 7303,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-01-09T01:21:05.419Z",
+      "updated_at": "2025-01-09T01:21:05.419Z",
+      "cooked": "<p>You can put the <code>place()</code> function in the <code>page.background</code> to get absolute positioning on the page. This is documented in the summary of the function <code>place()</code> <a href=\"https://typst.app/docs/reference/layout/place/#summary\">here</a>.</p>\n<p>Moving the black rectangle to the left or right side of the page is then only a matter of grabbing the page number to check whether it is even or odd. You already did this in your code but I couldn’t see if this works since you only have one page in your example.</p>\n<p>If you use the following set rule inside your function <code>fullindex()</code> you should get the correct placement of the black rectangle:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(\n  paper: \"a6\",\n  margin: (inside: 20pt, outside: 30pt),\n  background: context {\n    let (page, ..) = counter(page).get()\n    place(if calc.even(page) { right } else { left }, rect(width: 1em, fill: black, height: 100%))\n  }\n)\n</code></pre>\n<p>I also created a minimal example project to showcase the set rule <a href=\"https://typst.app/project/rRW9906u39YdFXyreugfgc\">here</a>.</p>\n<p>And a general note regarding your example project. Since you already included a warning about the size of the project, this could have been a hint for you to create a <em>minimal</em> example project that only reproduces your issue instead.</p>",
+      "raw": "You can put the `place()` function in the `page.background` to get absolute positioning on the page. This is documented in the summary of the function `place()` [here](https://typst.app/docs/reference/layout/place/#summary).\n\nMoving the black rectangle to the left or right side of the page is then only a matter of grabbing the page number to check whether it is even or odd. You already did this in your code but I couldn't see if this works since you only have one page in your example.\n\nIf you use the following set rule inside your function `fullindex()` you should get the correct placement of the black rectangle:\n```typ\n#set page(\n  paper: \"a6\",\n  margin: (inside: 20pt, outside: 30pt),\n  background: context {\n    let (page, ..) = counter(page).get()\n    place(if calc.even(page) { right } else { left }, rect(width: 1em, fill: black, height: 100%))\n  }\n)\n```\n\nI also created a minimal example project to showcase the set rule [here](https://typst.app/project/rRW9906u39YdFXyreugfgc).\n\nAnd a general note regarding your example project. Since you already included a warning about the size of the project, this could have been a hint for you to create a _minimal_ example project that only reproduces your issue instead.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 27,
+      "score": 60.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:00.448760"
+}

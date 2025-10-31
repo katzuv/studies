@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 941,
+    "title": "How can I use function 'measure' inside 'grid' to align two images?",
+    "slug": "how-can-i-use-function-measure-inside-grid-to-align-two-images",
+    "posts_count": 2,
+    "created_at": "2024-10-05T09:56:32.357Z",
+    "last_posted_at": "2024-10-05T12:04:48.611Z",
+    "views": 226,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "layout",
+      "measure"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 153
+  },
+  "posts": [
+    {
+      "id": 3442,
+      "post_number": 1,
+      "username": "David_Hajage",
+      "name": "David Hajage",
+      "created_at": "2024-10-05T09:56:32.459Z",
+      "updated_at": "2024-10-10T16:06:26.541Z",
+      "cooked": "<p>Hello,<br>\nI would like to place two images side by side using the grid function, ensuring that the height of the right image is the same as the height of the left image. To do this, I’ve tried using the measure function (new in Typst 0.12) within the grid function, but without success. Could you tell me if this is possible, and how?<br>\nThanks! (the code I’ve tried just below)</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#grid(\n  columns: (1fr, 1fr),\n  rows: (auto),\n  gutter: 0.2in,\n  \n  image(\"image1.jpg\"),\n  image(\"image2.jpg\", height: context measure(image(\"image1.jpg\")).height)\n)\n</code></pre>\n<p>&nbsp;</p>\n<pre><code class=\"lang-auto\">error: expected auto, relative length, or fraction, found content\n</code></pre>",
+      "raw": "Hello, \nI would like to place two images side by side using the grid function, ensuring that the height of the right image is the same as the height of the left image. To do this, I've tried using the measure function (new in Typst 0.12) within the grid function, but without success. Could you tell me if this is possible, and how?\nThanks! (the code I've tried just below)\n\n```typ\n#grid(\n  columns: (1fr, 1fr),\n  rows: (auto),\n  gutter: 0.2in,\n  \n  image(\"image1.jpg\"),\n  image(\"image2.jpg\", height: context measure(image(\"image1.jpg\")).height)\n)\n```\n&nbsp;\n```\nerror: expected auto, relative length, or fraction, found content\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 31,
+      "score": 1186.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 66
+    },
+    {
+      "id": 3444,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-10-05T12:04:48.611Z",
+      "updated_at": "2024-10-05T12:04:48.611Z",
+      "cooked": "<p>It looks like this is your problem:</p>\n<aside class=\"quote quote-modified\" data-post=\"2\" data-topic=\"164\">\n  <div class=\"title\">\n    <div class=\"quote-controls\"></div>\n    <img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/laurmaedje/48/14_2.png\" class=\"avatar\">\n    <a href=\"https://forum.typst.app/t/why-is-the-value-i-receive-from-context-always-content/164/2\">Why is the value I receive from context always content?</a> <a class=\"badge-category__wrapper \" href=\"/c/questions/5\"><span data-category-id=\"5\" style=\"--category-badge-color: #F7C000; --category-badge-text-color: #fdfdfd;\" data-drop-close=\"true\" class=\"badge-category \" title=\"Your questions about using Typst and the web app go in this category.\"><span class=\"badge-category__name\">Questions</span></span></a>\n  </div>\n  <blockquote>\n    When working with context, you need to put everything that depends on the contextual information into the context block/expression itself. The explicit context expression is a trade-off: You get to know where in the document you are (accessible via <a href=\"https://typst.app/docs/reference/introspection/here/\">here()</a>) and which set rules are active there (accessible via things like text.lang). In return, the context value itself becomes opaque. You cannot peek into it, so everything that depends on the contextual information must happen within it. \nLet’s lo…\n  </blockquote>\n</aside>\n\n<p>In short, you need to pull <code>context</code> out of the <code>image</code> function:</p>\n<pre data-code-wrap=\"typc\"><code class=\"lang-typc\">  context image(\"image2.jpg\", height: measure(image(\"image1.jpg\")).height)\n</code></pre>",
+      "raw": "It looks like this is your problem:\n\nhttps://forum.typst.app/t/why-is-the-value-i-receive-from-context-always-content/164/2\n\nIn short, you need to pull `context` out of the `image` function:\n```typc\n  context image(\"image2.jpg\", height: measure(image(\"image1.jpg\")).height)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 40.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:21.616666"
+}

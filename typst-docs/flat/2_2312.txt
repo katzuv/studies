@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2312,
+    "title": "How to prevent 2D shapes from being distorted in a 3D CetZ coordinate system?",
+    "slug": "how-to-prevent-2d-shapes-from-being-distorted-in-a-3d-cetz-coordinate-system",
+    "posts_count": 3,
+    "created_at": "2025-01-05T19:34:22.530Z",
+    "last_posted_at": "2025-01-05T20:41:36.448Z",
+    "views": 154,
+    "like_count": 4,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "cetz"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 279
+  },
+  "posts": [
+    {
+      "id": 7221,
+      "post_number": 1,
+      "username": "Mathemensch",
+      "name": "Alexander Schulz",
+      "created_at": "2025-01-05T19:34:22.656Z",
+      "updated_at": "2025-01-05T19:34:22.656Z",
+      "cooked": "<p>Hey everyone,</p>\n<p>I’m currently working on some illustrations for tasks in analytical geometry using CetZ and its 3D coordinate system. The x, y, and z coordinates are adjusted through a transformation matrix to create an isometric view, which works perfectly for the geometric shapes I’m drawing.</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/a/ae2b3fa8cc0c173bcfa0f3809b679f89a5f8c052.png\" data-download-href=\"https://forum.typst.app/uploads/default/ae2b3fa8cc0c173bcfa0f3809b679f89a5f8c052\" title=\"SCR-20250105-rter\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/a/ae2b3fa8cc0c173bcfa0f3809b679f89a5f8c052_2_334x250.png\" alt=\"SCR-20250105-rter\" data-base62-sha1=\"oQLJRqoZW9SAbvuhrz7goamSaYO\" width=\"334\" height=\"250\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/a/ae2b3fa8cc0c173bcfa0f3809b679f89a5f8c052_2_334x250.png, https://forum.typst.app/uploads/default/optimized/2X/a/ae2b3fa8cc0c173bcfa0f3809b679f89a5f8c052_2_501x375.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/a/ae2b3fa8cc0c173bcfa0f3809b679f89a5f8c052_2_668x500.png 2x\" data-dominant-color=\"EFE8E3\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">SCR-20250105-rter</span><span class=\"informations\">1320×988 67 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>However, when I try to draw 2D shapes like circle to mark points, they also get affected by the transformation matrix and end up distorted instead of remaining perfectly round, which makes sense given the transformation.</p>\n<p>Is there a way to position 2D shapes correctly in the 3D coordinate system without them being “stretched” by the transformation matrix?</p>\n<p>Here is my current code: <a href=\"https://typst.app/project/r8F6emeMY61xXFdivSZcrW\">Typst Project Link</a></p>\n<p>Thanks a lot for your help!</p>",
+      "raw": "Hey everyone,\n\nI’m currently working on some illustrations for tasks in analytical geometry using CetZ and its 3D coordinate system. The x, y, and z coordinates are adjusted through a transformation matrix to create an isometric view, which works perfectly for the geometric shapes I’m drawing.\n\n![SCR-20250105-rter|668x500, 50%](upload://oQLJRqoZW9SAbvuhrz7goamSaYO.png)\n\nHowever, when I try to draw 2D shapes like circle to mark points, they also get affected by the transformation matrix and end up distorted instead of remaining perfectly round, which makes sense given the transformation.\n\nIs there a way to position 2D shapes correctly in the 3D coordinate system without them being “stretched” by the transformation matrix?\n\nHere is my current code: [Typst Project Link](https://typst.app/project/r8F6emeMY61xXFdivSZcrW)\n\nThanks a lot for your help!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 41,
+      "score": 473.0,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 307
+    },
+    {
+      "id": 7224,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-05T20:15:16.726Z",
+      "updated_at": "2025-01-05T20:15:16.726Z",
+      "cooked": "<p>I think that means that you want to effectively want to draw on the xy plane: <a href=\"https://cetz-package.github.io/docs/api/draw-functions/projections/on-xy\" class=\"inline-onebox\">on-xy | CeTZ Documentation</a></p>\n<p>if you want a circle at <code>(x, y, z)</code>, you would use <code>on-xy(z: z, circle((x, y)))</code>. (Admittedly I didn’t test it, if it doesn’t work could you include a minimal example so that it’s easier to test further attempts?)</p>",
+      "raw": "I think that means that you want to effectively want to draw on the xy plane: https://cetz-package.github.io/docs/api/draw-functions/projections/on-xy\n\nif you want a circle at `(x, y, z)`, you would use `on-xy(z: z, circle((x, y)))`. (Admittedly I didn't test it, if it doesn't work could you include a minimal example so that it's easier to test further attempts?)",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 38,
+      "score": 52.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 7226,
+      "post_number": 3,
+      "username": "Mathemensch",
+      "name": "Alexander Schulz",
+      "created_at": "2025-01-05T20:41:36.448Z",
+      "updated_at": "2025-01-05T20:57:36.579Z",
+      "cooked": "<p>Thank you for the suggestion! You were absolutely right about using on-xy. After reviewing my setup, I realized that I had swapped the axes in my transformation matrix. Therefore, I needed to use <code>on-yz(z: z, circle((y, z)))</code> instead. Now the circles are positioned correctly without distortion.</p>\n<p>I appreciate your help! I’ll update the linked project so everyone can see the corrected solution.</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/f/fd0946ac0889f393b4d328021df43b18e587bd55.png\" data-download-href=\"https://forum.typst.app/uploads/default/fd0946ac0889f393b4d328021df43b18e587bd55\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/f/fd0946ac0889f393b4d328021df43b18e587bd55_2_492x375.png\" alt=\"image\" data-base62-sha1=\"A6sFMsgiDQQjRFCILFbtvfHnI5n\" width=\"492\" height=\"375\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/f/fd0946ac0889f393b4d328021df43b18e587bd55_2_492x375.png, https://forum.typst.app/uploads/default/optimized/2X/f/fd0946ac0889f393b4d328021df43b18e587bd55_2_738x562.png 1.5x, https://forum.typst.app/uploads/default/optimized/2X/f/fd0946ac0889f393b4d328021df43b18e587bd55_2_984x750.png 2x\" data-dominant-color=\"EEE6E1\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">1262×960 64.1 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "Thank you for the suggestion! You were absolutely right about using on-xy. After reviewing my setup, I realized that I had swapped the axes in my transformation matrix. Therefore, I needed to use `on-yz(z: z, circle((y, z)))` instead. Now the circles are positioned correctly without distortion.\n\nI appreciate your help! I’ll update the linked project so everyone can see the corrected solution.\n\n![image|657x500, 75%](upload://A6sFMsgiDQQjRFCILFbtvfHnI5n.png)",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 37,
+      "score": 67.2,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 307
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:06.651091"
+}

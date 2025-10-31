@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2021,
+    "title": "How to correctly display page numbering in a custom footer (with and without total number of pages)?",
+    "slug": "how-to-correctly-display-page-numbering-in-a-custom-footer-with-and-without-total-number-of-pages",
+    "posts_count": 2,
+    "created_at": "2024-12-07T18:05:06.581Z",
+    "last_posted_at": "2024-12-07T22:58:48.919Z",
+    "views": 681,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Eric",
+    "tags": [
+      "numbering"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 567
+  },
+  "posts": [
+    {
+      "id": 6409,
+      "post_number": 1,
+      "username": "danny",
+      "name": "Danny",
+      "created_at": "2024-12-07T18:05:06.738Z",
+      "updated_at": "2024-12-08T12:15:27.295Z",
+      "cooked": "<p>I’m trying to add a variable to my template where the user can set a custom page numbering schema (<a href=\"https://github.com/DannySeidel/typst-dhbw-template/issues/18\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">Customize Page Numbering Format · Issue #18 · DannySeidel/typst-dhbw-template · GitHub</a>). Due to the template using multiple different numbering styles, I want to enable the user to customize all sections.</p>\n<p>I have a preface part that uses Roman numbering like this <code>I</code>. After that, the template shows the main part, which uses Arabic numbering like this <code>1 / 1</code>. Lastly, the template uses Latin letters for the appendix section like this <code>a</code>. Because the main section provides the total number of pages, I had to define a custom footer because the page counter does not provide the number of pages at a specific point in the document.</p>\n<p>Currently, I create the footer as shown below:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">  set page(footer: context align(\n    numbering-alignment,\n    numbering(\n     \"1 / 1\",\n      ..counter(page).get(),\n      ..counter(page).at(&lt;numbering-main-end&gt;),\n    ),\n  ))\n</code></pre>\n<p>By using <code>counter(page).at(&lt;numbering-main-end&gt;)</code>, I get the number of pages at this label. Because the user should be able to set the style for all three sections, I have now created labels at the end of all three sections. The problem is that if the user defines a style that does not contain the total number of pages, I still pass in the counter, and the number is still displayed. If I leave out the total count and the user defines a style with the total number of pages displayed, the total number of pages is shown as 1, as the data is missing.</p>\n<p>How would I solve this problem? Maybe I could conditionally pass in the total number of pages only if it is needed? But how?</p>",
+      "raw": "I'm trying to add a variable to my template where the user can set a custom page numbering schema (https://github.com/DannySeidel/typst-dhbw-template/issues/18). Due to the template using multiple different numbering styles, I want to enable the user to customize all sections.\n\nI have a preface part that uses Roman numbering like this `I`. After that, the template shows the main part, which uses Arabic numbering like this `1 / 1`. Lastly, the template uses Latin letters for the appendix section like this `a`. Because the main section provides the total number of pages, I had to define a custom footer because the page counter does not provide the number of pages at a specific point in the document.\n\nCurrently, I create the footer as shown below:\n```typ\n  set page(footer: context align(\n    numbering-alignment,\n    numbering(\n     \"1 / 1\",\n      ..counter(page).get(),\n      ..counter(page).at(<numbering-main-end>),\n    ),\n  ))\n```\n\nBy using `counter(page).at(<numbering-main-end>)`, I get the number of pages at this label. Because the user should be able to set the style for all three sections, I have now created labels at the end of all three sections. The problem is that if the user defines a style that does not contain the total number of pages, I still pass in the counter, and the number is still displayed. If I leave out the total count and the user defines a style with the total number of pages displayed, the total number of pages is shown as 1, as the data is missing.\n\nHow would I solve this problem? Maybe I could conditionally pass in the total number of pages only if it is needed? But how?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 47,
+      "score": 3519.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 903
+    },
+    {
+      "id": 6415,
+      "post_number": 2,
+      "username": "Eric",
+      "name": "Eric Biedert",
+      "created_at": "2024-12-07T22:58:48.919Z",
+      "updated_at": "2024-12-07T23:00:49.199Z",
+      "cooked": "<p>Typst internally already <a href=\"https://github.com/typst/typst/blob/0228462ba10397468b3c0937e2e9cd1d3118e0fc/crates/typst-layout/src/pages/run.rs#L146\" rel=\"noopener nofollow ugc\">handles</a> this case for the default footer (or header) by checking if the given numbering pattern has two or more <a href=\"https://typst.app/docs/reference/model/numbering#:~:text=Counting%20symbols%20are%201%2C%20a%2C%20A%2C%20i%2C%20I%2C%20%E4%B8%80%2C%20%E5%A3%B9%2C%20%E3%81%82%2C%20%E3%81%84%2C%20%E3%82%A2%2C%20%E3%82%A4%2C%20%D7%90%2C%20%EA%B0%80%2C%20%E3%84%B1%2C%20*%2C%20%E2%91%A0%2C%20and%20%E2%93%B5.%20They%20are%20replaced%20by%20the%20number%20in%20the%20sequence%2C%20preserving%20the%20original%20case\">counting symbols</a>. You can apply the same logic manually in your footer:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(footer: context {\n  // Handle the case when page.numbering is not set by\n  // falling back to the default \"1\" numbering pattern.\n  let page-numbering = page.numbering\n  if page-numbering == none { page-numbering = \"1\" }\n\n  let both = type(page-numbering) == function or {\n    page-numbering.clusters().filter(c =&gt; c in (\n      // Counting symbols: https://typst.app/docs/reference/model/numbering\n      \"1\", \"a\", \"A\", \"i\", \"I\", \"α\", \"Α\", \"*\",\n      \"א\", \"一\", \"壹\", \"あ\", \"い\", \"ア\", \"イ\", \"ㄱ\",\n      \"가\", \"\\u{0661}\", \"\\u{06F1}\", \"\\u{0967}\",\n      \"\\u{09E7}\", \"\\u{0995}\", \"①\", \"⓵\"\n    )).len() &gt;= 2\n  }\n\n  numbering(\n    page-numbering,\n    ..counter(page).get(),\n    ..if both { counter(page).at(&lt;numbering-main-end&gt;) }\n  )\n})\n</code></pre>\n<p>Note that I have already included the counting symbols that are not released yet (as of v0.12.0) but are part of current development builds. They are not shown in the documentation yet, but can be retrieved from the source code.</p>",
+      "raw": "Typst internally already [handles](https://github.com/typst/typst/blob/0228462ba10397468b3c0937e2e9cd1d3118e0fc/crates/typst-layout/src/pages/run.rs#L146) this case for the default footer (or header) by checking if the given numbering pattern has two or more [counting symbols](https://typst.app/docs/reference/model/numbering#:~:text=Counting%20symbols%20are%201%2C%20a%2C%20A%2C%20i%2C%20I%2C%20%E4%B8%80%2C%20%E5%A3%B9%2C%20%E3%81%82%2C%20%E3%81%84%2C%20%E3%82%A2%2C%20%E3%82%A4%2C%20%D7%90%2C%20%EA%B0%80%2C%20%E3%84%B1%2C%20*%2C%20%E2%91%A0%2C%20and%20%E2%93%B5.%20They%20are%20replaced%20by%20the%20number%20in%20the%20sequence%2C%20preserving%20the%20original%20case). You can apply the same logic manually in your footer:\n\n```typ\n#set page(footer: context {\n  // Handle the case when page.numbering is not set by\n  // falling back to the default \"1\" numbering pattern.\n  let page-numbering = page.numbering\n  if page-numbering == none { page-numbering = \"1\" }\n\n  let both = type(page-numbering) == function or {\n    page-numbering.clusters().filter(c => c in (\n      // Counting symbols: https://typst.app/docs/reference/model/numbering\n      \"1\", \"a\", \"A\", \"i\", \"I\", \"α\", \"Α\", \"*\",\n      \"א\", \"一\", \"壹\", \"あ\", \"い\", \"ア\", \"イ\", \"ㄱ\",\n      \"가\", \"\\u{0661}\", \"\\u{06F1}\", \"\\u{0967}\",\n      \"\\u{09E7}\", \"\\u{0995}\", \"①\", \"⓵\"\n    )).len() >= 2\n  }\n\n  numbering(\n    page-numbering,\n    ..counter(page).get(),\n    ..if both { counter(page).at(<numbering-main-end>) }\n  )\n})\n```\nNote that I have already included the counting symbols that are not released yet (as of v0.12.0) but are part of current development builds. They are not shown in the documentation yet, but can be retrieved from the source code.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 43,
+      "score": 128.4,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 88
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:49.220291"
+}

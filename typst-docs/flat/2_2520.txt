@@ -1,0 +1,61 @@
+{
+  "topic_metadata": {
+    "id": 2520,
+    "title": "How do I use font variants, e.g., Condensed Medium?",
+    "slug": "how-do-i-use-font-variants-e-g-condensed-medium",
+    "posts_count": 2,
+    "created_at": "2025-01-23T23:04:26.078Z",
+    "last_posted_at": "2025-01-24T07:03:01.439Z",
+    "views": 132,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 108
+  },
+  "posts": [
+    {
+      "id": 7811,
+      "post_number": 1,
+      "username": "TimoT",
+      "name": "Timo",
+      "created_at": "2025-01-23T23:04:26.192Z",
+      "updated_at": "2025-01-24T07:09:50.667Z",
+      "cooked": "<p>I have font styles installed locally that are not found by Typst even when I include the font path. For example, Typst recognises Futura but not styles such as Futura-CondensedMedium, which is available in Apple Font Book. How can I use such font styles?</p>",
+      "raw": "I have font styles installed locally that are not found by Typst even when I include the font path. For example, Typst recognises Futura but not styles such as Futura-CondensedMedium, which is available in Apple Font Book. How can I use such font styles?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 36,
+      "score": 302.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1092
+    },
+    {
+      "id": 7812,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-01-24T07:03:01.439Z",
+      "updated_at": "2025-01-24T07:10:39.567Z",
+      "cooked": "<p>This is the correct behaviour. Typst recognises Futura and all variants.<br>\nYou have to change <a href=\"https://typst.app/docs/reference/text/text/#parameters-stretch\"><code>text(stretch)</code></a>, and change <a href=\"https://typst.app/docs/reference/text/text/#parameters-weight\"><code>text(weight)</code></a> to “medium”.</p>\n<p>I have changed your topic title, if it does not match your question, please change it again to a more appropriate one!</p>",
+      "raw": "This is the correct behaviour. Typst recognises Futura and all variants. \nYou have to change [`text(stretch)`](https://typst.app/docs/reference/text/text/#parameters-stretch), and change [`text(weight)`](https://typst.app/docs/reference/text/text/#parameters-weight) to \"medium\".\n\nI have changed your topic title, if it does not match your question, please change it again to a more appropriate one!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 35,
+      "score": 26.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:33.079790"
+}

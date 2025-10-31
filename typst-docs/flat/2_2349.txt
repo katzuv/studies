@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2349,
+    "title": "How to have different text shown in figure caption and in outline?",
+    "slug": "how-to-have-different-text-shown-in-figure-caption-and-in-outline",
+    "posts_count": 3,
+    "created_at": "2025-01-09T11:40:55.942Z",
+    "last_posted_at": "2025-01-09T15:31:53.769Z",
+    "views": 335,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 3,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "outline"
+    ],
+    "category_id": 5,
+    "participant_count": 3,
+    "word_count": 333
+  },
+  "posts": [
+    {
+      "id": 7311,
+      "post_number": 1,
+      "username": "Timo",
+      "name": "Timo",
+      "created_at": "2025-01-09T11:40:56.039Z",
+      "updated_at": "2025-01-12T18:19:47.350Z",
+      "cooked": "<p>Hello,</p>\n<p>I am currently writing a paper where I need an outline for my images. I have used the following code below to achieve this. What I need now is to either customize the text that will be shown in the outline or that I can remove content based on the pattern. I have to show the source in the caption, but don’t want this to be shown in the outline.</p>\n<pre><code class=\"lang-auto\">#outline(\n   target: figure.where(kind: image)\n)\n\n#figure(\n   caption: \"This is my caption - Source xyz\",\n   image(\"test.jpg\")\n)\n</code></pre>\n<p>Did any of you had this problem before?</p>\n<p>Best regards,<br>\nTimo</p>",
+      "raw": "Hello,\n\nI am currently writing a paper where I need an outline for my images. I have used the following code below to achieve this. What I need now is to either customize the text that will be shown in the outline or that I can remove content based on the pattern. I have to show the source in the caption, but don't want this to be shown in the outline.\n\n```\n#outline(\n   target: figure.where(kind: image)\n)\n\n#figure(\n   caption: \"This is my caption - Source xyz\",\n   image(\"test.jpg\")\n)\n```\n\nDid any of you had this problem before?\n\nBest regards,\nTimo",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 51,
+      "score": 1350.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 130
+    },
+    {
+      "id": 7314,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-01-09T13:30:27.676Z",
+      "updated_at": "2025-01-09T13:30:27.676Z",
+      "cooked": "<p>Are you using the function <code>cite()</code> to add the sources to your figure captions? If that is the case, you could use an empty show rule inside the outline entries to hide the citations.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show cite: it =&gt; [ \\- Source #it]\n\n#show outline.where(target: figure.where(kind: image)): it =&gt; {\n  show outline.entry: it =&gt; {\n    show cite: it =&gt; { }\n    it\n  }\n  it\n}\n\n#figure(\n  box(stroke: black, inset: 10pt)[some image.png],\n  caption: [This is my caption #cite(&lt;hh2010a&gt;)]\n)\n\n#outline(target: figure.where(kind: image))\n\n// .bib file from https://wiki.contextgarden.net/Sample_bib\n#bibliography(\"refs.bib\")\n</code></pre>\n<p>I created an example project <a href=\"https://typst.app/project/rBIEgKPKcKuoql0DJ5VF5E\">here</a> if you want to check the content of each <code>it</code> in the different show rules.</p>",
+      "raw": "Are you using the function `cite()` to add the sources to your figure captions? If that is the case, you could use an empty show rule inside the outline entries to hide the citations.\n```typ\n#show cite: it => [ \\- Source #it]\n\n#show outline.where(target: figure.where(kind: image)): it => {\n  show outline.entry: it => {\n    show cite: it => { }\n    it\n  }\n  it\n}\n\n#figure(\n  box(stroke: black, inset: 10pt)[some image.png],\n  caption: [This is my caption #cite(<hh2010a>)]\n)\n\n#outline(target: figure.where(kind: image))\n\n// .bib file from https://wiki.contextgarden.net/Sample_bib\n#bibliography(\"refs.bib\")\n```\n\nI created an example project [here](https://typst.app/project/rBIEgKPKcKuoql0DJ5VF5E) if you want to check the content of each `it` in the different show rules.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 48,
+      "score": 104.6,
+      "accepted_answer": false,
+      "trust_level": 3,
+      "user_id": 69
+    },
+    {
+      "id": 7318,
+      "post_number": 3,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-01-09T15:31:53.769Z",
+      "updated_at": "2025-01-09T15:31:53.769Z",
+      "cooked": "<p>As an alternative, you can fully customize the text that will be shown in the outline with the following code which is taken from the <a href=\"https://sitandr.github.io/typst-examples-book/book/snippets/chapters/outlines.html#long-and-short-captions-for-the-outline\">Typst Examples Book</a>.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let in-outline = state(\"in-outline\", false)\n#show outline: it =&gt; {\n  in-outline.update(true)\n  it\n  in-outline.update(false)\n}\n\n#let flex-caption(long, short) = context if in-outline.get() { short } else { long }\n\n// And this is in the document.\n#outline(title: [Figures], target: figure)\n\n#figure(\n  rect(),\n  caption: flex-caption(\n    [This is my long caption text in the document.],\n    [This is short],\n  )\n)\n</code></pre>\n<details>\n<summary>\nOutput</summary>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/f/f0803dd6a0d11f1eba483466249bda9dadb3137b.png\" data-download-href=\"https://forum.typst.app/uploads/default/f0803dd6a0d11f1eba483466249bda9dadb3137b\" title=\"test\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/f/f0803dd6a0d11f1eba483466249bda9dadb3137b_2_690x260.png\" alt=\"test\" data-base62-sha1=\"yjzlEe8dRaP3T0srFearyaFx78D\" width=\"690\" height=\"260\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/f/f0803dd6a0d11f1eba483466249bda9dadb3137b_2_690x260.png, https://forum.typst.app/uploads/default/optimized/2X/f/f0803dd6a0d11f1eba483466249bda9dadb3137b_2_1035x390.png 1.5x, https://forum.typst.app/uploads/default/original/2X/f/f0803dd6a0d11f1eba483466249bda9dadb3137b.png 2x\" data-dominant-color=\"FDFDFD\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">test</span><span class=\"informations\">1191×449 48.5 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n</details>",
+      "raw": "As an alternative, you can fully customize the text that will be shown in the outline with the following code which is taken from the [Typst Examples Book](https://sitandr.github.io/typst-examples-book/book/snippets/chapters/outlines.html#long-and-short-captions-for-the-outline).\n```typ\n#let in-outline = state(\"in-outline\", false)\n#show outline: it => {\n  in-outline.update(true)\n  it\n  in-outline.update(false)\n}\n\n#let flex-caption(long, short) = context if in-outline.get() { short } else { long }\n\n// And this is in the document.\n#outline(title: [Figures], target: figure)\n\n#figure(\n  rect(),\n  caption: flex-caption(\n    [This is my long caption text in the document.],\n    [This is short],\n  )\n)\n```\n\n[details=\"Output\"]\n![test|690x260](upload://yjzlEe8dRaP3T0srFearyaFx78D.png)\n[/details]",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 44,
+      "score": 38.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:58.252025"
+}

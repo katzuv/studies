@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1123,
+    "title": "How to draw a vertical line between two grid columns?",
+    "slug": "how-to-draw-a-vertical-line-between-two-grid-columns",
+    "posts_count": 2,
+    "created_at": "2024-10-15T18:40:44.000Z",
+    "last_posted_at": "2024-10-16T01:13:48.003Z",
+    "views": 587,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "PgBiel",
+    "tags": [
+      "grids"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 267
+  },
+  "posts": [
+    {
+      "id": 3963,
+      "post_number": 1,
+      "username": "Olaf",
+      "name": "Olaf",
+      "created_at": "2024-10-15T18:40:44.200Z",
+      "updated_at": "2024-10-15T18:40:44.200Z",
+      "cooked": "<p>I would like to create a two-column grid. There should be a space between the two columns (4em in the example). A vertical line should run through the centre of the free space. In the example, the line is not in the centre but on the right edge of the grid. How do I get the line to run in the centre?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#grid(\n  columns: (2fr, 3fr),\n  column-gutter: 4em,\n  block(width: 100%, height: 3em, stroke: 1pt),\n  grid.vline(stroke: 0.5pt, x: 1),\n  block(width: 100%, height: 3em, stroke: 1pt),\n  v(4em),v(3em),\n  block(width: 100%, height: 3em, stroke: 1pt),\n  grid.vline(stroke: 3pt, x: 1),\n  block(width: 100%, height: 3em, stroke: 1pt),\n)\n</code></pre>",
+      "raw": "I would like to create a two-column grid. There should be a space between the two columns (4em in the example). A vertical line should run through the centre of the free space. In the example, the line is not in the centre but on the right edge of the grid. How do I get the line to run in the centre?\n\n```typ\n#grid(\n  columns: (2fr, 3fr),\n  column-gutter: 4em,\n  block(width: 100%, height: 3em, stroke: 1pt),\n  grid.vline(stroke: 0.5pt, x: 1),\n  block(width: 100%, height: 3em, stroke: 1pt),\n  v(4em),v(3em),\n  block(width: 100%, height: 3em, stroke: 1pt),\n  grid.vline(stroke: 3pt, x: 1),\n  block(width: 100%, height: 3em, stroke: 1pt),\n)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 48,
+      "score": 3024.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 418
+    },
+    {
+      "id": 3978,
+      "post_number": 2,
+      "username": "PgBiel",
+      "name": "",
+      "created_at": "2024-10-16T01:13:48.003Z",
+      "updated_at": "2024-10-16T01:13:48.003Z",
+      "cooked": "<p>You can halve the gutter and add an empty column between the two:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#grid(\n  columns: (2fr, 0pt, 3fr),\n  column-gutter: 2em,\n  block(width: 100%, height: 3em, stroke: 1pt),\n  grid.vline(stroke: 0.5pt),\n  [],\n  block(width: 100%, height: 3em, stroke: 1pt),\n  v(4em),[],v(3em),\n  block(width: 100%, height: 3em, stroke: 1pt),\n  grid.vline(stroke: 3pt),\n  [],\n  block(width: 100%, height: 3em, stroke: 1pt),\n)\n</code></pre>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/1X/e18f2c4f2c51cbc324dbce0d85eda6e23e3a2b19.png\" data-download-href=\"https://forum.typst.app/uploads/default/e18f2c4f2c51cbc324dbce0d85eda6e23e3a2b19\" title=\"output: line in the middle\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/e18f2c4f2c51cbc324dbce0d85eda6e23e3a2b19_2_690x299.png\" alt=\"output: line in the middle\" data-base62-sha1=\"wbob1kOEZUMLnXinuUJJLdNXDaV\" width=\"690\" height=\"299\" srcset=\"https://forum.typst.app/uploads/default/optimized/1X/e18f2c4f2c51cbc324dbce0d85eda6e23e3a2b19_2_690x299.png, https://forum.typst.app/uploads/default/optimized/1X/e18f2c4f2c51cbc324dbce0d85eda6e23e3a2b19_2_1035x448.png 1.5x, https://forum.typst.app/uploads/default/optimized/1X/e18f2c4f2c51cbc324dbce0d85eda6e23e3a2b19_2_1380x598.png 2x\" data-dominant-color=\"F5F5F5\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">output: line in the middle</span><span class=\"informations\">1500×650 22.9 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n<p>It’s worth mentioning that the first call to <code>grid.vline</code>, with a stroke thickness of 0.5pt, is redundant and can be safely removed, as the second call, with a stroke thickness of 3pt, also goes through the full height of the grid such that the line with less thickness isn’t visible. But it’s possible this was just an artifact of the process of making a minimal example, in which case you can ignore this. <img src=\"https://forum.typst.app/images/emoji/apple/slight_smile.png?v=12\" title=\":slight_smile:\" class=\"emoji\" alt=\":slight_smile:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "You can halve the gutter and add an empty column between the two:\n\n```typ\n#grid(\n  columns: (2fr, 0pt, 3fr),\n  column-gutter: 2em,\n  block(width: 100%, height: 3em, stroke: 1pt),\n  grid.vline(stroke: 0.5pt),\n  [],\n  block(width: 100%, height: 3em, stroke: 1pt),\n  v(4em),[],v(3em),\n  block(width: 100%, height: 3em, stroke: 1pt),\n  grid.vline(stroke: 3pt),\n  [],\n  block(width: 100%, height: 3em, stroke: 1pt),\n)\n```\n![output: line in the middle|690x299](upload://wbob1kOEZUMLnXinuUJJLdNXDaV.png)\n\nIt's worth mentioning that the first call to `grid.vline`, with a stroke thickness of 0.5pt, is redundant and can be safely removed, as the second call, with a stroke thickness of 3pt, also goes through the full height of the grid such that the line with less thickness isn't visible. But it's possible this was just an artifact of the process of making a minimal example, in which case you can ignore this. :slight_smile:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 47,
+      "score": 339.4,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 3
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:46.023572"
+}

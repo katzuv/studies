@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 2843,
+    "title": "What is hash before brackets (#[ ])?",
+    "slug": "what-is-hash-before-brackets",
+    "posts_count": 3,
+    "created_at": "2025-02-15T18:52:57.806Z",
+    "last_posted_at": "2025-02-15T19:18:01.441Z",
+    "views": 78,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 137
+  },
+  "posts": [
+    {
+      "id": 8717,
+      "post_number": 1,
+      "username": "Llama",
+      "name": "Llama",
+      "created_at": "2025-02-15T18:52:58.010Z",
+      "updated_at": "2025-02-15T18:52:58.010Z",
+      "cooked": "<p>Hi,</p>\n<p>From the docs:</p>\n<pre><code class=\"lang-auto\">This list is affected: #[\n  #set list(marker: [--])\n  - Dash\n]\n\nThis one is not:\n- Bullet\n</code></pre>\n<p>Hash means <em>Code</em>, brackets mean <em>Markup</em>. The combination isn’t intuitive. What does it mean?</p>",
+      "raw": "Hi,\n\nFrom the docs:\n```\nThis list is affected: #[\n  #set list(marker: [--])\n  - Dash\n]\n\nThis one is not:\n- Bullet\n```\nHash means _Code_, brackets mean _Markup_. The combination isn't intuitive. What does it mean?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 41,
+      "score": 53.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1201
+    },
+    {
+      "id": 8720,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2025-02-15T19:05:50.804Z",
+      "updated_at": "2025-02-15T19:06:26.446Z",
+      "cooked": "<p>When you are in markup, hash means code, and when you are in code, brackets mean markup.</p>\n<p>So when you are in markup, <code>#[ ... ]</code> switches to code and then immediately switches back to markup. Why would you do this? Because <code>[ ... ]</code> also creates a scope for the markup (just like <code>{ ... }</code> creates a scope for the code). So <code>#[ ... ]</code> is used in markup to write markup with a limited scope. In this example, the <code>#set list(...)</code> will only affect the next markup line, the rest is out of scope.</p>",
+      "raw": "When you are in markup, hash means code, and when you are in code, brackets mean markup.\n\nSo when you are in markup, `#[ ... ]` switches to code and then immediately switches back to markup. Why would you do this? Because `[ ... ]` also creates a scope for the markup (just like `{ ... }` creates a scope for the code). So `#[ ... ]` is used in markup to write markup with a limited scope. In this example, the `#set list(...)` will only affect the next markup line, the rest is out of scope.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 36,
+      "score": 27.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    },
+    {
+      "id": 8721,
+      "post_number": 3,
+      "username": "Llama",
+      "name": "Llama",
+      "created_at": "2025-02-15T19:18:01.441Z",
+      "updated_at": "2025-02-15T19:29:23.946Z",
+      "cooked": "<p>Thanks! The trick is necessary because without hash I’ll get just literal brackets, and not an invisible scope <img src=\"https://forum.typst.app/images/emoji/apple/blush.png?v=12\" title=\":blush:\" class=\"emoji\" alt=\":blush:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Thanks! The trick is necessary because without hash I'll get just literal brackets, and not an invisible scope :blush:",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 36,
+      "score": 22.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1201
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:32.018452"
+}

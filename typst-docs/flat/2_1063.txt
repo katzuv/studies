@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 1063,
+    "title": "How to scale a symbol?",
+    "slug": "how-to-scale-a-symbol",
+    "posts_count": 3,
+    "created_at": "2024-10-13T13:13:15.421Z",
+    "last_posted_at": "2024-10-13T13:47:26.149Z",
+    "views": 267,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "symbols"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 228
+  },
+  "posts": [
+    {
+      "id": 3791,
+      "post_number": 1,
+      "username": "Sinthoras",
+      "name": "",
+      "created_at": "2024-10-13T13:13:15.550Z",
+      "updated_at": "2024-10-13T13:13:15.550Z",
+      "cooked": "<p>I want to rewrite a LaTeX document in Typst. The LaTeX-document uses the <code>\\renewcommand{\\labelitemi}{$\\filledsquare$}</code> command to replace the first level list markers with the filled black square, which looks like this:<br>\n<img src=\"https://forum.typst.app/uploads/default/original/1X/e78d37db02478641ed6a6cb5a13b7614474a5195.png\" alt=\"image\" data-base62-sha1=\"x2oQXHwHUiALKvLw5iWVnFdGhI9\" width=\"275\" height=\"147\"></p>\n<p>I try to do the same in Typst with <code>#set list(marker: (sym.square.filled.tiny, [‣], [--]))</code>, but this leads to<br>\n<img src=\"https://forum.typst.app/uploads/default/original/1X/7326c2c65f65d1f2a1c00d7fd2e8fdcf3bd75977.png\" alt=\"image\" data-base62-sha1=\"gqFX8tk9QrGP9IjSHUSpxz4bv71\" width=\"306\" height=\"88\"></p>\n<p>As you can see, the marker is bigger and looks unappealing. So I need to shrink it somehow, but <code>tiny</code> is already the smallest scale I could find. How can I scale a symbol?</p>",
+      "raw": "I want to rewrite a LaTeX document in Typst. The LaTeX-document uses the `\\renewcommand{\\labelitemi}{$\\filledsquare$}` command to replace the first level list markers with the filled black square, which looks like this:\n![image|275x147](upload://x2oQXHwHUiALKvLw5iWVnFdGhI9.png)\n\nI try to do the same in Typst with `#set list(marker: (sym.square.filled.tiny, [‣], [--]))`, but this leads to \n![image|306x88](upload://gqFX8tk9QrGP9IjSHUSpxz4bv71.png)\n\nAs you can see, the marker is bigger and looks unappealing. So I need to shrink it somehow, but `tiny` is already the smallest scale I could find. How can I scale a symbol?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 37,
+      "score": 1477.4,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 511
+    },
+    {
+      "id": 3811,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2024-10-13T13:41:37.238Z",
+      "updated_at": "2024-10-13T13:41:37.238Z",
+      "cooked": "<p>Symbols scale with text size, you you could e.g. use</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set list(marker: (text(0.8em, sym.square.filled.tiny), [‣], [--]))\n</code></pre>\n<p>As a note, sometimes a symbol may be too small for your taste, but increasing its size affects line height against your wishes. In such cases, I have in the past put symbols in a box with fixed height:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#box(height: 0.65em, text(1.1em, sym.ballot))\n</code></pre>\n<p>The <code>0.65em</code> here is not based on any specific principle but on trial and error; it matches the default <code>par.leading</code>, although I did not care to verify if that means anything. If the baseline is off after doing this, you can use <a href=\"https://typst.app/docs/reference/layout/move/\"><code>move</code></a> to further adjust.</p>",
+      "raw": "Symbols scale with text size, you you could e.g. use\n```typ\n#set list(marker: (text(0.8em, sym.square.filled.tiny), [‣], [--]))\n```\nAs a note, sometimes a symbol may be too small for your taste, but increasing its size affects line height against your wishes. In such cases, I have in the past put symbols in a box with fixed height:\n```typ\n#box(height: 0.65em, text(1.1em, sym.ballot))\n```\nThe `0.65em` here is not based on any specific principle but on trial and error; it matches the default `par.leading`, although I did not care to verify if that means anything. If the baseline is off after doing this, you can use [`move`](https://typst.app/docs/reference/layout/move/) to further adjust.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 37,
+      "score": 27.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    },
+    {
+      "id": 3812,
+      "post_number": 3,
+      "username": "Sinthoras",
+      "name": "",
+      "created_at": "2024-10-13T13:47:26.149Z",
+      "updated_at": "2024-10-13T13:47:26.149Z",
+      "cooked": "<p>This worked, thank you! :)</p>",
+      "raw": "This worked, thank you! :)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 35,
+      "score": 12.0,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 511
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:58.594153"
+}

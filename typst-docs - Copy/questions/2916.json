@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 2916,
+    "title": "How to get rid of \"Layout did not converge\" warning when pagebreaking on odd pages?",
+    "slug": "how-to-get-rid-of-layout-did-not-converge-warning-when-pagebreaking-on-odd-pages",
+    "posts_count": 2,
+    "created_at": "2025-02-22T13:33:13.315Z",
+    "last_posted_at": "2025-02-22T13:45:04.497Z",
+    "views": 67,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "janekfleper",
+    "tags": [
+      "page",
+      "context"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 176
+  },
+  "posts": [
+    {
+      "id": 8874,
+      "post_number": 1,
+      "username": "talb",
+      "name": "talb",
+      "created_at": "2025-02-22T13:33:13.483Z",
+      "updated_at": "2025-02-22T13:43:50.006Z",
+      "cooked": "<p>I always want an even number of pages for my document. To do that, I add a pagebreak when the last page number is odd. The problem is that, since I change the page parity in a context block where I check the page parity, I get a warning.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#lorem(100)\n\n#context if calc.odd(here().page()) { pagebreak() }\n</code></pre>\n<blockquote>\n<p>Layout did not converge within 5 attempts <small>(warning)</small></p>\n</blockquote>\n<p>How to get rid of that?</p>\n<p>I think that <code>pagebreak(to: \"even\")</code> cannot help in this case, since I don’t want any pagebreak when the page ends on an even page.</p>",
+      "raw": "I always want an even number of pages for my document. To do that, I add a pagebreak when the last page number is odd. The problem is that, since I change the page parity in a context block where I check the page parity, I get a warning.\n\n```typst\n#lorem(100)\n\n#context if calc.odd(here().page()) { pagebreak() }\n```\n\n> Layout did not converge within 5 attempts <small>(warning)</small>\n\nHow to get rid of that?\n\nI think that `pagebreak(to: \"even\")` cannot help in this case, since I don't want any pagebreak when the page ends on an even page.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 27,
+      "score": 215.4,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 341
+    },
+    {
+      "id": 8875,
+      "post_number": 2,
+      "username": "janekfleper",
+      "name": "Janek Fleper",
+      "created_at": "2025-02-22T13:45:04.497Z",
+      "updated_at": "2025-02-22T13:45:04.497Z",
+      "cooked": "<p>I think the issue is that the function call of <code>calc.odd(here().page())</code> is evaluated again after the new page is added. And since the result will always stay the same the compiler should just continue to add pages, which will obviously not converge.</p>\n<p>Thankfully the function <code>pagebreak()</code> directly supports your use case of making sure that the number of pages in the document is even.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#lorem(100)\n\n#pagebreak(to: \"odd\", weak: true)\n</code></pre>",
+      "raw": "I think the issue is that the function call of `calc.odd(here().page())` is evaluated again after the new page is added. And since the result will always stay the same the compiler should just continue to add pages, which will obviously not converge.\n\nThankfully the function `pagebreak()` directly supports your use case of making sure that the number of pages in the document is even.\n\n```typ\n#lorem(100)\n\n#pagebreak(to: \"odd\", weak: true)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 26,
+      "score": 20.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 69
+    }
+  ],
+  "scraped_at": "2025-06-10T09:51:24.018995"
+}

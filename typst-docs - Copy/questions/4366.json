@@ -1,0 +1,65 @@
+{
+  "topic_metadata": {
+    "id": 4366,
+    "title": "How can I create a vertical example preview with tidy in code?",
+    "slug": "how-can-i-create-a-vertical-example-preview-with-tidy-in-code",
+    "posts_count": 2,
+    "created_at": "2025-05-29T14:23:26.812Z",
+    "last_posted_at": "2025-05-29T14:44:09.679Z",
+    "views": 21,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Netzwerk2",
+    "tags": [
+      "layout",
+      "packages",
+      "tidy"
+    ],
+    "category_id": 5,
+    "participant_count": 1,
+    "word_count": 111
+  },
+  "posts": [
+    {
+      "id": 13389,
+      "post_number": 1,
+      "username": "Netzwerk2",
+      "name": "",
+      "created_at": "2025-05-29T14:23:26.912Z",
+      "updated_at": "2025-05-30T03:17:51.629Z",
+      "cooked": "<p>I want to have create an example with tidy where the output is below the code.<br>\nHowever, the other examples should still display the preview horizontally.<br>\nI’ve found this in the documentation<br>\n<div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/0/00b19d74769df347486a7f6b51ac695c0d42786d.png\" data-download-href=\"https://forum.typst.app/uploads/default/00b19d74769df347486a7f6b51ac695c0d42786d\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/0/00b19d74769df347486a7f6b51ac695c0d42786d_2_690x166.png\" alt=\"image\" data-base62-sha1=\"68xo1phFf3O422eyi50eajn6Ud\" width=\"690\" height=\"166\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/0/00b19d74769df347486a7f6b51ac695c0d42786d_2_690x166.png, https://forum.typst.app/uploads/default/original/2X/0/00b19d74769df347486a7f6b51ac695c0d42786d.png 1.5x, https://forum.typst.app/uploads/default/original/2X/0/00b19d74769df347486a7f6b51ac695c0d42786d.png 2x\" data-dominant-color=\"E1E5E7\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">932×225 38.5 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div><br>\nThe problem is I don’t create this example in a doc-string but in Typst code, where this function does not seem to exist (it also isn’t documented).</p>",
+      "raw": "I want to have create an example with tidy where the output is below the code.\nHowever, the other examples should still display the preview horizontally.\nI've found this in the documentation\n![image|690x166](upload://68xo1phFf3O422eyi50eajn6Ud.png)\nThe problem is I don't create this example in a doc-string but in Typst code, where this function does not seem to exist (it also isn't documented).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 14,
+      "score": 17.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 394
+    },
+    {
+      "id": 13392,
+      "post_number": 2,
+      "username": "Netzwerk2",
+      "name": "",
+      "created_at": "2025-05-29T14:44:09.679Z",
+      "updated_at": "2025-05-29T14:44:59.690Z",
+      "cooked": "<p>I figured it out.</p>\n<p>Instead of just having an example code block like one would have in a doc-string,<br>\nyou need to call <code>show-example</code> explicitly.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#tidy.show-example.show-example(\n  // ...\n  layout: tidy.show-example.default-layout-example.with(\n    dir: ttb,\n  ),\n)\n</code></pre>",
+      "raw": "I figured it out.\n\nInstead of just having an example code block like one would have in a doc-string,\nyou need to call `show-example` explicitly.\n\n```typ\n#tidy.show-example.show-example(\n  // ...\n  layout: tidy.show-example.default-layout-example.with(\n    dir: ttb,\n  ),\n)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 13,
+      "score": 22.6,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 394
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:05.274082"
+}

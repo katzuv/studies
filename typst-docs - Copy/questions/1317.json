@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1317,
+    "title": "How to flatten an array by one level",
+    "slug": "how-to-flatten-an-array-by-one-level",
+    "posts_count": 2,
+    "created_at": "2024-10-23T15:41:52.316Z",
+    "last_posted_at": "2024-10-23T17:33:05.936Z",
+    "views": 124,
+    "like_count": 2,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "scripting"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 85
+  },
+  "posts": [
+    {
+      "id": 4572,
+      "post_number": 1,
+      "username": "gabe",
+      "name": "",
+      "created_at": "2024-10-23T15:41:52.412Z",
+      "updated_at": "2024-10-23T15:41:52.412Z",
+      "cooked": "<p>I have an array of arrays of arrays. I want to flatten by one level so that I have an array of arrays. Flatten takes the 3d array to a 1d array, but I want a 2d array. How can I do this?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#range(3,7).map(x =&gt; {\n  range(3,7).map(y =&gt; {\n    (x,y)\n  })\n}).flatten()\n</code></pre>\n<p>^ flattens to array of ints, want array of (int, int).</p>",
+      "raw": "I have an array of arrays of arrays. I want to flatten by one level so that I have an array of arrays. Flatten takes the 3d array to a 1d array, but I want a 2d array. How can I do this?\n\n```typ\n#range(3,7).map(x => {\n  range(3,7).map(y => {\n    (x,y)\n  })\n}).flatten()\n```\n^ flattens to array of ints, want array of (int, int).",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 26,
+      "score": 535.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 433
+    },
+    {
+      "id": 4576,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2024-10-23T17:33:05.936Z",
+      "updated_at": "2024-10-23T17:35:08.542Z",
+      "cooked": "<p>I think you’re looking for <code>join()</code> or <code>sum()</code>? (<code>join</code> is more explicit so should probably be preferred)</p>",
+      "raw": "I think you're looking for `join()` or `sum()`? (`join` is more explicit so should probably be preferred)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 24,
+      "score": 59.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:02.042910"
+}

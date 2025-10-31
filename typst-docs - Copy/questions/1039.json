@@ -1,0 +1,61 @@
+{
+  "topic_metadata": {
+    "id": 1039,
+    "title": "How to change the language of a document?",
+    "slug": "how-to-change-the-language-of-a-document",
+    "posts_count": 2,
+    "created_at": "2024-10-11T21:59:20.338Z",
+    "last_posted_at": "2024-10-11T22:01:18.598Z",
+    "views": 2571,
+    "like_count": 0,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Sinthoras",
+    "tags": [],
+    "category_id": 5,
+    "participant_count": 1,
+    "word_count": 78
+  },
+  "posts": [
+    {
+      "id": 3729,
+      "post_number": 1,
+      "username": "Sinthoras",
+      "name": "",
+      "created_at": "2024-10-11T21:59:20.549Z",
+      "updated_at": "2024-10-13T13:31:32.989Z",
+      "cooked": "<p>Basically the title; searching the docs for “language” or “document language” did not yield anything useful. How can I specify the language of my document, so that e.g. hyphenation is done correctly?</p>",
+      "raw": "Basically the title; searching the docs for \"language\" or \"document language\" did not yield anything useful. How can I specify the language of my document, so that e.g. hyphenation is done correctly?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 63,
+      "score": 13762.4,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 511
+    },
+    {
+      "id": 3730,
+      "post_number": 2,
+      "username": "Sinthoras",
+      "name": "",
+      "created_at": "2024-10-11T22:01:18.598Z",
+      "updated_at": "2024-10-11T22:01:18.598Z",
+      "cooked": "<p>The text function has a parameter lang, with which you can set it for either parts of the document or the whole document.</p>\n<p>For example:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#set text(\n  lang: \"de\"\n)\n</code></pre>\n<p>Here a link to the documentation: <a href=\"https://typst.app/docs/reference/text/text/#parameters-lang\" class=\"inline-onebox\">Text Function – Typst Documentation</a></p>",
+      "raw": "The text function has a parameter lang, with which you can set it for either parts of the document or the whole document. \n\nFor example:\n```typst\n#set text(\n  lang: \"de\"\n)\n```\n\nHere a link to the documentation: https://typst.app/docs/reference/text/text/#parameters-lang",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 63,
+      "score": 252.4,
+      "accepted_answer": true,
+      "trust_level": 2,
+      "user_id": 511
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:03.790690"
+}

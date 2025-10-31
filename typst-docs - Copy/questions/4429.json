@@ -1,0 +1,82 @@
+{
+  "topic_metadata": {
+    "id": 4429,
+    "title": "How to customize figure labels?",
+    "slug": "how-to-customize-figure-labels",
+    "posts_count": 3,
+    "created_at": "2025-06-02T09:30:51.656Z",
+    "last_posted_at": "2025-06-02T11:34:11.564Z",
+    "views": 30,
+    "like_count": 2,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Junot",
+    "tags": [
+      "figures"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 269
+  },
+  "posts": [
+    {
+      "id": 13565,
+      "post_number": 1,
+      "username": "MarionP",
+      "name": "MarionP",
+      "created_at": "2025-06-02T09:30:51.747Z",
+      "updated_at": "2025-06-02T09:30:51.747Z",
+      "cooked": "<p>Hi there!</p>\n<p>I’m new to Typst, and so far, I’m really enjoying it.<br>\nI would like to know if there is a way to change the automatic labelling from “Figure 1” to “Fig. 1”?<br>\nI’ve so far figured out how to add automatically bold to the label, but not how to change it.</p>\n<p>Here is my code:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show figure.caption: it =&gt; context box(\n  align(left)[\n    *#it.supplement~#it.counter.display()#it.separator*#it.body\n  ]\n)\n#figure(\n  rect(),\n  caption: [My caption],\n) &lt;fig1&gt;\n</code></pre>\n<p>Thank you all!<br>\nMarion</p>",
+      "raw": "Hi there!\n\nI'm new to Typst, and so far, I'm really enjoying it.\nI would like to know if there is a way to change the automatic labelling from \"Figure 1\" to \"Fig. 1\"?\nI've so far figured out how to add automatically bold to the label, but not how to change it. \n\nHere is my code:\n```typ\n#show figure.caption: it => context box(\n  align(left)[\n    *#it.supplement~#it.counter.display()#it.separator*#it.body\n  ]\n)\n#figure(\n  rect(),\n  caption: [My caption],\n) <fig1>\n```\n\nThank you all!\nMarion",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 16,
+      "score": 63.2,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1693
+    },
+    {
+      "id": 13576,
+      "post_number": 2,
+      "username": "Junot",
+      "name": "Junot",
+      "created_at": "2025-06-02T11:31:28.827Z",
+      "updated_at": "2025-06-02T11:31:28.827Z",
+      "cooked": "<p>Do you want it to be “Fig” underneath the figure itself (1) or when you reference it in text (2)?</p>\n<p>(1) You can just add a <code>supplement</code> parameter to your figure:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#figure(\n    ...,\n    supplement: [Fig.]\n)\n</code></pre>\n<p>(2) Like shown in the docs you can set a show rule for when you reference a figure in normal form (reference to the name of the figure instead of the page) like (<a href=\"https://typst.app/docs/reference/model/ref/\" class=\"inline-onebox\">Reference Function – Typst Documentation</a>)</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#show ref.where(form: \"normal\"): set ref(supplement: it =&gt; {\n  if it.func() == figure {\n    \"Fig.\"\n  }\n})\n\n#figure(...)&lt;fig&gt;\nIn @fig we see...\n</code></pre>\n<p>If you only want to reference it like that once, you could also just use <code>In @fig[Fig.] we see...</code></p>\n<p>This is all mentioned in the Typst Documentation so head over there if something is not clear.<br>\nI hope this answers your question.</p>",
+      "raw": "Do you want it to be \"Fig\" underneath the figure itself (1) or when you reference it in text (2)?\n\n(1) You can just add a `supplement` parameter to your figure:\n```\n#figure(\n    ...,\n    supplement: [Fig.]\n)\n```\n\n(2) Like shown in the docs you can set a show rule for when you reference a figure in normal form (reference to the name of the figure instead of the page) like (https://typst.app/docs/reference/model/ref/)\n```\n#show ref.where(form: \"normal\"): set ref(supplement: it => {\n  if it.func() == figure {\n    \"Fig.\"\n  }\n})\n\n#figure(...)<fig>\nIn @fig we see...\n```\n\nIf you only want to reference it like that once, you could also just use `In @fig[Fig.] we see...`\n\nThis is all mentioned in the Typst Documentation so head over there if something is not clear.\nI hope this answers your question.",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 2,
+      "reads": 15,
+      "score": 38.0,
+      "accepted_answer": true,
+      "trust_level": 1,
+      "user_id": 1636
+    },
+    {
+      "id": 13577,
+      "post_number": 3,
+      "username": "MarionP",
+      "name": "MarionP",
+      "created_at": "2025-06-02T11:34:11.564Z",
+      "updated_at": "2025-06-02T11:34:11.564Z",
+      "cooked": "<p>Ooooh it was so easy!<br>\nThank you so much for the quick answer, it works wonders. I was looking for the solution 1), but I actually didn’t knew I would need the 2) as well haha.</p>\n<p>Thank you again, have a nice day!</p>",
+      "raw": "Ooooh it was so easy!\nThank you so much for the quick answer, it works wonders. I was looking for the solution 1), but I actually didn't knew I would need the 2) as well haha.\n\nThank you again, have a nice day!",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 14,
+      "score": 2.8,
+      "accepted_answer": false,
+      "trust_level": 0,
+      "user_id": 1693
+    }
+  ],
+  "scraped_at": "2025-06-10T09:46:53.924277"
+}

@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 3612,
+    "title": "What is the best way to embed custom data in content?",
+    "slug": "what-is-the-best-way-to-embed-custom-data-in-content",
+    "posts_count": 3,
+    "created_at": "2025-04-11T01:43:13.813Z",
+    "last_posted_at": "2025-04-11T21:20:58.522Z",
+    "views": 53,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "bluss",
+    "tags": [
+      "scripting",
+      "metadata"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 278
+  },
+  "posts": [
+    {
+      "id": 10921,
+      "post_number": 1,
+      "username": "Bolt",
+      "name": "",
+      "created_at": "2025-04-11T01:43:13.970Z",
+      "updated_at": "2025-04-11T01:43:13.970Z",
+      "cooked": "<p>I’m rewriting my syntax-tree package, with syntax that looks like this (whitespace insensitive):</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#tree[\n[*Head*\n  [Child \n    [Leaf]\n  ]\n  [_Italicized Child_]\n]\n]\n</code></pre>\n<p>But for each node, I’d like the user to be able to provide custom data and styling. Currently I have a very hacky aproach that looks like this.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#tree[\n[*Head* %(align: left)%\n  [Child \n    [Leaf %(name: \"leaf-node\")%]\n  ]\n  [_Italicized Child_]\n]\n]\n</code></pre>\n<p>This is ugly to parse (<code>%</code> is an arbitrary delimiter for now, and that part can be made nicer). But more importantly it uses <code>eval</code> to get at the data. I’d like to avoid that if possible, since it’s a last resort and relies on content-to-string parsing which might be brittle. I considered something like <code>#node(name: \"leaf-node\")[Leaf]</code>, but at the end of the day that function needs to return content, and I could not find a way to embed data into content.</p>\n<p>Is there a way to embed data into content, or a different way to go about this? Crucially without compromising the ability to use the simple <code>[node]</code> syntax when styling is not needed.</p>",
+      "raw": "I'm rewriting my syntax-tree package, with syntax that looks like this (whitespace insensitive):\n```typ\n#tree[\n[*Head*\n  [Child \n    [Leaf]\n  ]\n  [_Italicized Child_]\n]\n]\n```\nBut for each node, I'd like the user to be able to provide custom data and styling. Currently I have a very hacky aproach that looks like this.\n```typ\n#tree[\n[*Head* %(align: left)%\n  [Child \n    [Leaf %(name: \"leaf-node\")%]\n  ]\n  [_Italicized Child_]\n]\n]\n```\nThis is ugly to parse (`%` is an arbitrary delimiter for now, and that part can be made nicer). But more importantly it uses `eval` to get at the data. I'd like to avoid that if possible, since it's a last resort and relies on content-to-string parsing which might be brittle. I considered something like `#node(name: \"leaf-node\")[Leaf]`, but at the end of the day that function needs to return content, and I could not find a way to embed data into content.\n\nIs there a way to embed data into content, or a different way to go about this? Crucially without compromising the ability to use the simple `[node]` syntax when styling is not needed.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 22,
+      "score": 29.4,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 737
+    },
+    {
+      "id": 10929,
+      "post_number": 2,
+      "username": "bluss",
+      "name": "Ulrik",
+      "created_at": "2025-04-11T09:57:50.444Z",
+      "updated_at": "2025-04-11T09:57:50.444Z",
+      "cooked": "<p>Look at metadata, it embeds values in content, sounds like it fits the use case.</p>\n<p>Possibly it’s even more fluent with a wrapper like this:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#let attr(..args) = metadata(args.named())\n#[My node #attr(align: left)]\n</code></pre>\n<p>but more idiomatic for typst would probably be to use just a function</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#node(align: left)[My node]\n</code></pre>",
+      "raw": "Look at metadata, it embeds values in content, sounds like it fits the use case.\n\nPossibly it's even more fluent with a wrapper like this:\n\n```typ\n#let attr(..args) = metadata(args.named())\n#[My node #attr(align: left)]\n```\n\nbut more idiomatic for typst would probably be to use just a function\n\n```typ\n#node(align: left)[My node]\n```",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 20,
+      "score": 24.0,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 1272
+    },
+    {
+      "id": 10950,
+      "post_number": 3,
+      "username": "Bolt",
+      "name": "",
+      "created_at": "2025-04-11T21:20:58.522Z",
+      "updated_at": "2025-04-11T21:20:58.522Z",
+      "cooked": "<p>Thank you a ton! I don’t know how I managed to attach the tag of the same name to this post without searching it in the documentation. Yes, this is exactly what I was looking for.</p>",
+      "raw": "Thank you a ton! I don't know how I managed to attach the tag of the same name to this post without searching it in the documentation. Yes, this is exactly what I was looking for.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 15,
+      "score": 3.0,
+      "accepted_answer": false,
+      "trust_level": 2,
+      "user_id": 737
+    }
+  ],
+  "scraped_at": "2025-06-10T09:49:23.146474"
+}

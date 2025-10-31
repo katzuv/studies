@@ -1,0 +1,83 @@
+{
+  "topic_metadata": {
+    "id": 2361,
+    "title": "Can I use variables in .bib?",
+    "slug": "can-i-use-variables-in-bib",
+    "posts_count": 3,
+    "created_at": "2025-01-10T09:29:37.449Z",
+    "last_posted_at": "2025-01-10T12:48:54.449Z",
+    "views": 91,
+    "like_count": 1,
+    "reply_count": 1,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "quachpas",
+    "tags": [
+      "literature",
+      "bibtex"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 270
+  },
+  "posts": [
+    {
+      "id": 7367,
+      "post_number": 1,
+      "username": "Ariel",
+      "name": "Ariel",
+      "created_at": "2025-01-10T09:29:37.607Z",
+      "updated_at": "2025-02-05T14:56:11.424Z",
+      "cooked": "<p>I major in mathematics and I have to deal with bibliographies with math equations in their titles.  For convenience I would like to use variables in bibliography. The following simple way doesn’t work:</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">// in testbib.bib\n@article{Test2025,\n  author = {Author},\n  title = {$Area(x^2+y^2&lt;1)=pi$},\n  year = 2025, \n}\n\n// in testtyp.typ\n\n#let Area = math.op(\"Area\")\n\n@Test2025 $ Area(x^2+y^2&lt;1)=pi$ \n\n#bibliography(\"testbib.bib\")\n</code></pre>\n<p>And the output looks like</p>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/0/0ed536637bc15073f31532b9bb6ffd9b29d0cde2.png\" alt=\"\" data-base62-sha1=\"27duoc8ZmBfjCU04rHdRcDFB6Aa\" width=\"387\" height=\"142\" role=\"presentation\"></p>\n<p>Although I can manually set show rules or edit the entries of .bib file, there are lots of bibliographies to deal with and the same problem occurs to other custom math operators.</p>\n<p>Anyone has any suggestions about this? Thanks.</p>",
+      "raw": "I major in mathematics and I have to deal with bibliographies with math equations in their titles.  For convenience I would like to use variables in bibliography. The following simple way doesn't work:\n```typst\n// in testbib.bib\n@article{Test2025,\n  author = {Author},\n  title = {$Area(x^2+y^2<1)=pi$},\n  year = 2025, \n}\n\n// in testtyp.typ\n\n#let Area = math.op(\"Area\")\n\n@Test2025 $ Area(x^2+y^2<1)=pi$ \n\n#bibliography(\"testbib.bib\")\n```\n\nAnd the output looks like\n\n ![|387x142](upload://27duoc8ZmBfjCU04rHdRcDFB6Aa.png)\n\nAlthough I can manually set show rules or edit the entries of .bib file, there are lots of bibliographies to deal with and the same problem occurs to other custom math operators.\n\nAnyone has any suggestions about this? Thanks.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 30,
+      "score": 85.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1030
+    },
+    {
+      "id": 7369,
+      "post_number": 2,
+      "username": "quachpas",
+      "name": "Pascal Quach",
+      "created_at": "2025-01-10T09:53:33.657Z",
+      "updated_at": "2025-01-10T12:50:57.303Z",
+      "cooked": "<p>Hello <a class=\"mention\" href=\"/u/ariel\">@Ariel</a> and welcome!<br>\nI moved your post to the <a class=\"hashtag-cooked\" href=\"/c/questions/5\" data-type=\"category\" data-slug=\"questions\" data-id=\"5\"><span class=\"hashtag-icon-placeholder\"><svg class=\"fa d-icon d-icon-square-full svg-icon svg-node\"><use href=\"#square-full\"></use></svg></span><span>Questions</span></a> category <img src=\"https://forum.typst.app/images/emoji/apple/smiley.png?v=12\" title=\":smiley:\" class=\"emoji\" alt=\":smiley:\" loading=\"lazy\" width=\"20\" height=\"20\">. Please edit your topic’s title to be a question, and add relevant tags.</p>\n<aside class=\"quote no-group\" data-username=\"reknih\" data-post=\"1\" data-topic=\"11\">\n<div class=\"title\">\n<div class=\"quote-controls\"></div>\n<img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/reknih/48/3_2.png\" class=\"avatar\"><a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11/1\">How to post in the Questions category</a></div>\n<blockquote>\n<p><strong>Good titles are questions you would ask your friend about Typst.</strong></p>\n</blockquote>\n</aside>\n<p>Two things for bib variables:</p>\n<ul>\n<li>You need to escape the delimiters, e.g., `, (or any other for that matter, as long as you change your detection in Typst</li>\n<li>You can use <a href=\"https://typst.app/docs/reference/foundations/eval/\">eval</a></li>\n</ul>\n<p><img src=\"https://forum.typst.app/uploads/default/original/2X/f/ff774f28d3db62dceadc6697a64fcf5a2c4120d1.png\" alt=\"image\" data-base62-sha1=\"ArXnaOP40R5qQFydYtZt3JX3BkJ\" width=\"416\" height=\"150\"></p>\n<h2><a name=\"p-7369-testbib-1\" class=\"anchor\" href=\"#p-7369-testbib-1\"></a>test.bib</h2>\n<pre data-code-wrap=\"bib\"><code class=\"lang-bib\">@article{Test2025,\n  author = {Author},\n  title = {\\$Area(x^2+y^2&lt;1)=pi\\$},\n  year = 2025, \n}\n</code></pre>\n<h2><a name=\"p-7369-testtyp-2\" class=\"anchor\" href=\"#p-7369-testtyp-2\"></a>test.typ</h2>\n<p>Notice I scope the show rule to avoid it causing issues elsewhere.</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">@Test2025\n#let Area = \"Area\"\n#{\n    show regex(`\\$(.*)\\.text): it =&gt; {\n      eval(it.text.slice(1, -1), mode: \"math\", scope: (\n        Area: $Area$,\n      ))\n    }\n    bibliography(\"test.bib\")\n}\n</code></pre>",
+      "raw": "Hello @Ariel and welcome!\nI moved your post to the #questions category :smiley:. Please edit your topic's title to be a question, and add relevant tags.\n\n[quote=\"reknih, post:1, topic:11\"]\n**Good titles are questions you would ask your friend about Typst.**\n[/quote]\n\n\nTwo things for bib variables:\n- You need to escape the delimiters, e.g., `\\, (or any other for that matter, as long as you change your detection in Typst\n- You can use [eval](https://typst.app/docs/reference/foundations/eval/)\n\n![image|416x150](upload://ArXnaOP40R5qQFydYtZt3JX3BkJ.png)\n## test.bib\n```bib\n@article{Test2025,\n  author = {Author},\n  title = {\\$Area(x^2+y^2<1)=pi\\$},\n  year = 2025, \n}\n```\n\n## test.typ\n\nNotice I scope the show rule to avoid it causing issues elsewhere.\n```typ\n@Test2025\n#let Area = \"Area\"\n#{\n    show regex(`\\$(.*)\\.text): it => {\n      eval(it.text.slice(1, -1), mode: \"math\", scope: (\n        Area: $Area$,\n      ))\n    }\n    bibliography(\"test.bib\")\n}\n```",
+      "reply_to_post_number": null,
+      "reply_count": 1,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 28,
+      "score": 45.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 258
+    },
+    {
+      "id": 7370,
+      "post_number": 3,
+      "username": "Ariel",
+      "name": "Ariel",
+      "created_at": "2025-01-10T12:48:54.449Z",
+      "updated_at": "2025-01-10T12:48:54.449Z",
+      "cooked": "<p>This works for me. Thank you very much.</p>",
+      "raw": "This works for me. Thank you very much.",
+      "reply_to_post_number": 2,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 25,
+      "score": 19.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1030
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:56.801747"
+}

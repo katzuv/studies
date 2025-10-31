@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2637,
+    "title": "Is it possible to download the markup file?",
+    "slug": "is-it-possible-to-download-the-markup-file",
+    "posts_count": 2,
+    "created_at": "2025-02-01T12:03:07.230Z",
+    "last_posted_at": "2025-02-01T12:47:25.410Z",
+    "views": 78,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "flokl",
+    "tags": [
+      "web-app"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 90
+  },
+  "posts": [
+    {
+      "id": 8086,
+      "post_number": 1,
+      "username": "Andrew_van_der_Spuy",
+      "name": "Andrew van der Spuy",
+      "created_at": "2025-02-01T12:03:07.417Z",
+      "updated_at": "2025-02-01T13:22:54.469Z",
+      "cooked": "<p>…preferably as a .txt file? So that I can work offline?</p>\n<p>If so, how do I do this? Thanks!</p>",
+      "raw": "...preferably as a .txt file? So that I can work offline? \n\nIf so, how do I do this? Thanks!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 28,
+      "score": 155.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1093
+    },
+    {
+      "id": 8087,
+      "post_number": 2,
+      "username": "flokl",
+      "name": "",
+      "created_at": "2025-02-01T12:47:25.410Z",
+      "updated_at": "2025-02-01T12:47:25.410Z",
+      "cooked": "<p>Yes, in the WebApp inside yor project you have on the left the “Files” sidebar, right click the file you want to download, then there should be the option to download. You get a <code>.typ</code> file with the markup.</p>\n<p>Alternatively it is also possible to download your complete project by selecting in the menu at the top “File → Backup project” then you get a <code>.zip</code> file with all your <code>.typ</code> files.</p>",
+      "raw": "Yes, in the WebApp inside yor project you have on the left the \"Files\" sidebar, right click the file you want to download, then there should be the option to download. You get a `.typ` file with the markup.\n\nAlternatively it is also possible to download your complete project by selecting in the menu at the top \"File -> Backup project\" then you get a `.zip` file with all your `.typ` files.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 27,
+      "score": 20.4,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 8
+    }
+  ],
+  "scraped_at": "2025-06-10T09:52:10.233462"
+}

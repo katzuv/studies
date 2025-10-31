@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 1306,
+    "title": "How to refer to function argument in math mode",
+    "slug": "how-to-refer-to-function-argument-in-math-mode",
+    "posts_count": 2,
+    "created_at": "2024-10-23T10:52:12.823Z",
+    "last_posted_at": "2024-10-23T11:26:59.847Z",
+    "views": 87,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "math",
+      "packages"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 323
+  },
+  "posts": [
+    {
+      "id": 4523,
+      "post_number": 1,
+      "username": "heptocat",
+      "name": "",
+      "created_at": "2024-10-23T10:52:12.919Z",
+      "updated_at": "2024-10-23T10:52:12.919Z",
+      "cooked": "<p>I’m using the fletcher package to create the following diagram<br>\n<span class=\"hashtag-raw\">#diagram</span>({<br>\nlet (PZ, PY) = ((0,0), (0,1))<br>\nnode(PZ, $P(Z)$)<br>\nnode(PY, $P(Y)$)<br>\nedge(PY, PZ, “-&gt;”, $f^*$, right)<br>\nedge(PZ, PY, “-&gt;”, $∃_f$, shift:-0.5)<br>\nedge(PZ, PY, “-&gt;”, $∀_f$, shift:0.5, label-side:left)<br>\n})</p>\n<p>However since this notation is bulky and I need these type of diagrams a lot, I would like to write it in the form</p>\n<p><span class=\"hashtag-raw\">#diagram</span>($<br>\nP(Z) edge(“d”, -&gt;, ∃_f, shift:0.5) edge(“d”, -&gt;, ∃_f, shift:-0.5)<br>\n<br>\nP(Y) edge(“u”, -&gt;, f^*)$)</p>\n<p>However this is not creating the same diagram, as the arrows don’t get shifted - my understanding is that it isn’t interpreting shift:0.5 correctly because I am in math mode. How can I fix this?</p>\n<p>Thanks!</p>",
+      "raw": "I'm using the fletcher package to create the following diagram\n#diagram({\nlet (PZ, PY) = ((0,0), (0,1))\nnode(PZ, $P(Z)$)\nnode(PY, $P(Y)$)\nedge(PY, PZ, \"->\", $f^*$, right)\nedge(PZ, PY, \"->\", $∃_f$, shift:-0.5)\nedge(PZ, PY, \"->\", $∀_f$, shift:0.5, label-side:left)\n})\n\nHowever since this notation is bulky and I need these type of diagrams a lot, I would like to write it in the form\n\n#diagram($\n P(Z) edge(\"d\", ->, ∃_f, shift:0.5) edge(\"d\", ->, ∃_f, shift:-0.5)\n \\\nP(Y) edge(\"u\", ->, f^*)$)\n\nHowever this is not creating the same diagram, as the arrows don't get shifted - my understanding is that it isn't interpreting shift:0.5 correctly because I am in math mode. How can I fix this?\n\nThanks!",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 28,
+      "score": 205.6,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 659
+    },
+    {
+      "id": 4526,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2024-10-23T11:26:59.847Z",
+      "updated_at": "2024-10-23T11:27:53.977Z",
+      "cooked": "<p>Welcome to the typst Discourse! You can put your code examples between <code>```</code> markers to make them more readable. See <a href=\"https://forum.typst.app/t/how-to-post-in-the-questions-category/11\">here</a> for other tips.</p>\n<p>It’s a bit hard to know what you have in mind with your second example without seeing a complete (minimal) working example. But generally speaking I think it’s a bad idea to try and do everything in math mode. Writing <code>edge(PY, PZ, \"-&gt;\", $f^*$, right)</code> makes a lot of sense: the dollar signs show what part is actually a math formula. The diagram itself is not a formula.</p>\n<p>If you really want to use this shortcut form, I think you’ll have layout problems with the nodes since they are not coded to be math elements. I suppose you could get some things to work, like the edges. To fix the particular issue you have mentioned with <code>shift</code>, you will have to write <code>shift: #(-0.5)</code>. I think you will quickly find that the savings in <code>$</code> characters are quickly lost by the workarounds required to make other things work in math mode <img src=\"https://forum.typst.app/images/emoji/apple/slight_smile.png?v=12\" title=\":slight_smile:\" class=\"emoji\" alt=\":slight_smile:\" loading=\"lazy\" width=\"20\" height=\"20\"></p>",
+      "raw": "Welcome to the typst Discourse! You can put your code examples between ` ``` ` markers to make them more readable. See [here](https://forum.typst.app/t/how-to-post-in-the-questions-category/11) for other tips.\n\nIt's a bit hard to know what you have in mind with your second example without seeing a complete (minimal) working example. But generally speaking I think it's a bad idea to try and do everything in math mode. Writing `edge(PY, PZ, \"->\", $f^*$, right)` makes a lot of sense: the dollar signs show what part is actually a math formula. The diagram itself is not a formula.\n\nIf you really want to use this shortcut form, I think you'll have layout problems with the nodes since they are not coded to be math elements. I suppose you could get some things to work, like the edges. To fix the particular issue you have mentioned with `shift`, you will have to write `shift: #(-0.5)`. I think you will quickly find that the savings in `$` characters are quickly lost by the workarounds required to make other things work in math mode :slight_smile:",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 26,
+      "score": 50.2,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:05.552148"
+}

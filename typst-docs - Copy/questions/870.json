@@ -1,0 +1,64 @@
+{
+  "topic_metadata": {
+    "id": 870,
+    "title": "How can I use different page number locations on alternating pages?",
+    "slug": "how-can-i-use-different-page-number-locations-on-alternating-pages",
+    "posts_count": 2,
+    "created_at": "2024-10-02T13:19:30.284Z",
+    "last_posted_at": "2024-10-02T13:36:57.883Z",
+    "views": 451,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "Andrew",
+    "tags": [
+      "numbering",
+      "page"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 261
+  },
+  "posts": [
+    {
+      "id": 3213,
+      "post_number": 1,
+      "username": "jsx97",
+      "name": "jsx97",
+      "created_at": "2024-10-02T13:19:30.441Z",
+      "updated_at": "2024-10-02T19:25:46.785Z",
+      "cooked": "<p>How is it possible to place page numbers at the top left corners of odd pages and top right corners of even pages?</p>\n<pre data-code-wrap=\"none\"><code class=\"lang-none\">┌───────╥───────┐ ┌───────╥───────┐\n│ 1     ║     2 │ │ 3     ║     4 │\n│       ║       │ │       ║       │\n│       ║       │ │       ║       │\n│       ║       │ │       ║       │\n└───────╨───────┘ └───────╨───────┘\n</code></pre>\n<p>Or maybe the other way around, which is in fact a more correct way to number pages according to book design traditions:</p>\n<pre><code class=\"lang-auto\">┌───────┐ ┌───────╥───────┐ ┌───────╥───────┐\n│     1 │ │ 2     ║     3 │ │ 4     ║     5 │\n│       │ │       ║       │ │       ║       │\n│       │ │       ║       │ │       ║       │\n│       │ │       ║       │ │       ║       │\n└───────┘ └───────╨───────┘ └───────╨───────┘\n</code></pre>\n<p>( <em><a href=\"https://typst.app/docs/guides/page-setup-guide\" class=\"inline-onebox\">Page setup guide – Typst Documentation</a></em> documentation page doesn’t seem to mention this trick. The closest thing I have found there is:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(header: context {\n  if counter(page).get().first() &gt; 1 [\n    ...\n  ]\n})\n</code></pre>\n<p>Which can probably be changed like “if page number is divisible by 2, then it is even; otherwise, it is odd”. But then, how to implement this if/else in code? )</p>",
+      "raw": "How is it possible to place page numbers at the top left corners of odd pages and top right corners of even pages?\n\n``` none\n┌───────╥───────┐ ┌───────╥───────┐\n│ 1     ║     2 │ │ 3     ║     4 │\n│       ║       │ │       ║       │\n│       ║       │ │       ║       │\n│       ║       │ │       ║       │\n└───────╨───────┘ └───────╨───────┘\n```\n\nOr maybe the other way around, which is in fact a more correct way to number pages according to book design traditions:\n\n```\n┌───────┐ ┌───────╥───────┐ ┌───────╥───────┐\n│     1 │ │ 2     ║     3 │ │ 4     ║     5 │\n│       │ │       ║       │ │       ║       │\n│       │ │       ║       │ │       ║       │\n│       │ │       ║       │ │       ║       │\n└───────┘ └───────╨───────┘ └───────╨───────┘\n```\n\n( *https://typst.app/docs/guides/page-setup-guide* documentation page doesn't seem to mention this trick. The closest thing I have found there is:\n\n```typ\n#set page(header: context {\n  if counter(page).get().first() > 1 [\n    ...\n  ]\n})\n```\n\nWhich can probably be changed like \"if page number is divisible by 2, then it is even; otherwise, it is odd\". But then, how to implement this if/else in code? )",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 55,
+      "score": 1631.0,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 477
+    },
+    {
+      "id": 3217,
+      "post_number": 2,
+      "username": "Andrew",
+      "name": "",
+      "created_at": "2024-10-02T13:36:57.883Z",
+      "updated_at": "2024-10-02T13:36:57.883Z",
+      "cooked": "<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(height: auto)\n\n// Starting from left:\n// #set page(header: context {\n//   let page = counter(page).get().first()\n//   let body = if calc.odd(page) [odd ] else [even ] + str(page)\n//   let alignment = if calc.odd(page) { left } else { right }\n//   align(alignment, body)\n// })\n\n// Starting from right (book style):\n#set page(header: context {\n  let page = counter(page).get().first()\n  let body = if calc.odd(page) [odd ] else [even ] + str(page)\n  let alignment = if calc.odd(page) { right } else { left }\n  align(alignment, body)\n})\n\n#range(5).map(_ =&gt; pagebreak()).join()\n</code></pre>\n<div align=\"center\">\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/1X/cc27c2e1e39f379dff226b47d1166bd517983d97.png\" data-download-href=\"https://forum.typst.app/uploads/default/cc27c2e1e39f379dff226b47d1166bd517983d97\" title=\"image\"><img src=\"https://forum.typst.app/uploads/default/optimized/1X/cc27c2e1e39f379dff226b47d1166bd517983d97_2_335x500.png\" alt=\"image\" data-base62-sha1=\"t82AHWtbnsEx3OCPEOoI2rER4az\" width=\"335\" height=\"500\" srcset=\"https://forum.typst.app/uploads/default/optimized/1X/cc27c2e1e39f379dff226b47d1166bd517983d97_2_335x500.png, https://forum.typst.app/uploads/default/optimized/1X/cc27c2e1e39f379dff226b47d1166bd517983d97_2_502x750.png 1.5x, https://forum.typst.app/uploads/default/original/1X/cc27c2e1e39f379dff226b47d1166bd517983d97.png 2x\" data-dominant-color=\"030303\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">image</span><span class=\"informations\">612×911 6.96 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>\n</div>\n<p>This can be simplified to:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#set page(header: context {\n  let page = counter(page).get().first()\n  align(if calc.odd(page) { right } else { left })[#page]\n})\n</code></pre>\n<p>I have a feeling that this might be achieved in some even easier way, but nothing else comes to mind.</p>",
+      "raw": "```typ\n#set page(height: auto)\n\n// Starting from left:\n// #set page(header: context {\n//   let page = counter(page).get().first()\n//   let body = if calc.odd(page) [odd ] else [even ] + str(page)\n//   let alignment = if calc.odd(page) { left } else { right }\n//   align(alignment, body)\n// })\n\n// Starting from right (book style):\n#set page(header: context {\n  let page = counter(page).get().first()\n  let body = if calc.odd(page) [odd ] else [even ] + str(page)\n  let alignment = if calc.odd(page) { right } else { left }\n  align(alignment, body)\n})\n\n#range(5).map(_ => pagebreak()).join()\n```\n\n<div align=center>\n\n![image|335x500](upload://t82AHWtbnsEx3OCPEOoI2rER4az.png)\n</div>\n\nThis can be simplified to:\n\n```typ\n#set page(header: context {\n  let page = counter(page).get().first()\n  align(if calc.odd(page) { right } else { left })[#page]\n})\n```\n\nI have a feeling that this might be achieved in some even easier way, but nothing else comes to mind.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 53,
+      "score": 465.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 51
+    }
+  ],
+  "scraped_at": "2025-06-10T09:57:33.516931"
+}

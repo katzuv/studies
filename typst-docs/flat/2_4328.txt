@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 4328,
+    "title": "How to typeset augmented matrices?",
+    "slug": "how-to-typeset-augmented-matrices",
+    "posts_count": 2,
+    "created_at": "2025-05-27T11:36:40.627Z",
+    "last_posted_at": "2025-05-27T11:41:40.454Z",
+    "views": 46,
+    "like_count": 3,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "bluss",
+    "tags": [
+      "math"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 75
+  },
+  "posts": [
+    {
+      "id": 13258,
+      "post_number": 1,
+      "username": "Zach_S",
+      "name": "Zach S",
+      "created_at": "2025-05-27T11:36:40.711Z",
+      "updated_at": "2025-05-28T06:30:47.995Z",
+      "cooked": "<p>Does anyone know how to typset augmented matrices for row reduction? I can’t seem to figure out how to get it such that there is a vertical line separating the last column. Do you have to use a grid? Appreciate any help in advance.</p>",
+      "raw": "Does anyone know how to typset augmented matrices for row reduction? I can't seem to figure out how to get it such that there is a vertical line separating the last column. Do you have to use a grid? Appreciate any help in advance.",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 24,
+      "score": 49.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1559
+    },
+    {
+      "id": 13259,
+      "post_number": 2,
+      "username": "bluss",
+      "name": "Ulrik",
+      "created_at": "2025-05-27T11:41:40.454Z",
+      "updated_at": "2025-05-27T11:41:49.491Z",
+      "cooked": "<p>There’s an example over in the docs  <a href=\"https://typst.app/docs/reference/math/mat/#parameters-augment\" class=\"inline-onebox\">Matrix Function – Typst Documentation</a></p>\n<p>Click the <em>View Example</em>  thing under augment.</p>\n<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://forum.typst.app/uploads/default/original/2X/6/6d7be32cc7ad0f8613f86499384dc055f04623dc.png\" data-download-href=\"https://forum.typst.app/uploads/default/6d7be32cc7ad0f8613f86499384dc055f04623dc\" title=\"bild\"><img src=\"https://forum.typst.app/uploads/default/optimized/2X/6/6d7be32cc7ad0f8613f86499384dc055f04623dc_2_517x220.png\" alt=\"bild\" data-base62-sha1=\"fCxtfEpotHk76ThQXYbcY7KMErO\" width=\"517\" height=\"220\" srcset=\"https://forum.typst.app/uploads/default/optimized/2X/6/6d7be32cc7ad0f8613f86499384dc055f04623dc_2_517x220.png, https://forum.typst.app/uploads/default/optimized/2X/6/6d7be32cc7ad0f8613f86499384dc055f04623dc_2_775x330.png 1.5x, https://forum.typst.app/uploads/default/original/2X/6/6d7be32cc7ad0f8613f86499384dc055f04623dc.png 2x\" data-dominant-color=\"F4F4F5\"><div class=\"meta\"><svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use href=\"#far-image\"></use></svg><span class=\"filename\">bild</span><span class=\"informations\">840×358 36.8 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use href=\"#discourse-expand\"></use></svg></div></a></div></p>",
+      "raw": "There's an example over in the docs  https://typst.app/docs/reference/math/mat/#parameters-augment\n\nClick the *View Example*  thing under augment.\n\n![bild|690x294, 75%](upload://fCxtfEpotHk76ThQXYbcY7KMErO.png)",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 3,
+      "reads": 24,
+      "score": 49.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 1272
+    }
+  ],
+  "scraped_at": "2025-06-10T09:47:11.305626"
+}

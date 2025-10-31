@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 2294,
+    "title": "How can I rotate part of a caption?",
+    "slug": "how-can-i-rotate-part-of-a-caption",
+    "posts_count": 2,
+    "created_at": "2025-01-03T21:38:43.743Z",
+    "last_posted_at": "2025-01-03T23:15:07.478Z",
+    "views": 64,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "SillyFreak",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 107
+  },
+  "posts": [
+    {
+      "id": 7187,
+      "post_number": 1,
+      "username": "jmskov",
+      "name": "jmskov",
+      "created_at": "2025-01-03T21:38:43.960Z",
+      "updated_at": "2025-01-03T22:00:19.623Z",
+      "cooked": "<p>I would like to rotate part of a figure caption, i.e.</p>\n<pre data-code-wrap=\"typst\"><code class=\"lang-typst\">#figure(\n  square(size: 25em, stroke: 2pt),\n  caption: [Pointed arrow should be here: #rotate(-45deg, $arrow$)]\n)\n</code></pre>\n<p>which renders the arrow on a new line in the caption. Is there something I am missing using rotate in a caption, or is this possibly a bug?</p>",
+      "raw": "I would like to rotate part of a figure caption, i.e.\n\n```typst\n#figure(\n  square(size: 25em, stroke: 2pt),\n  caption: [Pointed arrow should be here: #rotate(-45deg, $arrow$)]\n)\n```\nwhich renders the arrow on a new line in the caption. Is there something I am missing using rotate in a caption, or is this possibly a bug?",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 29,
+      "score": 100.8,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 1005
+    },
+    {
+      "id": 7189,
+      "post_number": 2,
+      "username": "SillyFreak",
+      "name": "SillyFreak",
+      "created_at": "2025-01-03T23:15:07.478Z",
+      "updated_at": "2025-01-03T23:15:07.478Z",
+      "cooked": "<p>Rotate elements are block level, so you’d put it in a box to have it as part of a line. See here for a longer description/discussion on block and inline elements:</p>\n<aside class=\"quote quote-modified\" data-post=\"2\" data-topic=\"2292\">\n  <div class=\"title\">\n    <div class=\"quote-controls\"></div>\n    <img loading=\"lazy\" alt=\"\" width=\"24\" height=\"24\" src=\"https://forum.typst.app/user_avatar/forum.typst.app/sillyfreak/48/1483_2.png\" class=\"avatar\">\n    <a href=\"https://forum.typst.app/t/how-can-i-align-to-images-side-by-side/2292/2\">How can I align to images side by side?</a> <a class=\"badge-category__wrapper \" href=\"/c/questions/5\"><span data-category-id=\"5\" style=\"--category-badge-color: #F7C000; --category-badge-text-color: #fdfdfd;\" data-drop-close=\"true\" class=\"badge-category \" title=\"Your questions about using Typst and the web app go in this category.\"><span class=\"badge-category__name\">Questions</span></span></a>\n  </div>\n  <blockquote>\n    Images (and most other elements, e.g. paragraphs, headings, tables, as well as shapes like lines and rectangles) are block level, that means that they are laid out vertically under each other. The opposite is inline. \nThere are a few ways to arrange block content horizontally. \n\nHere, I would suggest a <a href=\"https://typst.app/docs/reference/layout/grid/\">grid</a>. Grids put multiple things into cells, and you can of course have a grid with only one row. Since you have multiple images, a grid with two column will do the job.\n\nRelated is the <a href=\"https://typst.app/docs/reference/model/table/\">table</a>, but …\n  </blockquote>\n</aside>\n",
+      "raw": "Rotate elements are block level, so you'd put it in a box to have it as part of a line. See here for a longer description/discussion on block and inline elements:\n\nhttps://forum.typst.app/t/how-can-i-align-to-images-side-by-side/2292/2?u=sillyfreak",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 28,
+      "score": 20.6,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 32
+    }
+  ],
+  "scraped_at": "2025-06-10T09:53:09.629971"
+}

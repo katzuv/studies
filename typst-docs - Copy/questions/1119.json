@@ -1,0 +1,63 @@
+{
+  "topic_metadata": {
+    "id": 1119,
+    "title": "How to create a nested list using the plain 'enum' or 'list' function?",
+    "slug": "how-to-create-a-nested-list-using-the-plain-enum-or-list-function",
+    "posts_count": 2,
+    "created_at": "2024-10-15T13:59:55.261Z",
+    "last_posted_at": "2024-10-15T14:13:45.943Z",
+    "views": 669,
+    "like_count": 1,
+    "reply_count": 0,
+    "has_accepted_answer": true,
+    "accepted_answer_post_number": 2,
+    "accepted_answer_username": "sijo",
+    "tags": [
+      "layout"
+    ],
+    "category_id": 5,
+    "participant_count": 2,
+    "word_count": 126
+  },
+  "posts": [
+    {
+      "id": 3946,
+      "post_number": 1,
+      "username": "jsx97",
+      "name": "jsx97",
+      "created_at": "2024-10-15T13:59:55.394Z",
+      "updated_at": "2024-10-15T14:03:00.269Z",
+      "cooked": "<p>Test 1, works fine:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#[\n  #set enum(numbering: \"1.a)\")\n  + aa\n  + bb\n    + xx\n    + yy\n]\n</code></pre>\n<p>Output:</p>\n<pre data-code-wrap=\"none\"><code class=\"lang-none\">1) aa\n2) bb\n   a) xx\n   b) yy\n</code></pre>\n<p>Test 2. How to make it work the same as Test 1?</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#enum(\n  numbering: \"1.a)\",\n  enum.item[aa],\n  enum.item[bb],\n  enum(\n    numbering: \"1.a)\",\n    enum.item[xx],\n    enum.item[yy]\n  )\n)\n</code></pre>\n<p>The current output:</p>\n<pre data-code-wrap=\"none\"><code class=\"lang-none\">1) aa\n2) bb\n3) a) xx\n   b) yy\n</code></pre>\n<p>The output I’m trying to achieve:</p>\n<pre data-code-wrap=\"none\"><code class=\"lang-none\">1) aa\n2) bb\n   a) xx\n   b) yy\n</code></pre>",
+      "raw": "Test 1, works fine:\n\n```typ\n#[\n  #set enum(numbering: \"1.a)\")\n  + aa\n  + bb\n    + xx\n    + yy\n]\n```\n\nOutput:\n\n```none\n1) aa\n2) bb\n   a) xx\n   b) yy\n```\n\nTest 2. How to make it work the same as Test 1?\n\n```typ\n#enum(\n  numbering: \"1.a)\",\n  enum.item[aa],\n  enum.item[bb],\n  enum(\n    numbering: \"1.a)\",\n    enum.item[xx],\n    enum.item[yy]\n  )\n)\n```\n\nThe current output:\n\n```none\n1) aa\n2) bb\n3) a) xx\n   b) yy\n```\n\nThe output I'm trying to achieve:\n\n```none\n1) aa\n2) bb\n   a) xx\n   b) yy\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 0,
+      "reads": 36,
+      "score": 3557.2,
+      "accepted_answer": false,
+      "trust_level": 1,
+      "user_id": 477
+    },
+    {
+      "id": 3948,
+      "post_number": 2,
+      "username": "sijo",
+      "name": "",
+      "created_at": "2024-10-15T14:13:45.943Z",
+      "updated_at": "2024-10-15T14:13:45.943Z",
+      "cooked": "<p>In the desired output, the sublist is part of the second item, so you need to build it so:</p>\n<pre data-code-wrap=\"typ\"><code class=\"lang-typ\">#enum(\n  numbering: \"1.a)\",\n  enum.item[aa],\n  enum.item([bb] + enum(\n    numbering: \"1.a)\",\n    enum.item[xx],\n    enum.item[yy]\n  )),\n)\n</code></pre>",
+      "raw": "In the desired output, the sublist is part of the second item, so you need to build it so:\n\n```typ\n#enum(\n  numbering: \"1.a)\",\n  enum.item[aa],\n  enum.item([bb] + enum(\n    numbering: \"1.a)\",\n    enum.item[xx],\n    enum.item[yy]\n  )),\n)\n```",
+      "reply_to_post_number": null,
+      "reply_count": 0,
+      "quote_count": 0,
+      "like_count": 1,
+      "reads": 29,
+      "score": 30.8,
+      "accepted_answer": true,
+      "trust_level": 3,
+      "user_id": 332
+    }
+  ],
+  "scraped_at": "2025-06-10T09:56:48.923749"
+}
