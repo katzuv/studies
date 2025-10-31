@@ -74,12 +74,12 @@ class PDFMerger:
                 print(f"Error processing {pdf_path}: {e}")
                 continue
         
-        # Set the table of contents
+        # Set the table of contents (before adding TOC page)
         if self.toc_entries:
             self.output_doc.set_toc(self.toc_entries)
-        
-        # Create TOC page at the beginning
-        self._add_toc_page()
+            
+            # Add visual TOC page at the beginning
+            self._add_toc_page()
         
         # Save the merged PDF
         self.output_doc.save(str(output_path))
@@ -101,44 +101,60 @@ class PDFMerger:
             color=(0, 0, 0)
         )
         
+        toc_page.insert_text(
+            (50, 75),
+            "Use the sidebar/bookmarks panel to navigate to sections",
+            fontsize=10,
+            fontname="helv",
+            color=(0.5, 0.5, 0.5)
+        )
+        
         # Write each entry with page number
-        y_position = 100
+        y_position = 110
+        toc_page_num = 0
+        
+        # We'll update TOC entries as we add the page
+        updated_toc = []
+        
         for level, title, page_num in self.toc_entries:
+            # Adjust page number for the TOC page we just added
+            adjusted_page = page_num + 1
+            updated_toc.append([level, title, adjusted_page])
+            
             # Indent based on level
             indent = (level - 1) * 20
             
-            # Create clickable link to the page
-            link_rect = fitz.Rect(50 + indent, y_position - 5, 
-                                 500, y_position + 10)
+            # Add text (limit title length to avoid overflow)
+            max_title_len = 50 - indent // 2
+            display_title = title[:max_title_len]
+            dots = '.' * max(3, 50 - len(display_title) - len(str(adjusted_page)))
+            text = f"{display_title} {dots} {adjusted_page}"
             
-            # Add text
-            text = f"{title} {'.' * (50 - len(title))} {page_num + 1}"
             toc_page.insert_text(
                 (50 + indent, y_position),
                 text,
                 fontsize=11,
                 fontname="helv",
-                color=(0, 0, 0.8)
+                color=(0, 0, 0)
             )
-            
-            # Add internal link
-            link = {
-                "kind": fitz.LINK_GOTO,
-                "from": link_rect,
-                "page": page_num + 1  # +1 because we added TOC page
-            }
-            toc_page.insert_link(link)
             
             y_position += 20
             
             # Add new page if we run out of space
             if y_position > 800:
-                toc_page = self.output_doc.new_page(1, width=595, height=842)
-                y_position = 50
+                toc_page_num += 1
+                toc_page = self.output_doc.new_page(toc_page_num, width=595, height=842)
+                toc_page.insert_text(
+                    (50, 50),
+                    "Table of Contents (continued)",
+                    fontsize=16,
+                    fontname="helv",
+                    color=(0, 0, 0)
+                )
+                y_position = 80
         
-        # Update all TOC entries to account for the new first page
-        updated_toc = [[level, title, page + 1] 
-                       for level, title, page in self.toc_entries]
+        # Update the table of contents with adjusted page numbers
+        # The sidebar bookmarks will be clickable
         self.output_doc.set_toc(updated_toc)
 
 
