@@ -41,9 +41,8 @@ class DriveHandler:
             )
         # Try OAuth token
         elif self.token_path and self.token_path.exists():
-            with self.token_path.open('r') as token:
-                token_data = json.load(token)
-                creds = Credentials.from_authorized_user_info(token_data)
+            token_data = json.loads(self.token_path.read_text())
+            creds = Credentials.from_authorized_user_info(token_data)
             
             # Refresh if expired
             if creds and creds.expired and creds.refresh_token:
