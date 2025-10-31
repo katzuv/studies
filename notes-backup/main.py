@@ -11,17 +11,6 @@ from drive_handler import DriveHandler, download_course_files
 from pdf_merger import merge_course_pdfs
 
 
-def load_config(config_path: Path) -> dict:
-    """
-    Load configuration from JSON file.
-    
-    @param config_path: Path to config file.
-    @return: Dictionary with configuration.
-    """
-    with config_path.open('r') as f:
-        return json.load(f)
-
-
 def process_course(drive: DriveHandler, course_name: str, 
                   course_folder_id: str, temp_dir: Path, 
                   parent_merged_folder_id: str) -> dict:
@@ -159,9 +148,9 @@ def main():
         print(f"Error: Config file not found: {config_path}")
         print("Please create a config.json file. See config.example.json")
         return 1
-    
-    config = load_config(config_path)
-    
+
+    config = json.loads(config_path.read_text())
+
     # Initialize Drive handler
     try:
         drive = DriveHandler(
