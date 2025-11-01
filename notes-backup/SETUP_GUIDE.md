@@ -39,7 +39,7 @@ Your Drive/
 
 ```json
 {
-  "merged_folder_name": "Merged_Notes",
+  "semester_folder_name": "Merged_Notes",
   "courses": {
     "Linear_Algebra": "FOLDER_ID_HERE",
     "Calculus": "FOLDER_ID_HERE"

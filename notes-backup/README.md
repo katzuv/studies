@@ -56,7 +56,7 @@ Create `config.json` based on `config.example.json`:
 
 ```json
 {
-  "merged_folder_name": "Merged_Notes",
+  "semester_folder_name": "Merged_Notes",
   "courses": {
     "Linear_Algebra": "your-folder-id-here",
     "Calculus_1": "your-folder-id-here"
