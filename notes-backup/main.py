@@ -147,14 +147,10 @@ def main():
     config = json.loads(config_path.read_text())
 
     # Initialize Drive handler
-    try:
-        drive = DriveHandler(
-            credentials_path=credentials_path if credentials_path.exists() else None,
-            token_path=token_path,
-        )
-    except Exception as e:
-        print(f"Error: Failed to authenticate with Google Drive: {e}")
-        return 1
+    drive = DriveHandler(
+        credentials_path=credentials_path if credentials_path.exists() else None,
+        token_path=token_path,
+    )
 
     # Get or create merged folder
     merged_folder_name = config["merged_folder_name"]
