@@ -159,10 +159,11 @@ def main():
 
     if args.course:
         # Process single course
-        if args.course not in courses:
-            print(f"Error: Course '{args.course}' not found in config")
-            return 1
-        courses = {args.course: courses[args.course]}
+        try:
+            courses = {args.course: courses[args.course]}
+        except KeyError as e:
+            e.strerror = f"Error: Course '{args.course}' not found in config"
+            raise e
 
     all_results = []
 
