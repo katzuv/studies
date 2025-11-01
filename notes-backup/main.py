@@ -17,7 +17,7 @@ def process_course(
     course_name: str,
     course_folder_id: str,
     temp_dir: Path,
-    parent_merged_folder_id: str,
+    semester_folder_id: str,
 ) -> dict:
     """
     Process a single course: download, merge, and upload.
@@ -89,7 +89,7 @@ def process_course(
         for file_path in merged_files["parent"]:
             if file_path.exists():
                 try:
-                    file_id = drive.upload_file(file_path, parent_merged_folder_id)
+                    file_id = drive.upload_file(file_path, semester_folder_id)
                     results["files_created"].append(
                         {"location": "parent", "name": file_path.name, "id": file_id}
                     )
@@ -153,8 +153,7 @@ def main():
     )
 
     # Get or create merged folder
-    merged_folder_name = config["merged_folder_name"]
-    merged_folder_id = drive.get_or_create_folder(merged_folder_name)
+    semester_folder_id = config["semester_folder_id"]
 
     # Process courses
     courses = config["courses"]
@@ -172,7 +171,7 @@ def main():
 
     for course_name, course_folder_id in courses.items():
         result = process_course(
-            drive, course_name, course_folder_id, temp_dir, merged_folder_id
+            drive, course_name, course_folder_id, temp_dir, semester_folder_id
         )
         all_results.append(result)
 
@@ -210,9 +209,9 @@ def main():
         else:
             print(f"\n○ {result['course']}: Skipped")
 
-    print(f"\nMerged folder ID: {merged_folder_id}")
+    print(f"\nSemester folder ID: {semester_folder_id}")
     print(
-        f"Merged folder URL: https://drive.google.com/drive/folders/{merged_folder_id}"
+        f"Semester folder URL: https://drive.google.com/drive/folders/{semester_folder_id}"
     )
 
     return 0 if failed == 0 else 1
