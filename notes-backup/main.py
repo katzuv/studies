@@ -139,12 +139,11 @@ def main():
     temp_dir = Path(args.temp_dir)
 
     # Load configuration
-    if not config_path.exists():
-        print(f"Error: Config file not found: {config_path}")
-        print("Please create a config.json file. See config.example.json")
-        return 1
-
-    config = json.loads(config_path.read_text())
+    try:
+        config = json.loads(config_path.read_text())
+    except FileNotFoundError as e:
+        e.strerror = f"Config file not found, see config.example.json"
+        raise e
 
     # Initialize Drive handler
     drive = DriveHandler(
@@ -161,7 +160,8 @@ def main():
     if args.course:
         # Process single course
         if args.course not in courses:
-            raise KeyError(f"Error: Course '{args.course}' not found in config")
+            print(f"Error: Course '{args.course}' not found in config")
+            return 1
         courses = {args.course: courses[args.course]}
 
     all_results = []
