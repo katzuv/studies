@@ -168,7 +168,7 @@ def main():
     all_results = []
 
     print(f"\nProcessing {len(courses)} course(s)...")
-    print(f"Timestamp: {datetime.now().isoformat()}")
+    print(f"Timestamp: {datetime.now()}")
 
     for course_name, course_folder_id in courses.items():
         result = process_course(
