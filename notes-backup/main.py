@@ -165,16 +165,15 @@ def main():
             e.strerror = f"Error: Course '{args.course}' not found in config"
             raise e
 
-    results = []
-
     print(f"\nProcessing {len(courses)} course(s)...")
     print(f"Timestamp: {datetime.now()}")
 
-    for course_name, course_folder_id in courses.items():
-        result = process_course(
+    results = [
+        process_course(
             drive, course_name, course_folder_id, temp_dir, semester_folder_id
         )
-        results.append(result)
+        for course_name, course_folder_id in courses.items()
+    ]
 
     # Print summary
     print(f"\n{'=' * 60}")
