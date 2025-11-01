@@ -6,11 +6,12 @@ Handles authentication and file operations with Google Drive API
 import io
 import json
 from pathlib import Path
-from google.oauth2.credentials import Credentials
+
+from google.auth.transport.requests import Request
 from google.oauth2 import service_account
+from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload, MediaFileUpload
-from google.auth.transport.requests import Request
 from tqdm import tqdm
 
 
@@ -37,7 +38,7 @@ class DriveHandler:
         if self.credentials_path and self.credentials_path.exists():
             creds = service_account.Credentials.from_service_account_file(
                 str(self.credentials_path),
-                scopes=["https://www.googleapis.com/auth/drive.file"],
+                scopes=["https://www.googleapis.com/auth/drive"],
             )
         # Try OAuth token
         elif self.token_path and self.token_path.exists():
