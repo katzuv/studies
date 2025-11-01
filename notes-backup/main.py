@@ -4,6 +4,7 @@ Orchestrates downloading from Google Drive, merging PDFs, and uploading results.
 """
 
 import argparse
+import collections
 import json
 from datetime import datetime
 from pathlib import Path
@@ -179,17 +180,12 @@ def main():
     print(f"\n{'=' * 60}")
     print("SUMMARY")
     print(f"{'=' * 60}")
-
-    successful = sum(result["status"] == "success" for result in results)
-    partial = sum(result["status"] == "partial" for result in results)
-    failed = sum(result["status"] == "failed" for result in results)
-    skipped = sum(result["status"] == "skipped" for result in results)
-
     print(f"Total courses: {len(results)}")
-    print(f"Successful: {successful}")
-    print(f"Partial: {partial}")
-    print(f"Failed: {failed}")
-    print(f"Skipped: {skipped}")
+
+    result_statuses = (result["status"] for result in results)
+    statuses_counter = collections.Counter(result_statuses)
+    for key, count in statuses_counter.items():
+        print(f"{key.capitalize()}: {count}")
 
     total_files = sum(len(r["files_created"]) for r in results)
     print(f"\nTotal files created: {total_files}")
