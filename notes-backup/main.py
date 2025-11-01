@@ -210,8 +210,6 @@ def main():
         f"Semester folder URL: https://drive.google.com/drive/folders/{semester_folder_id}"
     )
 
-    return 0 if failed == 0 else 1
-
 
 if __name__ == "__main__":
     exit(main())
