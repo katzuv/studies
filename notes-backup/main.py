@@ -165,7 +165,7 @@ def main():
             e.strerror = f"Error: Course '{args.course}' not found in config"
             raise e
 
-    all_results = []
+    results = []
 
     print(f"\nProcessing {len(courses)} course(s)...")
     print(f"Timestamp: {datetime.now()}")
@@ -174,29 +174,29 @@ def main():
         result = process_course(
             drive, course_name, course_folder_id, temp_dir, semester_folder_id
         )
-        all_results.append(result)
+        results.append(result)
 
     # Print summary
     print(f"\n{'=' * 60}")
     print("SUMMARY")
     print(f"{'=' * 60}")
 
-    successful = sum(1 for r in all_results if r["status"] == "success")
-    partial = sum(1 for r in all_results if r["status"] == "partial")
-    failed = sum(1 for r in all_results if r["status"] == "failed")
-    skipped = sum(1 for r in all_results if r["status"] == "skipped")
+    successful = sum(1 for r in results if r["status"] == "success")
+    partial = sum(1 for r in results if r["status"] == "partial")
+    failed = sum(1 for r in results if r["status"] == "failed")
+    skipped = sum(1 for r in results if r["status"] == "skipped")
 
-    print(f"Total courses: {len(all_results)}")
+    print(f"Total courses: {len(results)}")
     print(f"Successful: {successful}")
     print(f"Partial: {partial}")
     print(f"Failed: {failed}")
     print(f"Skipped: {skipped}")
 
-    total_files = sum(len(r["files_created"]) for r in all_results)
+    total_files = sum(len(r["files_created"]) for r in results)
     print(f"\nTotal files created: {total_files}")
 
     # Print detailed results
-    for result in all_results:
+    for result in results:
         if result["status"] == "success":
             print(f"\n✓ {result['course']}: {len(result['files_created'])} files")
         elif result["status"] == "partial":
