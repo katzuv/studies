@@ -180,10 +180,10 @@ def main():
     print("SUMMARY")
     print(f"{'=' * 60}")
 
-    successful = sum(1 for r in results if r["status"] == "success")
-    partial = sum(1 for r in results if r["status"] == "partial")
-    failed = sum(1 for r in results if r["status"] == "failed")
-    skipped = sum(1 for r in results if r["status"] == "skipped")
+    successful = sum(result["status"] == "success" for result in results)
+    partial = sum(result["status"] == "partial" for result in results)
+    failed = sum(result["status"] == "failed" for result in results)
+    skipped = sum(result["status"] == "skipped" for result in results)
 
     print(f"Total courses: {len(results)}")
     print(f"Successful: {successful}")
