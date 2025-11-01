@@ -157,11 +157,11 @@ def main():
         return 1
 
     # Get or create merged folder
-    merged_folder_name = config.get("merged_folder_name", "Merged")
+    merged_folder_name = config["merged_folder_name"]
     merged_folder_id = drive.get_or_create_folder(merged_folder_name)
 
     # Process courses
-    courses = config.get("courses", {})
+    courses = config["courses"]
 
     if args.course:
         # Process single course
