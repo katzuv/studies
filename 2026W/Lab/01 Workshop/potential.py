@@ -1,6 +1,10 @@
 import numpy as np  # math functions
 import pandas as pd  # handling data structures (loaded from files)
-import scipy  # scientific functions
-from scipy.optimize import curve_fit as cfit  # non-linear curve fitting
-from scipy.stats import linregress  # contains linregress (for linear regression)
 from sklearn.metrics import r2_score  # import function that calculates R^2 score
+
+C = 1
+a = 1
+L = 3
+N = 100
+coord = np.linspace(-L, L, N)  # defines coordinates
+coord_x, coord_y = np.meshgrid(coord, coord)
