@@ -4,12 +4,10 @@ Handles authentication and file operations with Google Drive API
 """
 
 import io
-import json
+import pickle
 from pathlib import Path
 
 from google.auth.transport.requests import Request
-from google.oauth2 import service_account
-from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload, MediaFileUpload
 from tqdm import tqdm
@@ -32,28 +30,16 @@ class DriveHandler:
 
     def _authenticate(self):
         """Authenticate with Google Drive API."""
-        creds = None
-
-        # Try service account first
-        if self.credentials_path and self.credentials_path.exists():
-            creds = service_account.Credentials.from_service_account_file(
-                str(self.credentials_path),
-                scopes=["https://www.googleapis.com/auth/drive"],
-            )
-        # Try OAuth token
-        elif self.token_path and self.token_path.exists():
-            token_data = json.loads(self.token_path.read_text())
-            creds = Credentials.from_authorized_user_info(token_data)
-
-            # Refresh if expired
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
+        creds = pickle.loads(Path("token.pickle").read_bytes())
 
         if not creds:
             raise ValueError(
                 "No valid credentials found. Please provide either "
                 "credentials_path or token_path"
             )
+
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
 
         self.service = build("drive", "v3", credentials=creds)
 
