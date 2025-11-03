@@ -25,4 +25,8 @@ plt.figure()
 # Make a color for every coordinate based on the potential.
 plt.pcolormesh(coord_x, coord_y, potential)
 plt.colorbar()
+
+# `cmap`: color map.
+plt.contour(coord_x, coord_y, potential, np.linspace(-2, 2, 10), cmap="Accent")
+
 plt.show()
