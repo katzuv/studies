@@ -37,3 +37,8 @@ plt.show()
 # Implementing curve fit -- finding an analytical function that closely fits the real data.
 def voltage_decay(time, time_constant, initial_voltage):
     return initial_voltage * np.exp(-time / time_constant)
+
+
+p_optimal, p_covariance = scipy.optimize.curve_fit(
+    voltage_decay, capacitor_data.time, capacitor_data.capacitor_voltage
+)
