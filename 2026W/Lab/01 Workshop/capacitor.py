@@ -31,3 +31,6 @@ plt.ylabel("Voltage [V]")
 plt.legend()
 plt.grid()
 plt.show()
+
+
+# Implementing curve fit -- finding an analytical function that closely fits the real data.
