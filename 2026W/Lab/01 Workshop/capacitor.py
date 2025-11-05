@@ -1,3 +1,4 @@
+import pandas as pd
 import scipy
 
 eps0 = scipy.constants.epsilon_0  # F/m
@@ -13,3 +14,5 @@ resistance = 977  # Ohm
 total_resistance = 38.4e3  # Ohm
 theoretical_time_constant = total_resistance * theoretical_capacitance
 print(f"{theoretical_time_constant=:.3e}")
+
+capacitor_data = pd.read_csv("capacitor.csv")
