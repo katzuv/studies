@@ -8,3 +8,8 @@ theoretical_capacitance = (
     eps0 * scipy.constants.pi * (plate_diameter**2) / (4 * distance)
 )
 print(f"{theoretical_capacitance=:.3e}")
+
+resistance = 977  # Ohm
+total_resistance = 38.4e3  # Ohm
+theoretical_time_constant = total_resistance * theoretical_capacitance
+print(f"{theoretical_time_constant=:.3e}")
