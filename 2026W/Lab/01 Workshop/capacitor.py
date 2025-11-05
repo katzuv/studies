@@ -19,3 +19,4 @@ capacitor_data = pd.read_csv("capacitor.csv")
 capacitor_data = capacitor_data.rename(
     columns={"time (sec)": "time", "ch2": "resistor_voltage"}
 )
+capacitor_data.capacitor_voltage = capacitor_data.ch1 - capacitor_data.resistor_voltage
