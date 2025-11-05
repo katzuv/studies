@@ -16,3 +16,6 @@ theoretical_time_constant = total_resistance * theoretical_capacitance
 print(f"{theoretical_time_constant=:.3e}")
 
 capacitor_data = pd.read_csv("capacitor.csv")
+capacitor_data = capacitor_data.rename(
+    columns={"time (sec)": "time", "ch2": "resistor_voltage"}
+)
