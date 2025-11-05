@@ -40,6 +40,6 @@ def voltage_decay(time, time_constant, initial_voltage):
 
 
 p_optimal, p_covariance = scipy.optimize.curve_fit(
-    voltage_decay, capacitor_data.time, capacitor_data.capacitor_voltage
+    voltage_decay, capacitor_data.time, capacitor_data.capacitor_voltage, p0=(3e-6, 4)
 )
 fit_time_constant, fit_initial_voltage = p_optimal
