@@ -48,3 +48,13 @@ p_errors = np.sqrt(np.diag(p_covariance))
 time_constant_err, initial_voltage_err = p_errors
 print(f"Time constant: {fit_time_constant:.10f} ± {time_constant_err:.10f}")
 print(f"Initial voltage: {fit_initial_voltage:.10f} ± {initial_voltage_err:.10f}")
+
+data_from_fit = voltage_decay(
+    capacitor_data.time, fit_time_constant, fit_initial_voltage
+)
+plt.plot(
+    capacitor_data.time * 1e6,
+    data_from_fit,
+    label="Fit curve",
+)
+plt.show()
