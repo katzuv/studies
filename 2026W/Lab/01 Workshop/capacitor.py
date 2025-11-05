@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import scipy
 
@@ -34,3 +35,5 @@ plt.show()
 
 
 # Implementing curve fit -- finding an analytical function that closely fits the real data.
+def voltage_decay(time, time_constant, initial_voltage):
+    return initial_voltage * np.exp(-time / time_constant)
