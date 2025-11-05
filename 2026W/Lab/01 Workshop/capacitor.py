@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy
+import sklearn
 
 eps0 = scipy.constants.epsilon_0  # F/m
 plate_diameter = 18e-2  # m
@@ -58,3 +59,6 @@ plt.plot(
     label="Fit curve",
 )
 plt.show()
+
+r2 = sklearn.metrics.r2_score(capacitor_data.capacitor_voltage, data_from_fit)
+print(f"R² = {r2:.4f}")  # 0.99 is very high!
