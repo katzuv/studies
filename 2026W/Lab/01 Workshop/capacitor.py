@@ -26,3 +26,8 @@ plt.plot(
     capacitor_data.capacitor_voltage,
     label="Capacitor voltage [V]",
 )
+plt.xlabel("Time [μs]")
+plt.ylabel("Voltage [V]")
+plt.legend()
+plt.grid()
+plt.show()
