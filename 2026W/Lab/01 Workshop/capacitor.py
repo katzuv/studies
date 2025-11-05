@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 import scipy
 
@@ -20,3 +21,8 @@ capacitor_data = capacitor_data.rename(
     columns={"time (sec)": "time", "ch2": "resistor_voltage"}
 )
 capacitor_data.capacitor_voltage = capacitor_data.ch1 - capacitor_data.resistor_voltage
+plt.plot(
+    capacitor_data.time * 1e6,
+    capacitor_data.capacitor_voltage,
+    label="Capacitor voltage [V]",
+)
