@@ -62,3 +62,11 @@ plt.show()
 
 r2 = sklearn.metrics.r2_score(capacitor_data.capacitor_voltage, data_from_fit)
 print(f"R² = {r2:.4f}")  # 0.99 is very high!
+
+linear_time_range = (capacitor_data.time >= 0) & (capacitor_data.time <= 5e-5)
+plt.plot(
+    capacitor_data.time[linear_time_range],
+    np.log(capacitor_data.capacitor_voltage[linear_time_range]),
+    ".",
+    label=r"$\ln(V)$",
+)
