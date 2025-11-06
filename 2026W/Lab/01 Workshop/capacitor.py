@@ -70,3 +70,4 @@ plt.plot(
     ".",
     label=r"$\ln(V)$",
 )
+# Linear regression: Finding a linear function that fits the data.
