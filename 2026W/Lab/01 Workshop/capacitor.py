@@ -88,3 +88,7 @@ print(
 )
 print(f"Tau (τ) = {tau_regression:.5e} ± {tau_regression_error:.5e} sec")
 print(f"R² = {regression.rvalue**2:.3f}")
+
+relevant_time = capacitor_data.time[linear_time_range]
+lin = np.linspace(relevant_time[0], relevant_time.iat[-1], 200)
+plt.plot(lin, lin * regression.slope + regression.intercept, label="Regression")
