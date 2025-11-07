@@ -97,3 +97,7 @@ plt.ylim(top=1.5)
 plt.legend()
 plt.grid()
 plt.show()
+
+summed_resistor_voltage = scipy.integrate.cumulative_trapezoid(
+    capacitor_data.resistor_voltage, x=capacitor_data.time, initial=0
+)
