@@ -23,3 +23,6 @@ def get_resistor_energy(power, time):
 
 
 data = pd.read_csv("ohm.csv", header=1, usecols=range(3, 6))
+data.time = data["Time (s)"]
+data.voltage1 = data["1 (VOLT)"]
+data.voltage2 = data["2 (VOLT)"]
