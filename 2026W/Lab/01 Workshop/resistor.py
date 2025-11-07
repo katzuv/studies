@@ -1,3 +1,4 @@
+import pandas as pd
 import scipy.integrate
 
 
@@ -19,3 +20,6 @@ def get_resistor_power(voltage, current):
 
 def get_resistor_energy(power, time):
     return scipy.integrate.cumulative_trapezoid(power, time)
+
+
+data = pd.read_csv("ohm.csv", header=1, usecols=range(3, 6))
