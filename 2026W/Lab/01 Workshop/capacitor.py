@@ -71,3 +71,19 @@ plt.plot(
     label=r"$\ln(V)$",
 )
 # Linear regression: Finding a linear function that fits the data.
+regression = scipy.stats.linregress(
+    capacitor_data.time[linear_time_range],
+    capacitor_data.capacitor_voltage[linear_time_range],
+)
+
+initial_voltage_regression = np.exp(regression.intercept)
+initial_voltage_regression_error = (
+    initial_voltage_regression * regression.intercept_stderr
+)
+tau_regression = -1 / regression.slope
+tau_regression_error = regression.stderr / (regression.slope**2)
+
+print(
+    f"Initial voltage (V0) = {initial_voltage_regression:.3f} ± {initial_voltage_regression_error:.3f}"
+)
+print(f"Tau (τ) = {tau_regression:.5e} ± {tau_regression_error:.5e} sec")
