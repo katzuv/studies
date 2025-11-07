@@ -37,7 +37,7 @@ y_far = image[y0, x0 : x0 + len(x), 0]
 plt.plot(x, y_far, label="Intensity_far")
 
 peaks, _ = signal.find_peaks(y_far, distance=1)
-plt.plot(x[peaks], y_near[peaks], "^", label="Peaks")
+plt.plot(x[peaks], y_far[peaks], "^", label="Peaks")
 brightest = sorted(peaks, key=lambda p: y_far[p], reverse=True)[:2]
 distance = (brightest[1] - brightest[0]) * 5.2e-6
 v = (2079e6 * 0.3 * 632.8e-9) / distance
@@ -46,5 +46,10 @@ plt.grid()
 plt.legend()
 plt.show()
 
-
-# I don't know how to use FFT, we haven't studied this yet... also something in my data is off because the velocities I get make no sense.
+ff = np.fft.fft(y_near)
+iff = np.fft.ifft(y_far)
+plt.plot(y_near, ff, label="FFT")
+plt.plot(y_far, iff, label="iFFT")
+plt.grid()
+plt.legend()
+plt.show()
