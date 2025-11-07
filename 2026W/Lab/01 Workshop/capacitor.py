@@ -101,3 +101,12 @@ plt.show()
 summed_resistor_voltage = scipy.integrate.cumulative_trapezoid(
     capacitor_data.resistor_voltage, x=capacitor_data.time, initial=0
 )
+plt.plot(
+    summed_resistor_voltage,
+    capacitor_data.resistor_voltage - capacitor_data.resistor_voltage[0],
+    label="Resistor voltage diff",
+)
+
+plt.legend()
+plt.grid()
+plt.show()
