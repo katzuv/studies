@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy import signal
 
 
 def process_image(image_path):
@@ -13,6 +14,9 @@ def process_image(image_path):
     y0, y1 = 400, 600
     y = image[y0, x0 : x0 + len(x), 0]
     plt.plot(x, y, label="Intensity")
+
+    peaks, _ = signal.find_peaks(y, distance=40)
+    plt.plot(x[peaks], y[peaks], "^", label="Peaks")
 
     plt.grid()
     plt.legend()
