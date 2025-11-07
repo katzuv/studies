@@ -8,3 +8,7 @@ def get_resistor_voltage(voltage1, voltage2):
 
 def get_resistor_resistance(voltage, current):
     return voltage / current
+
+
+def get_resistor_power(voltage, current):
+    return voltage * current
