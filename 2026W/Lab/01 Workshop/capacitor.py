@@ -73,7 +73,7 @@ plt.plot(
 # Linear regression: Finding a linear function that fits the data.
 regression = scipy.stats.linregress(
     capacitor_data.time[linear_time_range],
-    capacitor_data.capacitor_voltage[linear_time_range],
+    np.log(capacitor_data.capacitor_voltage[linear_time_range]),
 )
 
 initial_voltage_regression = np.exp(regression.intercept)
