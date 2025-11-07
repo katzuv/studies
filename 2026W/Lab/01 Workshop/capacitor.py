@@ -87,3 +87,4 @@ print(
     f"Initial voltage (V0) = {initial_voltage_regression:.3f} ± {initial_voltage_regression_error:.3f}"
 )
 print(f"Tau (τ) = {tau_regression:.5e} ± {tau_regression_error:.5e} sec")
+print(f"R² = {regression.rvalue**2:.3f}")
