@@ -9,9 +9,23 @@ angle = np.deg2rad(data.grating_angle)
 wavelengths = d * np.sin(angle)
 print(wavelengths * 1e9)
 
-lines = {
-    f"Line {n+1}": (data.grating_angle[n], wavelengths[n], data.color[n])
-    for n in range(len(angle))
-}
-table = PrettyTable(("Grating angle [deg]", "Grating wavelength [nm]", "Color"))
-table.add_row((data.grating_angle, wavelengths, data.color))
+table = PrettyTable(
+    (
+        "Line",
+        "Grating angle [deg]",
+        "Grating wavelength [nm]",
+        "Color",
+        "Prism angle [deg]",
+    )
+)
+for i in range(len(data)):
+    table.add_row(
+        [
+            i + 1,
+            data.grating_angle[i],
+            round(wavelengths[i] * 1e9, 3),  # convert to nm
+            data.color[i],
+            data.prism_angle[i],
+        ]
+    )
+print(table)
