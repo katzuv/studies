@@ -21,7 +21,7 @@ params, cov = curve_fit(
     get_amplitude,
     x1,
     amplitude,
-    p0=(2.8, 2.5, 0),
+    p0=(2.5, 5.75, -1.9),
     bounds=([0, 0, -np.pi], [5, np.inf, np.pi]),
 )
 a_fit, lam_fit, phi_fit = params
@@ -33,11 +33,6 @@ y_pred = get_amplitude(x1, *params)
 Rsq = r2_score(amplitude, y_pred)
 print(f"{Rsq=}")
 
-plt.plot(x1, amplitude, ".")
-plt.plot(x_fit, y_fit, "-")
-plt.grid()
-plt.show()
-
 errors = np.sqrt(np.diag(cov))
 
 a_err, lam_err, phi_err = errors
@@ -45,3 +40,8 @@ a_err, lam_err, phi_err = errors
 print(f"amplitude = {params[0]:.3f} ± {a_err:.3f}")
 print(f"lambda = {params[1]:.3f} ± {lam_err:.3f}")
 print(f"phi = {params[2]:.3f} ± {phi_err:.3f} rad")
+
+plt.plot(x1, amplitude, ".")
+plt.plot(x_fit, y_fit, "-")
+plt.grid()
+plt.show()
