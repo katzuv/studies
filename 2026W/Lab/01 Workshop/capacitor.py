@@ -30,9 +30,6 @@ plt.plot(
 )
 plt.xlabel("Time [μs]")
 plt.ylabel("Voltage [V]")
-plt.legend()
-plt.grid()
-plt.show()
 
 
 # Implementing curve fit -- finding an analytical function that closely fits the real data.
@@ -58,6 +55,8 @@ plt.plot(
     data_from_fit,
     label="Fit curve",
 )
+plt.legend()
+plt.grid()
 plt.show()
 
 r2 = sklearn.metrics.r2_score(capacitor_data.capacitor_voltage, data_from_fit)
@@ -90,5 +89,11 @@ print(f"Tau (τ) = {tau_regression:.5e} ± {tau_regression_error:.5e} sec")
 print(f"R² = {regression.rvalue**2:.3f}")
 
 relevant_time = capacitor_data.time[linear_time_range]
-lin = np.linspace(relevant_time[0], relevant_time.iat[-1], 200)
+lin = np.linspace(0, 7e-5, 200)
 plt.plot(lin, lin * regression.slope + regression.intercept, label="Regression")
+plt.xlim(left=relevant_time[0], right=relevant_time.iat[-1])
+plt.ylim(top=1.5)
+
+plt.legend()
+plt.grid()
+plt.show()
