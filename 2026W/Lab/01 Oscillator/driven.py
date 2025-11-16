@@ -22,13 +22,7 @@ from constants import NATURAL_FREQUENCY
 
 
 def normalize_ticks(ticks):
-    peak_indices, _ = scipy.signal.find_peaks(ticks)
-    peak_average = np.average(ticks[peak_indices])
-    valley_indices, _ = scipy.signal.find_peaks(-ticks)
-    valley_average = -np.average(ticks[valley_indices])
-
-    mid = (peak_average + valley_average) / 2
-    return ticks - mid
+    return ticks - np.mean(ticks)
 
 
 def amplitude_ratio_model(frequency, spring_constant, mass, natural_frequency, tau):
