@@ -1,34 +1,29 @@
 from pathlib import Path
+from typing import Callable, Union, Tuple, List
 
 import autograd.numpy as np
 from autograd import grad
 
 
-def propagate_error(func, values, errors):
+def propagate_error(
+    func: Callable,
+    values: Union[Tuple[float, ...], List[float]],
+    errors: Union[Tuple[float, ...], List[float]]
+) -> float:
     """
     Generic function for error propagation using autograd.
     
-    Parameters:
-    -----------
-    func : callable
-        A function that takes multiple arguments and returns a scalar value.
-        Must use autograd.numpy operations for automatic differentiation.
-    values : tuple or list
-        The values of the input parameters.
-    errors : tuple or list
-        The uncertainties/errors of the input parameters.
-        
-    Returns:
-    --------
-    float
-        The propagated error (uncertainty) in the output.
+    :param func: A function that takes multiple arguments and returns a scalar value.
+                 Must use autograd.numpy operations for automatic differentiation.
+    :param values: The values of the input parameters.
+    :param errors: The uncertainties/errors of the input parameters.
+    :return: The propagated error (uncertainty) in the output.
         
     Examples:
-    ---------
-    >>> # For f(x, y) = x * y
-    >>> def multiply(x, y):
-    ...     return x * y
-    >>> propagate_error(multiply, (3.0, 4.0), (0.1, 0.2))
+        >>> # For f(x, y) = x * y
+        >>> def multiply(x, y):
+        ...     return x * y
+        >>> propagate_error(multiply, (3.0, 4.0), (0.1, 0.2))
     """
     # Convert to numpy arrays for easier handling
     values = np.array(values, dtype=float)

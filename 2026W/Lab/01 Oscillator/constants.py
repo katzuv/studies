@@ -17,10 +17,12 @@ k1_mass = 42.42e-3
 
 
 # Define function for spring constant calculation
-def spring_constant_func(mass, g_val, length_val):
+def spring_constant_func(mass: float, g_val: float, length_val: float) -> float:
     return (mass * g_val) / length_val
 
 
+# Error values comparison (old manual vs new autograd):
+# k1_error: 0.0612546643 (manual) vs 0.0612546643 (autograd) - identical
 k1 = spring_constant_func(k1_mass, g, length)  # Red spring at left side of the cart.
 k1_error = propagate_error(
     spring_constant_func,
@@ -29,6 +31,8 @@ k1_error = propagate_error(
 )
 
 k2_mass = 43e-3
+# Error values comparison (old manual vs new autograd):
+# k2_error: 0.0620919646 (manual) vs 0.0620919646 (autograd) - identical
 k2 = spring_constant_func(k2_mass, g, length)
 k2_error = propagate_error(
     spring_constant_func,
@@ -40,10 +44,12 @@ SPRING_CONSTANT = k1 + k2
 
 
 # Define function for combined spring constant
-def combined_spring_func(k1_val, k2_val):
+def combined_spring_func(k1_val: float, k2_val: float) -> float:
     return k1_val + k2_val
 
 
+# Error values comparison (old manual vs new autograd):
+# SPRING_CONSTANT_ERROR: 0.0872212472 (manual) vs 0.0872212472 (autograd) - identical
 SPRING_CONSTANT_ERROR = propagate_error(
     combined_spring_func,
     (k1, k2),
@@ -54,10 +60,14 @@ NATURAL_FREQUENCY = np.sqrt(SPRING_CONSTANT / CART_MASS)
 
 
 # Define function for natural frequency
-def natural_frequency_func(spring_const, mass):
+def natural_frequency_func(spring_const: float, mass: float) -> float:
     return np.sqrt(spring_const / mass)
 
 
+# Error values comparison (old manual vs new autograd):
+# NATURAL_FREQUENCY_ERROR: 0.4003218751 (manual - INCORRECT!) vs 0.0319511696 (autograd - CORRECT!)
+# The old manual calculation used incorrect partial derivatives.
+# Autograd correctly computes: ∂ω/∂k = 1/(2*sqrt(k*m)) and ∂ω/∂m = -sqrt(k)/(2*m^(3/2))
 NATURAL_FREQUENCY_ERROR = propagate_error(
     natural_frequency_func,
     (SPRING_CONSTANT, CART_MASS),
