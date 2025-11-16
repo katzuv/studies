@@ -1,5 +1,55 @@
 from pathlib import Path
 
+import autograd.numpy as np
+from autograd import grad
+
+
+def propagate_error(func, values, errors):
+    """
+    Generic function for error propagation using autograd.
+    
+    Parameters:
+    -----------
+    func : callable
+        A function that takes multiple arguments and returns a scalar value.
+        Must use autograd.numpy operations for automatic differentiation.
+    values : tuple or list
+        The values of the input parameters.
+    errors : tuple or list
+        The uncertainties/errors of the input parameters.
+        
+    Returns:
+    --------
+    float
+        The propagated error (uncertainty) in the output.
+        
+    Examples:
+    ---------
+    >>> # For f(x, y) = x * y
+    >>> def multiply(x, y):
+    ...     return x * y
+    >>> propagate_error(multiply, (3.0, 4.0), (0.1, 0.2))
+    """
+    # Convert to numpy arrays for easier handling
+    values = np.array(values, dtype=float)
+    errors = np.array(errors, dtype=float)
+    
+    # Compute gradients with respect to each parameter
+    gradients = []
+    for i in range(len(values)):
+        # Create a gradient function for the i-th parameter
+        grad_func = grad(lambda *args: func(*args), i)
+        # Evaluate the gradient at the given values
+        gradient_value = grad_func(*values)
+        gradients.append(gradient_value)
+    
+    gradients = np.array(gradients)
+    
+    # Apply error propagation formula: σ_f² = Σ(∂f/∂x_i)² * σ_i²
+    error_squared = np.sum((gradients ** 2) * (errors ** 2))
+    
+    return np.sqrt(error_squared)
+
 
 def get_edited_data_path(path: Path, start_index: int) -> Path:
     data = path.read_text()
