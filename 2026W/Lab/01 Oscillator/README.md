@@ -36,6 +36,42 @@ Where:
 - `∂f/∂x_i` are the partial derivatives (computed automatically by autograd)
 - `σ_i` are the input uncertainties
 
+### Implementation Details
+
+The `propagate_error()` function automatically computes partial derivatives using autograd's automatic differentiation:
+
+```python
+# Compute gradients with respect to each parameter
+gradients = []
+for i in range(len(values)):
+    # Create a gradient function for the i-th parameter
+    grad_func = grad(lambda *args: func(*args), i)
+    # Evaluate the gradient at the given values
+    gradient_value = grad_func(*values)
+    gradients.append(gradient_value)
+
+gradients = np.array(gradients)
+
+# Apply error propagation formula: σ_f² = Σ(∂f/∂x_i)² * σ_i²
+error_squared = np.sum((gradients ** 2) * (errors ** 2))
+```
+
+**Step-by-step explanation:**
+
+1. **Loop through each parameter**: For each input parameter `i`, we compute its partial derivative
+2. **Create gradient function**: `grad(lambda *args: func(*args), i)` creates a function that computes ∂f/∂x_i
+   - The `lambda *args: func(*args)` wraps the user's function
+   - The second argument `i` tells autograd which parameter to differentiate with respect to
+3. **Evaluate gradient**: `grad_func(*values)` evaluates the partial derivative at the given input values
+4. **Apply error formula**: Square each gradient, multiply by the squared error of that parameter, sum all terms, and take the square root
+
+**Example:** For `f(x, y) = x * y`:
+- ∂f/∂x = y, so gradient at (3, 4) is 4
+- ∂f/∂y = x, so gradient at (3, 4) is 3
+- If σ_x = 0.1 and σ_y = 0.2, then:
+  - σ_f² = (4 × 0.1)² + (3 × 0.2)² = 0.16 + 0.36 = 0.52
+  - σ_f = √0.52 ≈ 0.721
+
 ## Requirements
 
 Your function must:

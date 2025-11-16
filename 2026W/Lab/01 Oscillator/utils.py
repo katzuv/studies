@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Callable
+from collections.abc import Iterable
 
 import autograd.numpy as np
 from autograd import grad
@@ -7,8 +8,8 @@ from autograd import grad
 
 def propagate_error(
     func: Callable,
-    values: tuple[float, ...] | list[float],
-    errors: tuple[float, ...] | list[float]
+    values: Iterable[float],
+    errors: Iterable[float]
 ) -> float:
     """
     Generic function for error propagation using autograd.
