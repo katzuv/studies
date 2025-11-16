@@ -3,7 +3,8 @@ from typing import Callable
 from collections.abc import Iterable
 
 import autograd.numpy as np
-from autograd import grad, scipy
+import scipy
+from autograd import grad
 
 
 def propagate_error(

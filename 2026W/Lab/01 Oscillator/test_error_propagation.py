@@ -206,7 +206,7 @@ class TestErrorPropagation:
 
 
 class TestConstants:
-    """Test suite for constants.py error calculations."""
+    """Test suite for a error calculations."""
 
     def test_constants_import(self):
         """Test that constants module imports successfully."""

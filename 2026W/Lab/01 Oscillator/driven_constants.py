@@ -33,7 +33,7 @@ k1_error = propagate_error(
 k2_mass = 42.42e-3
 # Error values comparison (old manual vs new autograd):
 # k2_error: 0.0620919646 (manual) vs 0.0620919646 (autograd) - identical
-k2 = spring_constant_func(k2_mass, g, length)
+k2 = spring_constant_func(k2_mass, g, length) # RED!
 k2_error = propagate_error(
     spring_constant_func,
     (k2_mass, g, length),
