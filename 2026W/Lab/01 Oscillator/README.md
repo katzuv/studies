@@ -28,13 +28,13 @@ print(f"Result: {multiply(x_val, y_val)} ± {result_error}")
 The function implements the standard error propagation formula:
 
 ```
-σ_f² = Σ(∂f/∂x_i)² * σ_i²
+σₑ² = Σ(∂f/∂xᵢ)² * σᵢ²
 ```
 
 Where:
-- `σ_f` is the uncertainty in the output
-- `∂f/∂x_i` are the partial derivatives (computed automatically by autograd)
-- `σ_i` are the input uncertainties
+- `σₑ` is the uncertainty in the output
+- `∂f/∂xᵢ` are the partial derivatives (computed automatically by autograd)
+- `σᵢ` are the input uncertainties
 
 ### Implementation Details
 
@@ -52,14 +52,14 @@ for i in range(len(values)):
 
 gradients = np.array(gradients)
 
-# Apply error propagation formula: σ_f² = Σ(∂f/∂x_i)² * σ_i²
+# Apply error propagation formula: σₑ² = Σ(∂f/∂xᵢ)² * σᵢ²
 error_squared = np.sum((gradients ** 2) * (errors ** 2))
 ```
 
 **Step-by-step explanation:**
 
 1. **Loop through each parameter**: For each input parameter `i`, we compute its partial derivative
-2. **Create gradient function**: `grad(lambda *args: func(*args), i)` creates a function that computes ∂f/∂x_i
+2. **Create gradient function**: `grad(lambda *args: func(*args), i)` creates a function that computes ∂f/∂xᵢ
    - The `lambda *args: func(*args)` wraps the user's function
    - The second argument `i` tells autograd which parameter to differentiate with respect to
 3. **Evaluate gradient**: `grad_func(*values)` evaluates the partial derivative at the given input values
@@ -68,9 +68,9 @@ error_squared = np.sum((gradients ** 2) * (errors ** 2))
 **Example:** For `f(x, y) = x * y`:
 - ∂f/∂x = y, so gradient at (3, 4) is 4
 - ∂f/∂y = x, so gradient at (3, 4) is 3
-- If σ_x = 0.1 and σ_y = 0.2, then:
-  - σ_f² = (4 × 0.1)² + (3 × 0.2)² = 0.16 + 0.36 = 0.52
-  - σ_f = √0.52 ≈ 0.721
+- If σₓ = 0.1 and σᵧ = 0.2, then:
+  - σₑ² = (4 × 0.1)² + (3 × 0.2)² = 0.16 + 0.36 = 0.52
+  - σₑ = √0.52 ≈ 0.721
 
 ## Requirements
 
