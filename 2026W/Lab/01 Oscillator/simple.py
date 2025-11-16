@@ -19,10 +19,9 @@ ticks /= constants.TICKS_PER_METER
 
 plt.plot(time, ticks, ".", label="data")
 
+amplitude = utils.get_amplitude(ticks)
 peak_indices, _ = scipy.signal.find_peaks(ticks)
 peaks = ticks[peak_indices]
-amplitude = round(np.mean(np.abs(peaks)) * 100, 3)
-print(f"{amplitude=}cm")
 plt.plot(time[peak_indices], peaks, "^", label="Peaks")
 
 

@@ -3,7 +3,7 @@ from typing import Callable
 from collections.abc import Iterable
 
 import autograd.numpy as np
-from autograd import grad
+from autograd import grad, scipy
 
 
 def propagate_error(
@@ -91,3 +91,9 @@ def get_edited_driven_data_path(path: Path, start_index: int=1) -> Path:
     new_path.write_text(data)
 
     return new_path
+
+
+def get_amplitude(ticks):
+    peak_indices, _ = scipy.signal.find_peaks(ticks)
+    peaks = ticks[peak_indices]
+    return np.mean(np.abs(peaks)) * 100
