@@ -41,7 +41,7 @@ def propagate_error(
     
     gradients = np.array(gradients)
     
-    # Apply error propagation formula: σ_f² = Σ(∂f/∂x_i)² * σ_i²
+    # Apply error propagation formula: σₑ² = Σ(∂f/∂xᵢ)² * σᵢ²
     error_squared = np.sum((gradients ** 2) * (errors ** 2))
     
     return np.sqrt(error_squared)
