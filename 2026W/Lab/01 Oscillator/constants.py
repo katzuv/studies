@@ -58,7 +58,6 @@ SPRING_CONSTANT_ERROR = propagate_error(
 
 NATURAL_FREQUENCY = np.sqrt(SPRING_CONSTANT / CART_MASS)
 
-
 # Define function for natural frequency
 def natural_frequency_func(spring_const: float, mass: float) -> float:
     return np.sqrt(spring_const / mass)

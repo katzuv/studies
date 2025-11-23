@@ -50,12 +50,16 @@ def parse_single_run(file_path: Path):
     # diff = np.mean(motor_peak_indices - mass_peak_indices)
     diff = (2*np.pi)/((motor_peak_indices[0] - mass_peak_indices[0])*(time[1] - time[0]))
     # plt.plot(time[motor_peak_indices], motor_ticks[motor_peak_indices], "^", label="Peaks")
-    frequency = (2 * np.pi) / (np.average(np.diff(motor_peak_indices * (time[1] - time[0]))))
+    p = (np.average(np.diff(motor_peak_indices * (time[1] - time[0]))))
+    frequency = (2 * np.pi) / p
+    p_err = (time[1] - time[0]) / np.sqrt(len(np.diff(motor_peak_indices)))
+    frequency_err = (2 * np.pi * p_err) / p**2
     zc = np.where(np.diff(np.sign(motor_ticks)) != 0)[0]
     t_zc = time[zc]
     period = 2 * np.mean(np.diff(t_zc))  # full period = 2 crossings
+    period_err = 2 * (time[1]-time[0])/np.sqrt(len(np.diff(t_zc)))
     f = 1 / period
-
+    f_err = period_err / period**2
     # compute phases
     phi_motor = np.arctan2(np.sum(motor_ticks * np.cos(2 * np.pi * f * time)),
                            np.sum(motor_ticks * np.sin(2 * np.pi * f * time)))
@@ -73,13 +77,14 @@ def parse_single_run(file_path: Path):
     amplitude_ratio = mass_amplitude / motor_amplitude
     frequencies = np.linspace(0, driven_constants.NATURAL_FREQUENCY, len(motor_ticks))
     # ratio =
-    return amplitude_ratio, frequency, -phase_diff + np.pi, motor_ticks, mass_ticks
+    return amplitude_ratio, frequency, -phase_diff + np.pi, motor_ticks, mass_ticks, frequency_err
 
 
 amplitude_ratios = []
 frequencies = []
 diffs = []
 file_paths = []
+frequencies_errs = []
 for file_path in Path("driven_data").iterdir():
     if file_path.suffix == ".csv":
         continue
@@ -89,7 +94,11 @@ for file_path in Path("driven_data").iterdir():
     amplitude_ratios.append(parsed[0])
     frequencies.append(parsed[1])
     diffs.append(parsed[2])
+    frequencies_errs.append(parsed[5])
     file_paths.append(file_path.name)
+frequencies_errs = np.sqrt((frequencies_errs**2)/(driven_constants.NATURAL_FREQUENCY**2) +
+                           ((frequencies/driven_constants.NATURAL_FREQUENCY)**2)*
+                           driven_constants.NATURAL_FREQUENCY_ERROR**2)
 frequencies /= driven_constants.NATURAL_FREQUENCY
 for x, y, label in zip(frequencies, amplitude_ratios, file_paths):
     plt.text(x, y, label, fontsize=8, ha='right', va='bottom')  # small label
