@@ -34,7 +34,8 @@ guess_frequency = 2 * np.pi / 1
 guess_phase = 0
 p0 = [guess_amplitude, guess_frequency, guess_phase]
 
-popt, pcov = scipy.optimize.curve_fit(sine_func, time, ticks, p0=p0)
+ticks_err = 1/constants.TICKS_PER_METER
+popt, pcov = scipy.optimize.curve_fit(sine_func, time, ticks, p0=p0, sigma = ticks_err)
 amplitude_fit, frequency_fit, phase_fit = popt
 amplitude_error, frequency_error, phase_error = np.sqrt(pcov.diagonal())
 

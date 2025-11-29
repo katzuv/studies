@@ -97,4 +97,12 @@ def get_edited_driven_data_path(path: Path, start_index: int=1) -> Path:
 def get_amplitude(ticks):
     peak_indices, _ = scipy.signal.find_peaks(ticks)
     peaks = ticks[peak_indices]
-    return np.mean(np.abs(peaks)) * 100
+    peaks_err = []
+    radius = 50
+    for i in range(len(peak_indices)):
+        if (i == 0): peaks_err.append((max(ticks[peak_indices[i]: peak_indices[i] + radius])
+                        - min(ticks[peak_indices[i]: peak_indices[i] + radius]))/2)
+        else: peaks_err.append((max(ticks[peak_indices[i] - radius: peak_indices[i] + radius])
+                        - min(ticks[peak_indices[i] - radius: peak_indices[i] + radius]))/2)
+    peaks_err = np.array(peaks_err)
+    return np.mean(peaks), np.sqrt(sum(peaks_err**2)) / len(peaks_err)

@@ -1,13 +1,15 @@
+from cmath import phase
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import autograd.numpy as np
 import pandas as pd
 import scipy
-
+import constants
 import driven_constants
 import utils
-import damped
+import simple
+from simple import ticks_err
 
 
 # path = utils.get_edited_data_path(Path("driven_1.txt"), start_index=239)
@@ -21,9 +23,9 @@ import damped
 # plt.plot(time, ticks, ".", label="data")
 
 
+
 def normalize_ticks(ticks):
     return ticks - np.mean(ticks)
-
 
 def amplitude_ratio_model(frequency, spring_constant, mass, natural_frequency, tau):
     under_root = (natural_frequency ** 2 - frequency ** 2) ** 2 + (frequency / tau) ** 2
@@ -39,8 +41,7 @@ def parse_single_run(file_path: Path):
     time = data["time"]
 
     # plt.title(file_path)
-    # plt.plot(time, motor_ticks, ".", label="motor ticks")
-    # plt.plot(time, mass_ticks, ".", label="mass ticks")
+    #plt.plot(time, motor_ticks, "-", label="motor ticks" + str(file_path))
     # plt.legend()
     # plt.grid()
 
@@ -58,33 +59,56 @@ def parse_single_run(file_path: Path):
     t_zc = time[zc]
     period = 2 * np.mean(np.diff(t_zc))  # full period = 2 crossings
     period_err = 2 * (time[1]-time[0])/np.sqrt(len(np.diff(t_zc)))
-    f = 1 / period
-    f_err = period_err / period**2
+    f = 2*np.pi / period
+    f_err = period_err*2*np.pi / period**2
     # compute phases
-    phi_motor = np.arctan2(np.sum(motor_ticks * np.cos(2 * np.pi * f * time)),
+    #plt.plot(time, mass_ticks, ".", label=str(np.round(100*f)/100))
+    phi_motor_guess = np.arctan2(np.sum(motor_ticks * np.cos(2 * np.pi * f * time)),
                            np.sum(motor_ticks * np.sin(2 * np.pi * f * time)))
 
-    phi_mass = np.arctan2(np.sum(mass_ticks * np.cos(2 * np.pi * f * time)),
+    phi_mass_guess = np.arctan2(np.sum(mass_ticks * np.cos(2 * np.pi * f * time)),
                           np.sum(mass_ticks * np.sin(2 * np.pi * f * time)))
-
+    motor_amplitude_guess, motor_a_err_guess = utils.get_amplitude(motor_ticks)
+    mass_amplitude_guess, mass_a_err_guess = utils.get_amplitude(mass_ticks)
+    p0_ma = np.array([motor_amplitude_guess, f, phi_mass_guess])
+    p0_mo = np.array([mass_amplitude_guess, f, phi_motor_guess])
+    mass_parameters, popt_ma = scipy.optimize.curve_fit(simple.sine_func, time, mass_ticks, p0 = p0_ma,
+                                                                      sigma = ticks_err)
+    motor_parameters, popt_mo = scipy.optimize.curve_fit(simple.sine_func, time, motor_ticks, p0 = p0_mo,
+                                                                        sigma = ticks_err)
+    if (mass_parameters[0]<0):
+        mass_parameters[0] = -mass_parameters[0]
+        mass_parameters[2] = mass_parameters[2] - np.pi
+    if (motor_parameters[0]<0):
+        motor_parameters[0] = -motor_parameters[0]
+        motor_parameters[2] = motor_parameters[2] - np.pi
+    mass_parameters_err = np.sqrt(np.diag(popt_ma))
+    motor_parameters_err = np.sqrt(np.diag(popt_mo))
     # phase difference in radians normalized to [0, 2pi]
-    phase_diff = (phi_mass - phi_motor) % (2 * np.pi)
+    phase_diff = (mass_parameters[2] - motor_parameters[2]) % (2 * np.pi)
 
-    # plt.show()
 
-    motor_amplitude = utils.get_amplitude(motor_ticks)
-    mass_amplitude = utils.get_amplitude(mass_ticks)
-    amplitude_ratio = mass_amplitude / motor_amplitude
+    #amplitude_ratio_guess= mass_amplitude_guess / motor_amplitude_guess
+    #amplitude_ratio_err = np.sqrt(mass_a_err_guess**2 / motor_amplitude_guess**2 +
+    #                              (mass_amplitude_guess**2)*(motor_a_err_guess**2)/motor_amplitude_guess**2)
+    amplitude_ratio = mass_parameters[0]/motor_parameters[0]
+    amplitude_ratio_err = np.sqrt(mass_parameters_err[0] ** 2 / motor_parameters[0] ** 2 +
+                                  (mass_parameters[0] ** 2) * (motor_parameters_err[0] ** 4) / motor_parameters[0] ** 2)
     frequencies = np.linspace(0, driven_constants.NATURAL_FREQUENCY, len(motor_ticks))
+    phase_diff_err = np.sqrt((mass_parameters[2]*mass_parameters_err[2]) ** 2 +
+                          (motor_parameters[2]*motor_parameters_err[2]) ** 2)
     # ratio =
-    return amplitude_ratio, frequency, -phase_diff + np.pi, motor_ticks, mass_ticks, frequency_err
+    return (amplitude_ratio, motor_parameters[1], -phase_diff + np.pi, motor_ticks, mass_ticks,
+            motor_parameters_err[1], amplitude_ratio_err, phase_diff_err)
 
 
 amplitude_ratios = []
+amplitude_ratios_err = []
 frequencies = []
 diffs = []
 file_paths = []
 frequencies_errs = []
+diffs_err = []
 for file_path in Path("driven_data").iterdir():
     if file_path.suffix == ".csv":
         continue
@@ -95,21 +119,27 @@ for file_path in Path("driven_data").iterdir():
     frequencies.append(parsed[1])
     diffs.append(parsed[2])
     frequencies_errs.append(parsed[5])
+    amplitude_ratios_err.append(parsed[6])
+    diffs_err.append(parsed[7])
     file_paths.append(file_path.name)
-frequencies_errs = np.sqrt((frequencies_errs**2)/(driven_constants.NATURAL_FREQUENCY**2) +
-                           ((frequencies/driven_constants.NATURAL_FREQUENCY)**2)*
-                           driven_constants.NATURAL_FREQUENCY_ERROR**2)
-frequencies /= driven_constants.NATURAL_FREQUENCY
+frequencies = np.array(frequencies)
+frequencies_errs = np.array(frequencies_errs)
 for x, y, label in zip(frequencies, amplitude_ratios, file_paths):
     plt.text(x, y, label, fontsize=8, ha='right', va='bottom')  # small label
-plt.plot(frequencies, amplitude_ratios, '.', )
+# frequency to amplitude graph
+plt.errorbar(frequencies, amplitude_ratios,xerr= frequencies_errs ,yerr = amplitude_ratios_err,
+             fmt = '.', label = "results")
+
+
 lin = np.linspace(0, driven_constants.NATURAL_FREQUENCY * 2, 2000)
-plt.plot(lin / driven_constants.NATURAL_FREQUENCY,
+plt.plot(lin,
          amplitude_ratio_model(lin, driven_constants.k2, driven_constants.CART_MASS, driven_constants.NATURAL_FREQUENCY,
-                               2.72074))
+                               2.72074), '-', label = "theoretical curve")
 plt.grid()
+plt.legend()
 plt.show()
 
+# frequency to phase graph
 
 def phase_diff_model(motor_frequency, natural_frequency, tau):
     denominator = tau * (natural_frequency ** 2 - motor_frequency ** 2)
@@ -118,9 +148,11 @@ def phase_diff_model(motor_frequency, natural_frequency, tau):
         a += np.pi
     return -a
 
-plt.plot(frequencies, diffs, '.', )
+plt.errorbar(frequencies, diffs,xerr= frequencies_errs ,yerr = diffs_err, fmt = '.')
 lin = np.linspace(0, driven_constants.NATURAL_FREQUENCY * 2, 2000)
 phase_diff = [phase_diff_model(freq, driven_constants.NATURAL_FREQUENCY, 2.72074) for freq in lin]
-plt.plot(lin / driven_constants.NATURAL_FREQUENCY, phase_diff)
+plt.plot(lin, phase_diff)
 plt.grid()
 plt.show()
+print(diffs_err)
+print(amplitude_ratios_err)

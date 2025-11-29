@@ -7,6 +7,7 @@ import scipy
 
 import constants
 import utils
+from simple import ticks_err
 from constants import NATURAL_FREQUENCY
 
 def damped_model(time, amplitude, tau, frequency, phase):
@@ -37,7 +38,7 @@ def process_run(path: Path):
     guess_phase = np.pi / 2
     p0 = [guess_amplitude, guess_tau, guess_frequency, guess_phase]
 
-    popt, pcov = scipy.optimize.curve_fit(damped_model, time, ticks, p0=p0)
+    popt, pcov = scipy.optimize.curve_fit(damped_model, time, ticks, p0=p0, sigma = ticks_err)
     amplitude_fit, tau_fit, frequency_fit, phase_fit = popt
     amplitude_error, tau_error, frequency_error, phase_error = np.sqrt(pcov.diagonal())
     print(f"Amplitude = {amplitude_fit*100:.5f}±{amplitude_error*100:.5f}cm")
