@@ -4,6 +4,7 @@ from utils import propagate_error
 
 ticks_per_meter_measurements = (178 / 0.09, 100 / 0.05, 140 / 0.07)
 TICKS_PER_METER = np.average(ticks_per_meter_measurements)
+TICKS_PER_METER_ERROR = 0.5e-3
 
 # CONSTANTS
 CART_MASS = 217.88e-3  # 4 magnets.
