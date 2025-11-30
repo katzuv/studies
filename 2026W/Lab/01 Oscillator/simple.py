@@ -56,7 +56,7 @@ plt.savefig("simple.svg", format="svg")
 plt.show()
 
 error = (np.abs(frequency_fit - NATURAL_FREQUENCY) / NATURAL_FREQUENCY) * 100
-print(f"Error percentage of frequency from theory: {NATURAL_FREQUENCY_ERROR:.5f}%")
+print(f"Theory: {NATURAL_FREQUENCY}±{NATURAL_FREQUENCY_ERROR} | Error percentage of frequency from theory: {error:.2f}%")
 
 fitted = sine_func(time, *popt)
 residuals = ticks - fitted

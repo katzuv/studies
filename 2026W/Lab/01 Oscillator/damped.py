@@ -47,10 +47,10 @@ def process_run(path: Path):
     popt, pcov = scipy.optimize.curve_fit(damped_model, time, ticks, p0=p0, sigma=ticks_err)
     amplitude_fit, tau_fit, frequency_fit, phase_fit = popt
     amplitude_error, tau_error, frequency_error, phase_error = np.sqrt(pcov.diagonal())
-    print(f"Amplitude = {amplitude_fit * 100:.2f}±{amplitude_error * 100:.5f}cm")
-    print(f"ω = {frequency_fit:.2f}±{frequency_error:.5f} 1/s")
-    print(f"τ = {tau_fit:.2f}±{tau_error:.5f} sec")
-    print(f"φ = {phase_fit / np.pi:.2f}±{phase_error / np.pi:.5f}π rad")
+    print(f"Amplitude = {amplitude_fit * 100:.2f}±{amplitude_error * 100:.5e}cm")
+    print(f"ω = {frequency_fit:.2f}±{frequency_error:.5e} 1/s")
+    print(f"τ = {tau_fit:.2f}±{tau_error:.5e} sec")
+    print(f"φ = {phase_fit / np.pi:.2f}±{phase_error / np.pi:.5e}π rad")
     plt.plot(amplitude_fit)
 
     t_fit = np.linspace(time.min(), time.max(), 1000)
@@ -79,5 +79,21 @@ def process_run(path: Path):
     ss_tot = np.sum((ticks - np.mean(ticks)) ** 2)
     r_squared = 1 - ss_res / ss_tot
     print(f"R^2 exp = {r_squared:.9f}")
+
+    theoretical_omega = np.sqrt(constants.SPRING_CONSTANT / constants.CART_MASS - (1 / (4 * tau_fit ** 2)))
+    # propagated error for theoretical_omega = sqrt(K/m - 1/(4 tau^2))
+    A = constants.SPRING_CONSTANT / constants.CART_MASS - (1 / (4 * tau_fit ** 2))
+    sigma_K = constants.SPRING_CONSTANT_ERROR
+    sigma_m = constants.MASS_ERROR
+    sigma_tau = tau_error
+    dA_dK = 1.0 / constants.CART_MASS
+    dA_dm = -constants.SPRING_CONSTANT / (constants.CART_MASS ** 2)
+    dA_dtau = 1.0 / (2 * tau_fit ** 3)
+    sigma_A = np.sqrt((dA_dK * sigma_K) ** 2 + (dA_dm * sigma_m) ** 2 + (dA_dtau * sigma_tau) ** 2)
+    theoretical_omega_error = 0.5 / np.sqrt(A) * sigma_A
+    error = (np.abs(frequency_fit - theoretical_omega) / theoretical_omega) * 100
+
+    print(f"Theory: {theoretical_omega}±{theoretical_omega_error} | Error percentage of frequency from theory: {error:.2f}%")
+
 
 process_run(Path("damped.txt"))
