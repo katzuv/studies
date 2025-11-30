@@ -31,6 +31,9 @@ def amplitude_ratio_model(frequency, spring_constant, mass, natural_frequency, t
     under_root = (natural_frequency ** 2 - frequency ** 2) ** 2 + (frequency / tau) ** 2
     return (spring_constant / mass) * 1 / np.sqrt(under_root)
 
+def amplitude_ratio_model_cfit(frequency, spring_con_per_mass, natural_frequency, tau):
+    under_root = (natural_frequency ** 2 - frequency ** 2) ** 2 + (frequency / tau) ** 2
+    return spring_con_per_mass / under_root
 
 def parse_single_run(file_path: Path):
     data = pd.read_csv(utils.get_edited_driven_data_path(file_path))
@@ -50,7 +53,6 @@ def parse_single_run(file_path: Path):
     mass_peak_indices, _ = scipy.signal.find_peaks(mass_ticks, distance=100)
     # diff = np.mean(motor_peak_indices - mass_peak_indices)
     diff = (2*np.pi)/((motor_peak_indices[0] - mass_peak_indices[0])*(time[1] - time[0]))
-    # plt.plot(time[motor_peak_indices], motor_ticks[motor_peak_indices], "^", label="Peaks")
     p = (np.average(np.diff(motor_peak_indices * (time[1] - time[0]))))
     frequency = (2 * np.pi) / p
     p_err = (time[1] - time[0]) / np.sqrt(len(np.diff(motor_peak_indices)))
@@ -110,7 +112,7 @@ file_paths = []
 frequencies_errs = []
 diffs_err = []
 for file_path in Path("driven_data").iterdir():
-    if file_path.suffix == ".csv":
+    if (file_path.suffix == ".csv"):
         continue
     # path = utils.get_edited_driven_data_path(file_path)
     # print(file_path)
@@ -126,33 +128,57 @@ frequencies = np.array(frequencies)
 frequencies_errs = np.array(frequencies_errs)
 for x, y, label in zip(frequencies, amplitude_ratios, file_paths):
     plt.text(x, y, label, fontsize=8, ha='right', va='bottom')  # small label
+
 # frequency to amplitude graph
 plt.errorbar(frequencies, amplitude_ratios,xerr= frequencies_errs ,yerr = amplitude_ratios_err,
              fmt = '.', label = "results")
-
-
+p0_amp = np.array([driven_constants.k1 / driven_constants.CART_MASS, driven_constants.NATURAL_FREQUENCY,
+                   2.72074])
+amp_fit, popt_amp = scipy.optimize.curve_fit(amplitude_ratio_model_cfit, frequencies, amplitude_ratios,
+                                                sigma = amplitude_ratios_err, p0 = p0_amp)
+amp_fit_err = np.sqrt(np.diag(popt_amp))
 lin = np.linspace(0, driven_constants.NATURAL_FREQUENCY * 2, 2000)
-plt.plot(lin,
-         amplitude_ratio_model(lin, driven_constants.k2, driven_constants.CART_MASS, driven_constants.NATURAL_FREQUENCY,
-                               2.72074), '-', label = "theoretical curve")
+#plt.plot(lin,
+#         amplitude_ratio_model(lin, driven_constants.k2, driven_constants.CART_MASS, driven_constants.NATURAL_FREQUENCY,
+#                               2.72074), '-', label = "theoretical curve")
+plt.plot(lin, amplitude_ratio_model_cfit(lin, amp_fit[0], amp_fit[1], amp_fit[2]), '--', label = "fit")
 plt.grid()
+plt.xlabel("Frequency [Hz]")
+plt.ylabel("Amplitude ratio [a.u.]")
 plt.legend()
 plt.show()
 
 # frequency to phase graph
 
 def phase_diff_model(motor_frequency, natural_frequency, tau):
-    denominator = tau * (natural_frequency ** 2 - motor_frequency ** 2)
-    a = np.arctan(-motor_frequency / denominator)
-    if motor_frequency < natural_frequency:
-        a += np.pi
-    return -a
+    return np.arctan2(
+        motor_frequency / tau,
+        natural_frequency**2 - motor_frequency**2
+    ) - np.pi
 
-plt.errorbar(frequencies, diffs,xerr= frequencies_errs ,yerr = diffs_err, fmt = '.')
+p0_diff = np.array([driven_constants.NATURAL_FREQUENCY, 2.72074])
+bounds_diff = [(0, 0), (driven_constants.NATURAL_FREQUENCY*3, 2.72074*3)]
+fit_diff, popt_diff = scipy.optimize.curve_fit(phase_diff_model, frequencies, diffs, sigma=diffs_err,
+                                               bounds = bounds_diff)
+fit_diff_err = np.sqrt(np.diag(popt_diff))
+plt.errorbar(frequencies, diffs,xerr= frequencies_errs ,yerr = diffs_err, fmt = '.', label = "results")
 lin = np.linspace(0, driven_constants.NATURAL_FREQUENCY * 2, 2000)
 phase_diff = [phase_diff_model(freq, driven_constants.NATURAL_FREQUENCY, 2.72074) for freq in lin]
-plt.plot(lin, phase_diff)
+#plt.plot(lin, phase_diff, label = "theoretical graph")
+plt.plot(lin, phase_diff_model(lin, driven_constants.NATURAL_FREQUENCY, fit_diff[1]), '--', label = "fit")
 plt.grid()
+plt.xlabel("Frequency [Hz]")
+plt.ylabel("Phase [rad]")
+plt.legend()
 plt.show()
-print(diffs_err)
-print(amplitude_ratios_err)
+tau_amp = amp_fit[2]
+tau_amp_err = amp_fit_err[2]
+tau_diff = fit_diff[1]
+tau_diff_err = fit_diff_err[1]
+NF_amp = amp_fit[1]
+NF_amp_err = amp_fit_err[1]
+NF_diff = fit_diff[0]
+NF_diff_err = fit_diff_err[0]
+
+print(tau_amp, tau_amp_err, tau_diff, tau_diff_err)
+print(NF_amp, NF_amp_err, NF_diff, NF_diff_err, driven_constants.NATURAL_FREQUENCY)
