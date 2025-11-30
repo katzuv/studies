@@ -73,3 +73,7 @@ NATURAL_FREQUENCY_ERROR = propagate_error(
     (SPRING_CONSTANT, CART_MASS),
     (SPRING_CONSTANT_ERROR, MASS_ERROR)
 )
+
+print(f"{k1=:.3}, {k1_error=:.3}")
+print(f"{k2=:.3}, {k2_error=:.3}")
+print(f"{SPRING_CONSTANT=:.3}, {SPRING_CONSTANT_ERROR=:.3}")
