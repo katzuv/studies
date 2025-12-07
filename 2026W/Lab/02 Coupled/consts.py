@@ -26,10 +26,11 @@ K3_CONSTANT = spring_constant(k3_mass, g, length)
 K1_ERROR = utils.propagate_error(spring_constant, (k1_mass, g, length), (MASS_ERROR, g_error, length_error))
 K2_ERROR = utils.propagate_error(spring_constant, (k2_mass, g, length), (MASS_ERROR, g_error, length_error))
 K3_ERROR = utils.propagate_error(spring_constant, (k3_mass, g, length), (MASS_ERROR, g_error, length_error))
-K_AVG = K1_CONSTANT+K2_CONSTANT+K3_CONSTANT
-K_AVG_ERROR = K1_ERROR+K2_ERROR+K3_ERROR
+K_AVG = (K1_CONSTANT+K2_CONSTANT+K3_CONSTANT)/3
+K_AVG_ERROR = (K1_ERROR+K2_ERROR+K3_ERROR)/3
 print(K1_CONSTANT, K2_CONSTANT, K3_CONSTANT)
 print(K1_ERROR, K2_ERROR, K3_ERROR)
+print(K_AVG, K_AVG_ERROR)
 
 ticks_per_meter_measurements = (178 / 0.09, 100 / 0.05, 140 / 0.07)
 TICKS_PER_CM = np.average(ticks_per_meter_measurements) / 100
