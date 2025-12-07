@@ -4,11 +4,11 @@ from pathlib import Path
 import pandas as pd
 import scipy
 from matplotlib import pyplot as plt
+sys.path.append("../utils.py")
 
 from consts import *
 import autograd.numpy as np
 
-sys.path.append("../utils.py")
 import utils
 
 
@@ -113,7 +113,7 @@ def plot_single(file_path, guesses):
 
     plt.legend()
     plt.grid()
-    plt.savefig(file_path.stem, format='svg')
+    plt.savefig(file_path.with_suffix(".svg"), format='svg')
     plt.show()
 
 
