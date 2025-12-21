@@ -28,7 +28,7 @@ y = reg.slope * dx + reg.intercept
 r = reg.rvalue
 r2 = r**2
 print(f"r = {r:.3f}, R² = {r2:.3f}")
-plt.plot(dx, y, label="Linear regression")
+plt.plot(dx, y / (2 * np.pi), label="Linear regression")
 
 plt.xlabel("Distance [cm]")
 plt.ylabel("Phase shift [radians]")
