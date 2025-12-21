@@ -2,6 +2,8 @@ import numpy as np
 import scipy
 from matplotlib import pyplot as plt
 
+from utils import propagate_error
+
 f = 4.15  # kHz
 zamzam_x = 70.1  # initial distance [cm] +- 2 mm
 dx = (
@@ -37,7 +39,13 @@ plt.legend()
 plt.savefig("freq_response.svg", format="svg")
 plt.show()
 
-lam = 2 * np.pi / reg.slope
-print(f"Wavelength of sound in air is {lam:.3f} cm")
-v = lam * f * 10
+def lam_func(slope):
+    return 2 * np.pi / slope
+lam = 2*np.pi/reg.slope
+lam_err = propagate_error(lam_func,(reg.slope, ), (reg.stderr, ))
+print(f"Wavelength of sound in air is {lam:.3f} ± {lam_err:.3f} cm")
+def v_func(lambd, freq):
+    return lambd * freq * 10
+v = v_func(lam, f)
+v_err = propagate_error(v_func, (lam, f), (lam_err, f_err))
 print(f"Speed of sound in air is {v:.3f} m/s")
