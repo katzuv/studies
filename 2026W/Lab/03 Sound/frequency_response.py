@@ -24,7 +24,7 @@ for idx in highest_peaks_indices:
     xerr = freq_err[idx]
     yerr = amp_err[idx]
     f_khz = x / 1000.0
-    text = f"{y} ± {yerr:.3f} mV\nat {f_khz:.2f}KHz"
+    text = f"{y} ± {yerr:.3f} mV\nat {f_khz:.2f} Hz"
     # lower-left box and a curved arrow for a prettier look
     xytext = (x - 0.15 * x_rng, y - 0.25 * y_rng)
     plt.annotate(
@@ -40,7 +40,7 @@ for idx in highest_peaks_indices:
     )
 
 plt.legend()
-plt.xlabel('Frequency [kHz]')
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Amplitude [mV]')
 plt.grid()
 plt.savefig("freq_response.svg", format="svg")
