@@ -34,7 +34,6 @@ plt.plot(dx, y / (2 * np.pi), label="Linear regression")
 
 plt.xlabel("Distance [m]")
 plt.ylabel("Phase shift [radians]")
-plt.grid()
 plt.legend()
 plt.savefig("phase_shift.svg", format="svg")
 plt.show()
