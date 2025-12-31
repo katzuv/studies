@@ -26,7 +26,7 @@ F = 0.49
 F_err = 0.1e-2
 alpha = 0.11
 alpha_err = 0.1e-2
-m = 50e-3
+m = 21.9e-3
 m_err = 1e-3
 
 def get_freq_free(d, F, l, alpha,m,L,N):
