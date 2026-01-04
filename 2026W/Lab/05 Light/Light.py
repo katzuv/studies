@@ -2,6 +2,8 @@ import numpy
 import scipy
 from matplotlib import pyplot as plt
 
+import utils
+
 # System parameters
 INTERFEROMETER_LENGTH = 0.2
 LASER_WAVELENGTH = 532e-9
@@ -11,6 +13,20 @@ PRESSURE_ERROR = 5 / 1000  # in kPa
 NUMBER_ERROR = 1
 
 i = 0
+
+
+def calc_refraction(slope):
+    alpha = (
+        2
+        * LASER_WAVELENGTH
+        * scipy.constants.Boltzmann
+        * scipy.constants.zero_Celsius
+        * slope
+        / INTERFEROMETER_LENGTH
+    )
+    return 1 + 0.5 * alpha * (760 * scipy.constants.mmHg / 1000) / (
+        scipy.constants.Boltzmann * scipy.constants.zero_Celsius
+    )
 
 
 def process_gas(pressure, number, gas_name):
@@ -37,6 +53,10 @@ def process_gas(pressure, number, gas_name):
     )
 
     i += 1
+
+    refraction = calc_refraction(slope)
+    refraction_err = utils.propagate_error(calc_refraction, (slope,), (std_err,))
+    print(f"Refraction index of {gas_name}: {refraction:.8f} ± {refraction_err:.8f}")
 
 
 DATA = [
