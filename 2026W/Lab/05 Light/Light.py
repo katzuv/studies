@@ -7,14 +7,14 @@ INTERFEROMETER_LENGTH = 0.2
 LASER_WAVELENGTH = 532e-9
 TEMPERATURE = 25 + scipy.constants.zero_Celsius
 
-PRESSURE_ERROR = 5
+PRESSURE_ERROR = 5 / 1000  # in kPa
 NUMBER_ERROR = 1
 
 i = 0
 
 
 def process_gas(pressure, number, gas_name):
-    pressure = pressure * scipy.constants.mmHg
+    pressure = pressure * scipy.constants.mmHg / 1000
     slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(
         pressure, number
     )
@@ -71,7 +71,7 @@ DATA = [
 for pressure, number, gas_name in DATA:
     process_gas(numpy.array(pressure), numpy.array(number), gas_name)
 
-plt.xlabel("Pressure [Pa]")
+plt.xlabel("Pressure [kPa]")
 plt.ylabel("number of fringes")
 plt.legend()
 plt.grid()
