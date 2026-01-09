@@ -57,6 +57,7 @@ def process_gas(pressure, number, gas_name):
     refraction = calc_refraction(slope)
     refraction_err = utils.propagate_error(calc_refraction, (slope,), (std_err,))
     print(f"Refraction index of {gas_name}: {refraction:.8f} ± {refraction_err:.8f}")
+    print(f"R²: {r_value:.4f}")
 
 
 DATA = [
