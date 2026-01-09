@@ -9,7 +9,7 @@ INTERFEROMETER_LENGTH = 0.2
 LASER_WAVELENGTH = 532e-9
 TEMPERATURE = 25 + scipy.constants.zero_Celsius
 
-PRESSURE_ERROR = 5 / 1000  # in kPa
+PRESSURE_ERROR = 1 * scipy.constants.mmHg / 1000  # in kPa
 NUMBER_ERROR = 1
 
 i = 0
