@@ -38,7 +38,9 @@ def print_statistical_analysis(gas_name, measured_val, measured_err, lit_val):
 
     print(f"Difference:   {diff:.8e}")
     print(f"Z-Score:      {z_score:.2f}σ")
-    print(f"Percentage difference from literature: {diff / lit_val:.4%}")
+    # Calculate error relative to the refractivity (n-1)
+    refractivity_lit = lit_val - 1
+    print(f"Percentage error on (n-1): {diff / refractivity_lit:.2%}")
 
     # Decision Rule: 95% Confidence Interval corresponds to approx 2 sigma [cite: 297]
     if z_score < 2.0:
