@@ -4,9 +4,11 @@ from matplotlib import pyplot as plt
 import utils
 
 # System parameters
-INTERFEROMETER_LENGTH = 0.2
+INTERFEROMETER_LENGTH = 0.24
+LENGTH_ERROR = 5 / 1000
 LASER_WAVELENGTH = 532e-9
 TEMPERATURE = 25 + scipy.constants.zero_Celsius
+TEMPERATURE_ERROR = 1  # in Kelvin
 
 PRESSURE_ERROR = 1 * scipy.constants.mmHg / 1000  # in kPa
 NUMBER_ERROR = 1
@@ -55,17 +57,17 @@ def print_statistical_analysis(gas_name, measured_val, measured_err, lit_val):
 # --- NEW FUNCTION END ---
 
 
-def calc_refraction(slope):
+def calc_refraction(slope, temperature, interferometer_length):
     alpha = (
         2
         * LASER_WAVELENGTH
         * scipy.constants.Boltzmann
-        * scipy.constants.zero_Celsius
+        * temperature
         * slope
-        / INTERFEROMETER_LENGTH
+        / interferometer_length
     )
     return 1 + 0.5 * alpha * (760 * scipy.constants.mmHg / 1000) / (
-        scipy.constants.Boltzmann * scipy.constants.zero_Celsius
+        scipy.constants.Boltzmann * temperature
     )
 
 
@@ -93,8 +95,12 @@ def process_gas(pressure, number, gas_name, lit_val):  # <--- Updated arguments
 
     i += 1
 
-    refraction = calc_refraction(slope)
-    refraction_err = utils.propagate_error(calc_refraction, (slope,), (std_err,))
+    refraction = calc_refraction(slope, TEMPERATURE, INTERFEROMETER_LENGTH)
+    refraction_err = utils.propagate_error(
+        calc_refraction,
+        (slope, TEMPERATURE, INTERFEROMETER_LENGTH),
+        (std_err, TEMPERATURE_ERROR, LENGTH_ERROR),
+    )
 
     # --- REPLACED OLD PRINT WITH NEW ANALYSIS ---
     print_statistical_analysis(gas_name, refraction, refraction_err, lit_val)
