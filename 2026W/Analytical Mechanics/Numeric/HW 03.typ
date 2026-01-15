@@ -7,7 +7,7 @@
 // to customize this template and discover how it works.
 #show: project.with(
   title: "מכניקה אנליטית",
-  number: 8,
+  number: "3 – תרגיל נומרי",
   authors: (
     (name: "דן קצוב-פייגין", email: "dan.k@campus.technion.ac.il", id: "323002915"),
   ),
@@ -50,18 +50,94 @@ $ y = vec(th, dth) $
 נגזור את $y$ לפי הזמן:
 $ (dif y)/(dif t) = dif/(dif t) = vec(dth, ddth) = vec(dth, -g/l sin th) = vec(y[1], -g/l sin y[0]) $
 
-
+#pagebreak()
 #סעיף[
 היעזרו בפונקציה שבחרתם כדי למצוא את המסלול של מטוטלת הרמונית עם פרמטר
 $g/l=10 space.narrow "s"^(-2)$
 לפרק הזמן
 $Delta t = 10 space.narrow "s"$
-כאשר המטוטללת מתחילה ממנוחה ומזווית התחלתית:
+כאשר המטוטלת מתחילה ממנוחה ומזווית התחלתית:
 $th_0 = 1,2,2.5,2.75,3$.
 ציירו את $th(t)$ לכל אחד מתנאי ההתחלה בגרף אחד.]
+#figure(
+  image("pendulum_ode.svg"),
+  caption: [
+זווית המטוטלת כתלות בזמן עם זוויות התחלתיות שונות. המשולשים מסמנים את נקודות המינימום.]
+)
+#סעיף[מה קורה לזמן המחזור של המטוטלת ככל שמגדילים את $th_0$?
+]
+נתבונן במספר נקודת המינימום שיש בכל גרף. ניתן לראות שככל שהזווית ההתחלתית גדולה יותר, כך יש יותר מרווח בין משולש לזה שאחריו. למשל, כאשר $th_0=1$ יש חמישה משולשים, אך כאשר $th_0=3$ יש רק שניים. זה אומר כי:
+#תשובה[
+ככל שמגדילים את $th_0$, כך זמן המחזור עולה.]
+#show link: underline
+
+= נספח: קוד
+נספח: קוד. זמין גם 
+#link("https://github.com/katzuv/studies/blob/main/2026W/Analytical%20Mechanics/Numeric/03.py")[כאן].
+```py
+import numpy as np
+import scipy
+import matplotlib.pyplot as plt
+
+gravity = 9.81
+length = 0.981
+time_frame = (0, 10)
 
 
+def pendulum_ode(t, y):
+    theta, omega = y
+    second_derivative = -(gravity / length) * np.sin(theta)
+    return np.array((omega, second_derivative))
 
+
+if __name__ == "__main__":
+    initial_condition = (1, 2, 2.5, 2.75, 3)
+    for ic in initial_condition:
+        sol = scipy.integrate.solve_ivp(
+            pendulum_ode,
+            time_frame,
+            (ic, 0),
+            t_eval=np.linspace(0, 10, 1000),
+            rtol=1e-9,  # Reducing allowed errors.
+            atol=1e-9,
+        )
+
+        time, theta = sol.t, sol.y[0]
+        (line,) = plt.plot(time, theta, label=f"$\\theta_0$: {ic} rad")
+        color = line.get_color()
+
+        minima_indices = scipy.signal.argrelextrema(theta, np.less)[0]
+        plt.scatter(
+            time[minima_indices],
+            theta[minima_indices],
+            color=color,
+            marker="^",
+            s=50,
+            zorder=5,
+        )
+
+        for count, index in enumerate(minima_indices):
+            x_pos = time[index]
+            y_pos = theta[index]
+
+            # Place text slightly below the point (y_pos - 0.4)
+            plt.text(
+                x_pos,
+                y_pos + 0.4,
+                str(count + 1),
+                color=color,
+                ha="center",
+                va="top",
+                fontweight="bold",
+            )
+
+    plt.xlabel("Time (s)")
+    plt.grid()
+    plt.legend()
+    plt.ylabel("Angular Displacement (rad)")
+    plt.savefig("pendulum_ode.svg", format="svg")
+    plt.show()
+```
 
 
 
