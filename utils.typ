@@ -1,19 +1,22 @@
 #set text(lang: "he", dir: rtl, font: "David")
 #show link: underline
 
-#let שם-מייל = [
-    #text(2em)[דן קצוב-פייגין    ]
-     #link("mailto:dan.k@campus.technion.ac.il")[#text(font: "Consolas", size: 1.5em)[dan.k\@campus.technion.ac.il] ]
-]
-#let גיליון(course, semester, number, date) = [
-  #set align(center)
-  #text(3.5em)[#course -- #semester\ 
+#let שם-מייל(גודל) = {
+    text(גודל)[דן קצוב-פייגין 323002915    ]
+    link("mailto:dan.k@campus.technion.ac.il")[#text(font: "Consolas", size: .5em)[dan.k\@campus.technion.ac.il] ]
+}
+
+#let גיליון(course, semester, number, date) = {
+  set align(center)
+  text(3.5em)[#course -- #semester\ 
   גיליון #number \
-  מגיש: דן קצוב-פייגין 323002915 
+  #שם-מייל(1em)
+  #linebreak()
    תאריך הגשה: #date]
- #pagebreak()
-  #set align(right)
-]
+  pagebreak()
+  set align(right)
+}
+
 #let הרצאה(number, date, notes-link) = [
     #pagebreak()
   = הרצאה #number | #date

@@ -7,7 +7,7 @@
 // to customize this template and discover how it works.
 #show: project.with(
   title: "מכניקה אנליטית",
-  number: 8,
+  number: "3 – תרגיל נומרי",
   authors: (
     (name: "דן קצוב-פייגין", email: "dan.k@campus.technion.ac.il", id: "323002915"),
   ),
@@ -66,16 +66,18 @@ $th_0 = 1,2,2.5,2.75,3$.
 )
 #סעיף[מה קורה לזמן המחזור של המטוטלת ככל שמגדילים את $th_0$?
 ]
-נתבונן במספר נקודת המינימום שיש בכל גרף. ניתן לראות שככל שהזווית ההתחלתית גדולה יותר, כך יש יותר מרווח בין משולש לזה שאחריו. למשל, כאשר $th_0=1$ יש חמישה משולשים, אך כאשר $th_0=3$ יש רק שניים. זה אומר כי:
+נתבונן במספר נקודת המינימום שיש בכל גרף. ניתן לראות שככל שהזווית ההתחלתית גדולה יותר, כך יש יותר מרווח בין משולש לזה שאחריו. למשל, כאשר $th_0=1$ יש חמישה משולשים, אך כאשר $th_0=3$ יש רק שניים. כלומר, באותו פרק זמן המטוטלת מבקרת פחות פעמים באותו מיקום. זה אומר כי:
 #תשובה[
 ככל שמגדילים את $th_0$, כך זמן המחזור עולה.]
+#show link: underline
 
 = נספח: קוד
-נספח: קוד. זמין גם כאן.
+נספח: קוד. זמין גם 
+#link("https://github.com/katzuv/studies/blob/main/2026W/Analytical%20Mechanics/Numeric/03.py")[כאן].
 ```py
+import matplotlib.pyplot as plt
 import numpy as np
 import scipy
-import matplotlib.pyplot as plt
 
 gravity = 9.81
 length = 0.981
@@ -118,7 +120,6 @@ if __name__ == "__main__":
             x_pos = time[index]
             y_pos = theta[index]
 
-            # Place text slightly below the point (y_pos - 0.4)
             plt.text(
                 x_pos,
                 y_pos + 0.4,
