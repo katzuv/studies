@@ -43,7 +43,6 @@ if __name__ == "__main__":
             x_pos = time[index]
             y_pos = theta[index]
 
-            # Place text slightly below the point (y_pos - 0.4)
             plt.text(
                 x_pos,
                 y_pos + 0.4,
