@@ -12,7 +12,7 @@ from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 # Scopes define what access the app has
-SCOPES = ['https://www.googleapis.com/auth/drive.file']
+SCOPES = ["https://www.googleapis.com/auth/drive"]
 
 
 def generate_pickle_from_credentials(credentials_path: Path = Path('credentials.json'),
