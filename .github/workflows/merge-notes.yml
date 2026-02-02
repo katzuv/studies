@@ -1,0 +1,65 @@
+name: Merge Course Notes
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    # Allow manual trigger
+    inputs:
+      course:
+        description: 'Specific course to process (optional)'
+        required: false
+        type: string
+
+jobs:
+  merge-pdfs:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          cd notes-backup
+          pip install -r requirements.txt
+      
+      - name: Create credentials file
+        run: |
+          echo '${{ secrets.GOOGLE_CREDENTIALS }}' > notes-backup/credentials.json
+      
+      - name: Create config file
+        run: |
+          echo '${{ secrets.DRIVE_CONFIG }}' > notes-backup/config.json
+      
+      - name: Run PDF merger
+        run: |
+          cd notes-backup
+          if [ -n "${{ github.event.inputs.course }}" ]; then
+            python main.py --credentials credentials.json --course "${{ github.event.inputs.course }}"
+          else
+            python main.py --credentials credentials.json
+          fi
+      
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f notes-backup/credentials.json
+          rm -f notes-backup/config.json
+          rm -rf temp
+      
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: error-logs
+          path: |
+            notes-backup/*.log
+            temp/
+          retention-days: 7
