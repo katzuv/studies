@@ -5,7 +5,7 @@ Automatically collect lecture PDFs for university courses from Google Drive, mer
 ## Features
 
 - **Automated PDF Collection**: Downloads PDFs from Google Drive course folders
-- **Smart Merging**: Combines PDFs with proper ordering (Lecture_01, Lecture_02, etc.)
+- **Smart Merging**: Combines PDFs with proper ordering (Lecture 1, Lecture 2, etc.)
 - **Clickable TOC**: Generates table of contents visible in PDF sidebar
 - **TOC Page**: Adds a clickable TOC page at the beginning of merged PDFs
 - **Multiple Output Files**: Creates separate files for Lectures, Tirgul, and Full course
@@ -18,10 +18,10 @@ Each course in Google Drive should follow this structure:
 
 ```
 Course_Name/
-├── Lecture_01.pdf
-├── Lecture_02.pdf
-├── Tirgul_01.pdf
-├── Tirgul_02.pdf
+├── Lecture 1.pdf
+├── Lecture 2.pdf
+├── Tirgul 1.pdf
+├── Tirgul 2.pdf
 └── ...
 ```
 
