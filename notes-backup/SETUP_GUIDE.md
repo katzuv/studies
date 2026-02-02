@@ -26,6 +26,21 @@ Your Drive/
 
 ### Step 1: Get Google Drive Access
 
+**For Local Use (OAuth):**
+1. Go to https://console.cloud.google.com/
+2. Create a new project (or use existing)
+3. Enable "Google Drive API"
+4. Create credentials → OAuth 2.0 Client ID → Desktop app
+5. Download the JSON file → save as `credentials.json`
+6. Run the authentication script:
+   ```bash
+   cd notes-backup
+   python generate_pickle.py
+   ```
+7. A browser will open - sign in and authorize the app
+8. A `token.pickle` file will be created automatically
+
+**For GitHub Actions (Service Account):**
 1. Go to https://console.cloud.google.com/
 2. Create a new project (or use existing)
 3. Enable "Google Drive API"
