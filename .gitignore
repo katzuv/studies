@@ -3,6 +3,7 @@
 # Credentials and config files
 credentials.json
 token.json
+token.pickle
 config.json
 
 # Temporary files

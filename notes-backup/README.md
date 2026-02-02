@@ -45,10 +45,23 @@ pip install -r requirements.txt
 5. Download the JSON credentials file
 6. Share your Google Drive folders with the service account email
 
-#### Option B: OAuth Token
+#### Option B: OAuth Token (Recommended for Local Use)
 
-1. Create OAuth credentials in Google Cloud Console
-2. Generate and save the token JSON file
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing
+3. Enable Google Drive API
+4. Create OAuth 2.0 credentials (Desktop app)
+5. Download the credentials as `credentials.json`
+6. Generate the token pickle file:
+
+```bash
+cd notes-backup
+python generate_pickle.py
+```
+
+This will open a browser window for you to authorize the app. After authorization, it will create a `token.pickle` file that the main script can use for authentication.
+
+**Note**: The `token.pickle` file contains your authentication token. Keep it secure and never commit it to version control (it's already in `.gitignore`).
 
 ### 3. Configuration
 
