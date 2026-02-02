@@ -9,14 +9,14 @@ Automatically downloads PDFs from your Google Drive course folders, merges them 
 ```
 Your Drive/
 ├── Course1/
-│   ├── Lecture_01.pdf
-│   ├── Lecture_02.pdf
-│   ├── Tirgul_01.pdf
-│   ├── Tirgul_02.pdf
+│   ├── Lecture 1.pdf
+│   ├── Lecture 2.pdf
+│   ├── Tirgul 1.pdf
+│   ├── Tirgul 2.pdf
 │   └── ...
 ├── Course2/
-│   ├── Lecture_01.pdf
-│   ├── Tirgul_01.pdf
+│   ├── Lecture 1.pdf
+│   ├── Tirgul 1.pdf
 │   └── ...
 └── Merged_Notes/  ← Auto-created, will contain merged PDFs
 ```
@@ -154,7 +154,7 @@ Your Drive/
 
 ## 🎨 Features
 
-- ✅ Automatically handles sequential numbering (Lecture_01, Lecture_02, etc.)
+- ✅ Automatically handles sequential numbering (Lecture 1, Lecture 2, etc.)
 - ✅ Works with any naming that sorts alphabetically
 - ✅ Creates professional TOC with bookmarks
 - ✅ Handles courses with only lectures OR only tirgul
@@ -171,7 +171,7 @@ Your Drive/
 
 ## 💡 Pro Tips
 
-1. **Naming convention**: Keep PDF names consistent (Lecture_01, Lecture_02) for best results
+1. **Naming convention**: Keep PDF names consistent (Lecture 1, Lecture 2) for best results
 2. **Testing**: Run manually first to verify everything works before relying on schedule
 3. **Updates**: If you add new PDFs, just trigger the workflow again
 4. **Multiple semesters**: Create separate config.json files or use different merged folder names
