@@ -9,16 +9,15 @@ Automatically downloads PDFs from your Google Drive course folders, merges them 
 ```
 Your Drive/
 ├── Course1/
-│   ├── Lectures/
-│   │   ├── Lecture_01.pdf
-│   │   ├── Lecture_02.pdf
-│   │   └── ...
-│   └── Tirgul/
-│       ├── Tirgul_01.pdf
-│       └── ...
+│   ├── Lecture_01.pdf
+│   ├── Lecture_02.pdf
+│   ├── Tirgul_01.pdf
+│   ├── Tirgul_02.pdf
+│   └── ...
 ├── Course2/
-│   ├── Lectures/
-│   └── Tirgul/
+│   ├── Lecture_01.pdf
+│   ├── Tirgul_01.pdf
+│   └── ...
 └── Merged_Notes/  ← Auto-created, will contain merged PDFs
 ```
 
@@ -131,7 +130,7 @@ python main.py --credentials credentials.json --course "Linear_Algebra"
 
 ### "No files found"
 - **Solution**: Check folder IDs in config.json are correct
-- **Solution**: Verify folder structure matches (Lectures/ and Tirgul/ subfolders)
+- **Solution**: Verify folder structure matches (all PDFs directly in course folder, no subfolders)
 
 ### GitHub Actions failing
 - **Solution**: Check that secrets are set correctly (no extra quotes or spaces)
