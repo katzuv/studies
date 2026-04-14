@@ -16,3 +16,5 @@ $ del(a, b) $
   
   box(text(top-edge: "bounds", $wrapper(math.cal(it))$))
 })
+
+#let det(..args) = math.mat(delim: "|", ..args)
