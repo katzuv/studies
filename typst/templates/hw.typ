@@ -1,4 +1,5 @@
 #import "@preview/showybox:2.0.4": showybox
+#import "../utils.typ": משל
 
 #let project(
   title: "",
@@ -121,5 +122,5 @@
 }
 
 #let תשובה(טקסט) = {
-  showybox[#טקסט]
+  showybox[#טקסט #משל]
 }
