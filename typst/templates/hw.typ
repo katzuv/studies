@@ -70,7 +70,6 @@
 
 #let שאלה(כותרת: "", טקסט) = {
   pagebreak()
-  let text = טקסט
   heading[שאלה]
 
   let color = blue
@@ -89,12 +88,14 @@
       offset: 2pt,
     ),
     title: [שאלה #context counter(heading).display() – #כותרת],
-    text
+    {
+      set math.equation(numbering: none)
+      טקסט
+    }
   )
 }
 
 #let סעיף(טקסט) = {
-  let text = טקסט
   heading(level: 2)[סעיף]
   let color = green
   showybox(
@@ -112,7 +113,10 @@
       offset: 2pt,
     ),
     title: [סעיף #context counter(heading).display().at(-1)],
-    text
+    {
+      set math.equation(numbering: none)
+      טקסט
+    }
   )
 }
 
