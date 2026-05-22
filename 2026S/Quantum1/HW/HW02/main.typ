@@ -1,6 +1,6 @@
-#import "../../../../../typst/templates/hw.typ": *
-#import "../../../../../typst/consts.typ": *
-#import "../../../../../typst/utils.typ": *
+#import "../../../../typst/templates/hw.typ": *
+#import "../../../../typst/consts.typ": *
+#import "../../../../typst/utils.typ": *
 
 
 // Take a look at the file `template.typ` in the file panel
