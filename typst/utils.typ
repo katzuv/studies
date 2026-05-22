@@ -1,3 +1,7 @@
+#import "@preview/physica:0.9.8": *
+#show: super-T-as-transpose // Render "..^T" as transposed matrix
+#show: super-plus-as-dagger // Render "..^+" as dagger
+
 #let del(a,b) = $(partial #a)/(partial #b)$
 
 $ del(a, b) $
@@ -49,6 +53,3 @@ $ del(a, b) $
 #let משל = [
   #align(left)[$qed$]
 ]
-
-#let ip(x, y) = $lr(chevron.l #x|#y chevron.r)$
-#let mel(b, op, k) = $lr(chevron.l #b|#op|#k chevron.r)$
