@@ -49,3 +49,5 @@ $ del(a, b) $
 #let משל = [
   #align(left)[$qed$]
 ]
+
+#let qip(x, y) = $lr(chevron.l #x|#y chevron.r)$
