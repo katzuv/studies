@@ -1,4 +1,6 @@
 #import "@preview/showybox:2.0.4": showybox
+#import "@preview/physica:0.9.8": *
+
 #import "../utils.typ": משל
 
 #let project(
@@ -15,6 +17,10 @@
   show math.equation: set text(weight: 400)
   set heading(numbering: "1.1")
   set math.equation(numbering: "(1)")
+
+  show: super-T-as-transpose // Render "..^T" as transposed matrix
+  show: super-plus-as-dagger // Render "..^+" as dagger
+
   show heading: none 
   // Title page.
   // The page can contain a logo if you pass one with `logo: "logo.png"`.
