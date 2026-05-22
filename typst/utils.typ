@@ -51,3 +51,4 @@ $ del(a, b) $
 ]
 
 #let ip(x, y) = $lr(chevron.l #x|#y chevron.r)$
+#let mel(b, op, k) = $lr(chevron.l #b|#op|#k chevron.r)$
