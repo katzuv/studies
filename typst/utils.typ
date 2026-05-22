@@ -50,4 +50,4 @@ $ del(a, b) $
   #align(left)[$qed$]
 ]
 
-#let qip(x, y) = $lr(chevron.l #x|#y chevron.r)$
+#let ip(x, y) = $lr(chevron.l #x|#y chevron.r)$
