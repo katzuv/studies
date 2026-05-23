@@ -101,7 +101,22 @@
   }
   outline(title: none, depth: 2)
   
-  set page(numbering: "1", number-align: center)
+  set page(
+    numbering: "1", 
+    number-align: center,
+    header: context {
+      if counter(page).get().first() > 1 {
+        set text(size: 0.9em, fill: gray.darken(30%))
+        grid(
+          columns: (1fr, 1fr),
+          align(right, title + " – גיליון " + str(number)),
+          align(left, authors.at(0).name)
+        )
+        v(-0.6em)
+        line(length: 100%, stroke: 0.5pt + gray)
+      }
+    }
+  )
 
   show link: underline.with(stroke: 0.6pt + gray.darken(20%), offset: 2pt)
   show ref: underline.with(stroke: 0.6pt + gray.darken(20%), offset: 2pt)
