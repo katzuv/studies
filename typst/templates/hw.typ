@@ -12,7 +12,7 @@
   body,
 ) = {
   // Set the document's basic properties.
-  set document(author: authors.map(a => a.name), title: title + " - גיליון " + str(number))
+  set document(author: authors.map(a => a.name), title: title + " – גיליון " + str(number))
   set text(font: "Noto Sans Hebrew", lang: "he")
   // show math.equation: set text(weight: 400) // Removed to allow bold in math
   set heading(numbering: "1.1")
@@ -54,7 +54,7 @@
   }
   v(9.6fr)
 
-  text(2em, weight: 700, title + " - גיליון " + str(number))
+  text(2em, weight: 700, title + " – גיליון " + str(number))
   v(1.2em, weak: true)
   text(size: 1.5em)[#date.display("[day]/[month]/[year]")]
 
