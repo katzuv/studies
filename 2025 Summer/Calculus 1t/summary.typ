@@ -1,6 +1,6 @@
 #import "@preview/ctheorems:1.1.3": *
 #show: thmrules
-// #import "../../utils.typ": שם-מייל, הרצאה, innerp, Rn, Cn, Rnn, Cnn, קותח
+// #import "../../typst/utils.typ": שם-מייל, הרצאה, innerp, Rn, Cn, Rnn, Cnn, קותח
 
 #set text(lang: "he", dir: rtl)
 

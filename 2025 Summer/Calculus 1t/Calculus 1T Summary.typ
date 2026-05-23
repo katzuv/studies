@@ -1,6 +1,6 @@
 #import "@preview/ctheorems:1.1.3": *
 #import "@preview/cetz:0.2.0"
-#import "../../utils.typ": *
+#import "../../typst/utils.typ": *
 #show: thmrules
 
 #set text(lang: "he", dir: rtl, font: "David")
