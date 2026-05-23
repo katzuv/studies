@@ -1,4 +1,4 @@
-#import "../../utils.typ": שם-מייל, הרצאה, innerp, Rn, Cn, Rnn, Cnn, קותח
+#import "../../typst/utils.typ": שם-מייל, הרצאה, innerp, Rn, Cn, Rnn, Cnn, קותח
 #set text(lang: "he", dir: rtl)
 
 #align(center)[= אלגברה 2מ 104038 -- סיכום קורס

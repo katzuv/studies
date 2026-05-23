@@ -1,0 +1,55 @@
+#import "@preview/physica:0.9.8": *
+#show: super-T-as-transpose // Render "..^T" as transposed matrix
+#show: super-plus-as-dagger // Render "..^+" as dagger
+
+#let del(a,b) = $(partial #a)/(partial #b)$
+
+$ del(a, b) $
+
+
+#let nonum(eq) = math.equation(block: true, numbering: none, eq)
+
+
+#let cal(it) = math.class("normal", context {
+  show math.equation: set text(font: "Garamond-Math", stylistic-set: 3)
+
+  let scaling = 100% * (1em.to-absolute() / text.size)
+  let wrapper = if scaling < 60% { math.sscript }
+                else if scaling < 100% { math.script }
+                else { it => it }
+  
+  box(text(top-edge: "bounds", $wrapper(math.cal(it))$))
+})
+
+#let det(..args) = math.mat(delim: "|", ..args)
+
+#set text(lang: "he", dir: rtl)
+#show link: underline
+
+#let שם-מייל = [ == דן קצוב-פייגין #link("mailto:dan.k@campus.technion.ac.il")[`dan.k@campus.technion.ac.il`] ]
+
+#let גיליון(course, semester, number, date) = [
+  #set document(title: course + " – " + semester + " – גיליון " + str(number))
+  #set align(center)
+  #text(3.5em)[#course -- #semester -- גיליון #number \ 
+  מגיש: דן קצוב-פייגין 323002915 \
+   תאריך הגשה: #date]
+  #pagebreak()
+  #set align(right)
+]
+#let הרצאה(number, date, notes-link) = [
+  == הרצאה #number | #date \ #link(notes-link, "קישור להרצאה")
+]
+
+#let innerp(x, y) = $lr(angle.l #x, #y angle.r)$
+
+#let Rn = [$bb(R)^n$]
+#let Cn = [$bb(C)^n$]
+#let Rnn = [$bb(R)^(n times n)$]
+#let Cnn = [$bb(C)^(n times n)$]
+
+#let קותח(text) = [ #underline(text) ]
+
+#let משל = [
+  #align(left)[$qed$]
+]
