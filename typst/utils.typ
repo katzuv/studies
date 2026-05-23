@@ -29,10 +29,10 @@ $ del(a, b) $
 #let שם-מייל = [ == דן קצוב-פייגין #link("mailto:dan.k@campus.technion.ac.il")[`dan.k@campus.technion.ac.il`] ]
 
 #let גיליון(course, semester, number, date) = [
+  #set document(title: course + " - " + semester + " - גיליון " + str(number))
   #set align(center)
-  #text(3.5em)[#course -- #semester\ 
-  גיליון #number \
-  מגיש: דן קצוב-פייגין 323002915 
+  #text(3.5em)[#course -- #semester -- גיליון #number \ 
+  מגיש: דן קצוב-פייגין 323002915 \
    תאריך הגשה: #date]
   #pagebreak()
   #set align(right)
