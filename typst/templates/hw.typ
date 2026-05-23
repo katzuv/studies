@@ -157,18 +157,32 @@
 #let title-lighten = 55%
 #let body-lighten = 80%
 
+#let smart-breakable(it) = context {
+  let m = measure(it)
+  if m.height < 24cm {
+    block(breakable: false, width: 100%, it)
+  } else {
+    it
+  }
+}
+
 #let שאלה(כותרת: "", מזהה: none, טקסט) = {
   pagebreak()
   [#heading(level: 1, supplement: [שאלה])[#כותרת] #מזהה]
 
-  let color = blue
-  showybox(
+  let color = rgb("#1a5fb4") // Deep Navy Blue
+  
+  // Split intro text from clauses
+  let children = if טקסט.has("children") { טקסט.children } else { (טקסט,) }
+  let idx = children.position(c => (c.func() == heading and c.level == 2) or (c.has("label") and str(c.label) == "is-clause"))
+  
+  let intro = if idx == none { טקסט } else { children.slice(0, idx).join() }
+  let rest = if idx == none { [] } else { children.slice(idx).join() }
+
+  smart-breakable(showybox(
     title-style: (
       boxed-style: (
-        anchor: (
-          x: center,
-          y: horizon,
-        ),
+        anchor: (x: center, y: horizon),
         radius: (top-right: 10pt, bottom-left: 10pt, rest: 0pt),
       ),
       color: rgb("#FFFFFF"),
@@ -183,24 +197,21 @@
     shadow: (
       offset: 2pt,
     ),
-    title: [שאלה #context counter(heading).display() – #כותרת],
-    {
-      set math.equation(numbering: none)
-      טקסט
-    },
-  )
+    title: context counter(heading).display((..nums) => {
+      let n = nums.pos().at(0)
+      [שאלה #n – #כותרת]
+    }),
+    intro
+  ))
+
+  rest
 }
 
 #let סעיף(מזהה: none, טקסט) = {
-  context {
-    let loc = counter(heading).get()
-    if loc.len() > 1 and loc.last() > 0 {
-      v(2.5em, weak: true)
-    }
-  }
+  [#metadata("is-clause") <is-clause>]
   [#heading(level: 2, supplement: [סעיף])[] #מזהה]
   let color = rgb("#26a269") // Deep Emerald Green
-  showybox(
+  smart-breakable(showybox(
     frame: (
       border-color: color.darken(frame-darken),
       title-color: color.lighten(title-lighten),
@@ -214,18 +225,21 @@
     shadow: (
       offset: 2pt,
     ),
-    title: [סעיף #context counter(heading).display().at(-1)],
+    title: context counter(heading).display((..nums) => {
+      let n = nums.pos().at(1, default: 1)
+      [סעיף #n]
+    }),
     {
       set math.equation(numbering: none)
       טקסט
     },
-  )
+  ))
 }
 
 #let תשובה(טקסט) = {
   let color = rgb("#e66100") // Deep Vermilion (Orange-Red)
-  showybox(
-    breakable: true,
+  smart-breakable(showybox(
+    breakable: true, 
     title: [תשובה סופית],
     frame: (
       border-color: color.darken(frame-darken - 10%),
@@ -238,5 +252,5 @@
       align: right,
     ),
     [#טקסט #משל],
-  )
+  ))
 }
