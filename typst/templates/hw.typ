@@ -163,15 +163,22 @@
 
   let color = blue
   showybox(
+    title-style: (
+      boxed-style: (
+        anchor: (
+          x: center,
+          y: horizon,
+        ),
+        radius: (top-right: 10pt, bottom-left: 10pt, rest: 0pt),
+      ),
+      color: rgb("#FFFFFF"),
+      weight: 600,
+      align: center,
+    ),
     frame: (
       border-color: color.darken(frame-darken),
-      title-color: color.lighten(title-lighten),
+      title-color: rgb("#2e62da"),
       body-color: color.lighten(body-lighten),
-    ),
-    title-style: (
-      color: black,
-      weight: "bold",
-      align: center,
     ),
     shadow: (
       offset: 2pt,
