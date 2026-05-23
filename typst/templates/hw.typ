@@ -154,6 +154,10 @@
 
 #let בולד(טקסט) = strong(טקסט)
 
+#let frame-darken = 50%
+#let title-lighten = 55%
+#let body-lighten = 80%
+
 #let שאלה(כותרת: "", מזהה: none, טקסט) = {
   pagebreak()
   [#heading(level: 1, supplement: [שאלה])[#כותרת] #מזהה]
@@ -161,13 +165,13 @@
   let color = blue
   showybox(
     frame: (
-      border-color: color.darken(50%),
-      title-color: color.lighten(60%),
-      body-color: color.lighten(80%)
+      border-color: color.darken(frame-darken),
+      title-color: color.lighten(title-lighten),
+      body-color: color.lighten(body-lighten)
     ),
     title-style: (
       color: black,
-      weight: "regular",
+      weight: "bold",
       align: center
     ),
     shadow: (
@@ -189,16 +193,16 @@
     }
   }
   [#heading(level: 2, supplement: [סעיף])[] #מזהה]
-  let color = green
+  let color = rgb("#26a269") // Deep Emerald Green
   showybox(
     frame: (
-      border-color: color.darken(50%),
-      title-color: color.lighten(60%),
-      body-color: color.lighten(80%)
+      border-color: color.darken(frame-darken),
+      title-color: color.lighten(title-lighten),
+      body-color: color.lighten(body-lighten)
     ),
     title-style: (
       color: black,
-      weight: "regular",
+      weight: "bold",
       align: right
     ),
     shadow: (
@@ -213,18 +217,18 @@
 }
 
 #let תשובה(טקסט) = {
-  let color = luma(120)
+  let color = rgb("#e66100") // Deep Vermilion (Orange-Red)
   showybox(
     breakable: true,
     title: [תשובה סופית],
     frame: (
-      border-color: color.darken(30%),
-      title-color: color.lighten(60%),
-      body-color: color.lighten(80%)
+      border-color: color.darken(frame-darken - 10%),
+      title-color: color.lighten(title-lighten - 5%),
+      body-color: color.lighten(body-lighten)
     ),
     title-style: (
       color: black,
-      weight: "regular",
+      weight: "bold",
       align: right,
     ),
     [#טקסט #משל]
