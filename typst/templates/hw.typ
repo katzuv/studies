@@ -14,14 +14,38 @@
   // Set the document's basic properties.
   set document(author: authors.map(a => a.name), title: title)
   set text(font: "Noto Sans Hebrew", lang: "he")
-  show math.equation: set text(weight: 400)
+  // show math.equation: set text(weight: 400) // Removed to allow bold in math
   set heading(numbering: "1.1")
   set math.equation(numbering: "(1)")
 
   show: super-T-as-transpose // Render "..^T" as transposed matrix
   show: super-plus-as-dagger // Render "..^+" as dagger
 
-  show heading: none 
+  show heading: none
+
+  show ref: it => {
+    let el = it.element
+    if el != none and el.func() == heading {
+      let loc = el.location()
+      let num = counter(heading).at(loc)
+      if el.level == 1 {
+        link(loc, [שאלה #numbering("1", ..num)])
+      } else if el.level == 2 {
+        context {
+          let curr = counter(heading).get()
+          if curr.len() > 0 and curr.first() == num.first() {
+            link(loc, [סעיף #numbering("1", num.last())])
+          } else {
+            link(loc, [שאלה #numbering("1", num.first()) סעיף #numbering("1", num.last())])
+          }
+        }
+      } else {
+        it
+      }
+    } else {
+      it
+    }
+  }
   // Title page.
   // The page can contain a logo if you pass one with `logo: "logo.png"`.
   v(0.6fr)
@@ -75,9 +99,9 @@
   body
 }
 
-#let שאלה(כותרת: "", טקסט) = {
+#let שאלה(כותרת: "", מזהה: none, טקסט) = {
   pagebreak()
-  heading[שאלה]
+  [#heading(level: 1, supplement: [שאלה])[שאלה] #מזהה]
 
   let color = blue
   showybox(
@@ -102,8 +126,8 @@
   )
 }
 
-#let סעיף(טקסט) = {
-  heading(level: 2)[סעיף]
+#let סעיף(מזהה: none, טקסט) = {
+  [#heading(level: 2, supplement: [סעיף])[סעיף] #מזהה]
   let color = green
   showybox(
     frame: (
