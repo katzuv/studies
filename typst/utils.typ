@@ -53,7 +53,7 @@ $ del(a, b) $
 #let Rnn = [$bb(R)^(n times n)$]
 #let Cnn = [$bb(C)^(n times n)$]
 
-#let קותח(text) = [ #underline(text) ]
+#let קותח(text) = [#underline(text)]
 
 #let משל = [
   #align(left)[$qed$]
