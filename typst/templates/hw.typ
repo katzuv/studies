@@ -207,5 +207,20 @@
 }
 
 #let תשובה(טקסט) = {
-  showybox[#טקסט #משל]
+  let color = luma(120)
+  showybox(
+    breakable: true,
+    title: [תשובה סופית],
+    frame: (
+      border-color: color.darken(30%),
+      title-color: color.lighten(60%),
+      body-color: color.lighten(80%)
+    ),
+    title-style: (
+      color: black,
+      weight: "regular",
+      align: right,
+    ),
+    [#טקסט #משל]
+  )
 }

@@ -83,6 +83,7 @@ $ & A ket(a_2) = mat(1, 0; 0, -1) vec(x, y) a_2 ket(a_2) = -1 vec(x,y) => \
   $ a_2 = -1, ket(a_2) = vec(0, 1) $
 ]
 
+#pagebreak()
 #סעיף[
   הראו מפורשות כי מתקיים פירוק היחידה עבור הבסיס
   $lr({|a_n chevron.r})$
@@ -141,6 +142,7 @@ $ B ket(b_1) = lambda_1 ket(b_1) => mat(0, -i; i, 0) vec(x, y) = 1 dot vec(x, y)
 $ B ket(b_2) = lambda_2 ket(b_2) => mat(0, -i; i, 0) vec(x, y) = -1 dot vec(x, y) => vec(-i y, i x) = vec(-x,-y) => vec(x, y) = vec(1, -i) $
 ננרמל את הווקטורים העצמיים:
 $ norm(ket(b_1)) = sqrt(|1|^2 + |i|^2) = sqrt(2), norm(ket(b_2)) = sqrt(|1|^2 + |-i|^2) = sqrt(2) $
+#pagebreak()
 לכן הבסיס המלכסן של $B$ הוא:
 #תשובה[
   $ {1/sqrt(2) vec(1, i), 1/sqrt(2) vec(1, -i)} $
