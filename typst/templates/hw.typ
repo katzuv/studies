@@ -182,6 +182,12 @@
 }
 
 #let סעיף(מזהה: none, טקסט) = {
+  context {
+    let loc = counter(heading).get()
+    if loc.len() > 1 and loc.last() > 0 {
+      v(2.5em, weak: true)
+    }
+  }
   [#heading(level: 2, supplement: [סעיף])[] #מזהה]
   let color = green
   showybox(
