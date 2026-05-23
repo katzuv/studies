@@ -23,29 +23,6 @@
 
   show heading: none
 
-  show ref: it => {
-    let el = it.element
-    if el != none and el.func() == heading {
-      let loc = el.location()
-      let num = counter(heading).at(loc)
-      if el.level == 1 {
-        link(loc, [שאלה #numbering("1", ..num)])
-      } else if el.level == 2 {
-        context {
-          let curr = counter(heading).get()
-          if curr.len() > 0 and curr.first() == num.first() {
-            link(loc, [סעיף #numbering("1", num.last())])
-          } else {
-            link(loc, [שאלה #numbering("1", num.first()) סעיף #numbering("1", num.last())])
-          }
-        }
-      } else {
-        it
-      }
-    } else {
-      it
-    }
-  }
   // Title page.
   // The page can contain a logo if you pass one with `logo: "logo.png"`.
   v(0.6fr)
@@ -81,6 +58,7 @@
   v(1.5em)
 
   show outline.entry: it => {
+    show link: it => it
     let el = it.element
     if el.func() != heading { return it }
     
@@ -122,6 +100,33 @@
   
   set page(numbering: "1", number-align: center)
 
+  show link: underline.with(stroke: 0.6pt + gray.darken(20%), offset: 2pt)
+  show ref: underline.with(stroke: 0.6pt + gray.darken(20%), offset: 2pt)
+
+  show ref: it => {
+    let el = it.element
+    if el != none and el.func() == heading {
+      let loc = el.location()
+      let num = counter(heading).at(loc)
+      let content = if el.level == 1 {
+        [שאלה #numbering("1", ..num)]
+      } else if el.level == 2 {
+        context {
+          let curr = counter(heading).get()
+          if curr.len() > 0 and curr.first() == num.first() {
+            [סעיף #numbering("1", num.last())]
+          } else {
+            [שאלה #numbering("1", num.first()) סעיף #numbering("1", num.last())]
+          }
+        }
+      } else {
+        it
+      }
+      underline(stroke: 0.6pt + gray.darken(20%), offset: 2pt, link(loc, content))
+    } else {
+      underline(stroke: 0.6pt + gray.darken(20%), offset: 2pt, it)
+    }
+  }
 
   // Main body.
   set par(justify: true)
