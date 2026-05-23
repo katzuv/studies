@@ -11,7 +11,7 @@
   authors: (
     (name: "דן קצוב-פייגין", email: "dan.k@campus.technion.ac.il", id: "323002915"),
   ),
-  date: datetime(year: 2026, month: 5, day: 22)
+  date: datetime(year: 2026, month: 5, day: 23)
 )
 
 #let e1 = $e_1$
@@ -64,7 +64,7 @@ $ & a_(11) = mel(e1, A, e1) = braket(e_1,e_1) stretch(=)_"בסיס אורתוג�
 כפי שניתן לראות, $A^+_cal(B) = A_cal(B)$, ולכן $A=A^+$ ולכן $A$ הוא אופרטור הרמיטי.
 בנוסף:
 #תשובה[
-   $ (ab^+_cal(B))^+_cal(B) = overline(mat(1, 0; 0, -1)) = mat(1, 0; 0, -1) = ab $ ]
+   $ (ab^+)^+ = overline(mat(1, 0; 0, -1)) = mat(1, 0; 0, -1) = ab $ ]
 #let abdag = $ab^+$
   כלומר גם $A^+ = A$ ולכן גם $A^+$ הוא הרמיטי.
 
