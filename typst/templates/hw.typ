@@ -13,7 +13,10 @@
 ) = {
   // Set the document's basic properties.
   set document(author: authors.map(a => a.name), title: title + " – גיליון " + str(number))
-  set text(font: "Noto Sans Hebrew", lang: "he")
+  set text(font: ("Noto Sans Hebrew", "Noto Sans", "Noto Serif Hebrew", "David", "Arial"), lang: "he")
+  
+  show strong: set text(weight: 700)
+  
   // show math.equation: set text(weight: 400) // Removed to allow bold in math
   set heading(numbering: "1.1")
   set math.equation(numbering: "(1)")
@@ -133,6 +136,8 @@
 
   body
 }
+
+#let בולד(טקסט) = strong(טקסט)
 
 #let שאלה(כותרת: "", מזהה: none, טקסט) = {
   pagebreak()
