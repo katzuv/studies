@@ -1,4 +1,4 @@
-#import "../../../utils.typ": גיליון, משל
+#import "../../../typst/utils.typ": גיליון, משל
 #set text(lang: "he", dir: rtl)
 
 #גיליון("חדו\"א 2ת'", "אביב תשפ\"ה", 1, "25/04/2025")

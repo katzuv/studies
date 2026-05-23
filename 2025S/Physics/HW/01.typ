@@ -1,4 +1,4 @@
-#import "../../../utils.typ": גיליון
+#import "../../../typst/utils.typ": גיליון
 #set text(lang: "he", dir: rtl)
 
 #גיליון("פיזיקה 2פ", "אביב תשפ\"ה", 1, "11/04/2025")
