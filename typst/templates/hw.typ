@@ -14,9 +14,9 @@
   // Set the document's basic properties.
   set document(author: authors.map(a => a.name), title: title + " – גיליון " + str(number))
   set text(font: ("Noto Sans Hebrew", "Noto Sans", "Noto Serif Hebrew", "David", "Arial"), lang: "he")
-  
+
   show strong: set text(weight: 700)
-  
+
   // show math.equation: set text(weight: 400) // Removed to allow bold in math
   set heading(numbering: "1.1")
   set math.equation(numbering: "(1)")
@@ -64,10 +64,10 @@
     show link: it => it
     let el = it.element
     if el.func() != heading { return it }
-    
+
     let loc = el.location()
     let num-parts = counter(heading).at(loc)
-    
+
     if el.level == 1 {
       let num = numbering(el.numbering, ..num-parts)
       let body = el.body
@@ -75,7 +75,7 @@
       if body != [] {
         txt = [*שאלה #num: #body*]
       }
-      
+
       let entry = link(loc, block(width: 100%, {
         txt
         box(width: 1fr, it.fill)
@@ -100,22 +100,21 @@
     }
   }
   outline(title: none, depth: 2)
-  
+
   set page(
-    numbering: "1", 
+    numbering: "1",
     number-align: center,
     header: context {
       if counter(page).get().first() > 1 {
         set text(size: 0.9em, fill: gray.darken(30%))
         grid(
           columns: (1fr, 1fr),
-          align(right, title + " – גיליון " + str(number)),
-          align(left, authors.at(0).name)
+          align(right, title + " – גיליון " + str(number)), align(left, authors.at(0).name),
         )
         v(-0.6em)
         line(length: 100%, stroke: 0.5pt + gray)
       }
-    }
+    },
   )
 
   show link: underline.with(stroke: 0.6pt + gray.darken(20%), offset: 2pt)
@@ -167,12 +166,12 @@
     frame: (
       border-color: color.darken(frame-darken),
       title-color: color.lighten(title-lighten),
-      body-color: color.lighten(body-lighten)
+      body-color: color.lighten(body-lighten),
     ),
     title-style: (
       color: black,
       weight: "bold",
-      align: center
+      align: center,
     ),
     shadow: (
       offset: 2pt,
@@ -181,7 +180,7 @@
     {
       set math.equation(numbering: none)
       טקסט
-    }
+    },
   )
 }
 
@@ -198,12 +197,12 @@
     frame: (
       border-color: color.darken(frame-darken),
       title-color: color.lighten(title-lighten),
-      body-color: color.lighten(body-lighten)
+      body-color: color.lighten(body-lighten),
     ),
     title-style: (
       color: black,
       weight: "bold",
-      align: right
+      align: right,
     ),
     shadow: (
       offset: 2pt,
@@ -212,7 +211,7 @@
     {
       set math.equation(numbering: none)
       טקסט
-    }
+    },
   )
 }
 
@@ -224,13 +223,13 @@
     frame: (
       border-color: color.darken(frame-darken - 10%),
       title-color: color.lighten(title-lighten - 5%),
-      body-color: color.lighten(body-lighten)
+      body-color: color.lighten(body-lighten),
     ),
     title-style: (
       color: black,
       weight: "bold",
       align: right,
     ),
-    [#טקסט #משל]
+    [#טקסט #משל],
   )
 }
