@@ -23,7 +23,7 @@ $ del(a, b) $
 
 #let det(..args) = math.mat(delim: "|", ..args)
 
-#set text(lang: "he", dir: rtl, font: "David")
+#set text(lang: "he", dir: rtl)
 #show link: underline
 
 #let שם-מייל = [ == דן קצוב-פייגין #link("mailto:dan.k@campus.technion.ac.il")[`dan.k@campus.technion.ac.il`] ]
