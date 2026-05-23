@@ -77,18 +77,48 @@
   pagebreak()
 
   // Table of contents.
-  show outline.entry: it => link(
-    it.element.location(),
-    block({
-      it.element.body
-      [ ]
-      numbering(it.element.numbering, ..counter(it.element.func()).at(it.element.location()))
-      box(width: 1fr, it.fill)
-      [ ]
-      it.page()
-    })
-  )
-  outline(depth: 1)
+  align(center)[#text(1.8em, weight: 700)[תוכן עניינים]]
+  v(1.5em)
+
+  show outline.entry: it => {
+    let el = it.element
+    if el.func() != heading { return it }
+    
+    let loc = el.location()
+    let num-parts = counter(heading).at(loc)
+    
+    if el.level == 1 {
+      let num = numbering(el.numbering, ..num-parts)
+      let body = el.body
+      let txt = [*שאלה #num*]
+      if body != [] {
+        txt = [*שאלה #num: #body*]
+      }
+      
+      let entry = link(loc, block(width: 100%, {
+        txt
+        box(width: 1fr, it.fill)
+        it.page()
+      }))
+
+      if num-parts.at(0, default: 0) > 1 {
+        stack(dir: ttb, v(0.65em), entry)
+      } else {
+        entry
+      }
+    } else if el.level == 2 {
+      let last-num = numbering("1", num-parts.last())
+      link(loc, block({
+        h(1.2em)
+        [סעיף #last-num]
+        box(width: 1fr, it.fill)
+        it.page()
+      }))
+    } else {
+      it
+    }
+  }
+  outline(title: none, depth: 2)
   
   set page(numbering: "1", number-align: center)
 
@@ -101,7 +131,7 @@
 
 #let שאלה(כותרת: "", מזהה: none, טקסט) = {
   pagebreak()
-  [#heading(level: 1, supplement: [שאלה])[שאלה] #מזהה]
+  [#heading(level: 1, supplement: [שאלה])[#כותרת] #מזהה]
 
   let color = blue
   showybox(
@@ -127,7 +157,7 @@
 }
 
 #let סעיף(מזהה: none, טקסט) = {
-  [#heading(level: 2, supplement: [סעיף])[סעיף] #מזהה]
+  [#heading(level: 2, supplement: [סעיף])[] #מזהה]
   let color = green
   showybox(
     frame: (
