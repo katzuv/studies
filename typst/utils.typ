@@ -45,7 +45,7 @@ $ del(a, b) $
   == הרצאה #number | #date \ #link(notes-link, "קישור להרצאה")
 ]
 
-#let innerp(x, y) = $lr(angle.l #x, #y angle.r)$
+#let innerp(x, y) = $lr(chevron.l #x, #y chevron.r)$
 #let limn(series, n: $n -> infinity$) = $display(lim_(#n)#series)$
 
 #let Rn = [$bb(R)^n$]
