@@ -15,14 +15,22 @@ ticks = data["ticks"]
 time = data["time"]
 ticks /= constants.TICKS_PER_METER
 
-plt.errorbar(time, ticks * 100, yerr=constants.TICKS_PER_METER_ERROR * 100, fmt=".", label="Measurements", ecolor='gray',
-         elinewidth=1, capsize=2)
+plt.errorbar(
+    time,
+    ticks * 100,
+    yerr=constants.TICKS_PER_METER_ERROR * 100,
+    fmt=".",
+    label="Measurements",
+    ecolor="gray",
+    elinewidth=1,
+    capsize=2,
+)
 
 amplitude = utils.get_amplitude(ticks)
 peak_indices, _ = scipy.signal.find_peaks(ticks)
 peaks = ticks.values[peak_indices] * 100
 peak1, peak2 = peaks[0], peaks[-1]
-print(f"{peak1=:.2f}, {peak2=:.2f}, {((peak1-peak2)/peak1) * 100:.2f}%")
+print(f"{peak1=:.2f}, {peak2=:.2f}, {((peak1 - peak2) / peak1) * 100:.2f}%")
 
 # plt.plot(time[peak_indices], peaks, "^", label="Peaks")
 
@@ -56,11 +64,13 @@ plt.savefig("simple.svg", format="svg")
 plt.show()
 
 error = (np.abs(frequency_fit - NATURAL_FREQUENCY) / NATURAL_FREQUENCY) * 100
-print(f"Theory: {NATURAL_FREQUENCY}±{NATURAL_FREQUENCY_ERROR} | Error percentage of frequency from theory: {error:.2f}%")
+print(
+    f"Theory: {NATURAL_FREQUENCY}±{NATURAL_FREQUENCY_ERROR} | Error percentage of frequency from theory: {error:.2f}%"
+)
 
 fitted = sine_func(time, *popt)
 residuals = ticks - fitted
-ss_res = np.sum(residuals ** 2)
+ss_res = np.sum(residuals**2)
 ss_tot = np.sum((ticks - np.mean(ticks)) ** 2)
 r_squared = 1 - ss_res / ss_tot
 

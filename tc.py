@@ -7,6 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+
 def compile_typst(file_path_str: str):
     file_path = Path(file_path_str).resolve()
     if not file_path.exists():
@@ -17,7 +18,7 @@ def compile_typst(file_path_str: str):
     # Path format example: 2026S/Quantum1/HW/HW02/main.typ
     parent = file_path.parent
     hw_number = parent.name
-    
+
     # Subject is the first ancestor that isn't 'HW', 'HWs', or 'Numeric'
     subject = "document"
     for ancestor in parent.parents:
@@ -25,28 +26,31 @@ def compile_typst(file_path_str: str):
         if ancestor == Path.cwd():
             break
         name_lower = ancestor.name.lower()
-        if name_lower not in ('hw', 'hws', 'numeric'):
+        if name_lower not in ("hw", "hws", "numeric"):
             subject = ancestor.name
             break
-            
+
     filename = f"{subject} {hw_number}.pdf"
-    
+
     # Clean filename for OS compatibility
     for char in '<>:"/\\|?*':
         filename = filename.replace(char, "-")
-        
+
     output_path = parent / filename
-    
-    print(f"Compiling {file_path.relative_to(Path.cwd())} -> {output_path.relative_to(Path.cwd())}...")
-    
+
+    print(
+        f"Compiling {file_path.relative_to(Path.cwd())} -> {output_path.relative_to(Path.cwd())}..."
+    )
+
     try:
         subprocess.run(
             ["typst", "compile", "--root", ".", str(file_path), str(output_path)],
-            check=True
+            check=True,
         )
         print("Success!")
     except subprocess.CalledProcessError:
         print(f"Compilation failed.")
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

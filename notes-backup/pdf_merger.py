@@ -179,7 +179,7 @@ def merge_course_pdfs(
 
     # Merge lectures
     if lectures:
-        lecture_titles = [f"Lecture {i+1}" for i in range(len(lectures))]
+        lecture_titles = [f"Lecture {i + 1}" for i in range(len(lectures))]
 
         # Save to course folder
         lectures_course = course_folder / f"{course_name}_Lectures.pdf"
@@ -195,7 +195,7 @@ def merge_course_pdfs(
 
     # Merge tirguls
     if tirguls:
-        tirgul_titles = [f"Tirgul {i+1}" for i in range(len(tirguls))]
+        tirgul_titles = [f"Tirgul {i + 1}" for i in range(len(tirguls))]
 
         # Save to course folder
         tirguls_course = course_folder / f"{course_name}_Tirgul.pdf"
@@ -216,11 +216,11 @@ def merge_course_pdfs(
 
         if lectures:
             all_files.extend(lectures)
-            all_titles.extend([f"Lecture {i+1}" for i in range(len(lectures))])
+            all_titles.extend([f"Lecture {i + 1}" for i in range(len(lectures))])
 
         if tirguls:
             all_files.extend(tirguls)
-            all_titles.extend([f"Tirgul {i+1}" for i in range(len(tirguls))])
+            all_titles.extend([f"Tirgul {i + 1}" for i in range(len(tirguls))])
 
         # Save to course folder
         full_course = course_folder / f"{course_name}_Full.pdf"
