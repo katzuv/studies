@@ -7,10 +7,9 @@ from matplotlib import pyplot as plt
 
 sys.path.append("../utils.py")
 
-from consts import *
 import autograd.numpy as np
-
 import utils
+from consts import *
 
 
 def left_model(time, tau, low_frequency, high_frequency, phi1, phi2, A, B):

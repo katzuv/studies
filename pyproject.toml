@@ -18,6 +18,14 @@ dev = [
     "ruff>=0.15.12",
 ]
 
+[tool.ruff]
+extend-exclude = [
+    ".virtual_documents",
+    "2025S/Lab/05 Capacitance/Capacitance.ipynb",
+    "2025S/Lab/06 Resistance/Resistance.ipynb",
+    "2025W/Python/Exercises/hw5/HW5_structure.ipynb",
+]
+
 [tool.ruff.lint]
 extend-select = [
     "I", # isort (import sorting)

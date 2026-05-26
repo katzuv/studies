@@ -1,5 +1,5 @@
-from utils import propagate_error
 import autograd.numpy as np
+from utils import propagate_error
 
 TIME_ERROR = 0.002  # ms
 CYLINDER_LENGTH = 1.96  # length of the cylinder [m]

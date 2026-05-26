@@ -1,7 +1,7 @@
 import numpy
 import scipy
-from matplotlib import pyplot as plt
 import utils
+from matplotlib import pyplot as plt
 
 # System parameters
 INTERFEROMETER_LENGTH = 0.24

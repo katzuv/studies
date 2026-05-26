@@ -1,7 +1,6 @@
 import autograd.numpy as np
 import scipy
 from matplotlib import pyplot as plt
-
 from utils import propagate_error
 
 measured_1 = np.array([0.267, 0.602, 0.802, 1.067, 1.314, 1.604])

@@ -1,11 +1,11 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import numpy as np
 
 # 1. Set up the figure and axis
 fig, ax = plt.subplots(figsize=(10, 6))
 omega = np.linspace(-15, 15, 1000)
-line, = ax.plot([], [], lw=2.5, color='#1f77b4')
+(line,) = ax.plot([], [], lw=2.5, color="#1f77b4")
 
 # Formatting the plot
 ax.set_xlim(-10, 10)
@@ -13,25 +13,40 @@ ax.set_ylim(0, 2.2)
 ax.set_title("Fourier Transform: Modulated Exponential", fontsize=16, pad=15)
 ax.set_xlabel(r"Frequency ($\omega$)", fontsize=14)
 ax.set_ylabel(r"Amplitude $\tilde{f}(\omega)$", fontsize=14)
-ax.grid(True, linestyle='--', alpha=0.6)
+ax.grid(True, linestyle="--", alpha=0.6)
 
 # Text box to show the live parameter values
-text_box = ax.text(0.05, 0.85, '', transform=ax.transAxes, fontsize=14,
-                   bbox=dict(boxstyle="round,pad=0.5", facecolor="lightgoldenrodyellow", alpha=0.8, edgecolor="gray"))
+text_box = ax.text(
+    0.05,
+    0.85,
+    "",
+    transform=ax.transAxes,
+    fontsize=14,
+    bbox=dict(
+        boxstyle="round,pad=0.5",
+        facecolor="lightgoldenrodyellow",
+        alpha=0.8,
+        edgecolor="gray",
+    ),
+)
+
 
 # 2. The mathematical function you derived
 def f_hat(w, tau, w0):
-    peak_right = 1 / (1 + (w - w0)**2 * tau**2)
-    peak_left  = 1 / (1 + (w + w0)**2 * tau**2)
+    peak_right = 1 / (1 + (w - w0) ** 2 * tau**2)
+    peak_left = 1 / (1 + (w + w0) ** 2 * tau**2)
     return peak_left + peak_right
+
 
 # 3. Animation Logic - Now slower and with a break
 total_frames = 400
 
+
 def init():
     line.set_data([], [])
-    text_box.set_text('')
+    text_box.set_text("")
     return line, text_box
+
 
 def animate(i):
     # Phase 1: Move omega_0 from 0 to 5 smoothly (Slower)
@@ -67,13 +82,17 @@ def animate(i):
     line.set_data(omega, y)
 
     # Update the text box with live variables
-    text_box.set_text(rf'$\omega_0$ (Shift) = {w0:.2f}' + '\n' + rf'$\tau$ (Width) = {tau:.2f}')
+    text_box.set_text(
+        rf"$\omega_0$ (Shift) = {w0:.2f}" + "\n" + rf"$\tau$ (Width) = {tau:.2f}"
+    )
 
     return line, text_box
 
+
 # Create the animation (interval=40 makes playback slightly slower)
-ani = animation.FuncAnimation(fig, animate, init_func=init,
-                              frames=total_frames, interval=40, blit=True)
+ani = animation.FuncAnimation(
+    fig, animate, init_func=init, frames=total_frames, interval=40, blit=True
+)
 
 plt.tight_layout()
 plt.show()

@@ -1,7 +1,6 @@
 import numpy as np
 import scipy
 from matplotlib import pyplot as plt
-
 from utils import propagate_error
 
 f = 4.15e3  # kHz

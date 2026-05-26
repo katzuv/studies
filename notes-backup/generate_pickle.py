@@ -8,7 +8,6 @@ Run this once to set up authentication.
 import pickle
 from pathlib import Path
 
-from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 # Scopes define what access the app has
@@ -35,7 +34,7 @@ def generate_pickle_from_credentials(
     # Save the credentials for future use
     output_path.write_bytes(pickle.dumps(creds))
     print(f"✓ Successfully created {output_path}")
-    print(f"✓ You can now use this token.pickle file for authentication")
+    print("✓ You can now use this token.pickle file for authentication")
 
 
 if __name__ == "__main__":

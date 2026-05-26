@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 """
 Created on Tue May 20 16:03:10 2025
 
 @author: moshe
 """
 
-import numpy as np
 import matplotlib.pyplot as plt
-from scipy.integrate import solve_ivp, cumtrapz
+import numpy as np
+from scipy.integrate import cumtrapz, solve_ivp
 
 # Constants
 mu0 = 4 * np.pi * 1e-7  # Vacuum permeability (not used but good to have)
