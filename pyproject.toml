@@ -21,9 +21,9 @@ dev = [
 [tool.ruff]
 extend-exclude = [
     ".virtual_documents",
-    "2025S/Lab/05 Capacitance/Capacitance.ipynb",
-    "2025S/Lab/06 Resistance/Resistance.ipynb",
-    "2025W/Python/Exercises/hw5/HW5_structure.ipynb",
+    "2025S",
+    "2025W",
+    "2026W",
 ]
 
 [tool.ruff.lint]
@@ -35,4 +35,5 @@ extend-select = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
+"__init__.py" = ["F401", "F403"]
+"*.ipynb" = ["E402"]
