@@ -21,7 +21,7 @@ def test_pdf_merger_class():
     try:
         from pdf_merger import PDFMerger
 
-        merger = PDFMerger()
+        PDFMerger()
         print("✓ PDFMerger class instantiated")
         return True
     except Exception as e:
@@ -33,7 +33,7 @@ def test_pathlib_usage():
     """Test that pathlib is being used correctly"""
     try:
         # Check function signatures accept Path objects
-        test_path = Path("/tmp/test")
+        Path("/tmp/test")
 
         print("✓ Functions accept pathlib.Path objects")
         return True

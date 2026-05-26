@@ -10,7 +10,7 @@ for i in range(len(numbers) - 2):
     for j in range(i + 1, len(numbers) - 1):
         for k in range(j + 1, len(numbers)):
             first, second, third = numbers[i], numbers[j], numbers[k]
-            if first == second or second == third or first == third:
+            if first in (second, third) or second == third:
                 continue
             if first + second + third == target:
                 combinations.append(f"{first}{second}{third}")

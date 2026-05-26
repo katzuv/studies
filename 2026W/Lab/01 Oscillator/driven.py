@@ -51,17 +51,17 @@ def parse_single_run(file_path: Path):
     motor_peak_indices, _ = scipy.signal.find_peaks(motor_ticks, distance=100)
     mass_peak_indices, _ = scipy.signal.find_peaks(mass_ticks, distance=100)
     # diff = np.mean(motor_peak_indices - mass_peak_indices)
-    diff = (2 * np.pi) / ((motor_peak_indices[0] - mass_peak_indices[0]) * (time[1] - time[0]))
+    (2 * np.pi) / ((motor_peak_indices[0] - mass_peak_indices[0]) * (time[1] - time[0]))
     p = np.average(np.diff(motor_peak_indices * (time[1] - time[0])))
-    frequency = (2 * np.pi) / p
+    (2 * np.pi) / p
     p_err = (time[1] - time[0]) / np.sqrt(len(np.diff(motor_peak_indices)))
-    frequency_err = (2 * np.pi * p_err) / p**2
+    (2 * np.pi * p_err) / p**2
     zc = np.where(np.diff(np.sign(motor_ticks)) != 0)[0]
     t_zc = time[zc]
     period = 2 * np.mean(np.diff(t_zc))  # full period = 2 crossings
     period_err = 2 * (time[1] - time[0]) / np.sqrt(len(np.diff(t_zc)))
     f = 2 * np.pi / period
-    f_err = period_err * 2 * np.pi / period**2
+    period_err * 2 * np.pi / period**2
     # compute phases
     # plt.plot(time, mass_ticks, ".", label=str(np.round(100*f)/100))
     phi_motor_guess = np.arctan2(
@@ -104,7 +104,7 @@ def parse_single_run(file_path: Path):
         * (motor_parameters_err[0] ** 4)
         / motor_parameters[0] ** 2
     )
-    frequencies = np.linspace(0, driven_constants.NATURAL_FREQUENCY, len(motor_ticks))
+    np.linspace(0, driven_constants.NATURAL_FREQUENCY, len(motor_ticks))
     phase_diff_err = np.sqrt(
         (mass_parameters[2] * mass_parameters_err[2]) ** 2
         + (motor_parameters[2] * motor_parameters_err[2]) ** 2
@@ -144,7 +144,7 @@ for file_path in Path("driven_data").iterdir():
     file_paths.append(file_path.name)
 frequencies = np.array(frequencies)
 frequencies_errs = np.array(frequencies_errs)
-for x, y, label in zip(frequencies, amplitude_ratios, file_paths):
+for x, y, label in zip(frequencies, amplitude_ratios, file_paths, strict=False):
     plt.text(x, y, label, fontsize=8, ha="right", va="bottom")  # small label
 
 # frequency to amplitude graph

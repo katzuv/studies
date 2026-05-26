@@ -48,7 +48,7 @@ class PDFMerger:
         # Merge each PDF and track page numbers for TOC
         current_page = 0
 
-        for pdf_path, title in zip(pdf_files, toc_titles):
+        for pdf_path, title in zip(pdf_files, toc_titles, strict=False):
             if not pdf_path.exists():
                 print(f"Warning: File not found: {pdf_path}")
                 continue
