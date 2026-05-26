@@ -34,7 +34,7 @@ def left_model_new(time, A, B, phi1, phi2):
     return exp * (A * np.cos(low) + B * np.cos(high))
 
 
-def right_model_new(time, A, B, phi1,phi2):
+def right_model_new(time, A, B, phi1, phi2):
     low = 4.25 * time + phi1
     high = 7.46 * time + phi2
     exp = np.exp(-time / (2 * 3.37))
@@ -51,16 +51,24 @@ def plot_single(file_path, guesses):
     time = data["time"][0:3000]
     # print("frequencies_left =", np.fft.fft(left_ticks))
     # print("frequencies_right =", np.fft.fft(right_ticks))
-    length_error = .5
+    length_error = 0.5
     plt.plot(time, left_ticks, label="Left measure")
-    plt.fill_between(time,
-                     left_ticks - length_error,
-                     left_ticks + length_error,
-                     color='C0', alpha=0.25, label='Left measure error')
-    plt.fill_between(time,
-                     right_ticks - length_error,
-                     right_ticks + length_error,
-                     color='C1', alpha=0.25, label='Right measure error')
+    plt.fill_between(
+        time,
+        left_ticks - length_error,
+        left_ticks + length_error,
+        color="C0",
+        alpha=0.25,
+        label="Left measure error",
+    )
+    plt.fill_between(
+        time,
+        right_ticks - length_error,
+        right_ticks + length_error,
+        color="C1",
+        alpha=0.25,
+        label="Right measure error",
+    )
 
     plt.errorbar(time, right_ticks, label="Right measure")
 
@@ -72,8 +80,14 @@ def plot_single(file_path, guesses):
     t_fit = np.linspace(time.min(), time.max(), 1000)
     lower_bounds = [-np.inf, -np.inf, -np.inf, -np.pi, -np.pi, -np.inf, -np.inf]
     upper_bounds = [np.inf, np.inf, np.inf, np.pi, np.pi, np.inf, np.inf]
-    popt, pcov = scipy.optimize.curve_fit(left_model, time, left_ticks, p0=guesses, sigma=length_error,
-                                          bounds=(lower_bounds, upper_bounds))
+    popt, pcov = scipy.optimize.curve_fit(
+        left_model,
+        time,
+        left_ticks,
+        p0=guesses,
+        sigma=length_error,
+        bounds=(lower_bounds, upper_bounds),
+    )
     tau, low, high, phi1, phi2, a, b = popt
     if file_path.stem != "100_0":
         left_model_fit = left_model(t_fit, *popt)
@@ -81,9 +95,9 @@ def plot_single(file_path, guesses):
         right_model_fit = right_model(t_fit, *popt)
         right_model_ = right_model
     else:
-        left_model_fit = left_model_new(t_fit, a, b,phi1,phi2)
+        left_model_fit = left_model_new(t_fit, a, b, phi1, phi2)
         left_model_ = left_model_new
-        right_model_fit = right_model_new(t_fit, a, b,phi1,phi2)
+        right_model_fit = right_model_new(t_fit, a, b, phi1, phi2)
         right_model_ = right_model_new
     plt.plot(t_fit, left_model_fit, "r-", label="Left fit")
     try:
@@ -91,11 +105,13 @@ def plot_single(file_path, guesses):
     except TypeError:
         fitted = left_model_(time, a, b, phi1, phi2)
     residuals = left_ticks - fitted
-    ss_res = np.sum(residuals ** 2)
+    ss_res = np.sum(residuals**2)
     ss_tot = np.sum((left_ticks - np.mean(left_ticks)) ** 2)
     r_squared = 1 - ss_res / ss_tot
     print(f"R^2 left = {r_squared:.9f}")
-    tau_err, low_err, high_err, phi1_err, phi2_err, a_err, b_err = np.sqrt(pcov.diagonal())
+    tau_err, low_err, high_err, phi1_err, phi2_err, a_err, b_err = np.sqrt(
+        pcov.diagonal()
+    )
     # error = utils.propagate_error(left_model, (time,tau, low, high, phi1, phi2, a, b), (0,tau_err, low_err, high_err, phi1_err, phi2_err, a_err, b_err))
     # plt.fill_between(time,
     #                  left_model_fit - error,
@@ -109,19 +125,27 @@ def plot_single(file_path, guesses):
     print(f"phi1 = {phi1:.5f} ± {phi1_err:.5f}")
     print(f"phi2 = {phi2:.5f} ± {phi2_err:.5f}")
 
-    popt, pcov = scipy.optimize.curve_fit(right_model, time, right_ticks, p0=guesses, sigma=length_error,
-                                          bounds=(lower_bounds, upper_bounds))
+    popt, pcov = scipy.optimize.curve_fit(
+        right_model,
+        time,
+        right_ticks,
+        p0=guesses,
+        sigma=length_error,
+        bounds=(lower_bounds, upper_bounds),
+    )
     t_fit = np.linspace(time.min(), time.max(), 1000)
     # right_model_fit = right_model(t_fit, *popt)
     plt.plot(t_fit, right_model_fit, "g-", label="Right fit")
     tau, low, high, phi1, phi2, a, b = popt
-    tau_err, low_err, high_err, phi1_err, phi2_err, a_err, b_err = np.sqrt(pcov.diagonal())
+    tau_err, low_err, high_err, phi1_err, phi2_err, a_err, b_err = np.sqrt(
+        pcov.diagonal()
+    )
     try:
         fitted = right_model_(time, *popt)
     except TypeError:
         fitted = right_model_(time, a, b, phi1, phi2)
     residuals = right_ticks - fitted
-    ss_res = np.sum(residuals ** 2)
+    ss_res = np.sum(residuals**2)
     ss_tot = np.sum((right_ticks - np.mean(right_ticks)) ** 2)
     r_squared = 1 - ss_res / ss_tot
     print(f"R^2 right = {r_squared:.9f}")
@@ -141,7 +165,7 @@ def plot_single(file_path, guesses):
 
     plt.legend()
     plt.grid()
-    plt.savefig(file_path.with_suffix(".svg"), format='svg')
+    plt.savefig(file_path.with_suffix(".svg"), format="svg")
     plt.show()
 
 

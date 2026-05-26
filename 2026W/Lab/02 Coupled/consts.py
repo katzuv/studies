@@ -17,17 +17,25 @@ k1_mass = 42.15e-3
 k2_mass = 42.85e-3
 k3_mass = 42.70e-3
 
+
 def spring_constant(mass, gravity, length_diff):
     return (mass * gravity) / length_diff
+
 
 K1_CONSTANT = spring_constant(k1_mass, g, length)
 K2_CONSTANT = spring_constant(k2_mass, g, length)
 K3_CONSTANT = spring_constant(k3_mass, g, length)
-K1_ERROR = utils.propagate_error(spring_constant, (k1_mass, g, length), (MASS_ERROR, g_error, length_error))
-K2_ERROR = utils.propagate_error(spring_constant, (k2_mass, g, length), (MASS_ERROR, g_error, length_error))
-K3_ERROR = utils.propagate_error(spring_constant, (k3_mass, g, length), (MASS_ERROR, g_error, length_error))
-K_AVG = (K1_CONSTANT+K2_CONSTANT+K3_CONSTANT)/3
-K_AVG_ERROR = (K1_ERROR+K2_ERROR+K3_ERROR)/3
+K1_ERROR = utils.propagate_error(
+    spring_constant, (k1_mass, g, length), (MASS_ERROR, g_error, length_error)
+)
+K2_ERROR = utils.propagate_error(
+    spring_constant, (k2_mass, g, length), (MASS_ERROR, g_error, length_error)
+)
+K3_ERROR = utils.propagate_error(
+    spring_constant, (k3_mass, g, length), (MASS_ERROR, g_error, length_error)
+)
+K_AVG = (K1_CONSTANT + K2_CONSTANT + K3_CONSTANT) / 3
+K_AVG_ERROR = (K1_ERROR + K2_ERROR + K3_ERROR) / 3
 print(K1_CONSTANT, K2_CONSTANT, K3_CONSTANT)
 print(K1_ERROR, K2_ERROR, K3_ERROR)
 print(K_AVG, K_AVG_ERROR)

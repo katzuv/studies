@@ -1,17 +1,22 @@
-#%% md
+# %% md
 # # תרגיל בית 5
-#%%
+# %%
 import pandas as pd
-#%% md
+
+
+# %% md
 # ### Section 1
-#%%
+# %%
 def read_event_data(file_path):
     return pd.read_csv(file_path)
 
-print(read_event_data('sports_event.csv'))
-#%% md
+
+print(read_event_data("sports_event.csv"))
+
+
+# %% md
 # ### Section 2
-#%%
+# %%
 def top_athlete(events, event_name):
     event_names = events["Event"]
     athlete_names = events["Athlete"]
@@ -26,90 +31,108 @@ def top_athlete(events, event_name):
             relevant_scores.append(scores[i])
 
     return
-#%%
+
+
+# %%
 # Run - Do not change this cell!
-file_path = 'sports_event.csv'
+file_path = "sports_event.csv"
 events = read_event_data(file_path)
 for event in ["Discus Throw", "Long Jump", "High Jump", "Shot Put"]:
     print(f"{event}: {top_athlete(events, event)}")
-#%% md
+
+
+# %% md
 # ### Section 3
-#%%
+# %%
 def event_scores(events, event_name):
     pass
     ## Add your code!
-#%%
+
+
+# %%
 # Run - Do not change this cell!
-file_path = 'sports_event.csv'
+file_path = "sports_event.csv"
 events = read_event_data(file_path)
 for event in ["Discus Throw", "Long Jump", "High Jump", "Shot Put"]:
     print(f"{event}: {sorted(event_scores(events, event))}")
-#%% md
+
+
+# %% md
 # ### Section 4
-#%%
+# %%
 def unique_events(events):
     pass
     # Add your code!
-#%%
+
+
+# %%
 # Run - Do not change this cell!
-file_path = 'sports_event.csv'
+file_path = "sports_event.csv"
 events = read_event_data(file_path)
 print(sorted(unique_events(events)))
-#%% md
+
+
+# %% md
 # ### Section 5
-#%%
+# %%
 def count_events(events):
-    pass# Add your code!
-#%%
+    pass  # Add your code!
+
+
+# %%
 # Run - Do not change this cell!
-file_path = 'sports_event.csv'
+file_path = "sports_event.csv"
 events = read_event_data(file_path)
 event_type, count = count_events(events)
 for event in ["Discus Throw", "Long Jump", "High Jump", "Shot Put"]:
     idx = event_type.index(event)
     print(f"{event}: {count[idx]}")
-        
-#%% md
+
+
+# %% md
 # ### Section 6
-#%%
+# %%
 def analyze_scores(events, event_name):
     pass
     ## Add your code!
-#%% md
+
+
+# %% md
 # ### Section 7
-#%%
+# %%
 def analyze_event(file_path, event_name):
     pass
     ## Add your code!
-    
-#%%
+
+
+# %%
 # Run - Do not change this cell!
-file_path = 'sports_event.csv'
+file_path = "sports_event.csv"
 for event in ["Discus Throw", "Long Jump", "High Jump", "Shot Put"]:
     analyze_event(file_path, event)
-#%%
+# %%
 # Run on your data
 # make sure my_events.csv is in the same directory as this notebook
-filename2 = 'my_events.csv'
-event = ''# add your event here
+filename2 = "my_events.csv"
+event = ""  # add your event here
 analyze_event(file_path, event)
-#%% md
-# # חלק יבש 
+# %% md
+# # חלק יבש
 # ניתן למחוק חלק זה ולצרף את החלק היבש באחת הדרכים האחרים שתוארו במסמך
-#%%
+# %%
 ## To start a new line in answers below use <br>
-#%% md
+# %% md
 # ## סעיף 5
-#%% md
+# %% md
 # 1) double click to add answer
-#%% md
+# %% md
 # 2) double click to add answer
-#%% md
+# %% md
 # ## סעיף 6
-#%% md
+# %% md
 # 1) double click to add answer
-#%% md
+# %% md
 # 2) double click to add answer
-#%% md
+# %% md
 # 3) double click to add answer
-#%%
+# %%
