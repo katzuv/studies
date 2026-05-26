@@ -18,13 +18,16 @@ for i in range(0, elements_amount, 4):
     operator = elements[i + 2]
     result = int(elements[i + 3])
 
-    if operator == "power" and first ** second == result:
-        correct += 1
-    elif operator == "multiplication" and first * second == result:
-        correct += 1
-    elif operator == "addition" and first + second == result:
-        correct += 1
-    elif operator == "subtraction" and first - second == result:
+    if (
+        operator == "power"
+        and first**second == result
+        or operator == "multiplication"
+        and first * second == result
+        or operator == "addition"
+        and first + second == result
+        or operator == "subtraction"
+        and first - second == result
+    ):
         correct += 1
 
 print(f"{correct}/{total}")

@@ -1,5 +1,4 @@
 import autograd.numpy as np
-
 from utils import propagate_error
 
 ticks_per_meter_measurements = (178 / 0.09, 100 / 0.05, 140 / 0.07)

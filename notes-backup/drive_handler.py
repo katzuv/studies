@@ -9,7 +9,7 @@ from pathlib import Path
 
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseDownload, MediaFileUpload
+from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from tqdm import tqdm
 
 

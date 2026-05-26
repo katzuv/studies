@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy import signal
 
-
 image = plt.imread("acousto_near.tif")
 
 plt.imshow(image)

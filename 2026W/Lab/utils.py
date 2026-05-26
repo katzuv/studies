@@ -1,6 +1,5 @@
+from collections.abc import Callable, Iterable
 from pathlib import Path
-from typing import Callable
-from collections.abc import Iterable
 
 import autograd.numpy as np
 import scipy

@@ -1,14 +1,13 @@
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import autograd.numpy as np
+import driven_constants
+import matplotlib.pyplot as plt
 import pandas as pd
 import scipy
-import driven_constants
-import utils
 import simple
+import utils
 from simple import ticks_err
-
 
 # path = utils.get_edited_data_path(Path("driven_1.txt"), start_index=239)
 # # path = "damped.csv"
@@ -52,9 +51,7 @@ def parse_single_run(file_path: Path):
     motor_peak_indices, _ = scipy.signal.find_peaks(motor_ticks, distance=100)
     mass_peak_indices, _ = scipy.signal.find_peaks(mass_ticks, distance=100)
     # diff = np.mean(motor_peak_indices - mass_peak_indices)
-    diff = (2 * np.pi) / (
-        (motor_peak_indices[0] - mass_peak_indices[0]) * (time[1] - time[0])
-    )
+    diff = (2 * np.pi) / ((motor_peak_indices[0] - mass_peak_indices[0]) * (time[1] - time[0]))
     p = np.average(np.diff(motor_peak_indices * (time[1] - time[0])))
     frequency = (2 * np.pi) / p
     p_err = (time[1] - time[0]) / np.sqrt(len(np.diff(motor_peak_indices)))

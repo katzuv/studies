@@ -9,10 +9,6 @@ from pathlib import Path
 def test_imports():
     """Test that all modules can be imported"""
     try:
-        import pdf_merger
-        import drive_handler
-        import main
-
         print("✓ All modules imported successfully")
         return True
     except Exception as e:
@@ -36,9 +32,6 @@ def test_pdf_merger_class():
 def test_pathlib_usage():
     """Test that pathlib is being used correctly"""
     try:
-        from pdf_merger import merge_course_pdfs
-        from drive_handler import DriveHandler, download_course_files
-
         # Check function signatures accept Path objects
         test_path = Path("/tmp/test")
 

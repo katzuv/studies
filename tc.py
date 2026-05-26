@@ -49,7 +49,7 @@ def compile_typst(file_path_str: str):
         )
         print("Success!")
     except subprocess.CalledProcessError:
-        print(f"Compilation failed.")
+        print("Compilation failed.")
 
 
 if __name__ == "__main__":

@@ -6,7 +6,6 @@ Run with: pytest test_error_propagation.py -v
 
 import autograd.numpy as np
 import pytest
-
 from utils import propagate_error
 
 

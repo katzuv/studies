@@ -3,8 +3,9 @@ PDF Merger with Table of Contents.
 Merges multiple PDF files and creates a clickable table of contents.
 """
 
-import fitz  # PyMuPDF
 from pathlib import Path
+
+import fitz  # PyMuPDF
 
 
 class PDFMerger:

@@ -143,7 +143,7 @@ def main():
     try:
         config = json.loads(config_path.read_text())
     except FileNotFoundError as e:
-        e.strerror = f"Config file not found, see config.example.json"
+        e.strerror = "Config file not found, see config.example.json"
         raise e
 
     # Initialize Drive handler
