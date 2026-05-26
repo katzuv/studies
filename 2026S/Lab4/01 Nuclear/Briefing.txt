@@ -1,0 +1,849 @@
+              Nuclear Physics Lab instructions
+
+
+                               March 7, 2024
+
+
+We shall discuss mechanisms of radiation attenuation by matter, as well as
+some statistical aspects of the measurements. In particular we shall discuss
+why the number of particles detected during a fixed time interval obeys the
+Poisson distribution, and how this distribution can be distinguished from
+the Gaussian one.
+Note: For the first reading, you may focus on the highlighted
+paragraphs.
+
+
+Contents
+1 Introduction                                                                 2
+
+2 Background                                                                  3
+  2.1 α-particles . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+  2.2 β–particles . . . . . . . . . . . . . . . . . . . . . . . . . . . .     3
+  2.3 γ-particles . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   4
+
+3 Penetration range                                                            5
+  3.1 α-particles range . . . . . . . . . . . . . . . . . . . . . . . . .      6
+  3.2 β-particles range . . . . . . . . . . . . . . . . . . . . . . . . .      7
+  3.3 γ-ray attenuation . . . . . . . . . . . . . . . . . . . . . . . . .      8
+  3.4 Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       10
+
+4 Radiation statistics                                                        11
+
+5 Experimental setup                                                     12
+  5.1 Geiger Müler counter . . . . . . . . . . . . . . . . . . . . . . 13
+  5.2 Inverse-square law . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+
+
+                                       1
+6 Step-by-Step Experiment Procedures                                       15
+  6.1 Background radiation . . . . . . . . . . . . . . . . . . . . . . 16
+  6.2 Poisson statistics . . . . . . . . . . . . . . . . . . . . . . . . . 17
+  6.3 Attenuation of β-radiation and estimation of maximal β-particle
+      energy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+  6.4 Alpha particles range . . . . . . . . . . . . . . . . . . . . . . . 19
+
+
+1    Introduction
+We shall focus on radiation emitted by nuclei, specifically on three distinct
+types of radiation. Below is the excerpt from the Nobel Prize lecture, Chem-
+istry 1908, by Ernest Rütherford. We would recommend to read the Nobel
+Prize lecture for the fascinating history of radioactivity discovery.
+”..these experiments show that the uranium radiation is complex and that
+there are present at least two distinct types of radiation – one that is very
+readily absorbed, which will be termed for convenience the α-radiation, and
+the other of a more penetrative character, which will be termed the β-
+radiation.” When other radioactive substances were discovered, it was seen
+that the types of radiation present were analogous to the β– and α-rays of
+uranium and when a still more penetrating type of radiation from radium
+was discovered by Villard, the term γ-rays was applied to them. The names
+thus given soon came into general use as a convenient nomenclature for the
+three distinct types of radiation emitted from uranium, radium, thorium,
+and actinium. On account of their insignificant penetrating power, the α-
+rays were at first considered of little importance and attention was mainly
+directed to the more penetrating β-rays. With the advent of active prepara-
+tions of radium, Giesel in 1899 showed that the β-rays from this substance
+were easily deflected by a magnetic field in the same direction as a stream of
+cathode rays and consequently appeared to be a stream of projected parti-
+cles carrying a negative charge. The proof of the identity of the β-particles
+with the electrons constituting the cathode rays was completed in 1900 by
+Becquerel, who showed that the β-particles from radium had about the same
+small mass as the electrons and were projected at a speed comparable with
+the velocity of light.”
+
+
+
+
+                                      2
+2     Background
+2.1   α-particles
+
+ An α-particle consists of two protons and two neutrons and is a nucleus
+ of helium He. α-particles are emitted spontaneously by unstable heavy
+ nuclei. This emission is rooted in the principles of quantum mechan-
+ ics: Within an atomic nucleus, protons and neutrons are held by the
+ powerful strong nuclear force, which counteracts the electromagnetic
+ repulsion between positively charged protons. Quantum tunneling, a
+ manifestation of the wave nature of particles at the quantum level, en-
+ ables an α particle to surmount the energy barrier and pass through it
+ despite lacking sufficient classical energy to pass above it. This emission
+ is represented by the following equation:
+                             A    A−4    4
+                             Z X →Z−2 Y +2 α                              (1)
+
+ where X and Y are the initial and final nuclei, A is the mass number
+ (sum of the numbers of protons and neutrons in the nucleus), Z is the
+ atomic number (number of protons in the nucleus) and α represents
+ the emitted α-particle.
+
+α-particles emitted from a particular species of nuclei are mono-energetic.
+The energy of the most α’s falls in the range between 3 and 8 MeV. By
+comparison, the typical energies of the chemical reactions are between 5 to
+30 eV per molecule.
+Preparatory question: what is typical speed of α-particles compared to
+that of valence electrons? Is it a good approximation to consider electrons
+as static when discussing α-particle–electron collisions?
+
+2.2   β–particles
+
+ Beta particles (β ± ) are electrons (β − ) or positrons (β + ) that are emit-
+ ted from nuclei when a proton or a neutron decay by the weak force,
+ emitting (β + ) or (β − ) referred to as β-plus and β-minus emission. In
+ a β-minus emission, a neutron (n) becomes a proton (p) emitting an
+ electron, e, and an antineutrino ν̄. The corresponding reaction is:
+                           A    A        −
+                           Z X →Z+1 Y + β + ν̄                            (2)
+
+
+
+
+                                        3
+Unlike α-particles that are emitted with well-defined energy from nuclei, β-
+particles are emitted with a range of energies between 0, and the maximum
+energy specific to the given radioactive isotope. The rest of the energy is
+taken by antineutrino. The maximal energy of the emitted β-particles is a
+characteristic signature of the emitting isotope. An example of intensity as
+a function of the energy for β-decay is shown in Fig. 1.
+
+
+
+
+Figure 1: Intensity of β-particle emission vs β-particle energy. The arrow indicates the
+maximum energy Emax of β-particles. The left dashed line represents the average energy
+of the β-particles, while the difference between the maximum energy and the average
+energy corresponds to the average energy of neutrinos.
+
+
+2.3    γ-particles
+
+ A γ-particle, an energetic photon emitted by excited nuclei in their
+ transition to lower-lying nuclear levels. It is uncharged, unlike α or β-
+ particles. Since nuclear states have well-defined energies, the energies
+ of γ-particles emitted in state-to-state transitions are also well-defined.
+
+
+
+
+                                           4
+3    Penetration range
+ In the lab you will measure the thickness of the material which the
+ radiation consisting of charged particle can penetrate before losing its
+ energy due to scattering and absorption processes. This distance is
+ commonly referred to as penetration range. There is some ambiguity
+ in defining penetration range. It is typically defined as either Half-
+ Value Layer (HVL) or Tenth-Value Layer (TVL): The HVL (TVL) is
+ the thickness of a material that reduces the intensity of the radiation
+ to half (tenth) of its original value. We shall adopt the TVL definition.
+ A natural question to ask is why not to fit the radiation intensity to
+ exponent and use the power as the measure of the range. You will see
+ that your experimental data not always can be fit by a single exponent.
+
+In this section we will explain how nuclear radiation interacts with material
+between the source and the detector. Charged particles primarily inter-
+act with atoms in the medium through Coulomb forces. They can excite
+or ionize atoms, resulting in a decrease in the particles’ energy and conse-
+quently slowing them down. We shall discuss the particle scattering using
+the Rütherford’s differential cross-section dσ/dΩ formula:
+                                                         2
+                                         Z1 Z2 e2
+                                
+                         dσ
+                            =                                                (3)
+                         dΩ         8πε0 µv 2 sin2 Θ/2
+
+dσ/dΩ depends inversely on the square of the reduced mass µ = m1 m2 /(m1 +
+m2 ) of the interacting particles. In Eq. 3 Z1 and Z2 are the dimensionless
+charges of the incident and target particles, e is the elementary charge, ε0 is
+the vacuum permittivity, v is the relative velocity between the particles, and
+θ is the scattering angle in the center of mass frame. The same formula can
+be expressed through the energy Ec of the colliding particles in that frame:
+                                                       2
+                         dσ                Z1 Z2 Ry
+                            = a20                            ,               (4)
+                         dΩ              2Ec sin2 Θ/2
+where a0 = 4πε0 h̄2 /(me e2 ) is the Bohr radius, and Ry = (me e4 )/(8ε0 h3 c) ≈
+13.6 eV is the Rydberg constant; a20 ≈ 2.8 · 10−21 m2 sets the cross-section
+scale.
+Historically, he Rütherford formula was obtained by considering Coulomb
+scattering classically. Quantum treatment in the first Born approximation
+gives the same result. This approximation assumes that the scattering is
+weak, so the amplitude of the scattered wave is small compared that of
+
+                                           5
+the incident one. We shall analyze α and β-scattering on the basis of this
+formula, although it assumes both particles to be free, and thus ignores
+material properties besides very basic ones: electron density and atomic
+number. Both α and β-particles undergo scattering interactions with both
+electrons and nuclei. However, their scattering is very different due to almost
+4 orders of magnitude difference in masses (mα ≈ 7.3 × 103 me ).
+
+3.1    α-particles range
+α-particles are much heavier than electrons, and this determines peculiarities
+of their scattering.
+
+  1. α-particles scatter mostly on electrons. This is because their reduced
+     mass with electrons is small, µα−e ≈ me , therefore their scattering
+     cross-section on electrons is much larger than that on nuclei, despite
+     nuclei having larger charge eZn . The ratio of the scattering cross-
+     sections of an α-particle on an electron and on a nucleus, from Eq. 3,
+     is (mα /Zn · me )2 ≈ 4.5 · 104 .
+
+  2. Since the mass of an α-particle is much larger than that of an elec-
+     tron, after the scattering on an electron the α-particle is almost not
+     deflected and continue to move in the original direction. Indeed, the
+     conserved center of mass momentum is predominantly carried by the
+     alpha particles. Consequently, the deflection of an α-particle after a
+     scattering on an electron is minimal.
+
+  3. Scattering on nuclei does occur, and it is this scattering that led to
+     the original detection of α-particles by Rütherford. However, due to
+     its much smaller cross-section, it is not the scattering that dominates
+     attenuation of an α-particle beam .
+
+  4. Most importantly, scattering of α-particles is strong compared to β-
+     particles. This is best seen by looking at Eq. 3 and observing
+                                                          p         that, for
+     the came energy, the ratio of velocities is: vα /vβ = mβ /mα .
+      Problem: Consider a 1 MeV α-particle and an electron at rest. Cal-
+      culate the kinetic energy of their relative motion Er in the center of
+      mass frame; Er is carried mostly by the electron. How does Er com-
+      pare with the typical binding energy of an electron in, say, Aluminum
+      (Z = 13). To what extent is it justified to consider electrons to be at
+      rest?
+
+
+
+                                      6
+      Answer: Er = Eα me /(me + mα ) ≈ Eα me /mα ≈ 136 eV ≈ 10 Ry.
+      So, considering electrons to be at rest can be justified only for the top
+      occupied levels, and is not justified at all for the deepest ones with
+      energy ∼ Z 2 Ry. But ignoring bounding of deep-lying electrons to the
+      nuclei also is a crude approximation. Still, Rütherford formula is good
+      for estimates.
+  5. The α-particles range can be approximated as [1]
+
+       R = 0.32(Eα /Mev))3/2 ×cm or R = 0.4(Eα /Mev))3/2 ×mg/cm2 (5)
+
+Note that R is customary expressed both as length and as areal density,
+which can be confusing.
+
+3.2    β-particles range
+  1. The reduced effective mass for electron-electron scattering µe−e =
+     me /2, only twice smaller than that for electron-nucleus one: µe−n =
+     me mn /(me + mn ) ≈ me . Due to larger nuclei charge eZ, β-particles
+     scatter more on nuclei than on electrons. But not much more.
+      Problem: Estimate the ratio of the scattering rates on electrons and
+      on nuclei. Take into account that each nucleus with number Z is
+      surrounded by Z electrons, so the scattering rate is proportional to Z
+      for electrons and Z 2 for nuclei.
+  2. For the β − e scattering, the energy in the center of mass frame is
+     just about half of that in the rest frame. So, the cross-section for
+     β-particles scattering, according to Eq. 4, is rather small compared to
+     that of α-particles with the same energy. We can see it also from Eq. 3
+     by observing that the speed vβ of β-particles with typical energy of
+     1 MeV is large.
+  3. Despite nuclei being effective in β-particle scattering, the particles lose
+     energy through Bremsstrahlung (braking radiation), and this energy
+     loss is small, so the scattering is quasi-elastic.
+  4. As β-particles possess the same rest mass as electrons, unlike α-particles,
+     they are deflected by scattering much stronger, although forward scat-
+     tering still dominates. While radiation progresses through the media,
+     it becomes less energetic, and its scattering cross-section increases.
+     This leads to non-exponential decay of the radiation intensity. In ad-
+     dition, secondary electrons and photons can be detected: Energetic
+
+                                      7
+      β-particles can dislodge electrons from the media. There is also pho-
+      ton and electron emission when electrons in the media, excited by the
+      radiation, recombine.
+
+  5. Since β-particles lose energy mostly by scattering on electrons, their
+     range in different materials is expected to scale inversely with the
+     electron density. Therefore, the material-specific penetration length
+     R(L) in units of length, say (cm), is customarily multiplied by material
+     density ρ, in (g/cm3 ):
+                                   R = R(L) · ρ.                         (6)
+      The resultant R in (g/cm2 ) is almost material-independent. The
+      range, both in (cm) and in (g/cm2 ) is customarily denoted by the
+      same letter R. It would be more accurately to express the range for a
+      material x through the range in the well-studied material, typically Al
+      (Al is light, so the range in cm in it is long and easy to measure) as:
+
+                                           (Z/A)Al
+                                Rx = RAl                                  (7)
+                                           (Z/A)x
+
+      However, since most of the stable elements have almost equal number
+      of protons and neutrons in their nuclei, Z/A ≈ 1/2, the correction of
+      (7) is small.
+
+  6. Energy dependence of the penetration length for Aluminum can be
+     described by the empiric Flammersfeld’s formula [2]:
+                           p                      
+                RAl ≈ 0.11    1 + 22.4(E/MeV)2 − 1 × g/cm2       (8)
+
+      One may apply correction Eq. 7 if more accuracy is needed. There are
+      other approximations for β-particles range.
+
+3.3   γ-ray attenuation
+Gamma-particles (γ), which are energetic photons emitted by nuclei, are
+chargeless. Therefore, their scattering cross-section is smaller compared
+to that of β-particles. To absorb γ-radiation to one tenth of its original
+intensity, a thick material is necessary. For instance, approximately 5 cm
+of iron is required for Eγ = 1 MeV. For this reason, heavy materials, most
+commonly lead, are used to screen γ and even less-energetic X-ray radiation.
+
+Following processes are mainly responsible for γ-ray attenuation:
+
+
+                                     8
+  1. With similar reservations as for α and β-particles, the scattering of
+     uncharged γ-particles on electrons, known as Compton scattering, can
+     be described using the Klein–Nishina formula:
+
+                                             λ′
+                                                      
+                     dσ     1 2 λ       λ            2
+                         = re              +    − sin (θ) ,            (9)
+                     dΩ     2     λ′    λ′   λ
+
+     where λ and λ′ are initial and final wavelengths of the photon. Impor-
+     tantly, the cross-section scale in 9 is the square of the classical electron
+     radius re ≈ 2.82 · 10−15 m. Therefore the prefactor in Klein-Nishina’s
+     formula is smaller than that of the Rütherford’s one by 9 orders of
+     magnitude, and this process is not effective in γ-ray attenuation.
+
+  2. Photoelectric effect. Its cross-section is about 10−27 m2 , and rapidly
+     increases with decreasing energy.
+
+  3. Electron-positron pair formation: occurs only for energies above 1.02 Mev,
+     and its cross-section is small.
+
+So, the γ-ray attenuation is mostly due to the photo-effect, and is much
+smaller than that of the β.
+
+
+
+
+                                       9
+3.4   Summary
+
+ To summarize, α-particles are predominantly scatter on electrons and
+ continue their motion almost straight along the original path. Their
+ scattering cross-section is large, and therefore their penetration range
+ is small.
+ β-particles scatter on both electrons and nuclei. Their scattering cross-
+ section is significantly smaller than that of α-particles. This allows
+ them to better penetrate through matter. While α-particles can be
+ stopped by a few centimeters of air, β-particles can travel tens cen-
+ timeters to a few meters in air before being fully scattered. For in-
+ stance, α-particles emitted by Uranium-238 with energy 4.36 MeV have
+ range 2.6 cm in air, while beta particles emitted by Carbon-14 with
+ Emax = 0.156 MeV– approximately 22 cm, and by Phosphorus-32 with
+ Emax = 1.71 MeV about 6 m.
+ γ-particles penetrate most, and therefore their penetration is usually
+ characterized by the attenuation coefficient and not by penetration
+ range.
+ The simple treatment above correctly captures the hierarchy of the
+ attenuation of the different types of radiation, despite ignoring some
+ processes that (i) attenuate radiation and (ii) can lead to secondary
+ radiation. For instance, both α and β-particles can dislodge electrons
+ from the media, and these secondary electrons can be detected. They
+ can also lead to both photon and electron emission when electrons ex-
+ cited by the radiation recombine. While radiation progresses through
+ the media, it becomes less energetic, and therefore its scattering cross-
+ section increases. All this together leads to non-exponential decay of
+ the radiation intensity. Still, for relatively low-energy β-particles as
+ emitted by Thallium-204, the exponential dependence fit the data rel-
+ atively good.
+
+
+
+
+                                     10
+4   Radiation statistics
+Suppose that distinct nuclei independently emit γ-particles or undergo
+α or β-decay. It is not always the case: think e.g. about A-bomb as an
+example, where stimulated chain reaction is initiated by spontaneous
+decay 235 U or 239 Pu. However, with very weak radiation sources you
+will be using, stimulated reactions are negligible. So, we expect the
+observed radiation to obey Poisson statistics, see below.
+Let us start with notations: the mean value of n is denoted by overbar:
+n̄. The average over a distribution value as ⟨n⟩. n̄ → ⟨n⟩ for infinite
+number of trials.
+
+    1. The Poisson distribution expresses the probability P (n) of a given
+       number events n events to occur during a fixed time interval τ ,
+       assuming that these events are independent of each other and
+       occur with a known constant mean rate λ.
+                                          λn e−λ
+                                P (n) =                              (10)
+                                            n!
+       A derivation of this formula can be found in the Appendix A.1.
+
+    2. The Poisson distribution possesses a property that all its cumu-
+       lants are equal to λ. In particular, the average is κ(1) = ⟨n⟩ = λ,
+       the variance is κ(2) = σ 2 = ⟨(n − λ)2 ⟩ = ⟨n2 ⟩ − λ2 = λ, and the
+       skewness κ(3) = ⟨(n − ⟨n⟩)3 ⟩ = λ.
+
+    3. The relationship σ 2 = λ establishes the connection between the
+       number of observed events and the√ expected Standard Deviation
+       (STD) of the observations σ = λ. This is an important dis-
+       tinction from the Gaussian distribution, where the mean and the
+       STD are independent. It facilitates straightforward estimation
+       of the measurement error for values resulting from the Poisson
+       process.
+
+    4. Further substantiation of the Poisson process can be attained by
+       examining the third cumulant or skewness κ(3) . For the Poisson
+       distribution, κ(3) = ⟨n⟩ = λ, while for the Gaussian one κ(3) = 0.
+                                           √
+    5. You shall utilize the fact that σ = λ, implying that you antici-
+       pate the standard deviation (STD) of a measurement yielding n
+                    √
+       counts to be n. This is important for estimating the accuracy of
+       your measurements and for including error bars when presenting
+       your data.
+                                      11
+In one of the experiments, you will check whether the radiation-generated
+GM counts are consistent with the Poisson statistics. You will do it by
+repeating measurements many times, and examining the mean values of the
+cumulants calculated from these measurements:
+
+           (1)              (2)                    (3)
+          Km   = n̄ = n,   Km   = (n − n̄)2   and Km   = (n − n̄)3        (11)
+where n is an element of a set of the measurement results, and the averaging
+                                                               (i)
+is over the set of m measurements. We reserve notation Km for cumulants
+as calculated from the measured values averaged over m measurements, to
+distinguish them from the expected κ(i) from the Poisson distribution.
+For the Poisson process, as the number of measurements m approaches in-
+               (i)
+finity all Km should converge to the same value λ. Let us estimate the
+number of measurements required to check that. For this, we shall look
+at σK (i) /κ(i) , where σK (i) is the expectation value of the STD of the i’th
+        m                 m
+cumulant calculated from m measurements.
+One can show, see Appendix A.2, that:
+                    √                     p                        p
+  σK (1) /κ(1) = 1/ λm, σK (2) /κ(2) = 2/m, σK (3) /κ(3) = 15λ/m (12)
+     m                          m                    m
+
+
+Estimates ( 12) tell us that:
+                                                               √
+    1. The cumulants converge to the expectation value as 1/ m. However,
+       achieving the same level of accuracy requires significantly different
+       number of measurements, that increases with the cumulant number.
+                                                        √
+    2. For the first cumulant, σK (1) /κ(1) = δn/n̄ = 1/ N , as expected. So,
+                                  m
+       in order to get an accurate measurement rate it does not matter how
+       to divide the measurements into intervals. Just the total measurement
+       number N matters, also as expected.
+
+    3. For ”uncertainty of uncertainty” σK (2) /κ(2) to be small, one does need
+                                          m
+       to repeat measurements many times.
+
+    4. To get a small uncertainty of the skewness, a much larger number of
+       measurements proportional to λ is required.
+
+
+5     Experimental setup
+The setup of the experiment consists of ST-360 pulse counter with GM tube
+and a stand, as shown in Figure 6. The relevant parameters are in Table 1.
+
+
+                                      12
+Figure 2: The experimental setup: the GM detector positioned on top of a shelf box, set
+of Aluminum plates of different thickness, spacers of different thickness, and radioactive
+sources.
+
+                 Distance between the shelves                            10 mm
+      Distance between the top shelf and the GM window                 12.3 mm
+                    GM window diameter                                  31.6 mm
+                    Sample shelf thickness                               1 mm
+                     GM window density                                 2 mg/cm2
+
+                               Table 1: Setup parameters
+
+
+5.1     Geiger Müler counter
+
+ In your experiments, you will utilize a Geiger-Müller (GM) counter,
+ based on the Geiger tube. Developed by Geiger and Müller in 1928,
+ this early radiation detector remains widely used due to its simplicity,
+ low cost, and ease of operation. The GM tube contains a noble gas,
+ typically argon. When radiation enters the tube, it ionizes the gas gen-
+ erating free electrons. An ionization event that results in just one or a
+ few free electrons would be challenging to detect. Therefore, the detec-
+ tor is designed to generate an avalanche in response to a few electrons.
+ For this purpose, electrons are accelerated by high voltage between the
+ anode and the cathode of the tube, wherein electrons ionized by in-
+ cident radiation gain enough kinetic energy to collision-ionize another
+ atom. This process generates avalanches, as illustrated in Fig. 3 and,
+ consequently, current pulses that are detected. A threshold voltage is
+ required for an avalanche to occur. During an avalanche event, addi-
+ tional events cannot be resolved, leading to GM dead time.
+
+Avalanches are sustained, in part, by ultraviolet photon emission resulting
+from electron recombination with ionized inert gas. This prolongs the dead
+time. To reduce the inactive period, methane or other quencher molecules
+
+                                           13
+are added to the noble gas. These molecules effectively absorb UV photons
+emitted during the discharge, converting them into heat without generating
+additional free electrons.
+Before entering a GM tube, radiation must pass through a thin window,
+typically made of mica–a low-density material that allows particles to pass
+through with little attenuation. It is important to note that, due to their
+short range, the interaction of alpha particles with a GM window signifi-
+cantly reduces their apparent range. This factor should be taken into ac-
+count when interpreting experimental results.
+GM detectors are less sensitive to gamma radiation, because gamma rays
+have smaller interaction cross-section with the gas in the tube (and with mat-
+ter in general) compared to charged α or β-particles. Geiger-Müller tubes are
+not identical, and require different voltage for optimal performance. When
+a radioactive sample is positioned beneath the tube and the voltage of the
+tube is ramped up from zero, the tube does not start firing right away; it
+needs a minimal voltage for an electron avalanche to start. As the voltage
+is increased beyond this point, the counting rate increases quickly before
+stabilizing. The stabilization starts above a voltage commonly referred to
+as the knee. Further voltage increase above the knee is expected to lead
+only to moderate increase in the count rate, until the voltage becomes so
+high that breakdown and spontaneous discharge occur; voltage on GM tube
+must be kept below the breakdown.
+
+
+
+
+                    Figure 3: Electron avalanche in GM tube
+
+
+
+
+                                      14
+5.2    Inverse-square law
+
+ Below we discuss how radiation flux per unit area would change in the
+ absence of scattering or absorption by medium. As a source is moved
+ farther away from the detector, the detected radiation intensity would
+ decrease proportionally to the solid angle Ω under which the detector
+ window is seen from the source; we consider the source to be a point
+ one. The angle Ω can be expressed through the radius of the detector
+ window r and the distance to the source h, see Fig. 4 as:
+                                            p
+              Ω = 2π(1 − cos θ) = 2π(1 − 1/ (1 + (r/h)2 )          (13)
+
+ For large distances Ω ≈ 2πr2 /h2 .
+
+
+
+
+                      Figure 4: The experimental geometry.
+
+
+6     Step-by-Step Experiment Procedures
+Take a note of the date written on the radioactive sources you
+are using, and write them in your report. The sources should be
+placed label down to avoid attenuation by the label. A possible
+exception – the statistics experiment.
+
+    1. Turn on the power switch on the back of the ST-360.
+
+    2. Double-click the STX software icon to start the program. You should
+       see the blue control panel appear on your screen, as in Fig. 5.
+
+    3. Set High Voltage (HV) to 900V.
+
+
+
+                                      15
+  4. To start a measurement, press the green “diamond” button. “Preset
+     Time” is the time allotted for each measurement. You can stop the
+     measurement any time, and the “Elapsed time” will be the time that
+     has passed since the start of the measurement.
+
+  5. The system is designed to do a set of measurements with a preset time,
+     but I would encourage you to work differently. Since the relative error
+          √
+     is 1/ n, where n is the number of counts, set a relatively long mea-
+     surement time, and stop the measurements manually when required
+     number of counts is obtained. This will save you time when the count
+     rate is high, and you would be able to use it when it is low. Write
+     down into your Python notebook both the number of counts and the
+     elapsed time. The number of counts will be used also to plot error
+     bars.
+
+  6. Aim at 3% error (about 1000 counts) when the rate is high. Be judge-
+     mental when it is low: you might need to sacrifice accuracy in order
+     to finish your experiments.
+
+
+
+
+                     Figure 5: The STX software interface.
+
+
+6.1   Background radiation
+  1. Set the measurement time to 100 s.
+
+
+
+                                      16
+  2. With all sources in the lead cylinder, or at least far away from the GM
+     tube, measure background radiation.
+
+  3. Calculate the background radiation rate Ib , and save it for the future.
+     It might need to be subtracted from the future measurements.
+
+6.2   Poisson statistics
+Objective: In this experiment, you will check whether radiation-generated
+GM counts are consistent with Poisson statistics. You will do it by repeating
+measurements many times, and examining the mean values of the cumulants
+calculated from these measurements, as described in Section 4.
+                                          (i)
+We want sufficient accuracy to check if Km with i = 1, 2, 3 are close enough
+                          (3)
+to κ(3) = λ, e.g. STD(Km ) < λ/3. For this we need quite a large number of
+                                                                         (2)
+measurements: m > 9·15λ, see Appendix A.2. A similar criterion for Km is
+less demanding. In order to keep the overall measurement time reasonable,
+we want to chose a short time for a single measurement and a small count
+rate so n̄ → λ is small, and therefore, m is not very large.
+
+  1. Take a relatively weak source, for instance Cesium, and put it with
+     label up to reduce the radiation flux.
+
+  2. Set the measurement time to, for example, 10 s and calculate the av-
+     erage rate. You want it to be, say, n̄ ≈ 5 counts per second to keep m
+     reasonably small. If the rate is too high – increase the distance to the
+     tube. If it is too small – maybe turn the source upside down or pick
+     another source.
+
+  3. Take a set of at least m = 150n̄ 1 second measurements. For n̄ = 5 it
+     will take some 12 minutes–not that long.
+                  (1)           (2)
+  4. Calculate Km = n̄ and Km = VAR(n) = i (ni − n̄)2 /(m − 1) for
+                                                   P
+     the new large set of data.
+                  (3)
+  5. Calculate Km = VAR(n) = i (ni − n̄)3 /(m − 1). Compare it with
+                                    P
+                                               (2)   (3)
+     n̄. For Poisson process we expect n̄, Km , Km → λ for m → ∞.
+     Compare it also with the expectation for the Gaussian statistic: κ(3) =
+     0.
+
+  6. Plot the probability P (n) to get n counts as obtained from the mea-
+     surements, and the Poisson and Gaussian distributions with the same
+     n̄.
+
+                                     17
+6.3   Attenuation of β-radiation and estimation of maximal
+      β-particle energy
+Objective: This experiment aims at investigation attenuation of β-radiation
+by varying the thickness of aluminum plates between the source and detec-
+tor. The obtained range in Al will be used to find the maximal β-particle
+energy for a few sources. You will use the Tenth-Value Layer (TVL) cri-
+terium to determine the range.
+
+  1. Place a 204 Tl radioactive source on the third shelf from the top and
+     begin taking data.
+
+  2. Measure the detection rate with accuracy ≈ 3%.
+
+  3. Place an aluminum piece on the top shelf and take another data run.
+
+  4. Depending on the degree of the radiation attenuation by the piece,
+     decide what the next piece do you want to place.
+
+  5. Repeat this a minimum of 7 more times. Each time add the data point
+     to the plot of the counting rate vs. aluminum thickness. You want to
+     have enough points to find the range. You can use the upper shelves
+     to combine the pieces and get the sum of their thicknesses. You should
+     increase thickness until the count rate drops at least ten times; if time
+     permits, until it is close to the background level. Al low count rates
+     you might need to sacrifice accuracy to save time.
+
+  6. Plot the count rate vs aluminum thickness both is linear and logarith-
+     mic scale. Find the β-particle range.
+
+  7. Repeat the procedure with a 90 Sr and compare the results.
+
+
+
+
+                                     18
+             Figure 6: Decay scheme for (1) Strontium, (2) Cobalt, and (3) Thallium
+
+  8. Do the same for 60 Co. Pay attention on the decay scheme. Why the
+     results are different?
+
+6.4   Alpha particles range
+Objective: This experiment aims at measuring the α-particle range and
+finding their energy by systematically varying the distance between the GM
+detector and the α-particle source. In this case, the attenuation media
+is air. We are interested in the attenuation of the particle flux per unit
+spherical angle, not just the counting rate. Since α-particle range is just a
+few centimeters, is comparable with the GM window diameter, and will be
+changed in the experiment, the spherical angle Ω at which the detector is
+seen from the source will change significantly. Therefore, you will need to
+normalize the rate by the Ω, Eq.13. You will use 210 Po as an α-particle
+source. Important: place the source with the label down, otherwise it would
+block alpha particle propagation.
+  1. Place the radioactive source on the 1st shelf and measure the count
+     rate. Use the same considerations to balance the accuracy and time.
+
+                                        19
+    2. Since the range of the α-particles in air is just a few centimeters,
+       use spacers to bring the source closer to the detector. Take a few
+       measurements with the source approaching the top of the box.
+
+    3. Move the source down one shelf and take the data again. If the rate is
+       too small, say less than 1 cps, put spacers over the second shelf to get
+       a reasonable count rate. Plot the data as you measure to determine
+       the distances at which to collect more data.
+
+    4. Subtract the background and calculate the source-to-GM distance us-
+       ing taking into account 12.3 mm distance from the top shelf to the
+       detector window. In order to obtain radiation flux per unit area, di-
+       vide the count rate by the solid angle at which the tube sees the source,
+       Eq.13.
+
+    5. Plot the result as a function of the distance from the GM window.
+       Find the range using TLV criterium.
+
+    6. Take into account the areal density of the GM window 2mg/cm2 . For
+       this translate the areal density to the respective length of the air,
+       assuming that the range in distance is inversely proportional to the
+       media density. Take air density to be 1.3 mg/cm2 .
+
+    7. Find the α-particle energy from the range you found using Eq. 5
+
+
+A      Appendices
+A.1     Poisson distribution
+The Poisson distribution can be obtained from the binomial one for N in-
+dependent tries. The probability to detect n events out of N attempts is:
+                                 
+                                  N
+                       PN (n) =       pn (1 − p)N −n ,                (14)
+                                  n
+
+where p is the probability to observe the event in a single attempt. We now
+take N to infinity and p to zero, while keeping the expectation value of the
+success number λ = p · N constant. We now observe that:
+
+                                            (pN )n    λn
+                              
+                            n N
+                     lim p         = lim           =
+                    N →∞       n      N →∞    n!       n!
+
+
+                                       20
+      lim (1 − p)N −n = lim (1 − λ/N )N −n = lim (1 − λ/N )N = e−λ
+      N →∞                  N →∞                    N →∞
+We end up with the Poisson distribution of the probability to observe n
+events:
+                                   λn −λ
+                           P (n) =     e                           (15)
+                                    n!
+
+A.2    Number of measurements required to estimate κ(i)
+Below we estimate the number of measurements required to confidently dis-
+tinguish between the distributions on the basis of their cumulants κ(i) . We
+shall restrict ourselves with the first 3 cumulants, that coincide with the
+central moments.
+Let us start with recalling the following standard result: Consider an arbi-
+trary variable x with average ⟨x⟩ = 0 and variance ⟨x2 ⟩ = σx2 . Suppose
+                                                                      P we do
+m independent measurements of x and the mean: ym = xm = (1/m) m          i=1 xi .
+         2       2      2                  √
+Then, σym = ⟨ym ⟩ = σx /m, or σym = σx / m. Now we apply this to uncer-
+tainty of the cumulants.
+                                                                              (1)
+   1. The first cumulant: κ(1) = ⟨n⟩ = λ. The variance of the measured Km
+      will be expressed through the second cumulant κ(2) = ⟨(n − λ)2 ⟩ = λ.
+      We define x = n − λ, and y as above.
+                              ⟨x2 ⟩ = ⟨(n − λ)2 ⟩ = λ
+                               p                         √
+                σK (1) = σym = λ/m, and σK (1) /κ(1) = 1/ λm                (16)
+                   m                                m
+
+   2. The second cumulant: x = (n − λ)2 − λ; ⟨x⟩ = 0
+      ⟨x2 ⟩ = ⟨((n−λ)2 −λ)2 ⟩ = ⟨(n−λ)4 ⟩−2λ⟨(n−λ)2 ⟩+λ2 = ⟨(n−λ)4 ⟩−λ2
+      The 4th central moment ⟨(n − λ)4 ⟩ can be directly obtained from the
+      Poisson distribution. However, for an estimate in the leading order in
+      λ ≫ 1 it is enough to use the Central Limit Theorem, and approximate
+      ⟨(n − λ)4 ⟩ by the Gaussian result A.3.
+      Anyway, ⟨(n − λ)4 ⟩ ≈ 3λ2 , and therefore:
+                                                           p
+                    σ 2 (2) = 2λ2 /m, and σK (2) /κ(2) =       2/m          (17)
+                       Km                       m
+
+
+   3. The third cumulant: x = (n − λ)3 − λ; ⟨x⟩ = 0
+      ⟨x2 ⟩ = ⟨((n−λ)3 −λ)2 ⟩ = ⟨(n−λ)6 ⟩−2λ⟨(n−λ)3 ⟩+λ2 = ⟨(n−λ)6 ⟩−λ2
+      Similarly to the above, ⟨(n − λ)6 ⟩ ≈ 15λ3 . and therefore:
+                                                        p
+                  σ 2 (3) = 15λ3 /m, and σK (3) /κ(3) = 15λ/m               (18)
+                    Km                         m
+
+
+
+                                       21
+A.3    Central moments of Gaussian distribution
+For a Gaussian distributed value x with ⟨(x−⟨x⟩)2 ⟩ = σ 2 all central moments
+are: ⟨(x − ⟨x⟩)2n ⟩ = (2n − 1)!!σ 2n .
+
+A.4    Sources
+Radiation units: 1 curie – 3.7·1010 decays per second (dps). 1dps=1 becquerel
+(Bq).
+Thallium-204 104                       104
+                  81 Tl β-decays into 80 Pb with Emax = 0.7 MeV.
+Strontium-90 (90                        90
+                   38 Sr) β-decays into 39 Y with Emax = 0.546 MeV. The Yt-
+trium isotope’s half-life time is 28.8y, and it in turn undergoes β-decay with
+half-life time of 64 hours and Emax = 2.28 MeV into 90  40 Zr (zirconium), which
+is stable. Note that Sr/Y is almost a pure beta particle source; the gamma
+photon emission from the decay of 90 Y is so infrequent that it can normally
+be ignored.
+Cobalt-60 (60 27 Sr) is mostly a γ-source with energies 1.17 and 1.33 MeV.
+
+
+References
+[1] G. R. Choppin, J.-O. Liljenzin, and J. Rydberg. Radiochemistry and
+    Nuclear Chemistry. Butterworth-Heinemann, Woburn, 3rd ed. edition,
+    2022. Chapter 6.
+
+[2] A. Flammersfeld. Die absoluten intensitäten der β-linien... Zeitschrift
+    für Physik, 114(3):227–244, March 1939.
+
+
+
+
+                                     22
+
