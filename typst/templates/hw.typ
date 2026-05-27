@@ -11,6 +11,7 @@
   logo: none,
   body,
 ) = {
+  show "--": "–"
   // Set the document's basic properties.
   set document(author: authors.map(a => a.name), title: title + " – גיליון " + str(number))
   set text(font: ("Noto Sans Hebrew", "Noto Sans", "Noto Serif Hebrew", "David", "Arial"), lang: "he")

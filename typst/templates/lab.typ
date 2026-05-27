@@ -18,6 +18,7 @@
   scientific_theme: false,
   body,
 ) = {
+  show "--": "–"
   // Set the document's basic properties.
   let doc_title = if experiment_id != "" [#experiment_id: #experiment_name] else [#experiment_name]
   set document(author: authors.map(a => a.name), title: doc_title)
