@@ -731,7 +731,7 @@ requires-dist = [
     { name = "autograd", specifier = ">=1.6.2" },
     { name = "ipykernel", specifier = ">=6.29.4" },
     { name = "matplotlib", specifier = ">=3.8.4" },
-    { name = "numpy", specifier = ">=2" },
+    { name = "numpy", specifier = ">=1.26.4" },
     { name = "pandas", specifier = ">=2.2.2" },
     { name = "scipy", specifier = ">=1.13.0" },
 ]
