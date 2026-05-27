@@ -63,7 +63,12 @@ def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
     target = ax if ax else plt.gca()
 
     if grid:
-        target.grid(True, alpha=0.3, linestyle="--")
+        target.grid(True, which="major", alpha=0.6, linestyle="-")
+        target.grid(True, which="minor", alpha=0.3, linestyle="--")
+        # Ensure minor ticks are enabled
+        from matplotlib.ticker import AutoMinorLocator
+        target.xaxis.set_minor_locator(AutoMinorLocator())
+        target.yaxis.set_minor_locator(AutoMinorLocator())
 
     if title:
         target.set_title(title, weight="bold", pad=15)
