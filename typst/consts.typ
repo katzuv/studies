@@ -40,3 +40,5 @@
 #let vv2 = $arrow(v_1)$
 #let U1 = $U_1$
 #let U2 = $U_2$
+
+#let pm = $plus.minus$
