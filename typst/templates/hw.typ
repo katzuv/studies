@@ -226,10 +226,14 @@
     shadow: (
       offset: 2pt,
     ),
-    title: context counter(heading).display((..nums) => {
-      let n = nums.pos().at(0)
+    title: context {
+      let n = if מזהה != none {
+        fix-geresh(str(מזהה).split(".").at(0))
+      } else {
+        fix-geresh(str(counter(heading).get().at(0)))
+      }
       [שאלה #n – #כותרת]
-    }),
+    },
     intro
   ))
 
