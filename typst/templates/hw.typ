@@ -137,15 +137,32 @@
     if el != none and el.func() == heading {
       let loc = el.location()
       let num = counter(heading).at(loc)
-      let content = if el.level == 1 {
-        [שאלה #numbering("1", ..num)]
+      
+      // Try to parse the label name if it has dots (e.g., <2.2.ב>)
+      let label_str = str(it.target)
+      let parts = label_str.split(".")
+      
+      let content = if parts.len() > 1 {
+        context {
+          let curr = counter(heading).get()
+          let q_num = parts.first()
+          let c_num = fix-geresh(parts.slice(1).join("."))
+          
+          if curr.len() > 0 and str(curr.first()) == q_num {
+            [סעיף #c_num]
+          } else {
+            [שאלה #fix-geresh(q_num) סעיף #c_num]
+          }
+        }
+      } else if el.level == 1 {
+        [שאלה #fix-geresh(numbering("1", ..num))]
       } else if el.level == 2 {
         context {
           let curr = counter(heading).get()
           if curr.len() > 0 and curr.first() == num.first() {
-            [סעיף #numbering("1", num.last())]
+            [סעיף #fix-geresh(numbering("1", num.last()))]
           } else {
-            [שאלה #numbering("1", num.first()) סעיף #numbering("1", num.last())]
+            [שאלה #fix-geresh(numbering("1", num.first())) סעיף #fix-geresh(numbering("1", num.last()))]
           }
         }
       } else {
@@ -237,10 +254,16 @@
     shadow: (
       offset: 2pt,
     ),
-    title: context counter(heading).display((..nums) => {
-      let n = nums.pos().at(1, default: 1)
+    title: context {
+      let label_str = if מזהה != none { str(מזהה) } else { "" }
+      let parts = label_str.split(".")
+      if parts.len() > 1 {
+        [סעיף #fix-geresh(parts.slice(1).join("."))]
+      } else {
+        let n = fix-geresh(str(counter(heading).get().at(1, default: 1)))
       [סעיף #n]
-    }),
+      }
+    },
     {
       set math.equation(numbering: none)
       טקסט
