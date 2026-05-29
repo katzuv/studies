@@ -3,6 +3,17 @@
 
 #import "../utils.typ": משל
 
+// Helper to add geresh to single Hebrew letters (e.g., א -> א')
+#let fix-geresh(s) = {
+  let parts = s.split(".")
+  let last = parts.last()
+  if last.clusters().len() == 1 and last >= "א" and last <= "ת" {
+    s + "'"
+  } else {
+    s
+  }
+}
+
 #let project(
   title: "",
   number: 0,
