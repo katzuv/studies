@@ -30,7 +30,7 @@
   show strong: set text(weight: 700)
 
   // show math.equation: set text(weight: 400) // Removed to allow bold in math
-  set heading(numbering: "1.1")
+  set heading(numbering: none)
   set math.equation(numbering: "(1)")
 
   show: super-T-as-transpose // Render "..^T" as transposed matrix
@@ -81,15 +81,8 @@
     let num-parts = counter(heading).at(loc)
 
     if el.level == 1 {
-      let num = numbering(el.numbering, ..num-parts)
-      let body = el.body
-      let txt = [*שאלה #num*]
-      if body != [] {
-        txt = [*שאלה #num: #body*]
-      }
-
       let entry = link(loc, block(width: 100%, {
-        txt
+        strong(el.body)
         box(width: 1fr, it.fill)
         it.page()
       }))
@@ -100,10 +93,9 @@
         entry
       }
     } else if el.level == 2 {
-      let last-num = numbering("1", num-parts.last())
       link(loc, block({
         h(1.2em)
-        [סעיף #last-num]
+        el.body
         box(width: 1fr, it.fill)
         it.page()
       }))
@@ -155,14 +147,15 @@
           }
         }
       } else if el.level == 1 {
-        [שאלה #fix-geresh(numbering("1", ..num))]
+        el.body
       } else if el.level == 2 {
         context {
           let curr = counter(heading).get()
           if curr.len() > 0 and curr.first() == num.first() {
-            [סעיף #fix-geresh(numbering("1", num.last()))]
+            el.body
           } else {
-            [שאלה #fix-geresh(numbering("1", num.first())) סעיף #fix-geresh(numbering("1", num.last()))]
+            let q_num = fix-geresh(str(num.first()))
+            [שאלה #q_num #el.body]
           }
         }
       } else {
@@ -197,82 +190,89 @@
 
 #let שאלה(כותרת: "", מזהה: none, טקסט) = {
   pagebreak()
-  [#heading(level: 1, supplement: [שאלה])[#כותרת] #מזהה]
-
-  let color = rgb("#1a5fb4") // Deep Navy Blue
+  counter(heading).step(level: 1)
   
-  // Split intro text from clauses
-  let children = if טקסט.has("children") { טקסט.children } else { (טקסט,) }
-  let idx = children.position(c => (c.func() == heading and c.level == 2) or (c.has("label") and str(c.label) == "is-clause"))
-  
-  let intro = if idx == none { טקסט } else { children.slice(0, idx).join() }
-  let rest = if idx == none { [] } else { children.slice(idx).join() }
+  context {
+    let n = if מזהה != none {
+      fix-geresh(str(מזהה).split(".").at(0))
+    } else {
+      fix-geresh(str(counter(heading).get().at(0)))
+    }
+    
+    [#heading(level: 1, supplement: [שאלה])[שאלה #n: #כותרת] #מזהה]
 
-  smart-breakable(showybox(
-    title-style: (
-      boxed-style: (
-        anchor: (x: center, y: horizon),
-        radius: (top-right: 10pt, bottom-left: 10pt, rest: 0pt),
+    let color = rgb("#1a5fb4") // Deep Navy Blue
+    
+    // Split intro text from clauses
+    let children = if טקסט.has("children") { טקסט.children } else { (טקסט,) }
+    let idx = children.position(c => (c.func() == heading and c.level == 2) or (c.has("label") and str(c.label) == "is-clause"))
+    
+    let intro = if idx == none { טקסט } else { children.slice(0, idx).join() }
+    let rest = if idx == none { [] } else { children.slice(idx).join() }
+
+    smart-breakable(showybox(
+      title-style: (
+        boxed-style: (
+          anchor: (x: center, y: horizon),
+          radius: (top-right: 10pt, bottom-left: 10pt, rest: 0pt),
+        ),
+        color: rgb("#FFFFFF"),
+        weight: 600,
+        align: center,
       ),
-      color: rgb("#FFFFFF"),
-      weight: 600,
-      align: center,
-    ),
-    frame: (
-      border-color: color.darken(frame-darken),
-      title-color: rgb("#2e62da"),
-      body-color: color.lighten(body-lighten),
-    ),
-    shadow: (
-      offset: 2pt,
-    ),
-    title: context {
-      let n = if מזהה != none {
-        fix-geresh(str(מזהה).split(".").at(0))
-      } else {
-        fix-geresh(str(counter(heading).get().at(0)))
-      }
-      [שאלה #n – #כותרת]
-    },
-    intro
-  ))
+      frame: (
+        border-color: color.darken(frame-darken),
+        title-color: rgb("#2e62da"),
+        body-color: color.lighten(body-lighten),
+      ),
+      shadow: (
+        offset: 2pt,
+      ),
+      title: [שאלה #n – #כותרת],
+      intro
+    ))
 
-  rest
+    rest
+  }
 }
 
 #let סעיף(מזהה: none, טקסט) = {
   [#metadata("is-clause") <is-clause>]
-  [#heading(level: 2, supplement: [סעיף])[] #מזהה]
-  let color = rgb("#26a269") // Deep Emerald Green
-  smart-breakable(showybox(
-    frame: (
-      border-color: color.darken(frame-darken),
-      title-color: color.lighten(title-lighten),
-      body-color: color.lighten(body-lighten),
-    ),
-    title-style: (
-      color: black,
-      weight: "bold",
-      align: right,
-    ),
-    shadow: (
-      offset: 2pt,
-    ),
-    title: context {
-      let label_str = if מזהה != none { str(מזהה) } else { "" }
-      let parts = label_str.split(".")
-      if parts.len() > 1 {
-        [סעיף #fix-geresh(parts.slice(1).join("."))]
-      } else {
-        let n = fix-geresh(str(counter(heading).get().at(1, default: 1)))
-      [סעיף #n]
-      }
-    },
-    {
-      set math.equation(numbering: none)
-      טקסט
-    },
-  ))
+  counter(heading).step(level: 2)
+  
+  context {
+    let label_str = if מזהה != none { str(מזהה) } else { "" }
+    let parts = label_str.split(".")
+    let last-num = if parts.len() > 1 {
+      fix-geresh(parts.slice(1).join("."))
+    } else {
+      fix-geresh(str(counter(heading).get().at(1, default: 1)))
+    }
+    
+    [#heading(level: 2, supplement: [סעיף])[סעיף #last-num] #מזהה]
+    
+    let color = rgb("#26a269") // Deep Emerald Green
+    smart-breakable(showybox(
+      frame: (
+        border-color: color.darken(frame-darken),
+        title-color: color.lighten(title-lighten),
+        body-color: color.lighten(body-lighten),
+      ),
+      title-style: (
+        color: black,
+        weight: "bold",
+        align: right,
+      ),
+      shadow: (
+        offset: 2pt,
+      ),
+      title: [סעיף #last-num],
+      {
+        set math.equation(numbering: none)
+        טקסט
+      },
+    ))
+  }
 }
 
 #let תשובה(טקסט) = {
