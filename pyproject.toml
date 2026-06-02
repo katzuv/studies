@@ -11,6 +11,7 @@ dependencies = [
     "pandas>=2.2.2",
     "autograd>=1.6.2",
     "ipykernel>=6.29.4",
+    "pandas-stubs~=3.0.3",
 ]
 
 [dependency-groups]
