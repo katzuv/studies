@@ -67,6 +67,7 @@ def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
         target.grid(True, which="minor", alpha=0.3, linestyle="--")
         # Ensure minor ticks are enabled
         from matplotlib.ticker import AutoMinorLocator
+
         target.xaxis.set_minor_locator(AutoMinorLocator())
         target.yaxis.set_minor_locator(AutoMinorLocator())
 
