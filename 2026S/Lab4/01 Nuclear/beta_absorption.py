@@ -3,7 +3,14 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from analysis_tools import fit_exponential, fit_linear_tvl, load_gm, subtract_bg
+from analysis_tools import (
+    BG_ERR,
+    BG_RATE,
+    fit_exponential,
+    fit_linear_tvl,
+    load_gm,
+    subtract_bg,
+)
 
 import physlab
 
@@ -83,12 +90,14 @@ def main():
 
             (line,) = plt.plot(x, y, "o", label=f"{info['name']} (Data)")
             x_range = np.linspace(0, max(x), 100)
-            
+
             # Prepare legend label with Chi2_red
-            label = (f"{info['name']} {info['model'].capitalize()} Fit\n"
-                     f"  TLV: {tlv:.1f} ± {tlv_err:.1f} um\n"
-                     f"  $\chi^2_\\nu$: {res.chi_red:.2f}")
-            
+            label = (
+                f"{info['name']} {info['model'].capitalize()} Fit\n"
+                f"  TLV: {tlv:.1f} ± {tlv_err:.1f} um\n"
+                f"  $\chi^2_\\nu$: {res.chi_red:.2f}"
+            )
+
             plt.plot(
                 x_range,
                 res.model(x_range, *res.params),
@@ -106,13 +115,12 @@ def main():
 
     physlab.set_style(
         plt.gca(),
-        title="Radiation Attenuation in Aluminum",
         xlabel="Aluminum Thickness (um)",
         ylabel="Corrected Count Rate (cps)",
     )
 
     plt.yscale("log")
-    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
     plt.tight_layout()
     plt.savefig("beta_absorption_final.svg")
     print("\nGraph saved as beta_absorption_final.svg")
