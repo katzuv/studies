@@ -11,6 +11,7 @@
     - Experiment-specific logic must be kept in the local experiment directory (e.g., `analysis_tools.py`).
 - **Graphics Standard:**
     - All experimental graphs **must always** be saved in **SVG** format. No exceptions.
+    - **No Graph Titles:** Experimental graphs must **never** include a title within the image itself. Captions must be used in the report instead.
 - **Typst Standards:**
     - **Native Syntax:** Never use backslashes (`\`) before functions or symbols in Typst (this is not LaTeX). 
     - **Math Mode:** Use native function calls (e.g., `ket(psi)`, `braket(a, b)`, `prop`, `quad`) instead of LaTeX-style commands.
