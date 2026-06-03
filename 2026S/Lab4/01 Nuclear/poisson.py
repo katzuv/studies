@@ -2,7 +2,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from analysis_tools import BG_ERR, BG_RATE, load_gm
+from analysis_tools import BG_RATE, load_gm
 from scipy.stats import norm, poisson
 
 import physlab
@@ -30,7 +30,7 @@ def main():
     # Note: Subtracting a constant BG doesn't change the variance or skewness of the sample,
     # but the Poisson *expectation* lambda is now the corrected mean.
     lam = k1
-    err_k1 = np.sqrt((lam + BG_RATE) / m) # k1 error is based on raw count statistics
+    err_k1 = np.sqrt((lam + BG_RATE) / m)  # k1 error is based on raw count statistics
     err_k2 = (lam + BG_RATE) * np.sqrt(2 / m)
     err_k3 = (lam + BG_RATE) * np.sqrt(15 * (lam + BG_RATE) / m)
 
@@ -91,7 +91,7 @@ def main():
         y_poisson,
         "o--",
         color="blue",
-        label=f"Poisson (λ={k1+BG_RATE:.2f}, shifted)",
+        label=f"Poisson (λ={k1 + BG_RATE:.2f}, shifted)",
         markersize=4,
     )
     ax.plot(
@@ -128,7 +128,6 @@ def main():
         fontsize=14,
         bbox=dict(boxstyle="round", facecolor="white", alpha=0.5),
     )
-
 
     plt.tight_layout()
     plt.savefig("poisson_statistics.svg")
