@@ -5,13 +5,12 @@ import physlab
 
 # --- Nuclear Specific Constants ---
 RHO_AIR = 1.204e-3  # g/cm^3 (at room temp)
-RHO_AL = 2.70       # g/cm^3
-SIGMA_GM_WINDOW = 2.0e-3 # g/cm^2 (typical Geiger-Muller window density)
+RHO_AL = 2.70  # g/cm^3
+SIGMA_GM_WINDOW = 2.0e-3  # g/cm^2 (typical Geiger-Muller window density)
 
 # Manual Background Measurement: 52 counts in 100 seconds
 BG_RATE = 0.52  # cps
 BG_ERR = np.sqrt(52) / 100  # cps
-
 
 
 def load_gm(path, header=9):
@@ -38,6 +37,7 @@ def fit_linear_tvl(x, y, y_err):
     Intercept + slope*TVL = Intercept/10 -> slope*TVL = -0.9*Intercept
     TVL = 0.9 * Intercept / |slope|
     """
+
     def model(x, slope, intercept):
         return slope * x + intercept
 
@@ -72,6 +72,7 @@ def fit_exponential(x, y, y_err, p0=None):
 
     def model(x, A, mu):
         return A * np.exp(-mu * x)
+
     res = physlab.physics_fit(model, x, y, y_err, p0=p0)
 
     A, mu = res.params
