@@ -8,6 +8,12 @@ RHO_AIR = 1.204e-3  # g/cm^3 (at room temp)
 RHO_AL = 2.70       # g/cm^3
 SIGMA_GM_WINDOW = 2.0e-3 # g/cm^2 (typical Geiger-Muller window density)
 
+# Manual Background Measurement: 52 counts in 100 seconds
+BG_RATE = 0.52  # cps
+BG_ERR = np.sqrt(52) / 100  # cps
+
+
+
 def load_gm(path, header=9):
     """Specialized loader for Geiger-Muller TSV files."""
     df = pd.read_csv(path, header=header, sep="\t+", engine="python")
