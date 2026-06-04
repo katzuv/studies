@@ -118,7 +118,7 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
 
     set_style(xlabel='Accelerating Voltage $V_a$ [V]', ylabel='Collector Current $I$ [pA]')
     plt.xlim(0, 31)
-    plt.legend(loc='upper left', frameon=True, facecolor='white', edgecolor='#e5e7eb', framealpha=0.9)
+    plt.legend(loc='upper left', frameon=True, facecolor='white', edgecolor='#e5e7eb', framealpha=0.9, fontsize=14)
     plt.tight_layout()
     plt.savefig(output_svg, format='svg')
     plt.close()
@@ -194,10 +194,10 @@ def analyze_ionization_experiment(ionization_file_path, contact_potential_V, con
         f"Literature Values: 10.438 eV"
     )
     
-    ax.text(0.03, 0.68, results_box_text, transform=ax.transAxes, fontsize=10,
+    ax.text(0.03, 0.65, results_box_text, transform=ax.transAxes, fontsize=12,
             verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', facecolor='#f8f9fa', edgecolor='#d1d5db', alpha=0.9))
     
-    ax.legend(loc='upper left', frameon=True, facecolor='white', edgecolor='#e5e7eb', framealpha=0.9)
+    ax.legend(loc='upper left', frameon=True, facecolor='white', edgecolor='#e5e7eb', framealpha=0.9, fontsize=14)
     plt.tight_layout()
     plt.savefig(output_svg, format='svg')
     plt.close()
