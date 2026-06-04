@@ -59,30 +59,75 @@ def physics_fit(
 
 
 def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
-    """Applies a consistent 'Physical Review' style to plots."""
+    """Applies a stunning, publication-ready style to plots."""
+    import matplotlib as mpl
+
+    # Premium Color Palette
+    custom_colors = ["#2E86AB", "#A23B72", "#F18F01", "#C73E1D", "#3B1F2B", "#4C9F70"]
+    mpl.rcParams["axes.prop_cycle"] = mpl.cycler(color=custom_colors)
+
+    # Global Aesthetics
+    mpl.rcParams["font.family"] = "sans-serif"
+    mpl.rcParams["font.sans-serif"] = ["Inter", "Helvetica", "Arial", "DejaVu Sans"]
+    mpl.rcParams["axes.linewidth"] = 1.5
+    mpl.rcParams["axes.edgecolor"] = "#333333"
+    mpl.rcParams["axes.labelcolor"] = "#111111"
+    mpl.rcParams["axes.labelsize"] = 14
+    mpl.rcParams["axes.titlesize"] = 16
+    mpl.rcParams["axes.titleweight"] = "bold"
+    mpl.rcParams["xtick.color"] = "#333333"
+    mpl.rcParams["ytick.color"] = "#333333"
+    mpl.rcParams["xtick.labelsize"] = 12
+    mpl.rcParams["ytick.labelsize"] = 12
+    mpl.rcParams["xtick.major.size"] = 6
+    mpl.rcParams["ytick.major.size"] = 6
+    mpl.rcParams["xtick.minor.size"] = 3
+    mpl.rcParams["ytick.minor.size"] = 3
+    mpl.rcParams["xtick.major.width"] = 1.2
+    mpl.rcParams["ytick.major.width"] = 1.2
+
+    # Shadows and clean backgrounds
+    mpl.rcParams["figure.facecolor"] = "#ffffff"
+    mpl.rcParams["axes.facecolor"] = "#ffffff"
+
     target = ax if ax else plt.gca()
 
     if grid:
-        target.grid(True, which="major", alpha=0.6, linestyle="-")
-        target.grid(True, which="minor", alpha=0.3, linestyle="--")
-        # Ensure minor ticks are enabled
+        target.grid(
+            True,
+            which="major",
+            color="#d1d5db",
+            alpha=0.8,
+            linestyle="-",
+            linewidth=1.0,
+        )
+        target.grid(
+            True,
+            which="minor",
+            color="#e5e7eb",
+            alpha=0.5,
+            linestyle="--",
+            linewidth=0.7,
+        )
         from matplotlib.ticker import AutoMinorLocator
 
         target.xaxis.set_minor_locator(AutoMinorLocator())
         target.yaxis.set_minor_locator(AutoMinorLocator())
 
     if title:
-        target.set_title(title, weight="bold", pad=15)
+        target.set_title(title, pad=15)
     if xlabel:
-        target.set_xlabel(xlabel)
+        target.set_xlabel(xlabel, labelpad=10, weight="bold")
     if ylabel:
-        target.set_ylabel(ylabel)
+        target.set_ylabel(ylabel, labelpad=10, weight="bold")
 
+    # Clean Spines
     target.spines["top"].set_visible(False)
     target.spines["right"].set_visible(False)
+    target.spines["left"].set_linewidth(1.5)
+    target.spines["bottom"].set_linewidth(1.5)
 
-    # Set high DPI for saving
-    plt.gcf().set_dpi(150)
+    plt.gcf().set_dpi(300)
 
 
 def propagate_error(func: Callable, values: Iterable, errors: Iterable) -> float:

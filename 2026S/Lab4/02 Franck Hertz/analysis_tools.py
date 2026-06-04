@@ -124,12 +124,12 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
                 raw_current,
                 xerr=v_error_inst,
                 yerr=i_error_inst,
-                fmt=".",
+                fmt="-",
                 label=clean_label,
-                linewidth=0.5,
-                elinewidth=0.4,
-                alpha=0.6,
-                capsize=1,
+                linewidth=2.0,
+                elinewidth=0.8,
+                alpha=0.85,
+                capsize=2,
                 zorder=3,
             )
 
@@ -138,8 +138,9 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
                 peak_voltages,
                 peak_currents,
                 color=color,
-                s=45,
-                edgecolors="black",
+                s=80,
+                edgecolors="white",
+                linewidths=1.5,
                 zorder=5,
             )
 
@@ -158,7 +159,11 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
                     fontsize=9,
                     fontweight="bold",
                     bbox=dict(
-                        boxstyle="round,pad=0.2", fc="white", ec=color, alpha=0.8
+                        boxstyle="round,pad=0.3",
+                        fc="#ffffff",
+                        ec=color,
+                        alpha=0.9,
+                        linewidth=1.2,
                     ),
                     zorder=6,
                 )
@@ -173,10 +178,11 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
     plt.legend(
         loc="upper left",
         frameon=True,
-        facecolor="white",
-        edgecolor="#e5e7eb",
-        framealpha=0.9,
+        facecolor="#ffffff",
+        edgecolor="#d1d5db",
+        framealpha=0.95,
         fontsize=14,
+        shadow=True,
     )
     plt.tight_layout()
     plt.savefig(output_svg, format="svg")
@@ -244,27 +250,37 @@ def analyze_ionization_experiment(
         raw_current,
         xerr=v_error_inst,
         yerr=i_error_inst,
-        fmt=".",
-        color="#1f77b4",
+        fmt="-",
+        color="#2E86AB",
         label="Ion Current Data ($I$)",
-        linewidth=0.5,
-        elinewidth=0.3,
-        alpha=0.5,
-        capsize=1,
+        linewidth=2.5,
+        elinewidth=1.0,
+        alpha=0.9,
+        capsize=2,
         zorder=2,
+    )
+
+    ax.fill_between(
+        raw_voltage,
+        mean_noise - 5.0 * std_noise,
+        statistical_noise_ceiling,
+        color="#F18F01",
+        alpha=0.15,
+        zorder=1,
     )
 
     ax.axhline(
         y=statistical_noise_ceiling,
-        color="orange",
-        linestyle=":",
+        color="#F18F01",
+        linestyle="--",
+        linewidth=2.0,
         label=r"5$\sigma$ Noise Floor Ceiling",
     )
     ax.axvline(
         x=v_start_raw,
-        color="crimson",
-        linestyle="--",
-        linewidth=1.5,
+        color="#C73E1D",
+        linestyle="-.",
+        linewidth=2.5,
         label=f"Ionization Onset ($V_a^\\circ$ = {v_start_raw:.2f} V)",
     )
 
@@ -272,11 +288,10 @@ def analyze_ionization_experiment(
     ax.scatter(
         raw_voltage[idx_closest],
         raw_current[idx_closest],
-        color="crimson",
-        s=100,
-        edgecolors="black",
-        facecolors="none",
-        linewidths=2,
+        color="#C73E1D",
+        s=150,
+        edgecolors="white",
+        linewidths=2.5,
         zorder=5,
     )
 
@@ -296,27 +311,30 @@ def analyze_ionization_experiment(
     )
 
     ax.text(
-        0.03,
-        0.65,
+        0.08,
+        0.58,
         results_box_text,
         transform=ax.transAxes,
-        fontsize=12,
+        fontsize=13,
         verticalalignment="top",
+        linespacing=1.8,
         bbox=dict(
-            boxstyle="round,pad=0.5",
-            facecolor="#f8f9fa",
-            edgecolor="#d1d5db",
-            alpha=0.9,
+            boxstyle="round,pad=1.3",
+            facecolor="#ffffff",
+            edgecolor="#C73E1D",
+            linewidth=1.5,
+            alpha=0.95,
         ),
     )
 
     ax.legend(
         loc="upper left",
         frameon=True,
-        facecolor="white",
-        edgecolor="#e5e7eb",
-        framealpha=0.9,
+        facecolor="#ffffff",
+        edgecolor="#d1d5db",
+        framealpha=0.95,
         fontsize=14,
+        shadow=True,
     )
     plt.tight_layout()
     plt.savefig(output_svg, format="svg")
