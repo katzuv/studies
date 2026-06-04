@@ -27,6 +27,11 @@ was fitted in a window of $\pm 7$ points (15 points total, corresponding to a $\
 $$
 E_{\text{exc}} = \frac{V_5 - V_1}{4} = 4.84 \pm 0.0035\text{ eV}
 $$
+Comparing to the literature value for the excitation energy of Mercury ($4.9\text{ eV}$):
+- **Absolute Deviation:** $0.06\text{ eV}$
+- **Relative Deviation:** $1.22\%$
+- **Statistical Significance of Deviation:** $16.98\sigma$
+
 **Contact Potential:**
 $$
 V_c = V_1 - E_{\text{exc}} = 1.09 \pm 0.01\text{ V}
@@ -53,6 +58,11 @@ $$
 $$
 E_{\text{exc}} = \frac{V_5 - V_1}{4} = 4.84 \pm 0.0035\text{ eV}
 $$
+Comparing to the literature value for the excitation energy of Mercury ($4.9\text{ eV}$):
+- **Absolute Deviation:** $0.06\text{ eV}$
+- **Relative Deviation:** $1.26\%$
+- **Statistical Significance of Deviation:** $17.45\sigma$
+
 **Contact Potential:**
 $$
 V_c = V_1 - E_{\text{exc}} = 1.10 \pm 0.01\text{ V}
@@ -79,6 +89,11 @@ $$
 $$
 E_{\text{exc}} = \frac{V_5 - V_1}{4} = 4.83 \pm 0.0035\text{ eV}
 $$
+Comparing to the literature value for the excitation energy of Mercury ($4.9\text{ eV}$):
+- **Absolute Deviation:** $0.07\text{ eV}$
+- **Relative Deviation:** $1.36\%$
+- **Statistical Significance of Deviation:** $18.91\sigma$
+
 **Contact Potential:**
 $$
 V_c = V_1 - E_{\text{exc}} = 1.07 \pm 0.01\text{ V}
@@ -114,6 +129,7 @@ $$
 Comparing to the literature value for the ionization energy of Mercury ($10.438\text{ eV}$):
 - **Absolute Deviation:** $1.35\text{ eV}$
 - **Relative Deviation:** $12.91\%$
+- **Statistical Significance of Deviation:** $83.19\sigma$
 
 ## 3. Mathematical Derivations of Error Propagation
 Below are the formulas used for error propagation, based on standard first-order Taylor expansion for independent variables:

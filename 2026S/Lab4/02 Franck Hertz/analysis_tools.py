@@ -617,6 +617,16 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
             f"E_{{\\text{{exc}}}} = \\frac{{V_5 - V_1}}{{4}} = {format_num(e_exc)} \\pm {format_num(e_exc_err)}\\text{{ eV}}\n"
             f"$$\n"
         )
+
+        exc_dev = abs(e_exc - 4.9)
+        exc_sigmas = exc_dev / e_exc_err
+        md_content.append(
+            f"Comparing to the literature value for the excitation energy of Mercury ($4.9\\text{{ eV}}$):\n"
+            f"- **Absolute Deviation:** ${format_num(exc_dev)}\\text{{ eV}}$\n"
+            f"- **Relative Deviation:** ${format_num(exc_dev / 4.9 * 100)}\\%$\n"
+            f"- **Statistical Significance of Deviation:** ${format_num(exc_sigmas)}\\sigma$\n\n"
+        )
+
         md_content.append("**Contact Potential:**\n")
         md_content.append(
             f"$$\n"
@@ -667,14 +677,19 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
     e_ion_err = ion_results["error_eV"]
 
     md_content.append("### 2.3 True Ionization Energy Calculation\n")
+
+    ion_dev = abs(e_ion - 10.438)
+    ion_sigmas = ion_dev / e_ion_err
+
     md_content.append(
         f"Using the contact potential from the $I_H = {heater_ref}\\text{{ mA}}$ dataset ($V_c = {format_num(v_c_ref)} \\pm {format_num(v_c_ref_err)}\\text{{ V}}$):\n"
         f"$$\n"
         f"E_{{\\text{{ion}}}} = V_i - V_c = {format_num(e_ion)} \\pm {format_num(e_ion_err)}\\text{{ eV}}\n"
         f"$$\n"
         f"Comparing to the literature value for the ionization energy of Mercury ($10.438\\text{{ eV}}$):\n"
-        f"- **Absolute Deviation:** ${format_num(10.438 - e_ion)}\\text{{ eV}}$\n"
-        f"- **Relative Deviation:** ${format_num((10.438 - e_ion) / 10.438 * 100)}\\%$\n"
+        f"- **Absolute Deviation:** ${format_num(ion_dev)}\\text{{ eV}}$\n"
+        f"- **Relative Deviation:** ${format_num(ion_dev / 10.438 * 100)}\\%$\n"
+        f"- **Statistical Significance of Deviation:** ${format_num(ion_sigmas)}\\sigma$\n"
     )
 
     md_content.append("\n## 3. Mathematical Derivations of Error Propagation\n")
