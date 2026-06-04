@@ -531,6 +531,19 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
     Generates a beautifully formatted Markdown file containing all Franck-Hertz
     calculations, complete with error propagation and chi-squared values.
     """
+
+    def format_num(val):
+        if pd.isna(val) or np.isnan(val):
+            return "N/A"
+        val = float(val)
+        if val == 0.0:
+            return "0.00"
+        if round(abs(val), 2) >= 0.01:
+            return f"{val:.2f}"
+        else:
+            dec = -int(np.floor(np.log10(abs(val))))
+            return f"{val:.{dec + 1}f}"
+
     md_content = []
     md_content.append("# Franck-Hertz Experiment Calculations & Error Analysis\n")
     md_content.append(
@@ -570,7 +583,7 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         for p_idx, peak in enumerate(res["peaks"]):
             v_val, i_val, v_err_fit, v_err_tot, chi_red, dof = peak
             md_content.append(
-                f"| $P_{{{p_idx + 1}}}$ | {v_val:.5f} | {v_err_fit:.5f} | {v_err_tot:.5f} | {i_val:.3f} | {chi_red:.2f} | {dof} |\n"
+                f"| $P_{{{p_idx + 1}}}$ | {format_num(v_val)} | {format_num(v_err_fit)} | {format_num(v_err_tot)} | {format_num(i_val)} | {format_num(chi_red)} | {dof} |\n"
             )
         md_content.append("\n")
 
@@ -588,7 +601,7 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
             spacings.append(diff)
             spacing_errors.append(diff_err)
             md_content.append(
-                f"- $\\Delta V_{{{s_idx + 1}}} = V_{{{s_idx + 2}}} - V_{{{s_idx + 1}}} = {diff:.5f} \\pm {diff_err:.5f}\\text{{ V}}$\n"
+                f"- $\\Delta V_{{{s_idx + 1}}} = V_{{{s_idx + 2}}} - V_{{{s_idx + 1}}} = {format_num(diff)} \\pm {format_num(diff_err)}\\text{{ V}}$\n"
             )
         md_content.append("\n")
 
@@ -601,13 +614,13 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         md_content.append("**Excitation Energy (Mean Spacing):**\n")
         md_content.append(
             f"$$\n"
-            f"E_{{\\text{{exc}}}} = \\frac{{V_5 - V_1}}{{4}} = {e_exc:.5f} \\pm {e_exc_err:.5f}\\text{{ eV}}\n"
+            f"E_{{\\text{{exc}}}} = \\frac{{V_5 - V_1}}{{4}} = {format_num(e_exc)} \\pm {format_num(e_exc_err)}\\text{{ eV}}\n"
             f"$$\n"
         )
         md_content.append("**Contact Potential:**\n")
         md_content.append(
             f"$$\n"
-            f"V_c = V_1 - E_{{\\text{{exc}}}} = {v_c:.5f} \\pm {v_c_err:.5f}\\text{{ V}}\n"
+            f"V_c = V_1 - E_{{\\text{{exc}}}} = {format_num(v_c)} \\pm {format_num(v_c_err)}\\text{{ V}}\n"
             f"$$\n\n"
         )
 
@@ -630,17 +643,17 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
     md_content.append("**Source File:** `step2_280ma.csv`\n\n")
     md_content.append("### 2.1 Baseline Noise Summary\n")
     md_content.append(
-        f"- **Mean baseline current $I_{{\\text{{noise}}}}$:** ${ion_results['mean_noise']:.5f} \\pm {ion_results['mean_noise_err']:.5f}\\text{{ pA}}$\n"
-        f"- **Standard deviation of baseline current $\\sigma_{{\\text{{noise}}}}$:** ${ion_results['std_noise']:.5f}\\text{{ pA}}$\n"
-        f"- **5$\\sigma$ Noise Ceiling:** ${ion_results['mean_noise'] + 5.0 * ion_results['std_noise']:.5f}\\text{{ pA}}$\n\n"
+        f"- **Mean baseline current $I_{{\\text{{noise}}}}$:** ${format_num(ion_results['mean_noise'])} \\pm {format_num(ion_results['mean_noise_err'])}\\text{{ pA}}$\n"
+        f"- **Standard deviation of baseline current $\\sigma_{{\\text{{noise}}}}$:** ${format_num(ion_results['std_noise'])}\\text{{ pA}}$\n"
+        f"- **5$\\sigma$ Noise Ceiling:** ${format_num(ion_results['mean_noise'] + 5.0 * ion_results['std_noise'])}\\text{{ pA}}$\n\n"
     )
 
     md_content.append("### 2.2 Quadratic Threshold Fit Results\n")
     md_content.append(
-        f"- **Scale factor $b$:** ${ion_results['b_fit']:.4f} \\pm {ion_results['b_err']:.4f}\\text{{ pA/V}}^2$\n"
-        f"- **Baseline offset $I_{{\\text{{offset}}}}$:** ${ion_results['ioff_fit']:.4f} \\pm {ion_results['ioff_err']:.4f}\\text{{ pA}}$\n"
-        f"- **Fitted Onset Voltage $V_i$:** ${ion_results['fitted_ionization_onset_V']:.5f} \\pm {ion_results['fitted_ionization_onset_error_V']:.5f}\\text{{ V}}$ (including voltage reading error $\\sigma_V = 0.01\\text{{ V}}$)\n"
-        f"- **Reduced Chi-Squared $\\chi^2_{{\\text{{red}}}}$:** ${ion_results['chi_red']:.2f}$ (DoF = {ion_results['dof']})\n\n"
+        f"- **Scale factor $b$:** ${format_num(ion_results['b_fit'])} \\pm {format_num(ion_results['b_err'])}\\text{{ pA/V}}^2$\n"
+        f"- **Baseline offset $I_{{\\text{{offset}}}}$:** ${format_num(ion_results['ioff_fit'])} \\pm {format_num(ion_results['ioff_err'])}\\text{{ pA}}$\n"
+        f"- **Fitted Onset Voltage $V_i$:** ${format_num(ion_results['fitted_ionization_onset_V'])} \\pm {format_num(ion_results['fitted_ionization_onset_error_V'])}\\text{{ V}}$ (including voltage reading error $\\sigma_V = 0.01\\text{{ V}}$)\n"
+        f"- **Reduced Chi-Squared $\\chi^2_{{\\text{{red}}}}$:** ${format_num(ion_results['chi_red'])}$ (DoF = {ion_results['dof']})\n\n"
     )
 
     # True ionization potential
@@ -655,13 +668,13 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
 
     md_content.append("### 2.3 True Ionization Energy Calculation\n")
     md_content.append(
-        f"Using the contact potential from the $I_H = {heater_ref}\\text{{ mA}}$ dataset ($V_c = {v_c_ref:.5f} \\pm {v_c_ref_err:.5f}\\text{{ V}}$):\n"
+        f"Using the contact potential from the $I_H = {heater_ref}\\text{{ mA}}$ dataset ($V_c = {format_num(v_c_ref)} \\pm {format_num(v_c_ref_err)}\\text{{ V}}$):\n"
         f"$$\n"
-        f"E_{{\\text{{ion}}}} = V_i - V_c = {e_ion:.5f} \\pm {e_ion_err:.5f}\\text{{ eV}}\n"
+        f"E_{{\\text{{ion}}}} = V_i - V_c = {format_num(e_ion)} \\pm {format_num(e_ion_err)}\\text{{ eV}}\n"
         f"$$\n"
         f"Comparing to the literature value for the ionization energy of Mercury ($10.438\\text{{ eV}}$):\n"
-        f"- **Absolute Deviation:** ${10.438 - e_ion:.3f}\\text{{ eV}}$\n"
-        f"- **Relative Deviation:** ${(10.438 - e_ion) / 10.438 * 100:.2f}\\%$\n"
+        f"- **Absolute Deviation:** ${format_num(10.438 - e_ion)}\\text{{ eV}}$\n"
+        f"- **Relative Deviation:** ${format_num((10.438 - e_ion) / 10.438 * 100)}\\%$\n"
     )
 
     md_content.append("\n## 3. Mathematical Derivations of Error Propagation\n")
@@ -705,15 +718,23 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
     )
 
     md_content.append("\n## 4. Statistical Discussion on Reduced Chi-Squared values\n")
+
+    # Calculate scaled chi_red dynamically for explanation
+    chi_red_scaled = ion_results["chi_red"] * (0.01 / ion_results["std_noise"]) ** 2
+
     md_content.append(
         "Under the strict last-digit digital resolution error model, the uncertainties assigned to the current measurements "
         "are extremely small ($\\sigma_I = 0.01\\text{ pA}$). This results in very large values for the reduced chi-squared "
-        "($\\chi^2_{\\text{{red}}} \\gg 1$), such as $\\chi^2_{\\text{{red}}} \\approx 23307.75$ for the ionization onset and "
+        "($\\chi^2_{\\text{{red}}} \\gg 1$), such as $\\chi^2_{\\text{{red}}} \\approx "
+        + format_num(ion_results["chi_red"])
+        + "$ for the ionization onset and "
         "up to $120,000$ for the characteristic curve peaks. \n\n"
         "### 4.1 Interpretation of Large $\\chi^2_{\\text{{red}}}$\n"
         "1. **Digital Resolution vs. Physical Noise:** The digital resolution of $0.01\\text{ pA}$ represents the readout limit, "
         "not the actual physical noise of the measurement. The actual statistical baseline noise (standard deviation of the baseline "
-        "fluctuations) was calculated to be $\\sigma_{\\text{{baseline}}} \\approx 0.65\\text{ pA}$ for the ionization dataset, and "
+        "fluctuations) was calculated to be $\\sigma_{\\text{{baseline}}} \\approx "
+        + format_num(ion_results["std_noise"])
+        + "\\text{ pA}$ for the ionization dataset, and "
         "$\\sigma_{\\text{{baseline}}} \\approx 0.55\\text{ to }1.80\\text{ pA}$ for the characteristic curve datasets.\n"
         "2. **Model Approximations:** Simplified models (like local parabolas for the peak maxima or a pure quadratic threshold for "
         "ionization) do not fully capture higher-order physics (such as thermal velocity distribution of emitted electrons, "
@@ -721,7 +742,11 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         "divided by a tiny digital uncertainty of $0.01\\text{ pA}$, lead to an artificially inflated $\\chi^2_{\\text{{red}}}$.\n\n"
         "### 4.2 Impact of Physical Noise Scaling\n"
         "If we scale the data point uncertainties to use the actual physical baseline standard deviation $\\sigma_{\\text{{baseline}}}$:\n"
-        "- The reduced chi-squared of the ionization curve fit drops from $23307.75$ to a highly reasonable **$5.55$** (DoF = 63). "
+        "- The reduced chi-squared of the ionization curve fit drops from "
+        + format_num(ion_results["chi_red"])
+        + " to a highly reasonable **$"
+        + format_num(chi_red_scaled)
+        + "$** (DoF = 63). "
         "This value represents a highly successful fit, with the small deviation representing the thermal smoothing of the onset edge.\n"
         "- The reduced chi-squared values for the characteristic curves peaks drop from thousands to a range of **$0.02 \\text{ to } 0.88$** (DoF = 12), "
         "confirming that the local parabolic shape is an outstanding approximation of the peak maxima when compared against physical fluctuations.\n"
