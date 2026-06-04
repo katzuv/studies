@@ -9,6 +9,7 @@ import re
 import matplotlib.pyplot as plt
 from pathlib import Path
 from scipy.signal import find_peaks
+from physlab.core import set_style
 
 def get_last_digit_error(series_str):
     """
@@ -115,9 +116,7 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
         except Exception as e:
             print(f"Error processing file {path}: {e}")
 
-    plt.xlabel('Accelerating Voltage $V_a$ [V]', fontsize=12, fontweight='bold')
-    plt.ylabel('Collector Current $I$ [pA]', fontsize=12, fontweight='bold')
-    plt.grid(True, linestyle=':', alpha=0.6)
+    set_style(xlabel='Accelerating Voltage $V_a$ [V]', ylabel='Collector Current $I$ [pA]')
     plt.xlim(0, 31)
     plt.legend(loc='upper left', bbox_to_anchor=(1.02, 1), frameon=True)
     plt.tight_layout()
@@ -184,9 +183,7 @@ def analyze_ionization_experiment(ionization_file_path, contact_potential_V, con
     ax.scatter(raw_voltage[idx_closest], raw_current[idx_closest], 
                color='crimson', s=100, edgecolors='black', facecolors='none', linewidths=2, zorder=5)
     
-    ax.set_xlabel('Accelerating Voltage $V_a$ [V]', fontsize=11, fontweight='bold')
-    ax.set_ylabel('Collector Current $I$ [pA]', fontsize=11, fontweight='bold')
-    ax.grid(True, linestyle=':', alpha=0.5)
+    set_style(ax=ax, xlabel='Accelerating Voltage $V_a$ [V]', ylabel='Collector Current $I$ [pA]')
     ax.set_xlim(0, max(raw_voltage) + 1)
     
     results_box_text = (
@@ -212,7 +209,7 @@ def analyze_ionization_experiment(ionization_file_path, contact_potential_V, con
     }
 
 if __name__ == "__main__":
-    fh_files = [Path('step10_270ma.csv'), Path('step10_250ma.csv'), Path('step10_260ma.csv')]
+    fh_files = [Path('data/step10_270ma.csv'), Path('data/step10_250ma.csv'), Path('data/step10_260ma.csv')]
     print("Running characteristic curve analysis...")
     results = analyze_and_plot_fh_files(fh_files)
     
@@ -224,5 +221,5 @@ if __name__ == "__main__":
         
     print(f"Using Contact Potential {c_pot:.3f} ± {c_pot_err:.3f} V for ionization analysis.")
     print("Running ionization curve analysis...")
-    ion_results = analyze_ionization_experiment(Path('step2_280ma.csv'), contact_potential_V=c_pot, contact_pot_error_V=c_pot_err)
+    ion_results = analyze_ionization_experiment(Path('data/step2_280ma.csv'), contact_potential_V=c_pot, contact_pot_error_V=c_pot_err)
     print("Done. SVGs generated.")
