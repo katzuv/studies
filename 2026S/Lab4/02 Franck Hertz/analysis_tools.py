@@ -103,6 +103,14 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
                 )
                 continue
 
+            # Calculate baseline noise standard deviation
+            baseline_mask_char = (raw_voltage >= 1.5) & (raw_voltage <= 4.0)
+            baseline_std = (
+                np.std(raw_current[baseline_mask_char], ddof=1)
+                if np.sum(baseline_mask_char) > 1
+                else i_error_inst
+            )
+
             # Perform local parabolic fits around each peak
             w = 7  # window size (15 points total, covering 0.7 V range)
             fitted_peak_voltages = []
@@ -117,7 +125,8 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
 
                 x_fit = voltage[start_idx : end_idx + 1]
                 y_fit = current[start_idx : end_idx + 1]
-                y_err = np.full_like(y_fit, i_error_inst)
+                # Realistic error: baseline standard deviation plus 1% relative error
+                y_err = np.sqrt(baseline_std**2 + (0.01 * y_fit) ** 2)
 
                 x0_guess = voltage[idx]
                 y0_guess = current[idx]
@@ -368,7 +377,7 @@ def analyze_ionization_experiment(
     mask = (raw_voltage >= 5.0) & (raw_voltage <= 11.5)
     x_fit = raw_voltage[mask]
     y_fit = raw_current[mask]
-    y_err = np.full_like(y_fit, i_error_inst)
+    y_err = np.full_like(y_fit, std_noise)
 
     try:
         res = physics_fit(
