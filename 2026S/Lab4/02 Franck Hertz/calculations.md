@@ -11,25 +11,25 @@ was fitted in a window of $\pm 7$ points (15 points total, corresponding to a $\
 
 | Peak | Fitted Position $V_i$ [V] | Fit Error $\sigma_{V_i,\text{fit}}$ [V] | Total Error $\sigma_{V_i}$ [V] | Peak Current $I_i$ [pA] | $\chi^2_{\text{red}}$ | DoF |
 | :--- | :----------------------- | :------------------------------------- | :----------------------------- | :--------------------- | :--------------------- | :-- |
-| $P_{1}$ | 5.92883 | 0.00005 | 0.01000 | 81.863 | 2826.11 | 12 |
-| $P_{2}$ | 10.61591 | 0.00002 | 0.01000 | 215.401 | 32702.91 | 12 |
-| $P_{3}$ | 15.42452 | 0.00001 | 0.01000 | 344.732 | 122873.36 | 12 |
-| $P_{4}$ | 20.32352 | 0.00001 | 0.01000 | 475.234 | 27293.31 | 12 |
-| $P_{5}$ | 25.28876 | 0.00001 | 0.01000 | 611.740 | 6485.34 | 12 |
+| $P_{1}$ | 5.92875 | 0.00903 | 0.01347 | 81.856 | 0.07 | 12 |
+| $P_{2}$ | 10.61533 | 0.00501 | 0.01118 | 215.386 | 0.45 | 12 |
+| $P_{3}$ | 15.42381 | 0.00526 | 0.01130 | 344.532 | 0.88 | 12 |
+| $P_{4}$ | 20.32320 | 0.00569 | 0.01151 | 475.205 | 0.11 | 12 |
+| $P_{5}$ | 25.28880 | 0.00783 | 0.01270 | 611.729 | 0.02 | 12 |
 
 **Peak Spacings $\Delta V_i = V_{i+1} - V_i$:**
-- $\Delta V_{1} = V_{2} - V_{1} = 4.68708 \pm 0.01414\text{ V}$
-- $\Delta V_{2} = V_{3} - V_{2} = 4.80862 \pm 0.01414\text{ V}$
-- $\Delta V_{3} = V_{4} - V_{3} = 4.89900 \pm 0.01414\text{ V}$
-- $\Delta V_{4} = V_{5} - V_{4} = 4.96524 \pm 0.01414\text{ V}$
+- $\Delta V_{1} = V_{2} - V_{1} = 4.68658 \pm 0.01751\text{ V}$
+- $\Delta V_{2} = V_{3} - V_{2} = 4.80848 \pm 0.01590\text{ V}$
+- $\Delta V_{3} = V_{4} - V_{3} = 4.89939 \pm 0.01613\text{ V}$
+- $\Delta V_{4} = V_{5} - V_{4} = 4.96560 \pm 0.01714\text{ V}$
 
 **Excitation Energy (Mean Spacing):**
 $$
-E_{\text{exc}} = \frac{V_5 - V_1}{4} = 4.83998 \pm 0.00354\text{ eV}
+E_{\text{exc}} = \frac{V_5 - V_1}{4} = 4.84001 \pm 0.00463\text{ eV}
 $$
 **Contact Potential:**
 $$
-V_c = V_1 - E_{\text{exc}} = 1.08885 \pm 0.01275\text{ V}
+V_c = V_1 - E_{\text{exc}} = 1.08874 \pm 0.01714\text{ V}
 $$
 
 ### 1.2 Dataset: $I_H = 250\text{ mA}$, $V_R = 1.5\text{ V}$
@@ -37,25 +37,25 @@ $$
 
 | Peak | Fitted Position $V_i$ [V] | Fit Error $\sigma_{V_i,\text{fit}}$ [V] | Total Error $\sigma_{V_i}$ [V] | Peak Current $I_i$ [pA] | $\chi^2_{\text{red}}$ | DoF |
 | :--- | :----------------------- | :------------------------------------- | :----------------------------- | :--------------------- | :--------------------- | :-- |
-| $P_{1}$ | 5.93500 | 0.00010 | 0.01000 | 38.386 | 877.22 | 12 |
-| $P_{2}$ | 10.62585 | 0.00005 | 0.01000 | 82.022 | 5894.13 | 12 |
-| $P_{3}$ | 15.43569 | 0.00004 | 0.01000 | 118.621 | 12715.32 | 12 |
-| $P_{4}$ | 20.31953 | 0.00004 | 0.01000 | 153.137 | 3066.57 | 12 |
-| $P_{5}$ | 25.28819 | 0.00005 | 0.01000 | 175.031 | 715.93 | 12 |
+| $P_{1}$ | 5.93488 | 0.00888 | 0.01338 | 38.384 | 0.10 | 12 |
+| $P_{2}$ | 10.62531 | 0.00555 | 0.01143 | 82.018 | 0.44 | 12 |
+| $P_{3}$ | 15.43486 | 0.00525 | 0.01130 | 118.620 | 0.67 | 12 |
+| $P_{4}$ | 20.31924 | 0.00628 | 0.01181 | 153.131 | 0.11 | 12 |
+| $P_{5}$ | 25.28827 | 0.00853 | 0.01314 | 175.028 | 0.02 | 12 |
 
 **Peak Spacings $\Delta V_i = V_{i+1} - V_i$:**
-- $\Delta V_{1} = V_{2} - V_{1} = 4.69085 \pm 0.01414\text{ V}$
-- $\Delta V_{2} = V_{3} - V_{2} = 4.80984 \pm 0.01414\text{ V}$
-- $\Delta V_{3} = V_{4} - V_{3} = 4.88384 \pm 0.01414\text{ V}$
-- $\Delta V_{4} = V_{5} - V_{4} = 4.96866 \pm 0.01414\text{ V}$
+- $\Delta V_{1} = V_{2} - V_{1} = 4.69043 \pm 0.01760\text{ V}$
+- $\Delta V_{2} = V_{3} - V_{2} = 4.80955 \pm 0.01607\text{ V}$
+- $\Delta V_{3} = V_{4} - V_{3} = 4.88438 \pm 0.01634\text{ V}$
+- $\Delta V_{4} = V_{5} - V_{4} = 4.96903 \pm 0.01767\text{ V}$
 
 **Excitation Energy (Mean Spacing):**
 $$
-E_{\text{exc}} = \frac{V_5 - V_1}{4} = 4.83830 \pm 0.00354\text{ eV}
+E_{\text{exc}} = \frac{V_5 - V_1}{4} = 4.83835 \pm 0.00469\text{ eV}
 $$
 **Contact Potential:**
 $$
-V_c = V_1 - E_{\text{exc}} = 1.09670 \pm 0.01275\text{ V}
+V_c = V_1 - E_{\text{exc}} = 1.09653 \pm 0.01704\text{ V}
 $$
 
 ### 1.3 Dataset: $I_H = 260\text{ mA}$, $V_R = 1.5\text{ V}$
@@ -63,25 +63,25 @@ $$
 
 | Peak | Fitted Position $V_i$ [V] | Fit Error $\sigma_{V_i,\text{fit}}$ [V] | Total Error $\sigma_{V_i}$ [V] | Peak Current $I_i$ [pA] | $\chi^2_{\text{red}}$ | DoF |
 | :--- | :----------------------- | :------------------------------------- | :----------------------------- | :--------------------- | :--------------------- | :-- |
-| $P_{1}$ | 5.89906 | 0.00019 | 0.01000 | 21.482 | 273.73 | 12 |
-| $P_{2}$ | 10.58055 | 0.00008 | 0.01000 | 51.362 | 3128.14 | 12 |
-| $P_{3}$ | 15.39044 | 0.00005 | 0.01000 | 83.785 | 4072.13 | 12 |
-| $P_{4}$ | 20.27124 | 0.00005 | 0.01000 | 120.380 | 2339.17 | 12 |
-| $P_{5}$ | 25.23164 | 0.00005 | 0.01000 | 148.981 | 1496.75 | 12 |
+| $P_{1}$ | 5.89899 | 0.01108 | 0.01492 | 21.480 | 0.08 | 12 |
+| $P_{2}$ | 10.57997 | 0.00559 | 0.01145 | 51.358 | 0.59 | 12 |
+| $P_{3}$ | 15.38979 | 0.00501 | 0.01118 | 83.771 | 0.45 | 12 |
+| $P_{4}$ | 20.27092 | 0.00576 | 0.01154 | 120.367 | 0.14 | 12 |
+| $P_{5}$ | 25.23165 | 0.00827 | 0.01298 | 148.964 | 0.07 | 12 |
 
 **Peak Spacings $\Delta V_i = V_{i+1} - V_i$:**
-- $\Delta V_{1} = V_{2} - V_{1} = 4.68149 \pm 0.01414\text{ V}$
-- $\Delta V_{2} = V_{3} - V_{2} = 4.80989 \pm 0.01414\text{ V}$
-- $\Delta V_{3} = V_{4} - V_{3} = 4.88080 \pm 0.01414\text{ V}$
-- $\Delta V_{4} = V_{5} - V_{4} = 4.96041 \pm 0.01414\text{ V}$
+- $\Delta V_{1} = V_{2} - V_{1} = 4.68098 \pm 0.01881\text{ V}$
+- $\Delta V_{2} = V_{3} - V_{2} = 4.80983 \pm 0.01601\text{ V}$
+- $\Delta V_{3} = V_{4} - V_{3} = 4.88112 \pm 0.01607\text{ V}$
+- $\Delta V_{4} = V_{5} - V_{4} = 4.96074 \pm 0.01737\text{ V}$
 
 **Excitation Energy (Mean Spacing):**
 $$
-E_{\text{exc}} = \frac{V_5 - V_1}{4} = 4.83315 \pm 0.00354\text{ eV}
+E_{\text{exc}} = \frac{V_5 - V_1}{4} = 4.83317 \pm 0.00494\text{ eV}
 $$
 **Contact Potential:**
 $$
-V_c = V_1 - E_{\text{exc}} = 1.06591 \pm 0.01275\text{ V}
+V_c = V_1 - E_{\text{exc}} = 1.06582 \pm 0.01893\text{ V}
 $$
 
 ## 2. Ionization Curve & Onset Fitting
@@ -101,15 +101,15 @@ where $V_i$ represents the fitted ionization onset voltage.
 - **5$\sigma$ Noise Ceiling:** $3.75899\text{ pA}$
 
 ### 2.2 Quadratic Threshold Fit Results
-- **Scale factor $b$:** $41.4396 \pm 0.0131\text{ pA/V}^2$
-- **Baseline offset $I_{\text{offset}}$:** $1.5312 \pm 0.0014\text{ pA}$
-- **Fitted Onset Voltage $V_i$:** $10.17891 \pm 0.01000\text{ V}$ (including voltage reading error $\sigma_V = 0.01\text{ V}$)
-- **Reduced Chi-Squared $\chi^2_{\text{red}}$:** $23307.75$ (DoF = 63)
+- **Scale factor $b$:** $41.4396 \pm 0.8521\text{ pA/V}^2$
+- **Baseline offset $I_{\text{offset}}$:** $1.5312 \pm 0.0883\text{ pA}$
+- **Fitted Onset Voltage $V_i$:** $10.17891 \pm 0.01498\text{ V}$ (including voltage reading error $\sigma_V = 0.01\text{ V}$)
+- **Reduced Chi-Squared $\chi^2_{\text{red}}$:** $5.55$ (DoF = 63)
 
 ### 2.3 True Ionization Energy Calculation
-Using the contact potential from the $I_H = 270\text{ mA}$ dataset ($V_c = 1.08885 \pm 0.01275\text{ V}$):
+Using the contact potential from the $I_H = 270\text{ mA}$ dataset ($V_c = 1.08874 \pm 0.01714\text{ V}$):
 $$
-E_{\text{ion}} = V_i - V_c = 9.09006 \pm 0.01620\text{ eV}
+E_{\text{ion}} = V_i - V_c = 9.09017 \pm 0.02277\text{ eV}
 $$
 Comparing to the literature value for the ionization energy of Mercury ($10.438\text{ eV}$):
 - **Absolute Deviation:** $1.348\text{ eV}$
