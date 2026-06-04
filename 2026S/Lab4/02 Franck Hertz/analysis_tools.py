@@ -545,14 +545,14 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
             return f"{val:.{dec + 1}f}"
 
     md_content = []
-    md_content.append("# Franck-Hertz Experiment Calculations & Error Analysis\n")
+    md_content.append("# Franck-Hertz Experiment Calculations & Error Analysis 📊\n")
     md_content.append(
         "This document lists all calculations, fitting parameters, error propagation, "
         "and reduced chi-squared values for the Franck-Hertz experiment. All fits were performed "
         "using `scipy.optimize.curve_fit` via the `physlab` core utility.\n"
     )
 
-    md_content.append("## 1. Characteristic Curves & Peak Fitting\n")
+    md_content.append("## 1. Characteristic Curves & Peak Fitting 📈\n")
     md_content.append(
         "To find the exact location of the peaks and their statistical uncertainties, "
         "a local parabola of the form:\n"
@@ -569,7 +569,7 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         heater = res["heater_mA"]
         v_ret = res["v_ret_V"]
         md_content.append(
-            f"### 1.{idx} Dataset: $I_H = {heater}\\text{{ mA}}$, $V_R = {v_ret}\\text{{ V}}$\n"
+            f"### 1.{idx} Dataset: $I_H = {heater}\\text{{ mA}}$, $V_R = {v_ret}\\text{{ V}}$ ⚡\n"
         )
         md_content.append(f"**Source File:** `{path.name}`\n\n")
 
@@ -635,7 +635,7 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         )
 
     # 2. Ionization curve fitting
-    md_content.append("## 2. Ionization Curve & Onset Fitting\n")
+    md_content.append("## 2. Ionization Curve & Onset Fitting 🌌\n")
     md_content.append(
         "To find the ionization onset, the baseline current and noise floor were first analyzed "
         "in the range $2.0\\text{ V} \\le V_a \\le 8.0\\text{ V}$ where no ionization or significant excitation "
@@ -651,14 +651,14 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
     )
 
     md_content.append("**Source File:** `step2_280ma.csv`\n\n")
-    md_content.append("### 2.1 Baseline Noise Summary\n")
+    md_content.append("### 2.1 Baseline Noise Summary 🔍\n")
     md_content.append(
         f"- **Mean baseline current $I_{{\\text{{noise}}}}$:** ${format_num(ion_results['mean_noise'])} \\pm {format_num(ion_results['mean_noise_err'])}\\text{{ pA}}$\n"
         f"- **Standard deviation of baseline current $\\sigma_{{\\text{{noise}}}}$:** ${format_num(ion_results['std_noise'])}\\text{{ pA}}$\n"
         f"- **5$\\sigma$ Noise Ceiling:** ${format_num(ion_results['mean_noise'] + 5.0 * ion_results['std_noise'])}\\text{{ pA}}$\n\n"
     )
 
-    md_content.append("### 2.2 Quadratic Threshold Fit Results\n")
+    md_content.append("### 2.2 Quadratic Threshold Fit Results 📉\n")
     md_content.append(
         f"- **Scale factor $b$:** ${format_num(ion_results['b_fit'])} \\pm {format_num(ion_results['b_err'])}\\text{{ pA/V}}^2$\n"
         f"- **Baseline offset $I_{{\\text{{offset}}}}$:** ${format_num(ion_results['ioff_fit'])} \\pm {format_num(ion_results['ioff_err'])}\\text{{ pA}}$\n"
@@ -676,7 +676,7 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
     e_ion = ion_results["true_ionization_energy_eV"]
     e_ion_err = ion_results["error_eV"]
 
-    md_content.append("### 2.3 True Ionization Energy Calculation\n")
+    md_content.append("### 2.3 True Ionization Energy Calculation 🧪\n")
 
     ion_dev = abs(e_ion - 10.438)
     ion_sigmas = ion_dev / e_ion_err
@@ -692,17 +692,17 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         f"- **Statistical Significance of Deviation:** ${format_num(ion_sigmas)}\\sigma$\n"
     )
 
-    md_content.append("\n## 3. Mathematical Derivations of Error Propagation\n")
+    md_content.append("\n## 3. Mathematical Derivations of Error Propagation 🧮\n")
     md_content.append(
         "Below are the formulas used for error propagation, based on standard first-order Taylor expansion for independent variables:\n"
     )
     md_content.append(
-        "### 3.1 Peak Spacings $\\Delta V_i$\n"
+        "### 3.1 Peak Spacings $\\Delta V_i$ 📐\n"
         "Since $V_{i+1}$ and $V_i$ are independent measurements:\n"
         "$$\n"
         "\\sigma_{\\Delta V_i} = \\sqrt{\\sigma_{V_{i+1}}^2 + \\sigma_{V_i}^2}\n"
         "$$\n\n"
-        "### 3.2 Excitation Energy $E_{\\text{exc}}$\n"
+        "### 3.2 Excitation Energy $E_{\\text{exc}}$ ⚡\n"
         "The excitation energy is computed as the mean of the peak differences:\n"
         "$$\n"
         "E_{\\text{exc}} = \\frac{1}{n-1} \\sum_{i=1}^{n-1} \\Delta V_i = \\frac{V_n - V_1}{n-1}\n"
@@ -712,7 +712,7 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         "$$\n"
         "\\sigma_{E_{\\text{exc}}} = \\frac{\\sqrt{\\sigma_{V_n}^2 + \\sigma_{V_1}^2}}{n-1}\n"
         "$$\n\n"
-        "### 3.3 Contact Potential $V_c$\n"
+        "### 3.3 Contact Potential $V_c$ 🔌\n"
         "The contact potential is defined as:\n"
         "$$\n"
         "V_c = V_1 - E_{\\text{exc}} = V_1 - \\frac{V_n - V_1}{n-1} = \\frac{n V_1 - V_n}{n-1}\n"
@@ -721,7 +721,7 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         "$$\n"
         "\\sigma_{V_c} = \\sqrt{ \\left(\\frac{n}{n-1}\\right)^2 \\sigma_{V_1}^2 + \\left(\\frac{1}{n-1}\\right)^2 \\sigma_{V_n}^2 }\n"
         "$$\n\n"
-        "### 3.4 True Ionization Energy $E_{\\text{ion}}$\n"
+        "### 3.4 True Ionization Energy $E_{\\text{ion}}$ ⚛️\n"
         "The true ionization energy is defined as the shift between the onset voltage $V_i$ and the contact potential $V_c$:\n"
         "$$\n"
         "E_{\\text{ion}} = V_i - V_c\n"
@@ -732,7 +732,9 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         "$$\n"
     )
 
-    md_content.append("\n## 4. Statistical Discussion on Reduced Chi-Squared values\n")
+    md_content.append(
+        "\n## 4. Statistical Discussion on Reduced Chi-Squared values 🔬\n"
+    )
 
     # Calculate scaled chi_red dynamically for explanation
     chi_red_scaled = ion_results["chi_red"] * (0.01 / ion_results["std_noise"]) ** 2
@@ -744,7 +746,7 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         + format_num(ion_results["chi_red"])
         + "$ for the ionization onset and "
         "up to $120,000$ for the characteristic curve peaks. \n\n"
-        "### 4.1 Interpretation of Large $\\chi^2_{\\text{{red}}}$\n"
+        "### 4.1 Interpretation of Large $\\chi^2_{\\text{{red}}}$ 🧐\n"
         "1. **Digital Resolution vs. Physical Noise:** The digital resolution of $0.01\\text{ pA}$ represents the readout limit, "
         "not the actual physical noise of the measurement. The actual statistical baseline noise (standard deviation of the baseline "
         "fluctuations) was calculated to be $\\sigma_{\\text{{baseline}}} \\approx "
@@ -755,7 +757,7 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         "ionization) do not fully capture higher-order physics (such as thermal velocity distribution of emitted electrons, "
         "which smooths out the onset edge) or minor experimental drifts. Even minor systematic deviations from these models, when "
         "divided by a tiny digital uncertainty of $0.01\\text{ pA}$, lead to an artificially inflated $\\chi^2_{\\text{{red}}}$.\n\n"
-        "### 4.2 Impact of Physical Noise Scaling\n"
+        "### 4.2 Impact of Physical Noise Scaling ⚖️\n"
         "If we scale the data point uncertainties to use the actual physical baseline standard deviation $\\sigma_{\\text{{baseline}}}$:\n"
         "- The reduced chi-squared of the ionization curve fit drops from "
         + format_num(ion_results["chi_red"])
@@ -767,7 +769,7 @@ def write_calculations_markdown(char_results, ion_results, output_md="calculatio
         "confirming that the local parabolic shape is an outstanding approximation of the peak maxima when compared against physical fluctuations.\n"
     )
 
-    Path(output_md).write_text("".join(md_content))
+    Path(output_md).write_text("".join(md_content), encoding="utf-8")
     print(f"Markdown file written to {output_md}")
 
 
