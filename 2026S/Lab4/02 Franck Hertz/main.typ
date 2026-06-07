@@ -1,8 +1,7 @@
 #import "../../../typst/templates/lab.typ": *
 #import "../../../typst/utils.typ": *
-#import "@preview/typsium:0.3.1": ce
 
-#let hg = $ce("Hg")$
+#let hg = $isotope(H g)$
 
 #show: project.with(
   "ניסוי פרנק-הרץ",
@@ -11,13 +10,16 @@
   report_title: [מדידת אנרגיית עירור ופוטנציאל יינון של אטומי כספית בניסוי פרנק-הרץ],
   authors: (
     (name: "דן קצוב-פייגין", email: "dan.k@campus.technion.ac.il", id: "323002915"),
+    (name: "יובל הירשמן", email: "yuval-h@campus.technion.ac.il", id: "322644295")
   ),
   abstract: [],
-  date: datetime(year: 2026, month: 6, day: 7),
+  date: datetime(year: 2026, month: 5, day: 31),
 )
 
 = מבוא
+בניסוי בדקנו כך וכך
 
+$  $
 == רקע תיאורטי
 === מודל האטום של בוהר ורמות אנרגיה
 === התנגשויות אלסטיות ואי-אלסטיות של אלקטרונים עם אטומי #hg
@@ -38,7 +40,7 @@
 
 #figure(
   image("fh_characteristic_curves.svg", width: 85%),
-  caption: none,
+  caption: [],
 )
 
 == ניתוח עקומת יינון וקביעת פוטנציאל היינון
