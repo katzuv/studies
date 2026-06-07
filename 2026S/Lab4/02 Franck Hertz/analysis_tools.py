@@ -237,9 +237,9 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
             is_260ma = "260ma" in path.name.lower() or heater == "260"
             y_offset = -25 if is_260ma else 12
 
-            for i, (v, cur, _, _, _, _) in enumerate(results_summary[path]["peaks"]):
+            for v, cur, _, _, _, _ in results_summary[path]["peaks"]:
                 plt.annotate(
-                    f"P{i + 1}\n{v:.2f}V",
+                    f"{v:.2f}V",
                     xy=(v, cur),
                     xytext=(0, y_offset),
                     textcoords="offset points",
@@ -255,37 +255,6 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
                     ),
                     zorder=6,
                 )
-
-            if len(peak_voltages) > 1:
-                for i in range(len(peak_voltages) - 1):
-                    v1, c1, _, _, _, _ = results_summary[path]["peaks"][i]
-                    v2, c2, _, _, _, _ = results_summary[path]["peaks"][i + 1]
-                    diff = v2 - v1
-
-                    plt.plot(
-                        [v1, v2],
-                        [c1, c1],
-                        color=color,
-                        linestyle="--",
-                        alpha=0.5,
-                        linewidth=1.5,
-                        zorder=4,
-                    )
-
-                    plt.text(
-                        (v1 + v2) / 2,
-                        c1 + np.ptp(current) * 0.015,
-                        f"$\\Delta V$={diff:.2f} V",
-                        ha="center",
-                        va="bottom",
-                        fontsize=10,
-                        color=color,
-                        fontweight="bold",
-                        bbox=dict(
-                            boxstyle="round,pad=0.1", fc="#ffffff", ec="none", alpha=0.8
-                        ),
-                        zorder=7,
-                    )
 
         except Exception as e:
             print(f"Error processing file {path}: {e}")
