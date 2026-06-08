@@ -146,7 +146,7 @@ def analyze_ionization_experiment(
         color="#C73E1D",
         linestyle="-.",
         linewidth=2.5,
-        label=f"Ionization Onset (Va0 = {v_onset:.3f} V)",
+        label=f"Ionization Onset ($V_{{a0}}$ = {v_onset:.3f} V)",
     )
 
     idx_closest = np.abs(raw_voltage - v_onset).argmin()
@@ -162,17 +162,17 @@ def analyze_ionization_experiment(
 
     set_style(
         ax=ax,
-        xlabel="Accelerating Voltage Va [V]",
-        ylabel="Collector Current I [pA]",
+        xlabel="Accelerating Voltage $V_a$ [V]",
+        ylabel="Collector Current $I$ [pA]",
     )
     ax.set_xlim(0, max(raw_voltage) + 1)
 
     # Note: Keep label details minimal inside graph, text in report is preferred
     results_box_text = (
         f"Experimental Metrics:\n"
-        f"Fitted Onset Va0: {v_onset:.3f} ± {v_onset_err:.3f} V\n"
-        f"Contact Shift Vc: {contact_potential_V:.3f} ± {contact_pot_error_V:.3f} V\n"
-        f"True E_ion: {true_ionization_energy:.3f} ± {total_error:.3f} eV\n"
+        f"Fitted Onset $V_{{a0}}$: {v_onset:.3f} ± {v_onset_err:.3f} V\n"
+        f"Contact Shift $V_c$: {contact_potential_V:.3f} ± {contact_pot_error_V:.3f} V\n"
+        f"True $E_{{ion}}$: {true_ionization_energy:.3f} ± {total_error:.3f} eV\n"
         f"Literature: 10.438 eV"
     )
 

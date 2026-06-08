@@ -178,7 +178,7 @@ def analyze_and_plot_fh_files(
         except Exception as e:
             print(f"Error processing file {path}: {e}")
 
-    set_style(xlabel="Accelerating Voltage Va [V]", ylabel="Collector Current I [pA]")
+    set_style(xlabel="Accelerating Voltage $V_a$ [V]", ylabel="Collector Current $I$ [pA]")
     plt.xlim(0, 31)
     plt.ylim(bottom=0)
     plt.legend(
