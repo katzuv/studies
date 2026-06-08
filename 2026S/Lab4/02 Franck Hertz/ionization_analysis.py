@@ -170,9 +170,9 @@ def analyze_ionization_experiment(
     # Note: Keep label details minimal inside graph, text in report is preferred
     results_box_text = (
         f"Experimental Metrics:\n"
-        f"Fitted Onset Va0: {v_onset:.3f} +/- {v_onset_err:.3f} V\n"
-        f"Contact Shift Vc: {contact_potential_V:.3f} +/- {contact_pot_error_V:.3f} V\n"
-        f"True E_ion: {true_ionization_energy:.3f} +/- {total_error:.3f} eV\n"
+        f"Fitted Onset Va0: {v_onset:.3f} ± {v_onset_err:.3f} V\n"
+        f"Contact Shift Vc: {contact_potential_V:.3f} ± {contact_pot_error_V:.3f} V\n"
+        f"True E_ion: {true_ionization_energy:.3f} ± {total_error:.3f} eV\n"
         f"Literature: 10.438 eV"
     )
 
@@ -262,7 +262,7 @@ def main():
     noise_table.add_column("Value [pA]", justify="right")
     noise_table.add_row(
         "Mean baseline noise",
-        f"{ion_results['mean_noise']:.3f} +/- {ion_results['mean_noise_err']:.3f}",
+        f"{ion_results['mean_noise']:.3f} ± {ion_results['mean_noise_err']:.3f}",
     )
     noise_table.add_row("Std. dev. baseline noise", f"{ion_results['std_noise']:.3f}")
     noise_table.add_row(
@@ -281,15 +281,15 @@ def main():
     fit_table.add_column("Fitted Value", justify="right")
     fit_table.add_row(
         "Scale factor b",
-        f"{ion_results['b_fit']:.3f} +/- {ion_results['b_err']:.3f} pA/V^2",
+        f"{ion_results['b_fit']:.3f} ± {ion_results['b_err']:.3f} pA/V^2",
     )
     fit_table.add_row(
         "Baseline offset I_offset",
-        f"{ion_results['ioff_fit']:.3f} +/- {ion_results['ioff_err']:.3f} pA",
+        f"{ion_results['ioff_fit']:.3f} ± {ion_results['ioff_err']:.3f} pA",
     )
     fit_table.add_row(
         "Fitted Onset Vi",
-        f"{ion_results['fitted_ionization_onset_V']:.3f} +/- {ion_results['fitted_ionization_onset_error_V']:.3f} V",
+        f"{ion_results['fitted_ionization_onset_V']:.3f} ± {ion_results['fitted_ionization_onset_error_V']:.3f} V",
     )
     fit_table.add_row(
         "Reduced Chi-squared (DoF)",
@@ -307,9 +307,9 @@ def main():
 
     summary_text = (
         f"[bold gold1]Experimental Ionization Metrics:[/bold gold1]\n"
-        f"  - Fitted Onset Voltage Vi = {ion_results['fitted_ionization_onset_V']:.3f} +/- {ion_results['fitted_ionization_onset_error_V']:.3f} V\n"
-        f"  - Contact potential shift Vc = {c_pot:.3f} +/- {c_pot_err:.3f} V\n"
-        f"  - True Ionization Energy E_ion = [bold green]{e_ion:.3f} +/- {e_ion_err:.3f} eV[/bold green]\n\n"
+        f"  - Fitted Onset Voltage Vi = {ion_results['fitted_ionization_onset_V']:.3f} ± {ion_results['fitted_ionization_onset_error_V']:.3f} V\n"
+        f"  - Contact potential shift Vc = {c_pot:.3f} ± {c_pot_err:.3f} V\n"
+        f"  - True Ionization Energy E_ion = [bold green]{e_ion:.3f} ± {e_ion_err:.3f} eV[/bold green]\n\n"
         f"[bold cyan]Comparison with Literature (10.438 eV):[/bold cyan]\n"
         f"  - Absolute Deviation: {abs_dev:.3f} eV\n"
         f"  - Relative Deviation: {rel_dev:.2f}%\n"

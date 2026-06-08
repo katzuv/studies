@@ -269,9 +269,12 @@ def main():
     table.add_column("Run (Heater)", style="dim")
     table.add_column("Spacings (dV) [V]", justify="right")
     table.add_column("Weighted Average [V]", justify="right", style="bold green")
+    table.add_column("Contact Potential [V]", justify="right", style="bold yellow")
 
     run_averages = []
     run_errors = []
+    run_contact_pots = []
+    run_contact_pot_errors = []
 
     for _path, res in results.items():
         heater = res["heater_mA"]
@@ -294,14 +297,33 @@ def main():
         run_averages.append(weighted_avg)
         run_errors.append(weighted_avg_err)
 
+        # Calculate contact potential: Vc = V1 - E_exc
+        v1_val, _, _, v1_err_tot, _, _ = peaks[0]
+        contact_pot = v1_val - weighted_avg
+
+        # Propagated error for contact potential:
+        c1 = 1.0 + weights[0] / np.sum(weights)
+        c2 = -(weights[0] - weights[1]) / np.sum(weights)
+        c3 = -(weights[1] - weights[2]) / np.sum(weights)
+        c4 = -(weights[2] - weights[3]) / np.sum(weights)
+        c5 = -weights[3] / np.sum(weights)
+
+        c_coeffs = np.array([c1, c2, c3, c4, c5])
+        peak_errs = np.array([p[3] for p in peaks])
+        contact_pot_err = np.sqrt(np.sum((c_coeffs * peak_errs) ** 2))
+
+        run_contact_pots.append(contact_pot)
+        run_contact_pot_errors.append(contact_pot_err)
+
         spacings_str = ", ".join(
-            f"{s:.2f} +/- {se:.3f}"
+            f"{s:.2f} ± {se:.3f}"
             for s, se in zip(spacings, spacing_errors, strict=False)
         )
         table.add_row(
             f"{heater} mA",
             spacings_str,
-            f"{weighted_avg:.3f} +/- {weighted_avg_err:.3f}",
+            f"{weighted_avg:.3f} ± {weighted_avg_err:.3f}",
+            f"{contact_pot:.3f} ± {contact_pot_err:.3f}",
         )
 
     console.print(table)
@@ -313,6 +335,11 @@ def main():
     )
     global_weighted_avg_err = 1.0 / np.sqrt(np.sum(weights_global))
 
+    # Calculate overall weighted average of contact potentials
+    weights_cp = 1.0 / (np.array(run_contact_pot_errors) ** 2)
+    global_cp = np.sum(np.array(run_contact_pots) * weights_cp) / np.sum(weights_cp)
+    global_cp_err = 1.0 / np.sqrt(np.sum(weights_cp))
+
     # Lit comparison
     lit_value = 4.90
     abs_dev = abs(global_weighted_avg - lit_value)
@@ -321,7 +348,8 @@ def main():
 
     summary_text = (
         f"[bold gold1]Overall Weighted Average of Averages:[/bold gold1]\n"
-        f"  E_exc = [bold green]{global_weighted_avg:.3f} +/- {global_weighted_avg_err:.3f} eV[/bold green]\n\n"
+        f"  E_exc = [bold green]{global_weighted_avg:.3f} ± {global_weighted_avg_err:.3f} eV[/bold green]\n"
+        f"  V_c   = [bold yellow]{global_cp:.3f} ± {global_cp_err:.3f} V[/bold yellow]\n\n"
         f"[bold cyan]Comparison with Literature (4.90 eV):[/bold cyan]\n"
         f"  - Absolute Deviation: {abs_dev:.3f} eV\n"
         f"  - Relative Deviation: {rel_dev:.2f}%\n"
