@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -7,14 +8,17 @@ import pandas as pd
 # Add the project root to the path so we can import physlab
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
-from physlab.core import physics_fit, set_style
 from excitation_analysis import analyze_and_plot_fh_files, get_last_digit_error
 from rich.console import Console
-from rich.table import Table
 from rich.panel import Panel
+from rich.table import Table
+
+from physlab.core import physics_fit, set_style
+
 
 def quadratic_threshold(V, b, V_i, I_offset):
     return np.where(V_i < V, b * (V - V_i) ** 2 + I_offset, I_offset)
+
 
 def analyze_ionization_experiment(
     ionization_file_path,
@@ -218,37 +222,43 @@ def analyze_ionization_experiment(
         "std_noise": std_noise,
     }
 
+
 def main():
     console = Console()
+    base_dir = Path(__file__).resolve().parent
 
     # Get contact potential from Part 1 files to keep consistency
     fh_files = [
-        Path("data/step10_270ma.csv"),
-        Path("data/step10_250ma.csv"),
-        Path("data/step10_260ma.csv"),
+        base_dir / "data/step10_270ma.csv",
+        base_dir / "data/step10_250ma.csv",
+        base_dir / "data/step10_260ma.csv",
     ]
 
-    console.print(Panel.fit(
-        "[bold yellow]*** FRANCK-HERTZ EXPERIMENT - PART 2: IONIZATION POTENTIAL ANALYSIS ***[/bold yellow]\n"
-        "[dim]Physical quadratic threshold model fitting to detect ionization onset[/dim]",
-        border_style="bold gold1",
-        padding=(1, 4),
-        title="[bold green]Technion Physics Lab 4[/bold green]"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold yellow]*** FRANCK-HERTZ EXPERIMENT - PART 2: IONIZATION POTENTIAL ANALYSIS ***[/bold yellow]\n"
+            "[dim]Physical quadratic threshold model fitting to detect ionization onset[/dim]",
+            border_style="bold gold1",
+            padding=(1, 4),
+            title="[bold green]Technion Physics Lab 4[/bold green]",
+        )
+    )
 
     # Compute contact potential dynamically
-    results = analyze_and_plot_fh_files(fh_files, verbose=False)
-    
+    results = analyze_and_plot_fh_files(
+        fh_files, output_svg=base_dir / "fh_characteristic_curves.svg", verbose=False
+    )
+
     # We compute the overall weighted average of contact potentials across the three runs
     run_contact_pots = []
     run_contact_pot_errors = []
-    for path, res in results.items():
+    for _path, res in results.items():
         peaks = res["peaks"]
         spacings = []
         spacing_errors = []
         for i in range(len(peaks) - 1):
-            v1, _, _, v1_err_tot, _, _ = peaks[i]
-            v2, _, _, v2_err_tot, _, _ = peaks[i + 1]
+            v1, _, v1_err_tot = peaks[i]
+            v2, _, v2_err_tot = peaks[i + 1]
             diff = v2 - v1
             diff_err = np.sqrt(v1_err_tot**2 + v2_err_tot**2)
             spacings.append(diff)
@@ -257,17 +267,17 @@ def main():
         weights = 1.0 / (np.array(spacing_errors) ** 2)
         weighted_avg = np.sum(np.array(spacings) * weights) / np.sum(weights)
 
-        v1_val, _, _, v1_err_tot, _, _ = peaks[0]
+        v1_val, _, v1_err_tot = peaks[0]
         contact_pot = v1_val - weighted_avg
-        
+
         c1 = 1.0 + weights[0] / np.sum(weights)
         c2 = -(weights[0] - weights[1]) / np.sum(weights)
         c3 = -(weights[1] - weights[2]) / np.sum(weights)
         c4 = -(weights[2] - weights[3]) / np.sum(weights)
         c5 = -weights[3] / np.sum(weights)
-        
+
         c_coeffs = np.array([c1, c2, c3, c4, c5])
-        peak_errs = np.array([p[3] for p in peaks])
+        peak_errs = np.array([p[2] for p in peaks])
         contact_pot_err = np.sqrt(np.sum((c_coeffs * peak_errs) ** 2))
 
         run_contact_pots.append(contact_pot)
@@ -279,9 +289,10 @@ def main():
 
     # Analyze ionization experiment
     ion_results = analyze_ionization_experiment(
-        Path("data/step2_280ma.csv"),
+        base_dir / "data/step2_280ma.csv",
         contact_potential_V=c_pot,
         contact_pot_error_V=c_pot_err,
+        output_svg=base_dir / "fh_ionization_curve.svg",
     )
 
     # Display baseline parameters
@@ -354,6 +365,7 @@ def main():
             border_style="gold1",
         )
     )
+
 
 if __name__ == "__main__":
     main()
