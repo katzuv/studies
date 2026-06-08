@@ -1,6 +1,7 @@
-import sys
 import re
+import sys
 from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -9,10 +10,12 @@ from scipy.signal import find_peaks
 # Add the project root to the path so we can import physlab
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
-from physlab.core import physics_fit, set_style
 from rich.console import Console
-from rich.table import Table
 from rich.panel import Panel
+from rich.table import Table
+
+from physlab.core import physics_fit, set_style
+
 
 def get_last_digit_error(series_str):
     decimals = series_str.str.split(".").str[1].str.len().max()
@@ -20,10 +23,14 @@ def get_last_digit_error(series_str):
         return 1.0
     return 10.0 ** (-decimals)
 
+
 def parabola(x, a, x0, y0):
     return a * (x - x0) ** 2 + y0
 
-def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.svg", verbose=True):
+
+def analyze_and_plot_fh_files(
+    file_paths, output_svg="fh_characteristic_curves.svg", verbose=True
+):
     plt.figure(figsize=(11, 6))
     results_summary = {}
 
@@ -194,14 +201,14 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
             is_260ma = "260ma" in path.name.lower() or heater == "260"
             y_offset = -25 if is_260ma else 12
 
-            for (v, cur, _, _, _, _) in results_summary[path]["peaks"]:
+            for v, cur, _, _, _, _ in results_summary[path]["peaks"]:
                 plt.annotate(
                     f"{v:.2f}V",
                     xy=(v, cur),
                     xytext=(0, y_offset),
                     textcoords="offset points",
                     ha="center",
-                    fontsize=9,
+                    fontsize=12,
                     fontweight="bold",
                     bbox=dict(
                         boxstyle="round,pad=0.3",
@@ -234,6 +241,7 @@ def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.s
 
     return results_summary
 
+
 def main():
     console = Console()
 
@@ -243,13 +251,15 @@ def main():
         Path("data/step10_260ma.csv"),
     ]
 
-    console.print(Panel.fit(
-        "[bold yellow]*** FRANCK-HERTZ EXPERIMENT - PART 1: EXCITATION ENERGY ANALYSIS ***[/bold yellow]\n"
-        "[dim]High-precision local parabolic peak fitting and propagated error analysis[/dim]",
-        border_style="bold gold1",
-        padding=(1, 4),
-        title="[bold green]Technion Physics Lab 4[/bold green]"
-    ))
+    console.print(
+        Panel.fit(
+            "[bold yellow]*** FRANCK-HERTZ EXPERIMENT - PART 1: EXCITATION ENERGY ANALYSIS ***[/bold yellow]\n"
+            "[dim]High-precision local parabolic peak fitting and propagated error analysis[/dim]",
+            border_style="bold gold1",
+            padding=(1, 4),
+            title="[bold green]Technion Physics Lab 4[/bold green]",
+        )
+    )
 
     # Run peak fitting & plotting
     results = analyze_and_plot_fh_files(fh_files)
@@ -268,7 +278,7 @@ def main():
     peaks_table.add_column("Peak Current [pA]", justify="right", style="magenta")
     peaks_table.add_column("Reduced Chi2", justify="right", style="red")
 
-    for path, res in results.items():
+    for _path, res in results.items():
         heater = res["heater_mA"]
         peaks = res["peaks"]
         for idx, peak in enumerate(peaks):
@@ -281,7 +291,7 @@ def main():
                 f"{v_err_fit:.5f}",
                 f"{v_err_tot:.3f}",
                 f"{i_val:.2f}",
-                f"{chi_red:.2f}"
+                f"{chi_red:.2f}",
             )
         # Add an empty row for separation
         peaks_table.add_row("", "", "", "", "", "", "")
@@ -296,15 +306,19 @@ def main():
     )
     spacings_table.add_column("Run (Heater Current)", style="bold dim")
     spacings_table.add_column("Peak Spacings (dV) [V]", justify="right")
-    spacings_table.add_column("Weighted Spacing Average [V]", justify="right", style="bold green")
-    spacings_table.add_column("Contact Potential Vc [V]", justify="right", style="bold yellow")
+    spacings_table.add_column(
+        "Weighted Spacing Average [V]", justify="right", style="bold green"
+    )
+    spacings_table.add_column(
+        "Contact Potential Vc [V]", justify="right", style="bold yellow"
+    )
 
     run_averages = []
     run_errors = []
     run_contact_pots = []
     run_contact_pot_errors = []
 
-    for path, res in results.items():
+    for _path, res in results.items():
         heater = res["heater_mA"]
         peaks = res["peaks"]
 
@@ -328,14 +342,14 @@ def main():
         # Calculate contact potential: Vc = V1 - E_exc
         v1_val, _, _, v1_err_tot, _, _ = peaks[0]
         contact_pot = v1_val - weighted_avg
-        
+
         # Propagated error for contact potential:
         c1 = 1.0 + weights[0] / np.sum(weights)
         c2 = -(weights[0] - weights[1]) / np.sum(weights)
         c3 = -(weights[1] - weights[2]) / np.sum(weights)
         c4 = -(weights[2] - weights[3]) / np.sum(weights)
         c5 = -weights[3] / np.sum(weights)
-        
+
         c_coeffs = np.array([c1, c2, c3, c4, c5])
         peak_errs = np.array([p[3] for p in peaks])
         contact_pot_err = np.sqrt(np.sum((c_coeffs * peak_errs) ** 2))
@@ -391,6 +405,7 @@ def main():
             border_style="gold1",
         )
     )
+
 
 if __name__ == "__main__":
     main()
