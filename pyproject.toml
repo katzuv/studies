@@ -13,6 +13,7 @@ dependencies = [
     "ipykernel>=6.29.4",
     "pandas-stubs~=3.0.3",
     "scipy-stubs~=1.17.1",
+    "rich>=15.0.0",
 ]
 
 [dependency-groups]
