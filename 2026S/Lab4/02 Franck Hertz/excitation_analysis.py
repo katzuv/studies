@@ -225,6 +225,7 @@ def analyze_and_plot_fh_files(
 
     set_style(xlabel="Accelerating Voltage Va [V]", ylabel="Collector Current I [pA]")
     plt.xlim(0, 31)
+    plt.ylim(bottom=0)
     plt.legend(
         loc="upper left",
         frameon=True,
@@ -294,7 +295,8 @@ def main():
         run_errors.append(weighted_avg_err)
 
         spacings_str = ", ".join(
-            f"{s:.2f} +/- {se:.3f}" for s, se in zip(spacings, spacing_errors, strict=False)
+            f"{s:.2f} +/- {se:.3f}"
+            for s, se in zip(spacings, spacing_errors, strict=False)
         )
         table.add_row(
             f"{heater} mA",
