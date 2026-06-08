@@ -1,7 +1,6 @@
-import re
 import sys
+import re
 from pathlib import Path
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -10,12 +9,10 @@ from scipy.signal import find_peaks
 # Add the project root to the path so we can import physlab
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
-from rich.console import Console
-from rich.panel import Panel
-from rich.table import Table
-
 from physlab.core import physics_fit, set_style
-
+from rich.console import Console
+from rich.table import Table
+from rich.panel import Panel
 
 def get_last_digit_error(series_str):
     decimals = series_str.str.split(".").str[1].str.len().max()
@@ -23,14 +20,10 @@ def get_last_digit_error(series_str):
         return 1.0
     return 10.0 ** (-decimals)
 
-
 def parabola(x, a, x0, y0):
     return a * (x - x0) ** 2 + y0
 
-
-def analyze_and_plot_fh_files(
-    file_paths, output_svg="fh_characteristic_curves.svg", verbose=True
-):
+def analyze_and_plot_fh_files(file_paths, output_svg="fh_characteristic_curves.svg", verbose=True):
     plt.figure(figsize=(11, 6))
     results_summary = {}
 
@@ -201,7 +194,7 @@ def analyze_and_plot_fh_files(
             is_260ma = "260ma" in path.name.lower() or heater == "260"
             y_offset = -25 if is_260ma else 12
 
-            for v, cur, _, _, _, _ in results_summary[path]["peaks"]:
+            for (v, cur, _, _, _, _) in results_summary[path]["peaks"]:
                 plt.annotate(
                     f"{v:.2f}V",
                     xy=(v, cur),
@@ -241,7 +234,6 @@ def analyze_and_plot_fh_files(
 
     return results_summary
 
-
 def main():
     console = Console()
 
@@ -251,32 +243,68 @@ def main():
         Path("data/step10_260ma.csv"),
     ]
 
-    console.print(
-        Panel(
-            "[bold cyan]Running Part 1: Excitation Energy Analysis[/bold cyan]",
-            border_style="cyan",
-        )
-    )
+    console.print(Panel.fit(
+        "[bold yellow]*** FRANCK-HERTZ EXPERIMENT - PART 1: EXCITATION ENERGY ANALYSIS ***[/bold yellow]\n"
+        "[dim]High-precision local parabolic peak fitting and propagated error analysis[/dim]",
+        border_style="bold gold1",
+        padding=(1, 4),
+        title="[bold green]Technion Physics Lab 4[/bold green]"
+    ))
 
     # Run peak fitting & plotting
     results = analyze_and_plot_fh_files(fh_files)
 
-    table = Table(
-        title="[bold cyan]Franck-Hertz Run Spacings & Weighted Averages[/bold cyan]",
+    # Table 1: Individual Peak Fit Details
+    peaks_table = Table(
+        title="\n[bold cyan]1. High-Precision Peak Parabolic Fit Details[/bold cyan]",
         show_header=True,
         header_style="bold magenta",
     )
-    table.add_column("Run (Heater)", style="dim")
-    table.add_column("Spacings (dV) [V]", justify="right")
-    table.add_column("Weighted Average [V]", justify="right", style="bold green")
-    table.add_column("Contact Potential [V]", justify="right", style="bold yellow")
+    peaks_table.add_column("Run", style="bold dim")
+    peaks_table.add_column("Peak", justify="center")
+    peaks_table.add_column("Fitted Voltage [V]", justify="right", style="green")
+    peaks_table.add_column("Fit Error [V]", justify="right", style="cyan")
+    peaks_table.add_column("Total Error [V]", justify="right", style="yellow")
+    peaks_table.add_column("Peak Current [pA]", justify="right", style="magenta")
+    peaks_table.add_column("Reduced Chi2", justify="right", style="red")
+
+    for path, res in results.items():
+        heater = res["heater_mA"]
+        peaks = res["peaks"]
+        for idx, peak in enumerate(peaks):
+            v_val, i_val, v_err_fit, v_err_tot, chi_red, dof = peak
+            run_name = f"{heater} mA" if idx == 0 else ""
+            peaks_table.add_row(
+                run_name,
+                f"Peak {idx + 1}",
+                f"{v_val:.2f}",
+                f"{v_err_fit:.5f}",
+                f"{v_err_tot:.3f}",
+                f"{i_val:.2f}",
+                f"{chi_red:.2f}"
+            )
+        # Add an empty row for separation
+        peaks_table.add_row("", "", "", "", "", "", "")
+
+    console.print(peaks_table)
+
+    # Table 2: Spacings and Weighted Averages
+    spacings_table = Table(
+        title="[bold cyan]2. Peak Spacings & Weighted Averages[/bold cyan]",
+        show_header=True,
+        header_style="bold magenta",
+    )
+    spacings_table.add_column("Run (Heater Current)", style="bold dim")
+    spacings_table.add_column("Peak Spacings (dV) [V]", justify="right")
+    spacings_table.add_column("Weighted Spacing Average [V]", justify="right", style="bold green")
+    spacings_table.add_column("Contact Potential Vc [V]", justify="right", style="bold yellow")
 
     run_averages = []
     run_errors = []
     run_contact_pots = []
     run_contact_pot_errors = []
 
-    for _path, res in results.items():
+    for path, res in results.items():
         heater = res["heater_mA"]
         peaks = res["peaks"]
 
@@ -300,14 +328,14 @@ def main():
         # Calculate contact potential: Vc = V1 - E_exc
         v1_val, _, _, v1_err_tot, _, _ = peaks[0]
         contact_pot = v1_val - weighted_avg
-
+        
         # Propagated error for contact potential:
         c1 = 1.0 + weights[0] / np.sum(weights)
         c2 = -(weights[0] - weights[1]) / np.sum(weights)
         c3 = -(weights[1] - weights[2]) / np.sum(weights)
         c4 = -(weights[2] - weights[3]) / np.sum(weights)
         c5 = -weights[3] / np.sum(weights)
-
+        
         c_coeffs = np.array([c1, c2, c3, c4, c5])
         peak_errs = np.array([p[3] for p in peaks])
         contact_pot_err = np.sqrt(np.sum((c_coeffs * peak_errs) ** 2))
@@ -319,14 +347,14 @@ def main():
             f"{s:.2f} ± {se:.3f}"
             for s, se in zip(spacings, spacing_errors, strict=False)
         )
-        table.add_row(
+        spacings_table.add_row(
             f"{heater} mA",
             spacings_str,
             f"{weighted_avg:.3f} ± {weighted_avg_err:.3f}",
             f"{contact_pot:.3f} ± {contact_pot_err:.3f}",
         )
 
-    console.print(table)
+    console.print(spacings_table)
 
     # Calculate overall weighted average of the averages
     weights_global = 1.0 / (np.array(run_errors) ** 2)
@@ -348,8 +376,8 @@ def main():
 
     summary_text = (
         f"[bold gold1]Overall Weighted Average of Averages:[/bold gold1]\n"
-        f"  E_exc = [bold green]{global_weighted_avg:.3f} ± {global_weighted_avg_err:.3f} eV[/bold green]\n"
-        f"  V_c   = [bold yellow]{global_cp:.3f} ± {global_cp_err:.3f} V[/bold yellow]\n\n"
+        f"  - E_exc = [bold green]{global_weighted_avg:.3f} ± {global_weighted_avg_err:.3f} eV[/bold green]\n"
+        f"  - V_c   = [bold yellow]{global_cp:.3f} ± {global_cp_err:.3f} V[/bold yellow]\n\n"
         f"[bold cyan]Comparison with Literature (4.90 eV):[/bold cyan]\n"
         f"  - Absolute Deviation: {abs_dev:.3f} eV\n"
         f"  - Relative Deviation: {rel_dev:.2f}%\n"
@@ -363,7 +391,6 @@ def main():
             border_style="gold1",
         )
     )
-
 
 if __name__ == "__main__":
     main()

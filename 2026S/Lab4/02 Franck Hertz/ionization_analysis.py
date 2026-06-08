@@ -1,6 +1,5 @@
 import sys
 from pathlib import Path
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -8,17 +7,14 @@ import pandas as pd
 # Add the project root to the path so we can import physlab
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
+from physlab.core import physics_fit, set_style
 from excitation_analysis import analyze_and_plot_fh_files, get_last_digit_error
 from rich.console import Console
-from rich.panel import Panel
 from rich.table import Table
-
-from physlab.core import physics_fit, set_style
-
+from rich.panel import Panel
 
 def quadratic_threshold(V, b, V_i, I_offset):
     return np.where(V_i < V, b * (V - V_i) ** 2 + I_offset, I_offset)
-
 
 def analyze_ionization_experiment(
     ionization_file_path,
@@ -222,7 +218,6 @@ def analyze_ionization_experiment(
         "std_noise": std_noise,
     }
 
-
 def main():
     console = Console()
 
@@ -233,17 +228,54 @@ def main():
         Path("data/step10_260ma.csv"),
     ]
 
-    console.print(
-        Panel(
-            "[bold cyan]Running Part 2: Ionization Potential Analysis[/bold cyan]",
-            border_style="cyan",
-        )
-    )
+    console.print(Panel.fit(
+        "[bold yellow]*** FRANCK-HERTZ EXPERIMENT - PART 2: IONIZATION POTENTIAL ANALYSIS ***[/bold yellow]\n"
+        "[dim]Physical quadratic threshold model fitting to detect ionization onset[/dim]",
+        border_style="bold gold1",
+        padding=(1, 4),
+        title="[bold green]Technion Physics Lab 4[/bold green]"
+    ))
 
     # Compute contact potential dynamically
     results = analyze_and_plot_fh_files(fh_files, verbose=False)
-    c_pot = results[fh_files[0]]["contact_potential_V"]
-    c_pot_err = results[fh_files[0]]["contact_potential_error_V"]
+    
+    # We compute the overall weighted average of contact potentials across the three runs
+    run_contact_pots = []
+    run_contact_pot_errors = []
+    for path, res in results.items():
+        peaks = res["peaks"]
+        spacings = []
+        spacing_errors = []
+        for i in range(len(peaks) - 1):
+            v1, _, _, v1_err_tot, _, _ = peaks[i]
+            v2, _, _, v2_err_tot, _, _ = peaks[i + 1]
+            diff = v2 - v1
+            diff_err = np.sqrt(v1_err_tot**2 + v2_err_tot**2)
+            spacings.append(diff)
+            spacing_errors.append(diff_err)
+
+        weights = 1.0 / (np.array(spacing_errors) ** 2)
+        weighted_avg = np.sum(np.array(spacings) * weights) / np.sum(weights)
+
+        v1_val, _, _, v1_err_tot, _, _ = peaks[0]
+        contact_pot = v1_val - weighted_avg
+        
+        c1 = 1.0 + weights[0] / np.sum(weights)
+        c2 = -(weights[0] - weights[1]) / np.sum(weights)
+        c3 = -(weights[1] - weights[2]) / np.sum(weights)
+        c4 = -(weights[2] - weights[3]) / np.sum(weights)
+        c5 = -weights[3] / np.sum(weights)
+        
+        c_coeffs = np.array([c1, c2, c3, c4, c5])
+        peak_errs = np.array([p[3] for p in peaks])
+        contact_pot_err = np.sqrt(np.sum((c_coeffs * peak_errs) ** 2))
+
+        run_contact_pots.append(contact_pot)
+        run_contact_pot_errors.append(contact_pot_err)
+
+    weights_cp = 1.0 / (np.array(run_contact_pot_errors) ** 2)
+    c_pot = np.sum(np.array(run_contact_pots) * weights_cp) / np.sum(weights_cp)
+    c_pot_err = 1.0 / np.sqrt(np.sum(weights_cp))
 
     # Analyze ionization experiment
     ion_results = analyze_ionization_experiment(
@@ -254,12 +286,12 @@ def main():
 
     # Display baseline parameters
     noise_table = Table(
-        title="[bold cyan]Baseline Noise Analysis[/bold cyan]",
+        title="\n[bold cyan]1. Baseline Noise Analysis[/bold cyan]",
         show_header=True,
         header_style="bold magenta",
     )
     noise_table.add_column("Metric", style="dim")
-    noise_table.add_column("Value [pA]", justify="right")
+    noise_table.add_column("Value [pA]", justify="right", style="green")
     noise_table.add_row(
         "Mean baseline noise",
         f"{ion_results['mean_noise']:.3f} ± {ion_results['mean_noise_err']:.3f}",
@@ -273,12 +305,12 @@ def main():
 
     # Display fit parameters
     fit_table = Table(
-        title="[bold cyan]Quadratic Threshold Fit Summary[/bold cyan]",
+        title="[bold cyan]2. Quadratic Threshold Fit Summary[/bold cyan]",
         show_header=True,
         header_style="bold magenta",
     )
     fit_table.add_column("Parameter", style="dim")
-    fit_table.add_column("Fitted Value", justify="right")
+    fit_table.add_column("Fitted Value", justify="right", style="cyan")
     fit_table.add_row(
         "Scale factor b",
         f"{ion_results['b_fit']:.3f} ± {ion_results['b_err']:.3f} pA/V^2",
@@ -322,7 +354,6 @@ def main():
             border_style="gold1",
         )
     )
-
 
 if __name__ == "__main__":
     main()
