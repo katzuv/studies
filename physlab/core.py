@@ -115,11 +115,14 @@ def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
         target.yaxis.set_minor_locator(AutoMinorLocator())
 
     if title:
-        target.set_title(title, pad=15)
+        target.set_title(title, pad=15, fontsize=16)
     if xlabel:
-        target.set_xlabel(xlabel, labelpad=10)
+        target.set_xlabel(xlabel, labelpad=10, fontsize=22)
     if ylabel:
-        target.set_ylabel(ylabel, labelpad=10)
+        target.set_ylabel(ylabel, labelpad=10, fontsize=22)
+
+    # Apply tick label size explicitly
+    target.tick_params(axis="both", which="major", labelsize=12)
 
     # Clean Spines
     target.spines["top"].set_visible(True)
