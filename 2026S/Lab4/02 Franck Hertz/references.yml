@@ -1,0 +1,10 @@
+hanne1988:
+    type: Article
+    title: "What really happens in the Franck-Hertz experiment with mercury?"
+    author: "Hanne, G. F."
+    organization: "The University of Oklahoma, Department of Physics and Astronomy, 440 West Brooks, Norman, Oklahoma 73019"
+    date: 1988
+    parent:
+        type: Periodical
+        title: American Journal of Physics
+    url: https://moodle25.technion.ac.il/pluginfile.php/283648/mod_resource/content/2/WhatReallyHappens.pdf
