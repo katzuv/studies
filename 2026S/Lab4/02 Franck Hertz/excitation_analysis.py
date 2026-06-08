@@ -14,7 +14,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
-from physlab.core import physics_fit, set_style
+from physlab.core import set_style
 
 
 def get_last_digit_error(series_str):
@@ -82,51 +82,9 @@ def analyze_and_plot_fh_files(
                 )
                 continue
 
-            w = 7
-            fitted_peak_voltages = []
-            fitted_peak_currents = []
-            fitted_peak_errors = []
-            peak_chi_reds = []
-            peak_dofs = []
-
-            for idx in peaks_idx:
-                start_idx = max(0, idx - w)
-                end_idx = min(len(voltage) - 1, idx + w)
-
-                x_fit = voltage[start_idx : end_idx + 1]
-                y_fit = current[start_idx : end_idx + 1]
-                y_err = np.full_like(y_fit, i_error_inst)
-
-                x0_guess = voltage[idx]
-                y0_guess = current[idx]
-                a_guess = -5.0
-
-                try:
-                    res = physics_fit(
-                        parabola,
-                        x_fit,
-                        y_fit,
-                        y_err,
-                        p0=[a_guess, x0_guess, y0_guess],
-                    )
-                    a_fit, x0_fit, y0_fit = res.params
-                    a_err, x0_err, y0_err = res.errors
-                    fitted_peak_voltages.append(x0_fit)
-                    fitted_peak_currents.append(y0_fit)
-                    fitted_peak_errors.append(x0_err)
-                    peak_chi_reds.append(res.chi_red)
-                    peak_dofs.append(res.dof)
-                except Exception:
-                    fitted_peak_voltages.append(voltage[idx])
-                    fitted_peak_currents.append(current[idx])
-                    fitted_peak_errors.append(v_error_inst)
-                    peak_chi_reds.append(np.nan)
-                    peak_dofs.append(0)
-
-            peak_voltages = np.array(fitted_peak_voltages)
-            peak_currents = np.array(fitted_peak_currents)
-            peak_fit_errors = np.array(fitted_peak_errors)
-            peak_total_errors = np.sqrt(peak_fit_errors**2 + v_error_inst**2)
+            peak_voltages = voltage[peaks_idx]
+            peak_currents = current[peaks_idx]
+            peak_total_errors = np.full_like(peak_voltages, v_error_inst)
 
             has_multiple_peaks = len(peak_voltages) >= 2
             if has_multiple_peaks:
@@ -160,10 +118,7 @@ def analyze_and_plot_fh_files(
                     zip(
                         peak_voltages,
                         peak_currents,
-                        peak_fit_errors,
                         peak_total_errors,
-                        peak_chi_reds,
-                        peak_dofs,
                         strict=True,
                     )
                 ),
@@ -201,7 +156,7 @@ def analyze_and_plot_fh_files(
             is_260ma = "260ma" in path.name.lower() or heater == "260"
             y_offset = -25 if is_260ma else 12
 
-            for v, cur, _, _, _, _ in results_summary[path]["peaks"]:
+            for v, cur, _ in results_summary[path]["peaks"]:
                 plt.annotate(
                     f"{v:.2f}V",
                     xy=(v, cur),
@@ -245,10 +200,11 @@ def analyze_and_plot_fh_files(
 def main():
     console = Console()
 
+    base_dir = Path(__file__).resolve().parent
     fh_files = [
-        Path("data/step10_270ma.csv"),
-        Path("data/step10_250ma.csv"),
-        Path("data/step10_260ma.csv"),
+        base_dir / "data/step10_270ma.csv",
+        base_dir / "data/step10_250ma.csv",
+        base_dir / "data/step10_260ma.csv",
     ]
 
     console.print(
@@ -262,39 +218,37 @@ def main():
     )
 
     # Run peak fitting & plotting
-    results = analyze_and_plot_fh_files(fh_files)
+    results = analyze_and_plot_fh_files(
+        fh_files, output_svg=base_dir / "fh_characteristic_curves.svg"
+    )
 
-    # Table 1: Individual Peak Fit Details
+    # Table 1: Individual Peak Details
     peaks_table = Table(
-        title="\n[bold cyan]1. High-Precision Peak Parabolic Fit Details[/bold cyan]",
+        title="\n[bold cyan]1. Detected Peak Positions[/bold cyan]",
         show_header=True,
         header_style="bold magenta",
     )
     peaks_table.add_column("Run", style="bold dim")
     peaks_table.add_column("Peak", justify="center")
-    peaks_table.add_column("Fitted Voltage [V]", justify="right", style="green")
-    peaks_table.add_column("Fit Error [V]", justify="right", style="cyan")
-    peaks_table.add_column("Total Error [V]", justify="right", style="yellow")
+    peaks_table.add_column("Voltage [V]", justify="right", style="green")
+    peaks_table.add_column("Error [V]", justify="right", style="yellow")
     peaks_table.add_column("Peak Current [pA]", justify="right", style="magenta")
-    peaks_table.add_column("Reduced Chi2", justify="right", style="red")
 
     for _path, res in results.items():
         heater = res["heater_mA"]
         peaks = res["peaks"]
         for idx, peak in enumerate(peaks):
-            v_val, i_val, v_err_fit, v_err_tot, chi_red, dof = peak
+            v_val, i_val, v_err_tot = peak
             run_name = f"{heater} mA" if idx == 0 else ""
             peaks_table.add_row(
                 run_name,
                 f"Peak {idx + 1}",
                 f"{v_val:.2f}",
-                f"{v_err_fit:.5f}",
-                f"{v_err_tot:.3f}",
+                f"{v_err_tot:.2f}",
                 f"{i_val:.2f}",
-                f"{chi_red:.2f}",
             )
         # Add an empty row for separation
-        peaks_table.add_row("", "", "", "", "", "", "")
+        peaks_table.add_row("", "", "", "", "")
 
     console.print(peaks_table)
 
@@ -325,8 +279,8 @@ def main():
         spacings = []
         spacing_errors = []
         for i in range(len(peaks) - 1):
-            v1, _, _, v1_err_tot, _, _ = peaks[i]
-            v2, _, _, v2_err_tot, _, _ = peaks[i + 1]
+            v1, _, v1_err_tot = peaks[i]
+            v2, _, v2_err_tot = peaks[i + 1]
             diff = v2 - v1
             diff_err = np.sqrt(v1_err_tot**2 + v2_err_tot**2)
             spacings.append(diff)
@@ -340,7 +294,7 @@ def main():
         run_errors.append(weighted_avg_err)
 
         # Calculate contact potential: Vc = V1 - E_exc
-        v1_val, _, _, v1_err_tot, _, _ = peaks[0]
+        v1_val, _, v1_err_tot = peaks[0]
         contact_pot = v1_val - weighted_avg
 
         # Propagated error for contact potential:
@@ -351,7 +305,7 @@ def main():
         c5 = -weights[3] / np.sum(weights)
 
         c_coeffs = np.array([c1, c2, c3, c4, c5])
-        peak_errs = np.array([p[3] for p in peaks])
+        peak_errs = np.array([p[2] for p in peaks])
         contact_pot_err = np.sqrt(np.sum((c_coeffs * peak_errs) ** 2))
 
         run_contact_pots.append(contact_pot)
