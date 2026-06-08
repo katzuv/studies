@@ -72,7 +72,7 @@ def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
     mpl.rcParams["axes.linewidth"] = 1.5
     mpl.rcParams["axes.edgecolor"] = "#333333"
     mpl.rcParams["axes.labelcolor"] = "#111111"
-    mpl.rcParams["axes.labelsize"] = 16
+    mpl.rcParams["axes.labelsize"] = 22
     mpl.rcParams["axes.titlesize"] = 16
     mpl.rcParams["axes.titleweight"] = "bold"
     mpl.rcParams["xtick.color"] = "#333333"
