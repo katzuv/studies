@@ -72,7 +72,7 @@ def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
     mpl.rcParams["axes.linewidth"] = 1.5
     mpl.rcParams["axes.edgecolor"] = "#333333"
     mpl.rcParams["axes.labelcolor"] = "#111111"
-    mpl.rcParams["axes.labelsize"] = 22
+    mpl.rcParams["axes.labelsize"] = 13
     mpl.rcParams["axes.titlesize"] = 16
     mpl.rcParams["axes.titleweight"] = "bold"
     mpl.rcParams["xtick.color"] = "#333333"
@@ -117,9 +117,9 @@ def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
     if title:
         target.set_title(title, pad=15, fontsize=16)
     if xlabel:
-        target.set_xlabel(xlabel, labelpad=10, fontsize=22)
+        target.set_xlabel(xlabel, labelpad=10, fontsize=14.5)
     if ylabel:
-        target.set_ylabel(ylabel, labelpad=10, fontsize=22)
+        target.set_ylabel(ylabel, labelpad=10, fontsize=14.5)
 
     # Apply tick label size explicitly
     target.tick_params(axis="both", which="major", labelsize=12)
