@@ -24,17 +24,14 @@ def get_last_digit_error(series_str):
     return 10.0 ** (-decimals)
 
 
-def parabola(x, a, x0, y0):
-    return a * (x - x0) ** 2 + y0
-
-
 def analyze_and_plot_fh_files(
     file_paths, output_svg="fh_characteristic_curves.svg", verbose=True
 ):
     plt.figure(figsize=(11, 6))
     results_summary = {}
+    tab10_colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
 
-    for path in file_paths:
+    for i, path in enumerate(file_paths):
         path = Path(path)
         try:
             lines = path.read_text().splitlines()
@@ -51,7 +48,15 @@ def analyze_and_plot_fh_files(
             raw_voltage = df_str.iloc[:, 0].astype(float).to_numpy()
             raw_current = df_str.iloc[:, 1].astype(float).to_numpy()
 
-            v_error_inst = get_last_digit_error(df_str.iloc[:, 0])
+            # --- UPDATED: Automatic Step Size Detection for Voltage Error ---
+            v_diffs = np.abs(np.diff(raw_voltage))
+            # Use median of non-zero differences to find the true step size robustly
+            step_size = np.round(np.median(v_diffs[v_diffs > 0]), 3)
+
+            # The physical uncertainty of a peak location is dictated by the step size
+            v_error_inst = step_size
+
+            # Current error can still use the last digit reading error from the device
             i_error_inst = get_last_digit_error(df_str.iloc[:, 1])
 
             valid_mask = raw_voltage >= 5.0
@@ -61,7 +66,9 @@ def analyze_and_plot_fh_files(
             if len(voltage) == 0:
                 continue
 
-            min_sample_distance = int(3.5 / np.abs(np.diff(raw_voltage)).min())
+            # Robust min sample distance based on the detected step size
+            min_sample_distance = int(3.5 / step_size)
+
             peaks_idx, _ = find_peaks(
                 current,
                 distance=min_sample_distance,
@@ -73,11 +80,11 @@ def analyze_and_plot_fh_files(
                 plt.errorbar(
                     raw_voltage,
                     raw_current,
-                    xerr=v_error_inst,
                     yerr=i_error_inst,
                     fmt=".",
                     alpha=0.2,
-                    linewidth=0.5,
+                    label=f"Data ({path.name})",
+                    color=tab10_colors[i % len(tab10_colors)],
                     elinewidth=0.5,
                 )
                 continue
@@ -131,7 +138,6 @@ def analyze_and_plot_fh_files(
             eb = plt.errorbar(
                 raw_voltage,
                 raw_current,
-                xerr=v_error_inst,
                 yerr=i_error_inst,
                 fmt=".",
                 label=clean_label,
@@ -140,6 +146,7 @@ def analyze_and_plot_fh_files(
                 alpha=0.85,
                 capsize=2,
                 zorder=3,
+                color=tab10_colors[i % len(tab10_colors)],
             )
 
             color = eb[0].get_color()
@@ -178,7 +185,10 @@ def analyze_and_plot_fh_files(
         except Exception as e:
             print(f"Error processing file {path}: {e}")
 
-    set_style(xlabel="Accelerating Voltage $V_a$ [V]", ylabel="Collector Current $I$ [pA]")
+    set_style(
+        xlabel=r"Acceleration voltage ($V_a$) [V]",
+        ylabel="Collector current [pA]",
+    )
     plt.xlim(0, 31)
     plt.ylim(bottom=0)
     plt.legend(
@@ -210,7 +220,7 @@ def main():
     console.print(
         Panel.fit(
             "[bold yellow]*** FRANCK-HERTZ EXPERIMENT - PART 1: EXCITATION ENERGY ANALYSIS ***[/bold yellow]\n"
-            "[dim]High-precision local parabolic peak fitting and propagated error analysis[/dim]",
+            "[dim]Peak detection and propagated error analysis[/dim]",
             border_style="bold gold1",
             padding=(1, 4),
             title="[bold green]Technion Physics Lab 4[/bold green]",
@@ -276,37 +286,37 @@ def main():
         heater = res["heater_mA"]
         peaks = res["peaks"]
 
+        n_peaks = len(peaks)
+        if n_peaks < 2:
+            continue
+
+        v_first, _, v_err_first = peaks[0]
+        v_last, _, v_err_last = peaks[-1]
+
         spacings = []
         spacing_errors = []
-        for i in range(len(peaks) - 1):
+        for i in range(n_peaks - 1):
             v1, _, v1_err_tot = peaks[i]
             v2, _, v2_err_tot = peaks[i + 1]
-            diff = v2 - v1
-            diff_err = np.sqrt(v1_err_tot**2 + v2_err_tot**2)
-            spacings.append(diff)
-            spacing_errors.append(diff_err)
+            spacings.append(v2 - v1)
+            spacing_errors.append(np.sqrt(v1_err_tot**2 + v2_err_tot**2))
 
-        weights = 1.0 / (np.array(spacing_errors) ** 2)
-        weighted_avg = np.sum(np.array(spacings) * weights) / np.sum(weights)
-        weighted_avg_err = 1.0 / np.sqrt(np.sum(weights))
+        # 2. Correct Excitation Energy (Telescoping series approach avoids covariance issues)
+        n_spacings = n_peaks - 1
+        exc_energy = (v_last - v_first) / n_spacings
+        exc_energy_err = np.sqrt(v_err_last**2 + v_err_first**2) / n_spacings
 
-        run_averages.append(weighted_avg)
-        run_errors.append(weighted_avg_err)
+        run_averages.append(exc_energy)
+        run_errors.append(exc_energy_err)
 
-        # Calculate contact potential: Vc = V1 - E_exc
-        v1_val, _, v1_err_tot = peaks[0]
-        contact_pot = v1_val - weighted_avg
+        # 3. Correct Contact Potential and Error (Dynamic for any n_peaks)
+        contact_pot = v_first - exc_energy
 
-        # Propagated error for contact potential:
-        c1 = 1.0 + weights[0] / np.sum(weights)
-        c2 = -(weights[0] - weights[1]) / np.sum(weights)
-        c3 = -(weights[1] - weights[2]) / np.sum(weights)
-        c4 = -(weights[2] - weights[3]) / np.sum(weights)
-        c5 = -weights[3] / np.sum(weights)
-
-        c_coeffs = np.array([c1, c2, c3, c4, c5])
-        peak_errs = np.array([p[2] for p in peaks])
-        contact_pot_err = np.sqrt(np.sum((c_coeffs * peak_errs) ** 2))
+        c_first = n_peaks / n_spacings
+        c_last = 1.0 / n_spacings
+        contact_pot_err = np.sqrt(
+            (c_first * v_err_first) ** 2 + (c_last * v_err_last) ** 2
+        )
 
         run_contact_pots.append(contact_pot)
         run_contact_pot_errors.append(contact_pot_err)
@@ -318,7 +328,7 @@ def main():
         spacings_table.add_row(
             f"{heater} mA",
             spacings_str,
-            f"{weighted_avg:.3f} ± {weighted_avg_err:.3f}",
+            f"{exc_energy:.3f} ± {exc_energy_err:.3f}",
             f"{contact_pot:.3f} ± {contact_pot_err:.3f}",
         )
 
@@ -337,7 +347,7 @@ def main():
     global_cp_err = 1.0 / np.sqrt(np.sum(weights_cp))
 
     # Lit comparison
-    lit_value = 4.90
+    lit_value = 4.89
     abs_dev = abs(global_weighted_avg - lit_value)
     rel_dev = (abs_dev / lit_value) * 100
     sigma_diff = abs_dev / global_weighted_avg_err
@@ -346,14 +356,14 @@ def main():
         f"[bold gold1]Overall Weighted Average of Averages:[/bold gold1]\n"
         f"  - E_exc = [bold green]{global_weighted_avg:.3f} ± {global_weighted_avg_err:.3f} eV[/bold green]\n"
         f"  - V_c   = [bold yellow]{global_cp:.3f} ± {global_cp_err:.3f} V[/bold yellow]\n\n"
-        f"[bold cyan]Comparison with Literature (4.90 eV):[/bold cyan]\n"
+        f"[bold cyan]Comparison with Literature ({lit_value} eV):[/bold cyan]\n"
         f"  - Absolute Deviation: {abs_dev:.3f} eV\n"
         f"  - Relative Deviation: {rel_dev:.2f}%\n"
         f"  - Statistical Significance: {sigma_diff:.2f} sigma"
     )
 
     console.print(
-        Panel(
+        Panel.fit(
             summary_text,
             title="[bold white]Part 1 Results Summary[/bold white]",
             border_style="gold1",
