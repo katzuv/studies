@@ -72,7 +72,7 @@ def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
     mpl.rcParams["axes.linewidth"] = 1.5
     mpl.rcParams["axes.edgecolor"] = "#333333"
     mpl.rcParams["axes.labelcolor"] = "#111111"
-    mpl.rcParams["axes.labelsize"] = 14
+    mpl.rcParams["axes.labelsize"] = 16
     mpl.rcParams["axes.titlesize"] = 16
     mpl.rcParams["axes.titleweight"] = "bold"
     mpl.rcParams["xtick.color"] = "#333333"
@@ -96,7 +96,7 @@ def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
         target.grid(
             True,
             which="major",
-            color="#d1d5db",
+            color="#a0a0a0",
             alpha=0.8,
             linestyle="-",
             linewidth=1.0,
@@ -104,7 +104,7 @@ def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
         target.grid(
             True,
             which="minor",
-            color="#e5e7eb",
+            color="#cccccc",
             alpha=0.5,
             linestyle="--",
             linewidth=0.7,
@@ -117,13 +117,15 @@ def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
     if title:
         target.set_title(title, pad=15)
     if xlabel:
-        target.set_xlabel(xlabel, labelpad=10, weight="bold")
+        target.set_xlabel(xlabel, labelpad=10)
     if ylabel:
-        target.set_ylabel(ylabel, labelpad=10, weight="bold")
+        target.set_ylabel(ylabel, labelpad=10)
 
     # Clean Spines
-    target.spines["top"].set_visible(False)
-    target.spines["right"].set_visible(False)
+    target.spines["top"].set_visible(True)
+    target.spines["right"].set_visible(True)
+    target.spines["top"].set_linewidth(1.5)
+    target.spines["right"].set_linewidth(1.5)
     target.spines["left"].set_linewidth(1.5)
     target.spines["bottom"].set_linewidth(1.5)
 
