@@ -127,7 +127,7 @@ def analyze_and_plot_fh_files(
                 "i_error_inst": i_error_inst,
             }
 
-            clean_label = f"IH = {heater} mA, VR = {v_ret} V"
+            clean_label = f"$I_h$ = {heater} mA, $V_r$ = {v_ret} V"
             eb = plt.errorbar(
                 raw_voltage,
                 raw_current,
