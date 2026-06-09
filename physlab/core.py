@@ -92,7 +92,6 @@ mpl.rcParams["axes.facecolor"] = "#ffffff"
 
 def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
     """Applies a stunning, publication-ready style to plots."""
-    import matplotlib.pyplot as plt
 
     target = ax if ax else plt.gca()
 

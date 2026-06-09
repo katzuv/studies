@@ -1,21 +1,19 @@
-import re
 import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from scipy.signal import find_peaks
 
 # Add the project root to the path so we can import physlab
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
+from excitation_analysis import analyze_and_plot_fh_files
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
 from physlab.core import set_style
-from excitation_analysis import analyze_and_plot_fh_files
 
 
 def get_last_digit_error(series_str):
@@ -146,7 +144,11 @@ def analyze_ionization_experiment(
     )
 
     # Plot the curve fit (linear regression)
-    x_extrapolate = np.linspace(v_onset, raw_voltage[fit_end] if fit_end < len(raw_voltage) else max(raw_voltage), 100)
+    x_extrapolate = np.linspace(
+        v_onset,
+        raw_voltage[fit_end] if fit_end < len(raw_voltage) else max(raw_voltage),
+        100,
+    )
     y_extrapolate = slope * x_extrapolate + intercept
     ax.plot(
         x_extrapolate,
@@ -279,7 +281,7 @@ def main():
 
     # 1. חישובים עבור שיטת האקסטרפולציה
     e_ion_extrap = ion_results["true_ionization_extrap_eV"]
-    err_extrap = ion_results["error_extrap_eV"] # <-- תוקן כאן
+    err_extrap = ion_results["error_extrap_eV"]  # <-- תוקן כאן
     abs_dev_extrap = abs(e_ion_extrap - lit_val)
     rel_dev_extrap = (abs_dev_extrap / lit_val) * 100
     sigma_extrap = abs_dev_extrap / np.sqrt(err_extrap**2 + lit_err**2)

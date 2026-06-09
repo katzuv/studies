@@ -29,7 +29,18 @@ def analyze_and_plot_fh_files(
 ):
     plt.figure(figsize=(11, 6))
     results_summary = {}
-    tab10_colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
+    tab10_colors = [
+        "#1f77b4",
+        "#ff7f0e",
+        "#2ca02c",
+        "#d62728",
+        "#9467bd",
+        "#8c564b",
+        "#e377c2",
+        "#7f7f7f",
+        "#bcbd22",
+        "#17becf",
+    ]
 
     for i, path in enumerate(file_paths):
         path = Path(path)
@@ -378,7 +389,9 @@ def main():
     abs_dev_new = abs(global_weighted_avg - global_weighted_avg_new_lit)
     rel_dev_new = (abs_dev_new / global_weighted_avg_new_lit) * 100
     # Combined error including the uncertainty of the cross-section extraction
-    combined_err_new = np.sqrt(global_weighted_avg_err**2 + global_weighted_avg_new_lit_err**2)
+    combined_err_new = np.sqrt(
+        global_weighted_avg_err**2 + global_weighted_avg_new_lit_err**2
+    )
     sigma_diff_new = abs_dev_new / combined_err_new
 
     summary_text = (
