@@ -346,20 +346,53 @@ def main():
     global_cp = np.sum(np.array(run_contact_pots) * weights_cp) / np.sum(weights_cp)
     global_cp_err = 1.0 / np.sqrt(np.sum(weights_cp))
 
-    # Lit comparison
+    # --- NEW: Added New Theoretical Weighted Excitation Energy Calculation (From Paper) ---
+    sigma_0, sigma_1 = 0.5, 1.9
+    E_0, E_1 = 4.67, 4.89
+    slope_0, slope_1 = 0.2, 1.5
+    sigma_sigma = 0.1
+    sigma_E_selection = 0.1
+
+    # 1. Calculate E_eff value
+    global_weighted_avg_new_lit = (sigma_0 * E_0 + sigma_1 * E_1) / (sigma_0 + sigma_1)
+
+    # 2. Calculate sensitivities (partial derivatives)
+    pdv_E_eff_sigma_0 = (sigma_1 * (E_0 - E_1)) / (sigma_0 + sigma_1) ** 2
+    pdv_E_eff_sigma_1 = (sigma_0 * (E_1 - E_0)) / (sigma_0 + sigma_1) ** 2
+    pdv_E_eff_E = pdv_E_eff_sigma_0 * slope_0 + pdv_E_eff_sigma_1 * slope_1
+
+    # 3. Propagated error for new theoretical value
+    global_weighted_avg_new_lit_err = np.sqrt(
+        (pdv_E_eff_sigma_0 * sigma_sigma) ** 2
+        + (pdv_E_eff_sigma_1 * sigma_sigma) ** 2
+        + (pdv_E_eff_E * sigma_E_selection) ** 2
+    )
+
+    # Lit comparison (Old 4.89 eV Lit Value)
     lit_value = 4.89
     abs_dev = abs(global_weighted_avg - lit_value)
     rel_dev = (abs_dev / lit_value) * 100
     sigma_diff = abs_dev / global_weighted_avg_err
 
+    # Comparison with the New Cross-Section Weighted Theoretical Value
+    abs_dev_new = abs(global_weighted_avg - global_weighted_avg_new_lit)
+    rel_dev_new = (abs_dev_new / global_weighted_avg_new_lit) * 100
+    # Combined error including the uncertainty of the cross-section extraction
+    combined_err_new = np.sqrt(global_weighted_avg_err**2 + global_weighted_avg_new_lit_err**2)
+    sigma_diff_new = abs_dev_new / combined_err_new
+
     summary_text = (
         f"[bold gold1]Overall Weighted Average of Averages:[/bold gold1]\n"
         f"  - E_exc = [bold green]{global_weighted_avg:.3f} ± {global_weighted_avg_err:.3f} eV[/bold green]\n"
         f"  - V_c   = [bold yellow]{global_cp:.3f} ± {global_cp_err:.3f} V[/bold yellow]\n\n"
-        f"[bold cyan]Comparison with Literature ({lit_value} eV):[/bold cyan]\n"
+        f"[bold cyan]Comparison with Standard Single-Level Literature ({lit_value} eV):[/bold cyan]\n"
         f"  - Absolute Deviation: {abs_dev:.3f} eV\n"
         f"  - Relative Deviation: {rel_dev:.2f}%\n"
-        f"  - Statistical Significance: {sigma_diff:.2f} sigma"
+        f"  - Statistical Significance: {sigma_diff:.2f} sigma\n\n"
+        f"[bold magenta]Comparison with Cross-Section Weighted Theoretical Value ({global_weighted_avg_new_lit:.3f} ± {global_weighted_avg_new_lit_err:.3f} eV):[/bold magenta]\n"
+        f"  - Absolute Deviation: {abs_dev_new:.3f} eV\n"
+        f"  - Relative Deviation: {rel_dev_new:.2f}%\n"
+        f"  - Statistical Significance (Z-score): {sigma_diff_new:.2f} sigma"
     )
 
     console.print(

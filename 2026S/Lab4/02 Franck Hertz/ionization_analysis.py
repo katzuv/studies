@@ -37,7 +37,7 @@ def analyze_ionization_experiment(
     raw_voltage = df_str.iloc[:, 0].astype(float).to_numpy()
     raw_current = df_str.iloc[:, 1].astype(float).to_numpy()
 
-    # Step size dynamically found
+    # חילוץ דינמי של גודל המדרגה מהנתונים האמיתיים בשביל שגיאת המכשיר
     v_diffs = np.abs(np.diff(raw_voltage))
     step_size = np.round(np.median(v_diffs[v_diffs > 0]), 3)
     v_error_inst = step_size
@@ -56,7 +56,7 @@ def analyze_ionization_experiment(
     # Statistical ceiling for detecting the early rise
     statistical_noise_ceiling = mean_noise + (5.0 * std_noise)
 
-    # --- מציאת נקודת העלייה הראשונית (לתצוגה ויזואלית בלבד) ---
+    # --- מציאת נקודת העלייה הראשונית מעל הרעש ---
     v_initial_rise = None
     for i in range(len(raw_voltage) - 3):
         if (
@@ -74,7 +74,7 @@ def analyze_ionization_experiment(
         else:
             v_initial_rise = raw_voltage[0]
 
-    # --- UPDATED: Linear Extrapolation Method (לחישוב הפיזיקלי) ---
+    # --- שיטת האקסטרפולציה הליניארית ---
     # 1. Calculate the discrete derivative (slope) of the current
     dI_dV = np.gradient(raw_current, raw_voltage)
 
@@ -98,11 +98,14 @@ def analyze_ionization_experiment(
 
     # 4. Find where the extrapolation line intersects the baseline noise floor
     v_onset = (mean_noise - intercept) / slope
-    v_onset_err = v_error_inst  # Uncertainty remains bound by the resolution step
+    v_onset_err = v_error_inst  # שגיאת המכשיר מבוססת על המדרגה שנמצאה
 
-    # Calculate final physics
-    true_ionization_energy = v_onset - contact_potential_V
-    total_error = np.sqrt(v_onset_err**2 + contact_pot_error_V**2)
+    # חישוב אנרגיות סופיות ושגיאות משולבות עבור שתי השיטות
+    true_ionization_extrap = v_onset - contact_potential_V
+    error_extrap = np.sqrt(v_onset_err**2 + contact_pot_error_V**2)
+
+    true_ionization_rise = v_initial_rise - contact_potential_V
+    error_rise = np.sqrt(v_error_inst**2 + contact_pot_error_V**2)
 
     # --- Plotting ---
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -129,10 +132,9 @@ def analyze_ionization_experiment(
         color="#4CAF50",
         linestyle=":",
         linewidth=2.5,
-        label=f"Initial Current Rise (~{v_initial_rise:.2f} V)",
+        label=f"Initial Current Rise ($V_{{rise}}$ = {v_initial_rise:.2f} V)",
         zorder=3,
     )
-    # סימון הנקודה על הגרף
     idx_initial = np.abs(raw_voltage - v_initial_rise).argmin()
     ax.scatter(
         raw_voltage[idx_initial],
@@ -143,7 +145,7 @@ def analyze_ionization_experiment(
         zorder=5,
     )
 
-    # Plot the curve fit (linear regression) from the onset to the fit region
+    # Plot the curve fit (linear regression)
     x_extrapolate = np.linspace(v_onset, raw_voltage[fit_end] if fit_end < len(raw_voltage) else max(raw_voltage), 100)
     y_extrapolate = slope * x_extrapolate + intercept
     ax.plot(
@@ -156,15 +158,13 @@ def analyze_ionization_experiment(
         zorder=3,
     )
 
-
-
     # Plot intersection point and onset line (The physical result)
     ax.axvline(
         x=v_onset,
         color="#C73E1D",
         linestyle="-.",
         linewidth=2.5,
-        label=f"Extrapolated Onset ($V_{{a0}}$ = {v_onset:.2f} V)",
+        label=f"Extrapolated Onset ($V_{{ion}}$ = {v_onset:.2f} V)",
     )
     ax.scatter(
         v_onset,
@@ -185,11 +185,9 @@ def analyze_ionization_experiment(
         ylabel="Collector current [pA]",
     )
     ax.set_xlim(0, 15)
-
-    # Set y-axis to focus on the relevant part
     ax.set_ylim(mean_noise - 5, 1000)
 
-    ax.legend(loc="upper left", frameon=True, shadow=True, fontsize=14)
+    ax.legend(loc="upper left", frameon=True, shadow=True, fontsize=12)
     plt.tight_layout()
     plt.savefig(output_svg, format="svg")
     plt.close()
@@ -197,8 +195,11 @@ def analyze_ionization_experiment(
     return {
         "fitted_ionization_onset_V": v_onset,
         "fitted_ionization_onset_error_V": v_onset_err,
-        "true_ionization_energy_eV": true_ionization_energy,
-        "error_eV": total_error,
+        "initial_rise_V": v_initial_rise,
+        "true_ionization_extrap_eV": true_ionization_extrap,
+        "error_extrap_eV": error_extrap,
+        "true_ionization_rise_eV": true_ionization_rise,
+        "error_rise_eV": error_rise,
         "mean_noise": mean_noise,
         "mean_noise_err": mean_noise_err,
         "std_noise": std_noise,
@@ -218,7 +219,7 @@ def main():
     console.print(
         Panel.fit(
             "[bold yellow]*** FRANCK-HERTZ EXPERIMENT - PART 2: IONIZATION POTENTIAL ANALYSIS ***[/bold yellow]\n"
-            "[dim]Linear extrapolation of maximum slope to baseline noise floor[/dim]",
+            "[dim]Dual Comparison Method: Initial Rise vs. Linear Extrapolation[/dim]",
             border_style="bold gold1",
             padding=(1, 4),
             title="[bold green]Technion Physics Lab 4[/bold green]",
@@ -272,27 +273,45 @@ def main():
     noise_table.add_row("Std. dev. baseline noise", f"{ion_results['std_noise']:.3f}")
     console.print(noise_table)
 
-    e_ion = ion_results["true_ionization_energy_eV"]
-    e_ion_err = ion_results["error_eV"]
-    lit_val = 10.438
-    abs_dev = abs(e_ion - lit_val)
-    rel_dev = (abs_dev / lit_val) * 100
-    sigma_diff = abs_dev / e_ion_err
+    # ערך ספרות מעודכן ומדויק
+    lit_val = 10.437504
+    lit_err = 0.000006
+
+    # 1. חישובים עבור שיטת האקסטרפולציה
+    e_ion_extrap = ion_results["true_ionization_extrap_eV"]
+    err_extrap = ion_results["error_extrap_eV"] # <-- תוקן כאן
+    abs_dev_extrap = abs(e_ion_extrap - lit_val)
+    rel_dev_extrap = (abs_dev_extrap / lit_val) * 100
+    sigma_extrap = abs_dev_extrap / np.sqrt(err_extrap**2 + lit_err**2)
+
+    # 2. חישובים עבור שיטת העלייה הראשונית
+    e_ion_rise = ion_results["true_ionization_rise_eV"]
+    err_rise = ion_results["error_rise_eV"]
+    abs_dev_rise = abs(e_ion_rise - lit_val)
+    rel_dev_rise = (abs_dev_rise / lit_val) * 100
+    sigma_rise = abs_dev_rise / np.sqrt(err_rise**2 + lit_err**2)
 
     summary_text = (
-        f"[bold gold1]Experimental Ionization Metrics (Extrapolation Method):[/bold gold1]\n"
-        f"  - Extrapolated Onset Vi = {ion_results['fitted_ionization_onset_V']:.3f} ± {ion_results['fitted_ionization_onset_error_V']:.3f} V\n"
-        f"  - Contact potential shift Vc = {c_pot:.3f} ± {c_pot_err:.3f} V\n"
-        f"  - True Ionization Energy E_ion = [bold green]{e_ion:.3f} ± {e_ion_err:.3f} eV[/bold green]\n\n"
-        f"[bold cyan]Comparison with Literature (10.438 eV):[/bold cyan]\n"
-        f"  - Absolute Deviation: {abs_dev:.3f} eV\n"
-        f"  - Relative Deviation: {rel_dev:.2f}%\n"
-        f"  - Statistical Significance: {sigma_diff:.2f} sigma"
+        f"[bold gold1]Experimental Threshold Voltages & Reference Shift:[/bold gold1]\n"
+        f"  - Initial Current Rise V_rise = {ion_results['initial_rise_V']:.3f} V\n"
+        f"  - Extrapolated Onset V_ion   = {ion_results['fitted_ionization_onset_V']:.3f} ± {ion_results['fitted_ionization_onset_error_V']:.3f} V\n"
+        f"  - Contact Potential Shift Vc = {c_pot:.3f} ± {c_pot_err:.3f} V\n\n"
+        f"[bold cyan]Dual Method Comparison vs. Literature ({lit_val:.6f} ± {lit_err:.6f} eV):[/bold cyan]\n\n"
+        f"  [bold green]METHOD 1: Linear Extrapolation (Direct Ionization Boundary)[/bold green]\n"
+        f"    - True Ionization Energy:  {e_ion_extrap:.3f} ± {err_extrap:.3f} eV\n"
+        f"    - Absolute Deviation:      {abs_dev_extrap:.3f} eV\n"
+        f"    - Relative Deviation:      {rel_dev_extrap:.2f}%\n"
+        f"    - Statistical Significance: {sigma_extrap:.2f} sigma\n\n"
+        f"  [bold magenta]METHOD 2: Initial Current Rise (Photoelectric/Stepwise Noise Tail)[/bold magenta]\n"
+        f"    - True Ionization Energy:  {e_ion_rise:.3f} ± {err_rise:.3f} eV\n"
+        f"    - Absolute Deviation:      {abs_dev_rise:.3f} eV\n"
+        f"    - Relative Deviation:      {rel_dev_rise:.2f}%\n"
+        f"    - Statistical Significance: {sigma_rise:.2f} sigma"
     )
     console.print(
         Panel.fit(
             summary_text,
-            title="[bold white]Part 2 Results Summary[/bold white]",
+            title="[bold white]Part 2 Results & Method Comparison[/bold white]",
             border_style="gold1",
         )
     )
