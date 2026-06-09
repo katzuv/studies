@@ -7,4 +7,49 @@ hanne1988:
     parent:
         type: Periodical
         title: American Journal of Physics
-    url: https://moodle25.technion.ac.il/pluginfile.php/283648/mod_resource/content/2/WhatReallyHappens.pdf
+    url:
+        value: https://moodle25.technion.ac.il/pluginfile.php/283648/mod_resource/content/2/WhatReallyHappens.pdf
+        date: 2026-06-09
+
+
+britannica2018:
+    type: Entry
+    title: "metastable state"
+    author: "Britannica Editors"
+    date: 2018-11-16
+    url:
+        value: "https://www.britannica.com/science/metastable-state"
+        date: 2026-06-09
+    parent:
+        type: Reference
+        title: "Encyclopedia Britannica"
+
+wannier1953:
+    type: Article
+    title: "The threshold law for single ionization of atoms or ions by electrons"
+    author: "Wannier, G. H."
+    date: 1953
+    page-range: 817
+    parent:
+        type: Periodical
+        title: "Physical Review"
+        volume: 90
+        issue: 5
+
+NIST_ASD:
+    type: Web
+    title: "NIST Atomic Spectra Database (ver. 5.12)"
+    author:
+        - "Kramida, A."
+        - "Ralchenko, Yu."
+        - "Reader, J."
+        - "NIST ASD Team"
+    date: 2024
+    url:
+        value: "https://www.nist.gov/pml/atomic-spectra-database"
+        date: 2026-06-09
+    publisher: "National Institute of Standards and Technology"
+    location: "Gaithersburg, MD"
+
+
+
