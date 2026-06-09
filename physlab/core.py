@@ -1,6 +1,7 @@
 from collections import namedtuple
 from collections.abc import Callable, Iterable
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -57,8 +58,6 @@ def physics_fit(
         model=model,
     )
 
-
-import matplotlib as mpl
 
 # Premium Color Palette
 custom_colors = ["#2E86AB", "#A23B72", "#F18F01", "#C73E1D", "#3B1F2B", "#4C9F70"]
