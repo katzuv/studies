@@ -1,8 +1,12 @@
 import subprocess
+import sys
 from pathlib import Path
 from typing import Annotated
 
 import typer
+from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
 
 app = typer.Typer(add_completion=False)
 
@@ -26,6 +30,12 @@ def main(
     ] = None,
 ):
     """Compile Typst files to PDF with smart naming based on directory structure."""
+    try:
+        sys.stdout.reconfigure(errors="replace")
+        sys.stderr.reconfigure(errors="replace")
+    except AttributeError:
+        pass
+
     file_path = file_path.resolve()
     if not file_path.exists():
         if file_path == Path.cwd() / "main.typ":
@@ -81,12 +91,32 @@ def main(
 
     try:
         subprocess.run(
-            ["typst", "compile", "--root", ".", str(file_path), str(output_path)],
+            [
+                "typst",
+                "--color",
+                "always",
+                "compile",
+                "--root",
+                ".",
+                str(file_path),
+                str(output_path),
+            ],
+            capture_output=True,
             check=True,
         )
         typer.echo("Success!")
-    except subprocess.CalledProcessError:
-        typer.echo("Compilation failed.")
+    except subprocess.CalledProcessError as e:
+        stderr_str = e.stderr.decode("utf-8", errors="replace")
+        error_text = Text.from_ansi(stderr_str.strip())
+        console = Console()
+        console.print(
+            Panel(
+                error_text,
+                title="[bold red]Typst Compilation Error[/bold red]",
+                border_style="red",
+                expand=False,
+            )
+        )
         raise typer.Exit(code=1) from None
 
 
