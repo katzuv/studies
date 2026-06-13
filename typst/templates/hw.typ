@@ -275,6 +275,46 @@
   }
 }
 
+#let תתסעיף(מזהה: none, טקסט) = {
+  [#metadata("is-subclause") <is-subclause>]
+  counter(heading).step(level: 3)
+  
+  context {
+    let label_str = if מזהה != none { str(מזהה) } else { "" }
+    let parts = label_str.split(".")
+    let last-num = if parts.len() > 2 {
+      fix-geresh(parts.slice(2).join("."))
+    } else if parts.len() > 1 {
+      fix-geresh(parts.slice(1).join("."))
+    } else {
+      fix-geresh(str(counter(heading).get().at(2, default: 1)))
+    }
+    
+    [#heading(level: 3, supplement: [תתסעיף])[תתסעיף #last-num] #מזהה]
+    
+    let color = rgb("#5c6f84") // Slate Blue
+    smart-breakable(showybox(
+      frame: (
+        border-color: color.darken(10%),
+        title-color: color.lighten(60%),
+        body-color: color.lighten(90%),
+        thickness: (left: 3pt, rest: 0.5pt),
+        radius: 3pt,
+      ),
+      title-style: (
+        color: black,
+        weight: "bold",
+        align: right,
+      ),
+      title: [תת סעיף #last-num],
+      {
+        set math.equation(numbering: none)
+        טקסט
+      },
+    ))
+  }
+}
+
 #let תשובה(טקסט) = {
   let color = rgb("#e66100") // Deep Vermilion (Orange-Red)
   smart-breakable(showybox(
