@@ -202,6 +202,8 @@
     [#heading(level: 1, supplement: [שאלה])[שאלה #n: #כותרת] #מזהה]
 
     let color = rgb("#1a5fb4") // Deep Navy Blue
+    let border-col = color.darken(frame-darken)
+    let title-bg = rgb("#2e62da")
     
     // Split intro text from clauses
     let children = if טקסט.has("children") { טקסט.children } else { (טקסט,) }
@@ -209,6 +211,17 @@
     
     let intro = if idx == none { טקסט } else { children.slice(0, idx).join() }
     let rest = if idx == none { [] } else { children.slice(idx).join() }
+
+    let title-bg-altered = rgb(46, 98, 219)
+
+    show block.where(fill: title-bg): it => block(
+      width: it.width,
+      radius: it.radius,
+      inset: it.inset,
+      fill: title-bg-altered,
+      stroke: 1pt + border-col,
+      it.body
+    )
 
     smart-breakable(showybox(
       title-style: (
@@ -221,9 +234,10 @@
         align: center,
       ),
       frame: (
-        border-color: color.darken(frame-darken),
-        title-color: rgb("#2e62da"),
+        border-color: border-col,
+        title-color: title-bg,
         body-color: color.lighten(body-lighten),
+        thickness: (left: 4.5pt, rest: 1pt),
       ),
       shadow: (
         offset: 2pt,
@@ -257,6 +271,7 @@
         border-color: color.darken(frame-darken),
         title-color: color.lighten(title-lighten),
         body-color: color.lighten(body-lighten),
+        thickness: (left: 3.5pt, rest: 1pt),
       ),
       title-style: (
         color: black,
@@ -324,6 +339,7 @@
       border-color: color.darken(frame-darken - 10%),
       title-color: color.lighten(title-lighten - 5%),
       body-color: color.lighten(body-lighten),
+      thickness: (left: 3.5pt, rest: 1pt),
     ),
     title-style: (
       color: black,
