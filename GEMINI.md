@@ -31,3 +31,5 @@
     - **Nested Labels:** Use dots for nested references (e.g., `<2.2.ב>`). The template is configured to parse these and display them as "שאלה 2 סעיף 2.ב".
     - **No Manual Pagebreaks:** Do not add manual `#pagebreak()` calls after `#תשובה`. The `#שאלה` function automatically handles pagination for each new question.
     - Example: `#סעיף(מזהה: <4.3>, [טקסט])` (Reference: `2026S/Quantum1/HW/HW03/main.typ`)
+    - **Typst Compilation Rule:** If the USER makes edits to Typst files, do NOT compile the files (the user will compile them). However, if the AGENT makes the edits to Typst files, the agent MUST run the compiler to check for syntax and layout errors.
+
