@@ -16,6 +16,7 @@
     - **Native Syntax:** Never use backslashes (`\`) before functions or symbols in Typst (this is not LaTeX). 
     - **Math Mode:** Use native function calls (e.g., `ket(psi)`, `braket(a, b)`, `prop`, `quad`) instead of LaTeX-style commands.
     - **Labels:** To use labels in math as function arguments (like `ket(theta, d)`), escape the comma with a backslash if it causes ambiguity: `ket(theta\, d)`.
+    - **Differentials:** Always write differentials (e.g., $d x$) using the native function call `dd(x)` rather than typing `d x` or `dx`.
 - **Linting & Style:**
     - Use **Ruff** for formatting and linting.
     - Exclude legacy semester directories from linting: `2025S`, `2025W`, `2026W`.
