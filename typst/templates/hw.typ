@@ -223,28 +223,49 @@
       it.body
     )
 
-    smart-breakable(showybox(
-      title-style: (
-        boxed-style: (
-          anchor: (x: center, y: horizon),
-          radius: (top-right: 10pt, bottom-left: 10pt, rest: 0pt),
+    let is-empty(it) = {
+      if it == none { return true }
+      if it == [] { return true }
+      let repr-str = repr(it)
+      if repr-str == "[]" or repr-str == "[ ]" or repr-str == "empty()" { return true }
+      if it.has("children") {
+        return it.children.all(is-empty)
+      }
+      return false
+    }
+
+    if is-empty(intro) {
+      smart-breakable(align(center, block(
+        fill: title-bg-altered,
+        stroke: 1pt + border-col,
+        radius: (top-right: 10pt, bottom-left: 10pt, rest: 0pt),
+        inset: (x: 15pt, y: 8pt),
+        text(fill: white, weight: 600, [שאלה #n – #כותרת])
+      )))
+    } else {
+      smart-breakable(showybox(
+        title-style: (
+          boxed-style: (
+            anchor: (x: center, y: horizon),
+            radius: (top-right: 10pt, bottom-left: 10pt, rest: 0pt),
+          ),
+          color: rgb("#FFFFFF"),
+          weight: 600,
+          align: center,
         ),
-        color: rgb("#FFFFFF"),
-        weight: 600,
-        align: center,
-      ),
-      frame: (
-        border-color: border-col,
-        title-color: title-bg,
-        body-color: color.lighten(body-lighten),
-        thickness: (left: 4.5pt, rest: 1pt),
-      ),
-      shadow: (
-        offset: 2pt,
-      ),
-      title: [שאלה #n – #כותרת],
-      intro
-    ))
+        frame: (
+          border-color: border-col,
+          title-color: title-bg,
+          body-color: color.lighten(body-lighten),
+          thickness: (left: 4.5pt, rest: 1pt),
+        ),
+        shadow: (
+          offset: 2pt,
+        ),
+        title: [שאלה #n – #כותרת],
+        intro
+      ))
+    }
 
     rest
   }
