@@ -1,0 +1,3 @@
+[submodule ".agents/skills/typst"]
+	path = .agents/skills/typst
+	url = https://github.com/statzhero/typst-skill.git
