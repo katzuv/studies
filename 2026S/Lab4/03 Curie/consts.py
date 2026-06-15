@@ -7,6 +7,7 @@
 
 import math
 import sys
+from pathlib import Path
 
 from rich.console import Console
 from rich.panel import Panel
@@ -15,8 +16,8 @@ from rich.table import Table
 # Force stdout to use UTF-8 to support Unicode subscripts and superscripts natively on Windows
 sys.stdout.reconfigure(encoding="utf-8")
 
-# Initialize rich console
-console = Console()
+# Initialize rich console with recording enabled to save as SVG
+console = Console(record=True)
 
 # ==========================================
 # General Physical Constants
@@ -219,3 +220,7 @@ q56_table.add_column("Time Required", justify="right", style="green")
 q56_table.add_row("Q5: Heat 0.2 kg water (20°C → 100°C) at 2 kW", f"{t_kettle:.2f} sec")
 q56_table.add_row("Q6: Cool body (550 K → 350 K, k = 0.5 sec⁻¹)", f"{t_target:.2f} sec")
 console.print(q56_table)
+
+# Save console output to SVG
+output_svg_path = Path(__file__).parent / "constants_output.svg"
+console.save_svg(str(output_svg_path))
