@@ -129,10 +129,6 @@
     v(3em)
   }
 
-  // Table of contents.
-  align(center)[#text(1.8em, weight: 700)[תוכן עניינים]]
-  v(1.5em)
-  outline(title: none, depth: 2, indent: auto)
   pagebreak()
 
   // Main body.
