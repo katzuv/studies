@@ -86,10 +86,10 @@ $$\frac{V_s}{V_p} = \frac{n_2 \cdot d_2^2}{n_1 \cdot d_1^2} = \frac{1500 \cdot (
 ## 2. Oven Heater Parameters (Question 3)
 
 ### Heater Wire Resistance ($R_{\text{oven}}$)
-* **Heater Wire Length ($L_{\text{wire\_oven}}$):** $n_{\text{oven}} \cdot \pi \cdot D_{\text{oven}}$.
-* **Wire Area ($A_{\text{wire\_oven}}$):** $\frac{\pi \cdot d_{\text{wire\_oven}}^2}{4}$.
+* **Heater Wire Length ($L_{\text{wire, oven}}$):** $n_{\text{oven}} \cdot \pi \cdot D_{\text{oven}}$.
+* **Wire Area ($A_{\text{wire, oven}}$):** $\frac{\pi \cdot d_{\text{wire, oven}}^2}{4}$.
 * **Kanthal Resistivity ($\rho_{\text{kanthal}}$):** $1.45 \cdot 10^{-6}\ \Omega\cdot\text{m}$.
-* **Resistance:** $R_{\text{oven}} = \rho_{\text{kanthal}} \frac{L_{\text{wire\_oven}}}{A_{\text{wire\_oven}}}$.
+* **Resistance:** $R_{\text{oven}} = \rho_{\text{kanthal}} \frac{L_{\text{wire, oven}}}{A_{\text{wire, oven}}}$.
 
 ### Heater Power ($P_{\text{oven}}$)
 For a DC supply voltage $V_{\text{oven}} = 40\text{ V}$:
@@ -98,23 +98,23 @@ $$P_{\text{oven}} = \frac{V_{\text{oven}}^2}{R_{\text{oven}}}$$
 ### Ideal Heating Rate ($\frac{dT}{dt}$)
 Assuming no thermal losses to the environment, all electrical power $P_{\text{oven}}$ is converted to thermal energy raising the temperature of the Kanthal wire:
 $$\Delta Q = P_{\text{oven}} \cdot \Delta t = m_{\text{wire}} \cdot c_p \cdot \Delta T$$
-$$\frac{dT}{dt} = \frac{P_{\text{oven}}}{m_{\text{wire}} \cdot c_{p\_kanthal}}$$
-where wire mass is $m_{\text{wire}} = L_{\text{wire\_oven}} \cdot A_{\text{wire\_oven}} \cdot \rho_{\text{m\_kanthal}}$.
+$$\frac{dT}{dt} = \frac{P_{\text{oven}}}{m_{\text{wire}} \cdot c_{p,\text{ Kanthal}}}$$
+where wire mass is $m_{\text{wire}} = L_{\text{wire, oven}} \cdot A_{\text{wire, oven}} \cdot \rho_{\text{m, Kanthal}}$.
 
 <details>
 <summary><b>Click to view exact Question 3 calculated values</b></summary>
 
 * **Heater Wire Resistance ($R_{\text{oven}}$):**
-  $$L_{\text{wire\_oven}} = n_{\text{oven}} \cdot \pi \cdot D_{\text{oven}} = 76 \cdot \pi \cdot 0.0167\text{ m} \approx 3.9875\text{ m}$$
-  $$A_{\text{wire\_oven}} = \frac{\pi \cdot d_{\text{wire\_oven}}^2}{4} = \frac{\pi \cdot (3 \cdot 10^{-4}\text{ m})^2}{4} \approx 7.0686 \cdot 10^{-8}\text{ m}^2$$
-  $$R_{\text{oven}} = \rho_{\text{kanthal}} \cdot \frac{L_{\text{wire\_oven}}}{A_{\text{wire\_oven}}} = (1.45 \cdot 10^{-6}\ \Omega\cdot\text{m}) \cdot \frac{3.9875\text{ m}}{7.0686 \cdot 10^{-8}\text{ m}^2} \approx \mathbf{81.80\ \Omega}$$
+  $$L_{\text{wire, oven}} = n_{\text{oven}} \cdot \pi \cdot D_{\text{oven}} = 76 \cdot \pi \cdot 0.0167\text{ m} \approx 3.9875\text{ m}$$
+  $$A_{\text{wire, oven}} = \frac{\pi \cdot d_{\text{wire, oven}}^2}{4} = \frac{\pi \cdot (3 \cdot 10^{-4}\text{ m})^2}{4} \approx 7.0686 \cdot 10^{-8}\text{ m}^2$$
+  $$R_{\text{oven}} = \rho_{\text{kanthal}} \cdot \frac{L_{\text{wire, oven}}}{A_{\text{wire, oven}}} = (1.45 \cdot 10^{-6}\ \Omega\cdot\text{m}) \cdot \frac{3.9875\text{ m}}{7.0686 \cdot 10^{-8}\text{ m}^2} \approx \mathbf{81.80\ \Omega}$$
 
 * **Heater Power ($P_{\text{oven}}$):**
   $$P_{\text{oven}} = \frac{V_{\text{oven}}^2}{R_{\text{oven}}} = \frac{40.0^2\text{ V}^2}{81.80\ \Omega} \approx \mathbf{19.56\text{ W}}$$
 
 * **Ideal Heating Rate ($dT/dt$):**
-  $$m_{\text{wire}} = L_{\text{wire\_oven}} \cdot A_{\text{wire\_oven}} \cdot \rho_{\text{m\_kanthal}} = 3.9875\text{ m} \cdot (7.0686 \cdot 10^{-8}\text{ m}^2) \cdot (7.1 \cdot 10^3\text{ kg/m}^3) \approx 2.001 \cdot 10^{-3}\text{ kg}$$
-  $$\frac{dT}{dt} = \frac{P_{\text{oven}}}{m_{\text{wire}} \cdot c_{p\_kanthal}} = \frac{19.56\text{ W}}{(2.001 \cdot 10^{-3}\text{ kg}) \cdot 510\text{ J/(kg·K)}} \approx \mathbf{19.17\text{ K/sec}}$$
+  $$m_{\text{wire}} = L_{\text{wire, oven}} \cdot A_{\text{wire, oven}} \cdot \rho_{\text{m, Kanthal}} = 3.9875\text{ m} \cdot (7.0686 \cdot 10^{-8}\text{ m}^2) \cdot (7.1 \cdot 10^3\text{ kg/m}^3) \approx 2.001 \cdot 10^{-3}\text{ kg}$$
+  $$\frac{dT}{dt} = \frac{P_{\text{oven}}}{m_{\text{wire}} \cdot c_{p,\text{ Kanthal}}} = \frac{19.56\text{ W}}{(2.001 \cdot 10^{-3}\text{ kg}) \cdot 510\text{ J/(kg·K)}} \approx \mathbf{19.17\text{ K/sec}}$$
 </details>
 
 ---
@@ -140,13 +140,13 @@ where sample mass $m = \text{volume} \cdot \rho_m = \left(L \cdot \frac{\pi d^2}
 
 * **Invar Cooling Constant ($k_{\text{invar}}$):**
   $$V_{\text{invar}} = L \cdot \pi \cdot \left(\frac{d}{2}\right)^2 = 0.040\text{ m} \cdot \pi \cdot 0.006^2\text{ m}^2 \approx 4.5239 \cdot 10^{-6}\text{ m}^3$$
-  $$m_{\text{invar}} = V_{\text{invar}} \cdot \rho_{\text{m\_invar}} = (4.5239 \cdot 10^{-6}\text{ m}^3) \cdot 8100\text{ kg/m}^3 \approx 0.03664\text{ kg}$$
-  $$k_{\text{invar}} = \frac{1}{R_{th} \cdot m_{\text{invar}} \cdot c_{p\_invar}} = \frac{1}{1.119\text{ K/W} \cdot 0.03664\text{ kg} \cdot 505\text{ J/(kg·K)}} \approx \mathbf{0.0483\text{ sec}^{-1}}$$
+  $$m_{\text{invar}} = V_{\text{invar}} \cdot \rho_{\text{m, Invar}} = (4.5239 \cdot 10^{-6}\text{ m}^3) \cdot 8100\text{ kg/m}^3 \approx 0.03664\text{ kg}$$
+  $$k_{\text{invar}} = \frac{1}{R_{th} \cdot m_{\text{invar}} \cdot c_{p,\text{ Invar}}} = \frac{1}{1.119\text{ K/W} \cdot 0.03664\text{ kg} \cdot 505\text{ J/(kg·K)}} \approx \mathbf{0.0483\text{ sec}^{-1}}$$
 
 * **Ferrite Cooling Constant ($k_{\text{ferrite}}$):**
   $$V_{\text{ferrite}} = L \cdot \pi \cdot \left(\frac{d}{2}\right)^2 = 0.0254\text{ m} \cdot \pi \cdot 0.006^2\text{ m}^2 \approx 2.8727 \cdot 10^{-6}\text{ m}^3$$
-  $$m_{\text{ferrite}} = V_{\text{ferrite}} \cdot \rho_{\text{m\_ferrite}} = (2.8727 \cdot 10^{-6}\text{ m}^3) \cdot 5000\text{ kg/m}^3 \approx 0.01436\text{ kg}$$
-  $$k_{\text{ferrite}} = \frac{1}{R_{th} \cdot m_{\text{ferrite}} \cdot c_{p\_ferrite}} = \frac{1}{1.119\text{ K/W} \cdot 0.01436\text{ kg} \cdot 750\text{ J/(kg·K)}} \approx \mathbf{0.0829\text{ sec}^{-1}}$$
+  $$m_{\text{ferrite}} = V_{\text{ferrite}} \cdot \rho_{\text{m, Ferrite}} = (2.8727 \cdot 10^{-6}\text{ m}^3) \cdot 5000\text{ kg/m}^3 \approx 0.01436\text{ kg}$$
+  $$k_{\text{ferrite}} = \frac{1}{R_{th} \cdot m_{\text{ferrite}} \cdot c_{p,\text{ Ferrite}}} = \frac{1}{1.119\text{ K/W} \cdot 0.01436\text{ kg} \cdot 750\text{ J/(kg·K)}} \approx \mathbf{0.0829\text{ sec}^{-1}}$$
 </details>
 
 ---
@@ -155,7 +155,7 @@ where sample mass $m = \text{volume} \cdot \rho_m = \left(L \cdot \frac{\pi d^2}
 
 ### Water Kettle (Question 5)
 The time $t$ required to heat water of mass $m_{\text{water}}$ by a temperature difference $\Delta T$ under power $P_{\text{kettle}}$:
-$$t = \frac{m_{\text{water}} \cdot c_{p\text{\_water}} \cdot (T_{\text{end}} - T_{\text{start}})}{P_{\text{kettle}}}$$
+$$t = \frac{m_{\text{water}} \cdot c_{p,\text{ water}} \cdot (T_{\text{end}} - T_{\text{start}})}{P_{\text{kettle}}}$$
 
 ### Cooling Time (Question 6)
 Solving the Newton cooling ODE:
@@ -167,7 +167,7 @@ $$t = -\frac{1}{k} \ln\left(\frac{T(t) - T_{\text{env}}}{T_0 - T_{\text{env}}}\r
 <summary><b>Click to view exact Questions 5 & 6 calculated values</b></summary>
 
 * **Question 5 (Water Kettle Heating Time $t$):**
-  $$t = \frac{m_{\text{water}} \cdot c_{p\text{\_water}} \cdot (T_{\text{end}} - T_{\text{start}})}{P_{\text{kettle}}} = \frac{0.2\text{ kg} \cdot 4184\text{ J/(kg·K)} \cdot (100.0^\circ\text{C} - 20.0^\circ\text{C})}{2000.0\text{ W}} = \frac{66944}{2000} \approx \mathbf{33.47\text{ seconds}}$$
+  $$t = \frac{m_{\text{water}} \cdot c_{p,\text{ water}} \cdot (T_{\text{end}} - T_{\text{start}})}{P_{\text{kettle}}} = \frac{0.2\text{ kg} \cdot 4184\text{ J/(kg·K)} \cdot (100.0^\circ\text{C} - 20.0^\circ\text{C})}{2000.0\text{ W}} = \frac{66944}{2000} \approx \mathbf{33.47\text{ seconds}}$$
 
 * **Question 6 (Cooling Time to 350K $t$):**
   $$t = -\frac{1}{k} \ln\left(\frac{T(t) - T_{\text{env}}}{T_0 - T_{\text{env}}}\right) = -\frac{1}{0.5\text{ sec}^{-1}} \ln\left(\frac{350\text{ K} - 300\text{ K}}{550\text{ K} - 300\text{ K}}\right) = -2 \ln\left(\frac{50}{250}\right) = -2 \ln(0.2) \approx \mathbf{3.22\text{ seconds}}$$
