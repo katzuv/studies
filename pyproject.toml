@@ -32,6 +32,7 @@ packages = ["physlab"]
 
 [tool.ruff]
 extend-exclude = [
+    ".agents",
     ".virtual_documents",
     "2025S",
     "2025W",
