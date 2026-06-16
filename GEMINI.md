@@ -17,6 +17,11 @@
     - **Math Mode:** Use native function calls (e.g., `ket(psi)`, `braket(a, b)`, `prop`, `quad`) instead of LaTeX-style commands.
     - **Labels:** To use labels in math as function arguments (like `ket(theta, d)`), escape the comma with a backslash if it causes ambiguity: `ket(theta\, d)`.
     - **Differentials:** Always write differentials (e.g., $d x$) using the native function call `dd(x)` rather than typing `d x` or `dx`.
+- **Data Analysis Workflow:**
+    - Every time a Python script is created or modified for data analysis, dump the important resulting numbers/constants into a JSON file. Include a `$schema` reference pointing to `typst/constants.schema.json` (or document the schema structure).
+    - Immediately create a corresponding Typst table loading these values via the `#table-from-file(json-path)` (or a similar dynamic table helper) defined in the Typst template (like `typst/templates/lab.typ`), rather than hardcoding.
+- **Unit Formatting:**
+    - All physical units in math mode must be typeset using upright letters (e.g., `$"T"$` or `$"sec"$`) rather than italicized math letters (e.g., `$T$`, `$sec$`).
 - **Linting & Style:**
     - Use **Ruff** for formatting and linting.
     - Exclude legacy semester directories from linting: `2025S`, `2025W`, `2026W`.

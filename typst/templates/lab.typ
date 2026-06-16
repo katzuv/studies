@@ -232,6 +232,32 @@
       gutter: gutter,
       ..figs
     ),
-    caption: caption
+    caption: caption,
+  )
+}
+
+// Table of constants helper
+#let table-from-file(..args) = {
+  let constants = json(..args)
+  table(
+    columns: (3.5fr, 1.2fr, 2.5fr),
+    align: center + horizon,
+    stroke: 0.5pt,
+    fill: (col, row) => if row == 0 { luma(240) } else { white },
+    [*שם הקבוע*], [*סימון*], [*ערך מחושב*],
+    ..constants
+      .map(c => (
+        align(
+          right,
+          if c.units != "" [
+            #c.name [#eval(c.units, mode: "math", scope: (dd: dd, sec: sec))]
+          ] else [
+            #c.name
+          ],
+        ),
+        eval(c.symbol, mode: "math", scope: (dd: dd, sec: sec)),
+        eval(c.formatted_value, mode: "math", scope: (dd: dd, sec: sec)),
+      ))
+      .flatten(),
   )
 }
