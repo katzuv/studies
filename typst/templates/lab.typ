@@ -207,13 +207,12 @@
 #let RR = $bb(R)$
 
 // Units (upright in math mode)
-#let unit(u) = $sans(upright(#u))$
-#let Hz = $unit("Hz")$
-#let mHz = $unit("mHz")$
-#let rad = $unit("rad")$
-#let sec = $unit("sec")$
-#let Pa = $unit("Pa")$
-#let torr = $unit("torr")$
+#let Hz = $"Hz"$
+#let mHz = $"mHz"$
+#let rad = $"rad"$
+#let sec = $"sec"$
+#let Pa = $"Pa"$
+#let torr = $"torr"$
 #let מעלה = $degree$
 
 // --- Structural Helpers ---
