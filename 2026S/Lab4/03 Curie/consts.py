@@ -49,18 +49,18 @@ rho_copper = 1.72e-8  # Specific resistivity of copper ρ_copper [Ω·m]
 # a. Calculate coil resistance: R = ρ_copper · L_wire / A_wire
 L_wire1 = n1 * math.pi * d1
 A_wire1 = math.pi * (d_wire1**2) / 4
-R_coil1 = rho_copper * L_wire1 / A_wire1
+R_coil1 = 11.8  # Measured primary coil resistance [Ω]
 
 L_wire2 = n2 * math.pi * d2
 A_wire2 = math.pi * (d_wire2**2) / 4
-R_coil2 = rho_copper * L_wire2 / A_wire2
+R_coil2 = 123.3  # Measured secondary coil resistance [Ω]
 
 # b. Calculate inductance: L = μ₀ · N² · A / h
 A_coil1 = math.pi * (d1**2) / 4
-L_coil1 = MU_0 * (n1**2) * A_coil1 / h1
+L_coil1 = 5.7e-3  # Measured primary coil inductance [H]
 
 A_coil2 = math.pi * (d2**2) / 4
-L_coil2 = MU_0 * (n2**2) * A_coil2 / h2
+L_coil2 = 84.1e-3  # Measured secondary coil inductance [H]
 
 # c. Magnetic field at the center of a finite primary coil
 V_p = 1.0  # Input voltage Vₚ [V]

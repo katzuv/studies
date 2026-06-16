@@ -1,0 +1,58 @@
+[
+  {
+    "hebrew_name": "טמפרטורת קירי בחימום (אינבר)",
+    "english_name": "Curie Temperature (Heating) - Invar",
+    "hebrew_var": "טמפרטורת_קירי_חימום_invar",
+    "english_var": "curie_temp_heating_invar",
+    "symbol": "T_(c, \"heat\")",
+    "value": 246.21086972287208,
+    "error": 0.06065734517634259,
+    "units": "\"°C\"",
+    "scale": 1.0,
+    "fmt_spec": ".2f",
+    "suffix": "",
+    "formatted_value": "246.21 +- 0.06"
+  },
+  {
+    "hebrew_name": "טמפרטורת קירי בקירור (אינבר)",
+    "english_name": "Curie Temperature (Cooling) - Invar",
+    "hebrew_var": "טמפרטורת_קירי_קירור_invar",
+    "english_var": "curie_temp_cooling_invar",
+    "symbol": "T_(c, \"cool\")",
+    "value": 250.40788051189816,
+    "error": 0.06787741922997616,
+    "units": "\"°C\"",
+    "scale": 1.0,
+    "fmt_spec": ".2f",
+    "suffix": "",
+    "formatted_value": "250.41 +- 0.07"
+  },
+  {
+    "hebrew_name": "קבוע קירור ניסיוני (אינבר)",
+    "english_name": "Experimental Cooling Constant - Invar",
+    "hebrew_var": "קבוע_קירור_ניסיוני_invar",
+    "english_var": "cooling_constant_exp_invar",
+    "symbol": "k_\"exp\"",
+    "value": 0.0012001929717148229,
+    "error": 7.162068714323653e-07,
+    "units": "\"sec\"^(-1)",
+    "scale": 1.0,
+    "fmt_spec": ".6f",
+    "suffix": "",
+    "formatted_value": "0.001200 +- 0.000001"
+  },
+  {
+    "hebrew_name": "קבוע קירור תיאורטי (אינבר)",
+    "english_name": "Theoretical Cooling Constant - Invar",
+    "hebrew_var": "קבוע_קירור_תיאורטי_invar",
+    "english_var": "cooling_constant_theory_invar",
+    "symbol": "k_\"theory\"",
+    "value": 0.0483,
+    "error": null,
+    "units": "\"sec\"^(-1)",
+    "scale": 1.0,
+    "fmt_spec": ".4f",
+    "suffix": "",
+    "formatted_value": "0.0483"
+  }
+]

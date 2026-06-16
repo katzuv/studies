@@ -1,0 +1,58 @@
+[
+  {
+    "hebrew_name": "טמפרטורת קירי בחימום (פריט)",
+    "english_name": "Curie Temperature (Heating) - Ferrite",
+    "hebrew_var": "טמפרטורת_קירי_חימום_ferrite",
+    "english_var": "curie_temp_heating_ferrite",
+    "symbol": "T_(c, \"heat\")",
+    "value": 133.8047012590969,
+    "error": 0.02984684019545749,
+    "units": "\"°C\"",
+    "scale": 1.0,
+    "fmt_spec": ".2f",
+    "suffix": "",
+    "formatted_value": "133.80 +- 0.03"
+  },
+  {
+    "hebrew_name": "טמפרטורת קירי בקירור (פריט)",
+    "english_name": "Curie Temperature (Cooling) - Ferrite",
+    "hebrew_var": "טמפרטורת_קירי_קירור_ferrite",
+    "english_var": "curie_temp_cooling_ferrite",
+    "symbol": "T_(c, \"cool\")",
+    "value": 139.17245437214748,
+    "error": 0.06819018824213924,
+    "units": "\"°C\"",
+    "scale": 1.0,
+    "fmt_spec": ".2f",
+    "suffix": "",
+    "formatted_value": "139.17 +- 0.07"
+  },
+  {
+    "hebrew_name": "קבוע קירור ניסיוני (פריט)",
+    "english_name": "Experimental Cooling Constant - Ferrite",
+    "hebrew_var": "קבוע_קירור_ניסיוני_ferrite",
+    "english_var": "cooling_constant_exp_ferrite",
+    "symbol": "k_\"exp\"",
+    "value": 0.0009902328743237696,
+    "error": 1.6063451273399828e-06,
+    "units": "\"sec\"^(-1)",
+    "scale": 1.0,
+    "fmt_spec": ".6f",
+    "suffix": "",
+    "formatted_value": "0.000990 +- 0.000002"
+  },
+  {
+    "hebrew_name": "קבוע קירור תיאורטי (פריט)",
+    "english_name": "Theoretical Cooling Constant - Ferrite",
+    "hebrew_var": "קבוע_קירור_תיאורטי_ferrite",
+    "english_var": "cooling_constant_theory_ferrite",
+    "symbol": "k_\"theory\"",
+    "value": 0.0829,
+    "error": null,
+    "units": "\"sec\"^(-1)",
+    "scale": 1.0,
+    "fmt_spec": ".4f",
+    "suffix": "",
+    "formatted_value": "0.0829"
+  }
+]

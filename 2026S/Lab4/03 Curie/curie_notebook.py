@@ -11,8 +11,12 @@ with app.setup:
     # Add studies root path to sys.path to allow importing physlab
     sys.path.append(str(Path(__file__).resolve().parents[3]))
     import marimo as mo
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import pandas as pd
+    from scipy.special import erf
 
-    from physlab import format_value
+    from physlab import format_value, physics_fit, set_style
 
 
 @app.cell(hide_code=True)
@@ -41,9 +45,9 @@ def coil_geometry_explanation():
 
 @app.cell
 def load_constants_from_json():
-    parent_dir = Path(__file__).parent
-    json_path = parent_dir / "constants.json"
-    constants_data = json.loads(json_path.read_text(encoding="utf-8"))
+    _parent_dir = Path(__file__).parent
+    _json_path = _parent_dir / "constants.json"
+    constants_data = json.loads(_json_path.read_text(encoding="utf-8"))
     return (constants_data,)
 
 
@@ -157,11 +161,18 @@ def part_a_explanation():
 
 @app.cell
 def load_frequency_response_data():
-    # TODO: Load data for the 3 cores
-    # vs0_data = ... (air)
-    # vs1_data = ... (ferrite)
-    # vs2_data = ... (invar)
-    return
+    try:
+        _parent_dir = Path(__file__).parent
+    except NameError:
+        _parent_dir = Path(".")
+    _csv_path = _parent_dir / "freq_sweep.csv"
+    _df = pd.read_csv(_csv_path)
+
+    # Filter by core type
+    vs0_data = _df[_df["Core Type"] == "VS0 (Air core)"].reset_index(drop=True)
+    vs1_data = _df[_df["Core Type"] == "VS1 (N1)"].reset_index(drop=True)
+    vs2_data = _df[_df["Core Type"] == "VS2 (N2)"].reset_index(drop=True)
+    return vs0_data, vs1_data, vs2_data
 
 
 @app.cell(hide_code=True)
@@ -173,9 +184,56 @@ def part_a_plotting_explanation():
 
 
 @app.cell
-def plot_frequency_response():
-    # TODO: Plot the frequency response curves and select the optimal frequency
-    # Note: Save the plots as SVG and do not include titles inside the graphs.
+def plot_frequency_response(vs0_data, vs1_data, vs2_data):
+    try:
+        _parent_dir = Path(__file__).parent
+    except NameError:
+        _parent_dir = Path(".")
+
+    # Calculate ratios Vs/Vp
+    _freqs = vs0_data["Frequency (Hz)"]
+    _vs0_vp = vs0_data["CH2 (V)"] / vs0_data["CH1 (V)"]
+    _vs1_vp = vs1_data["CH2 (V)"] / vs1_data["CH1 (V)"]
+    _vs2_vp = vs2_data["CH2 (V)"] / vs2_data["CH1 (V)"]
+
+    # Explicit x-ticks for better readability on log scale
+    _ticks = [100, 200, 300, 500, 1000, 2000, 3000, 4000]
+
+    # Graph 1: Vs/Vp as a function of frequency
+    _fig1, _ax1 = plt.subplots(figsize=(6, 4.5))
+    _ax1.semilogx(_freqs, _vs0_vp, label="Air core ($V_{s0}/V_p$)")
+    _ax1.semilogx(_freqs, _vs1_vp, label="Ferrite core ($V_{s1}/V_p$)")
+    _ax1.semilogx(_freqs, _vs2_vp, label="Invar core ($V_{s2}/V_p$)")
+    set_style(_ax1, xlabel="$f \\ [\\mathrm{Hz}]$", ylabel="$V_s / V_p$")
+    _ax1.set_xticks(_ticks)
+    _ax1.set_xticklabels([str(t) for t in _ticks])
+    _ax1.legend(frameon=True)
+    plt.tight_layout()
+    _fig1.savefig(
+        _parent_dir / "frequency_response_vs_vp.svg", format="svg", bbox_inches="tight"
+    )
+    plot1 = mo.as_html(_fig1)
+    plt.close(_fig1)
+
+    # Graph 2: Vs/Vair as a function of frequency for the magnetic cores
+    _vs1_v0 = vs1_data["CH2 (V)"] / vs0_data["CH2 (V)"]
+    _vs2_v0 = vs2_data["CH2 (V)"] / vs0_data["CH2 (V)"]
+
+    _fig2, _ax2 = plt.subplots(figsize=(6, 4.5))
+    _ax2.semilogx(_freqs, _vs1_v0, label="Ferrite core ($V_{s1}/V_{s0}$)")
+    _ax2.semilogx(_freqs, _vs2_v0, label="Invar core ($V_{s2}/V_{s0}$)")
+    set_style(_ax2, xlabel="$f \\ [\\mathrm{Hz}]$", ylabel="$V_s / V_{\\mathrm{air}}$")
+    _ax2.set_xticks(_ticks)
+    _ax2.set_xticklabels([str(t) for t in _ticks])
+    _ax2.legend(frameon=True)
+    plt.tight_layout()
+    fig2_path = _parent_dir / "frequency_response_ratio.svg"
+    _fig2.savefig(fig2_path, format="svg", bbox_inches="tight")
+    plot2 = mo.as_html(_fig2)
+    plt.close(_fig2)
+
+    plots = mo.hstack([plot1, plot2])
+    plots  # noqa: B018
     return
 
 
@@ -193,22 +251,394 @@ def part_b_explanation():
 
 
 @app.cell
-def load_ferrite_data():
-    # TODO: Load heating/cooling data for the ferrite sample
-    # ferrite_data = ...
-    return
+def analysis_helpers():
+    def split_data(df):
+        max_idx = df["Temp (C)"].idxmax()
+        heating_df = df.iloc[:max_idx].copy()
+        cooling_df = df.iloc[max_idx:].copy()
+        return heating_df, cooling_df
+
+    def cooling_model(t, T_env, T0, k):
+        return T_env + (T0 - T_env) * np.exp(-k * t)
+
+    def erf_model(T, a, b, Tc, dT, c):
+        return a + b * erf((T - Tc) / dT) + c * (T - Tc)
+
+    def fit_cooling(cooling_df, p0):
+        times = pd.to_datetime(cooling_df["DateTime"], format="%d/%m/%Y %H:%M:%S")
+        t_s = (times - times.min()).dt.total_seconds().values
+        T_s = cooling_df["Temp (C)"].values
+        T_err = np.ones_like(T_s) * 0.1
+        fit_temp = physics_fit(cooling_model, t_s, T_s, T_err, p0=p0)
+        return t_s, T_s, fit_temp
+
+    def fit_curie(heating_df, cooling_df, h_range, c_range, p0_h, p0_c):
+        h_transition = heating_df[
+            (heating_df["Temp (C)"] >= h_range[0])
+            & (heating_df["Temp (C)"] <= h_range[1])
+        ]
+        c_transition = cooling_df[
+            (cooling_df["Temp (C)"] >= c_range[0])
+            & (cooling_df["Temp (C)"] <= c_range[1])
+        ]
+        V_err_h = np.ones_like(h_transition["Temp (C)"].values) * 0.01
+        V_err_c = np.ones_like(c_transition["Temp (C)"].values) * 0.01
+
+        fit_h = physics_fit(
+            erf_model,
+            h_transition["Temp (C)"].values,
+            h_transition["RMS CH2 (V)"].values,
+            V_err_h,
+            p0=p0_h,
+        )
+        fit_c = physics_fit(
+            erf_model,
+            c_transition["Temp (C)"].values,
+            c_transition["RMS CH2 (V)"].values,
+            V_err_c,
+            p0=p0_c,
+        )
+        return fit_h, fit_c
+
+    def generate_material_plots(
+        material_name,
+        heating_df,
+        cooling_df,
+        fit_h,
+        fit_c,
+        fit_temp,
+        t_s,
+        T_s,
+        h_range,
+        c_range,
+        xmin,
+        ymin,
+        parent_dir,
+    ):
+        # Graph 1: Hysteresis loop and erf fits
+        fig1 = plt.figure(figsize=(6, 4.5))
+        plt.scatter(
+            heating_df["Temp (C)"],
+            heating_df["RMS CH2 (V)"],
+            s=1.5,
+            alpha=0.4,
+            label="Heating data",
+            color="#2E86AB",
+        )
+        plt.scatter(
+            cooling_df["Temp (C)"],
+            cooling_df["RMS CH2 (V)"],
+            s=1.5,
+            alpha=0.4,
+            label="Cooling data",
+            color="#A23B72",
+        )
+
+        T_fit_h = np.linspace(h_range[0], h_range[1], 300)
+        plt.plot(
+            T_fit_h,
+            erf_model(T_fit_h, *fit_h.params),
+            color="#0D47A1",
+            linewidth=2.0,
+            label="Heating Fit",
+        )
+        T_fit_c = np.linspace(c_range[0], c_range[1], 300)
+        plt.plot(
+            T_fit_c,
+            erf_model(T_fit_c, *fit_c.params),
+            color="#4A148C",
+            linewidth=2.0,
+            label="Cooling Fit",
+        )
+
+        Tc_h, Tc_c = fit_h.params[2], fit_c.params[2]
+        plt.axvline(Tc_h, color="#0D47A1", linestyle="--", alpha=0.8)
+        plt.axvline(Tc_c, color="#4A148C", linestyle="--", alpha=0.8)
+
+        set_style(
+            xlabel="Temperature ($^\\circ\\mathrm{C}$)",
+            ylabel="RMS Voltage CH2 ($V_s$ [V])",
+        )
+
+        plt.xlim(left=xmin)
+        plt.ylim(bottom=ymin)
+        plt.legend(frameon=True)
+        plt.tight_layout()
+        fig1.savefig(
+            parent_dir / f"{material_name}_curie_fit.svg",
+            format="svg",
+            bbox_inches="tight",
+        )
+        plot1 = mo.as_html(fig1)
+        plt.close(fig1)
+
+        # Graph 2: Cooling Curve Fit
+        fig2 = plt.figure(figsize=(6, 4.5))
+        plt.scatter(t_s, T_s, s=1.5, alpha=0.5, label="Cooling data", color="#2E86AB")
+        t_fit = np.linspace(0, t_s.max(), 300)
+        plt.plot(
+            t_fit,
+            cooling_model(t_fit, *fit_temp.params),
+            color="#C73E1D",
+            linewidth=2.0,
+            label="Newton Fit",
+        )
+        set_style(
+            xlabel="Time $t \\ [\\mathrm{sec}]$",
+            ylabel="Temperature ($^\\circ\\mathrm{C}$)",
+        )
+        plt.yscale("log")
+        plt.legend(frameon=True)
+        plt.tight_layout()
+        fig2.savefig(
+            parent_dir / f"{material_name}_cooling_fit.svg",
+            format="svg",
+            bbox_inches="tight",
+        )
+        plot2 = mo.as_html(fig2)
+        plt.close(fig2)
+
+        return plot1, plot2
+
+    def export_material_results(
+        material_name,
+        hebrew_material,
+        fit_h,
+        fit_c,
+        fit_temp,
+        k_theory,
+        parent_dir,
+    ):
+        results = [
+            {
+                "hebrew_name": f"טמפרטורת קירי בחימום ({hebrew_material})",
+                "english_name": f"Curie Temperature (Heating) - {material_name.capitalize()}",
+                "hebrew_var": f"טמפרטורת_קירי_חימום_{material_name}",
+                "english_var": f"curie_temp_heating_{material_name}",
+                "symbol": 'T_(c, "heat")',
+                "value": fit_h.params[2],
+                "error": fit_h.errors[2],
+                "units": '"°C"',
+                "scale": 1.0,
+                "fmt_spec": ".2f",
+                "suffix": "",
+            },
+            {
+                "hebrew_name": f"טמפרטורת קירי בקירור ({hebrew_material})",
+                "english_name": f"Curie Temperature (Cooling) - {material_name.capitalize()}",
+                "hebrew_var": f"טמפרטורת_קירי_קירור_{material_name}",
+                "english_var": f"curie_temp_cooling_{material_name}",
+                "symbol": 'T_(c, "cool")',
+                "value": fit_c.params[2],
+                "error": fit_c.errors[2],
+                "units": '"°C"',
+                "scale": 1.0,
+                "fmt_spec": ".2f",
+                "suffix": "",
+            },
+            {
+                "hebrew_name": f"קבוע קירור ניסיוני ({hebrew_material})",
+                "english_name": f"Experimental Cooling Constant - {material_name.capitalize()}",
+                "hebrew_var": f"קבוע_קירור_ניסיוני_{material_name}",
+                "english_var": f"cooling_constant_exp_{material_name}",
+                "symbol": 'k_"exp"',
+                "value": fit_temp.params[2],
+                "error": fit_temp.errors[2],
+                "units": '"sec"^(-1)',
+                "scale": 1.0,
+                "fmt_spec": ".6f",
+                "suffix": "",
+            },
+            {
+                "hebrew_name": f"קבוע קירור תיאורטי ({hebrew_material})",
+                "english_name": f"Theoretical Cooling Constant - {material_name.capitalize()}",
+                "hebrew_var": f"קבוע_קירור_תיאורטי_{material_name}",
+                "english_var": f"cooling_constant_theory_{material_name}",
+                "symbol": 'k_"theory"',
+                "value": k_theory,
+                "error": None,
+                "units": '"sec"^(-1)',
+                "scale": 1.0,
+                "fmt_spec": ".4f",
+                "suffix": "",
+            },
+        ]
+
+        # Generate formatted values
+        for item in results:
+            fmt_spec = item.get("fmt_spec", ".2f")
+            scale = item.get("scale", 1.0)
+            suffix = item.get("suffix", "")
+            item["formatted_value"] = format_value(
+                item["value"], item["error"], fmt_spec, scale, suffix, style="typst"
+            )
+
+        # Save JSON
+        json_path = parent_dir / f"{material_name}_results.json"
+        json_path.write_text(
+            json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
+
+        # Generate Typst declarations file
+        typst_lines = [
+            f"// Automatically generated {material_name} fit results for Typst\n\n"
+        ]
+        for item in results:
+            val_expr = item["formatted_value"]
+            if item["units"]:
+                val_expr = rf"{val_expr} \ {item['units']}"
+            typst_lines.append(f"#let {item['hebrew_var']} = ${val_expr}$\n")
+            typst_lines.append(f"#let {item['english_var']} = ${val_expr}$\n")
+
+            # Format and append error variables
+            err_val = item["error"]
+            if err_val is None:
+                err_expr = "none"
+            else:
+                scale = item.get("scale", 1.0)
+                fmt_spec = item.get("fmt_spec", ".2f")
+                suffix = item.get("suffix", "")
+                e = err_val * scale
+                e_str = f"{e:{fmt_spec}}"
+                err_expr = rf"{e_str} {suffix}" if suffix else e_str
+                if item["units"]:
+                    err_expr = rf"{err_expr} \ {item['units']}"
+                err_expr = f"${err_expr}$"
+
+            typst_lines.append(f"#let שגיאת_{item['hebrew_var']} = {err_expr}\n")
+            typst_lines.append(f"#let {item['english_var']}_err = {err_expr}\n")
+
+        typst_path = parent_dir / f"{material_name}_results.typ"
+        typst_path.write_text("".join(typst_lines), encoding="utf-8")
+
+    return (
+        export_material_results,
+        fit_cooling,
+        fit_curie,
+        generate_material_plots,
+        split_data,
+    )
 
 
 @app.cell
-def fit_ferrite_cooling():
-    # TODO: Fit to Newton's cooling law and extract the experimental k value
-    # Compare with the theoretical k_ferrite.
-    return
+def run_ferrite_pipeline(
+    export_material_results,
+    fit_cooling,
+    fit_curie,
+    generate_material_plots,
+    split_data,
+):
+    try:
+        _parent_dir = Path(__file__).parent
+    except NameError:
+        _parent_dir = Path(".")
+
+    # 1. Load data
+    _csv_path = _parent_dir / "curie_data_ferrit.csv"
+    _df = pd.read_csv(_csv_path, comment="#")
+
+    # 2. Split data
+    _ferrite_heating_df, _ferrite_cooling_df = split_data(_df)
+
+    # 3. Fit cooling curve
+    # Initial guesses: T_env ~ 24°C, T0 ~ 174°C, k ~ 0.001 s^-1
+    _p0_cool = [24.0, 174.0, 0.001]
+    _ferrite_t_s, _ferrite_T_s, fit_ferrite_temp = fit_cooling(
+        _ferrite_cooling_df, _p0_cool
+    )
+
+    # 4. Fit Curie transition
+    _p0_h = [2.14, -0.17, 133.0, 0.5, -0.001]
+    _p0_c = [2.14, -0.17, 138.0, 0.5, -0.001]
+    fit_ferrite_h, fit_ferrite_c = fit_curie(
+        _ferrite_heating_df,
+        _ferrite_cooling_df,
+        (120, 150),
+        (125, 165),
+        _p0_h,
+        _p0_c,
+    )
+
+    # 5. Generate plots
+    ferrite_plot1, ferrite_plot2 = generate_material_plots(
+        "ferrite",
+        _ferrite_heating_df,
+        _ferrite_cooling_df,
+        fit_ferrite_h,
+        fit_ferrite_c,
+        fit_ferrite_temp,
+        _ferrite_t_s,
+        _ferrite_T_s,
+        (120, 150),
+        (125, 165),
+        100,
+        1.9,
+        _parent_dir,
+    )
+
+    # 6. Export results
+    _k_theory = 0.0829
+    export_material_results(
+        "ferrite",
+        "פריט",
+        fit_ferrite_h,
+        fit_ferrite_c,
+        fit_ferrite_temp,
+        _k_theory,
+        _parent_dir,
+    )
+    return (
+        ferrite_plot1,
+        ferrite_plot2,
+        fit_ferrite_c,
+        fit_ferrite_h,
+        fit_ferrite_temp,
+    )
 
 
-@app.cell
-def find_ferrite_curie_temp():
-    # TODO: Plot Vs vs T and find the Curie temperature for Ferrite
+@app.cell(hide_code=True)
+def display_ferrite_results(
+    ferrite_plot1,
+    ferrite_plot2,
+    fit_ferrite_c,
+    fit_ferrite_h,
+    fit_ferrite_temp,
+):
+    _tc_h_str = format_value(
+        fit_ferrite_h.params[2], fit_ferrite_h.errors[2], ".2f", style="latex"
+    )
+    _tc_c_str = format_value(
+        fit_ferrite_c.params[2], fit_ferrite_c.errors[2], ".2f", style="latex"
+    )
+    _k_exp_str = format_value(
+        fit_ferrite_temp.params[2],
+        fit_ferrite_temp.errors[2],
+        ".6f",
+        style="latex",
+    )
+    _k_theory_str = "$0.0829$"
+
+    _markdown_summary = mo.md(f"""
+    ### Analysis Results for Ferrite Core
+
+    1. **Curie Temperature Fit (erf model)**:
+       * **Heating phase**: $T_{{c, \\text{{heat}}}} = {_tc_h_str}\\ ^\\circ\\text{{C}}$
+       * **Cooling phase**: $T_{{c, \\text{{cool}}}} = {_tc_c_str}\\ ^\\circ\\text{{C}}$
+       * *Note*: The difference between heating and cooling Curie points is due to thermal lag between the external heater/thermocouple and the bulk core.
+
+    2. **Newton's Cooling Law Fit**:
+       * **Experimental cooling constant**: $k_{{\\text{{exp}}}} = {_k_exp_str}\\ \\text{{s}}^{{-1}}$
+       * **Theoretical cooling constant**: $k_{{\\text{{theory}}}} = {_k_theory_str}\\ \\text{{s}}^{{-1}}$
+       * *Explanation*: The experimental cooling constant is much smaller than the theoretical value ($k_{{\\text{{theory}}}} \\approx 0.0829\\ \\text{{s}}^{{-1}}$). This is because the theoretical model assumes the core cools down in isolation via a thermal resistance, whereas experimentally the core is housed inside the oven assembly. The heat capacity of the entire oven structure (ceramic lining, heating coil, metal shields, etc.) is orders of magnitude larger, dramatically slowing down the cooling rate.
+    """)
+
+    _plots = mo.vstack(
+        [
+            _markdown_summary,
+            mo.hstack([ferrite_plot1, ferrite_plot2]),
+        ]
+    )
+    _plots  # noqa: B018
     return
 
 
@@ -216,27 +646,122 @@ def find_ferrite_curie_temp():
 def part_c_explanation():
     mo.md(r"""
     ### Part C: Heating and Cooling of Invar Core
-    Repeat the same analysis steps for the Invar (ferromagnet) sample:
+    We repeat the exact same analysis steps for the Invar (ferromagnet) sample.
     """)
     return
 
 
 @app.cell
-def load_invar_data():
-    # TODO: Load heating/cooling data for the invar sample
-    # invar_data = ...
-    return
+def run_invar_pipeline(
+    export_material_results,
+    fit_cooling,
+    fit_curie,
+    generate_material_plots,
+    split_data,
+):
+    try:
+        _parent_dir = Path(__file__).parent
+    except NameError:
+        _parent_dir = Path(".")
+
+    # 1. Load data
+    _csv_path = _parent_dir / "curie_data_invar.csv"
+    _df = pd.read_csv(_csv_path, comment="#")
+
+    # 2. Split data
+    _invar_heating_df, _invar_cooling_df = split_data(_df)
+
+    # 3. Fit cooling curve
+    # Initial guesses: T_env ~ 74°C, T0 ~ 293°C, k ~ 0.001 s^-1
+    _p0_cool = [74.0, 293.0, 0.001]
+    _invar_t_s, _invar_T_s, fit_invar_temp = fit_cooling(_invar_cooling_df, _p0_cool)
+
+    # 4. Fit Curie transition
+    _p0_h = [2.285, -0.315, 246.0, 5.0, -0.001]
+    _p0_c = [2.285, -0.315, 250.0, 5.0, -0.001]
+    fit_invar_h, fit_invar_c = fit_curie(
+        _invar_heating_df,
+        _invar_cooling_df,
+        (220, 275),
+        (220, 275),
+        _p0_h,
+        _p0_c,
+    )
+
+    # 5. Generate plots
+    invar_plot1, invar_plot2 = generate_material_plots(
+        "invar",
+        _invar_heating_df,
+        _invar_cooling_df,
+        fit_invar_h,
+        fit_invar_c,
+        fit_invar_temp,
+        _invar_t_s,
+        _invar_T_s,
+        (220, 275),
+        (220, 275),
+        100,
+        1.9,
+        _parent_dir,
+    )
+
+    # 6. Export results
+    _k_theory = 0.0483
+    export_material_results(
+        "invar",
+        "אינבר",
+        fit_invar_h,
+        fit_invar_c,
+        fit_invar_temp,
+        _k_theory,
+        _parent_dir,
+    )
+    return fit_invar_c, fit_invar_h, fit_invar_temp, invar_plot1, invar_plot2
 
 
-@app.cell
-def fit_invar_cooling():
-    # TODO: Fit to Newton's cooling law and extract k for invar.
-    return
+@app.cell(hide_code=True)
+def display_invar_results(
+    fit_invar_c,
+    fit_invar_h,
+    fit_invar_temp,
+    invar_plot1,
+    invar_plot2,
+):
+    _tc_h_str = format_value(
+        fit_invar_h.params[2], fit_invar_h.errors[2], ".2f", style="latex"
+    )
+    _tc_c_str = format_value(
+        fit_invar_c.params[2], fit_invar_c.errors[2], ".2f", style="latex"
+    )
+    _k_exp_str = format_value(
+        fit_invar_temp.params[2],
+        fit_invar_temp.errors[2],
+        ".6f",
+        style="latex",
+    )
+    _k_theory_str = "$0.0483$"
 
+    _markdown_summary = mo.md(f"""
+    ### Analysis Results for Invar Core
 
-@app.cell
-def find_invar_curie_temp():
-    # TODO: Plot Vs vs T and find the Curie temperature for Invar.
+    1. **Curie Temperature Fit (erf model)**:
+       * **Heating phase**: $T_{{c, \\text{{heat}}}} = {_tc_h_str}\\ ^\\circ\\text{{C}}$
+       * **Cooling phase**: $T_{{c, \\text{{cool}}}} = {_tc_c_str}\\ ^\\circ\\text{{C}}$
+       * *Note*: As with the ferrite core, the difference between heating and cooling Curie points is due to thermal lag.
+
+    2. **Newton's Cooling Law Fit**:
+       * **Experimental cooling constant**: $k_{{\\text{{exp}}}} = {_k_exp_str}\\ \\text{{s}}^{{-1}}$
+       * **Theoretical cooling constant**: $k_{{\\text{{theory}}}} = {_k_theory_str}\\ \\text{{s}}^{{-1}}$
+       * *Explanation*: The experimental cooling constant is much smaller than the theoretical value ($k_{{\\text{{theory}}}} \\approx 0.0483\\ \\text{{s}}^{{-1}}$) for the same physical reasons (thermal mass of the oven assembly slowing down heat dissipation).
+    """)
+
+    _plots = mo.vstack(
+        [
+            _markdown_summary,
+            mo.hstack([invar_plot1, invar_plot2]),
+        ]
+    )
+    _plots  # noqa: B018
     return
 
 
@@ -244,14 +769,16 @@ def find_invar_curie_temp():
 def part_d_explanation():
     mo.md(r"""
     ### Part D: Summary of Results and Literature Comparison
-    Summarize the measured Curie temperatures for both cores and compare them with the literature values.
+    We summarize the Curie temperatures for both materials and compare them to theoretical/literature values.
     """)
     return
 
 
 @app.cell
-def summarize_results():
-    # TODO: Final summary of results
+def summarize_results(fit_ferrite_c, fit_ferrite_h, fit_invar_c, fit_invar_h):
+    # Summary of Curie temperatures
+    _ferrite_tc = (fit_ferrite_h.params[2] + fit_ferrite_c.params[2]) / 2
+    _invar_tc = (fit_invar_h.params[2] + fit_invar_c.params[2]) / 2
     return
 
 
