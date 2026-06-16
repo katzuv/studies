@@ -5,9 +5,21 @@
   "items": {
     "type": "object",
     "properties": {
-      "name": {
+      "hebrew_name": {
         "type": "string",
-        "description": "Hebrew name of the constant"
+        "description": "Hebrew name of the constant for tables"
+      },
+      "english_name": {
+        "type": "string",
+        "description": "English name of the constant for tables"
+      },
+      "hebrew_var": {
+        "type": "string",
+        "description": "Hebrew variable name for Typst imports"
+      },
+      "english_var": {
+        "type": "string",
+        "description": "English variable name for Typst imports"
       },
       "symbol": {
         "type": "string",
@@ -17,19 +29,42 @@
         "type": "number",
         "description": "Calculated raw numeric value"
       },
+      "error": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Experimental uncertainty/standard error if present"
+      },
       "units": {
         "type": "string",
         "description": "Typst math mode compatible units string using upright letters"
       },
       "formatted_value": {
         "type": "string",
-        "description": "Formatted string value for Typst output"
+        "description": "Formatted string value (with ± error if present) for Typst output"
+      },
+      "scale": {
+        "type": "number",
+        "description": "Optional multiplier scale factor"
+      },
+      "fmt_spec": {
+        "type": "string",
+        "description": "Optional format specification string"
+      },
+      "suffix": {
+        "type": "string",
+        "description": "Optional suffix multiplier string"
       }
     },
     "required": [
-      "name",
+      "hebrew_name",
+      "english_name",
+      "hebrew_var",
+      "english_var",
       "symbol",
       "value",
+      "error",
       "units",
       "formatted_value"
     ]

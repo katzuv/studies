@@ -170,3 +170,127 @@ def summary_table(results_dict):
             row[f"p{i}_err"] = round(e, 4)
         summary.append(row)
     return pd.DataFrame(summary)
+
+
+def format_value(
+    val: float,
+    err: float | None = None,
+    fmt_spec: str = ".2f",
+    scale: float = 1.0,
+    suffix: str = "",
+    style: str = "typst",
+) -> str:
+    """
+    Format a value and optional uncertainty (error) with scaling, suffix, and formatting specs.
+    Supports 'typst' and 'latex' styles.
+    """
+    v = val * scale
+    if err is None:
+        v_str = f"{v:{fmt_spec}}"
+        if suffix:
+            if style == "latex" and "10^(" in suffix:
+                s = suffix.replace("dot 10^(", r"\times 10^{").replace(")", "}")
+                v_str = f"{v_str} {s}"
+            else:
+                v_str = f"{v_str} {suffix}"
+        return v_str
+
+    e = err * scale
+    v_str = f"{v:{fmt_spec}}"
+    e_str = f"{e:{fmt_spec}}"
+
+    if style == "typst":
+        sep = " +- "
+        if suffix:
+            return f"({v_str}{sep}{e_str}) {suffix}"
+        return f"{v_str}{sep}{e_str}"
+
+    # style == "latex"
+    sep = r" \pm "
+    s = suffix
+    if suffix and "10^(" in suffix:
+        s = suffix.replace("dot 10^(", r"\times 10^{").replace(")", "}")
+        return f"({v_str}{sep}{e_str}) {s}"
+    elif suffix:
+        return f"({v_str}{sep}{e_str}) {s}"
+    return f"{v_str}{sep}{e_str}"
+
+
+def export_constants(constants_data: list[dict], directory) -> list[dict]:
+    """
+    Export constants to constants.json (schema compliant) and constants.typ declarations.
+    Automatically generates formatted values and error variables.
+    """
+    import json
+    from pathlib import Path
+
+    output_dir = Path(directory)
+
+    # 1. Generate formatted_value for each constant
+    for item in constants_data:
+        fmt_spec = item.get("fmt_spec", ".2f")
+        scale = item.get("scale", 1.0)
+        suffix = item.get("suffix", "")
+        item["formatted_value"] = format_value(
+            item["value"], item["error"], fmt_spec, scale, suffix, style="typst"
+        )
+
+    # 2. Save JSON file (schema compliant)
+    json_constants = []
+    for item in constants_data:
+        clean_item = {
+            "hebrew_name": item["hebrew_name"],
+            "english_name": item["english_name"],
+            "hebrew_var": item["hebrew_var"],
+            "english_var": item["english_var"],
+            "symbol": item["symbol"],
+            "value": item["value"],
+            "error": item["error"],
+            "units": item["units"],
+            "formatted_value": item["formatted_value"],
+            "scale": item.get("scale", 1.0),
+            "fmt_spec": item.get("fmt_spec", ".2f"),
+            "suffix": item.get("suffix", ""),
+        }
+        json_constants.append(clean_item)
+
+    json_path = output_dir / "constants.json"
+    json_path.write_text(
+        json.dumps(json_constants, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+
+    # 3. Generate Typst declarations file
+    typst_lines = [
+        "// Automatically generated constants for Typst\n",
+        "#let pm = $plus.minus$\n",
+        "#let פמ = $plus.minus$\n\n",
+    ]
+    for item in constants_data:
+        val_expr = item["formatted_value"]
+        if item["units"]:
+            val_expr = rf"{val_expr} \ {item['units']}"
+        typst_lines.append(f"#let {item['hebrew_var']} = ${val_expr}$\n")
+        typst_lines.append(f"#let {item['english_var']} = ${val_expr}$\n")
+
+        # Format and append error variables
+        err_val = item["error"]
+        if err_val is None:
+            err_expr = "none"
+        else:
+            scale = item.get("scale", 1.0)
+            fmt_spec = item.get("fmt_spec", ".2f")
+            suffix = item.get("suffix", "")
+            e = err_val * scale
+            e_str = f"{e:{fmt_spec}}"
+            err_expr = rf"{e_str} {suffix}" if suffix else e_str
+            if item["units"]:
+                err_expr = rf"{err_expr} \ {item['units']}"
+            err_expr = f"${err_expr}$"
+
+        typst_lines.append(f"#let שגיאת_{item['hebrew_var']} = {err_expr}\n")
+        typst_lines.append(f"#let {item['english_var']}_err = {err_expr}\n")
+
+    typst_path = output_dir / "constants.typ"
+    typst_path.write_text("".join(typst_lines), encoding="utf-8")
+
+    return json_constants

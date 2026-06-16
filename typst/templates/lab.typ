@@ -22,10 +22,10 @@
   // Set the document's basic properties.
   let doc_title = if experiment_id != "" [#experiment_id: #experiment_name] else [#experiment_name]
   set document(author: authors.map(a => a.name), title: doc_title)
-  
+
   // Font stack: Consistent Sans-serif as per user preference
   let main_font = ("Noto Sans Hebrew", "Noto Sans", "Arial", "David")
-  
+
   set text(font: main_font, lang: "he")
   show heading: set text(font: main_font)
 
@@ -55,8 +55,7 @@
         set text(size: 0.9em, fill: gray.darken(30%))
         grid(
           columns: (1fr, 1fr),
-          align(right, course_name), 
-          align(left, experiment_name),
+          align(right, course_name), align(left, experiment_name),
         )
         v(-0.6em)
         line(length: 100%, stroke: 0.5pt + gray)
@@ -79,13 +78,13 @@
 
   v(1.2em, weak: true)
   text(3.5em, weight: 700, experiment_name)
-  
+
   v(0em)
 
   if date != none {
     text(size: 1.8em)[תאריך הניסוי: #date.display("[day]/[month]/[year]")]
   }
-  
+
   v(1em)
   text(1.4em)[מדריך: #instructor]
   linebreak()
@@ -171,7 +170,7 @@
       color: black,
       weight: "bold",
     ),
-    body
+    body,
   )
 }
 #let דגש = callout
@@ -250,13 +249,13 @@
         align(
           right,
           if c.units != "" [
-            #c.name [#eval(c.units, mode: "math", scope: (dd: dd, sec: sec))]
+            #c.hebrew_name [#eval(c.units, mode: "math", scope: (dd: dd, sec: sec))]
           ] else [
-            #c.name
+            #c.hebrew_name
           ],
         ),
         eval(c.symbol, mode: "math", scope: (dd: dd, sec: sec)),
-        eval(c.formatted_value, mode: "math", scope: (dd: dd, sec: sec)),
+        eval(c.formatted_value, mode: "math", scope: (dd: dd, sec: sec, pm: pm)),
       ))
       .flatten(),
   )
