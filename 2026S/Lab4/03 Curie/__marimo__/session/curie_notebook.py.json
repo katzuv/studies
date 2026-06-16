@@ -1,0 +1,269 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.23.9",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "setup",
+      "code_hash": "b3f561b01d242f04931d1c002e7eef24",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Hbol",
+      "code_hash": "62b623d7a1104591db86695b4c4b9338",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"curie-point-experiment-measurements-and-calculations\">Curie Point Experiment \u2013 Measurements and Calculations</h1>\n<span class=\"paragraph\">This notebook is used for preliminary calculations of the system constants and as a scratchpad for data analysis during the experiment.</span>\n<h2 id=\"part-1-system-and-coil-constants\">Part 1: System and Coil Constants</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "91d945b72d1446ff4c928f11004c9531",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"2-geometric-parameters-of-the-coils\">2. Geometric Parameters of the Coils</h3>\n<span class=\"paragraph\">We define the physical dimensions of the primary (outer - 1) and secondary (inner - 2) coils:</span>\n<ul>\n<li>Turn diameter (<marimo-tex class=\"arithmatex\">||(d_1, d_2||)</marimo-tex>)</li>\n<li>Coil length (<marimo-tex class=\"arithmatex\">||(h_1, h_2||)</marimo-tex>)</li>\n<li>Number of turns (<marimo-tex class=\"arithmatex\">||(n_1, n_2||)</marimo-tex>)</li>\n<li>Copper wire diameter (<marimo-tex class=\"arithmatex\">||(d_{\\text{wire1}}, d_{\\text{wire2}}||)</marimo-tex>)</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "80cb2f9568efb840b80bd07029f78ca6",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TXez",
+      "code_hash": "38618d637430247c73536012a0291cc7",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"part-d-summary-of-results-and-literature-comparison\">Part D: Summary of Results and Literature Comparison</h3>\n<span class=\"paragraph\">Summarize the measured Curie temperatures for both cores and compare them with the literature values.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "1818cf3499e8caa0b55aec178f0e66f7",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: center;flex-wrap: nowrap;gap: 0rem'><div><div style='width:fit-content;margin:10px 0'><marimo-ui-element object-id='Vxnm-0' random-id='f0f41ca1-8768-3e6d-8def-41412b1af254'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Primary Coil Resistance&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(R_{&#92;&#92;&#92;&#92;text{coil1}} &#92;&#92;&#92;&#92; [&#92;&#92;&#92;&#92;Omega]||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(11.40||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}},{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Primary Coil Inductance&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(L_{&#92;&#92;&#92;&#92;text{coil1}} &#92;&#92;&#92;&#92; [&#92;&#92;&#92;&#92;text{H}]||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(5.65 &#92;&#92;&#92;&#92;times 10^{-3}||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}},{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Secondary Coil Resistance&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(R_{&#92;&#92;&#92;&#92;text{coil2}} &#92;&#92;&#92;&#92; [&#92;&#92;&#92;&#92;Omega]||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(98.04||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}},{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Secondary Coil Inductance&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(L_{&#92;&#92;&#92;&#92;text{coil2}} &#92;&#92;&#92;&#92; [&#92;&#92;&#92;&#92;text{H}]||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(66.80 &#92;&#92;&#92;&#92;times 10^{-3}||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}},{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Primary Coil Current&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(I_1 &#92;&#92;&#92;&#92; [&#92;&#92;&#92;&#92;text{A}]||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(0.0163||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}},{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Central Magnetic Field&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(B_1 &#92;&#92;&#92;&#92; [&#92;&#92;&#92;&#92;text{T}]||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(3.41 &#92;&#92;&#92;&#92;times 10^{-5}||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}},{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Ideal Transformation Ratio&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(V_s / V_p||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(0.653||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}},{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Oven Heater Resistance&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(R_{&#92;&#92;&#92;&#92;text{oven}} &#92;&#92;&#92;&#92; [&#92;&#92;&#92;&#92;Omega]||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(81.79||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}},{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Oven Heater Power&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(P_{&#92;&#92;&#92;&#92;text{oven}} &#92;&#92;&#92;&#92; [&#92;&#92;&#92;&#92;text{W}]||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(19.56||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}},{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Ideal Heating Rate&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(&#92;&#92;&#92;&#92;frac{dT}{dt} &#92;&#92;&#92;&#92; [&#92;&#92;&#92;&#92;text{K}/&#92;&#92;&#92;&#92;text{s}]||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(19.17||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}},{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Thermal Resistance&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(R_{&#92;&#92;&#92;&#92;text{th}} &#92;&#92;&#92;&#92; [&#92;&#92;&#92;&#92;text{K}/&#92;&#92;&#92;&#92;text{W}]||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(1.119||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}},{&#92;&quot;Constant&#92;&quot;:&#92;&quot;Cooling Time to 350K&#92;&quot;,&#92;&quot;Symbol [Units]&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(t_{&#92;&#92;&#92;&#92;text{cool}} &#92;&#92;&#92;&#92; [&#92;&#92;&#92;&#92;text{s}]||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;},&#92;&quot;Calculated Value&#92;&quot;:{&#92;&quot;mimetype&#92;&quot;:&#92;&quot;text/markdown&#92;&quot;,&#92;&quot;data&#92;&quot;:&#92;&quot;&#92;u003cspan class=&#92;&#92;&#92;&quot;markdown prose dark:prose-invert contents&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&#92;&#92;&quot;paragraph&#92;&#92;&#92;&quot;&#92;u003e&#92;u003cmarimo-tex class=&#92;&#92;&#92;&quot;arithmatex&#92;&#92;&#92;&quot;&#92;u003e||(3.22||)&#92;u003c/marimo-tex&#92;u003e&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&#92;&quot;}}]&quot;' data-total-rows='12' data-total-columns='3' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='false' data-page-size='12' data-show-filters='false' data-show-download='false' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-text-justify-columns='{&quot;Constant&quot;:&quot;left&quot;,&quot;Symbol [Units]&quot;:&quot;center&quot;,&quot;Calculated Value&quot;:&quot;right&quot;}' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div></div></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "8e94317d303eef191c704e5b0d26c1a0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"part-3-experimental-measurements-and-data-analysis\">Part 3: Experimental Measurements and Data Analysis</h2>\n<span class=\"paragraph\">In this part, we load the experimental data and perform fits and analysis.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "799ae3924d444855572a1b74edded076",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"part-a-frequency-response-measurements\">Part A: Frequency Response Measurements</h3>\n<span class=\"paragraph\">The goal of this part is to measure the induced secondary voltage as a function of frequency for three different cores:</span>\n<ul>\n<li>Air core (<marimo-tex class=\"arithmatex\">||(V_{s0}||)</marimo-tex>)</li>\n<li>Ferrite core (<marimo-tex class=\"arithmatex\">||(V_{s1}||)</marimo-tex>)</li>\n<li>Invar core (<marimo-tex class=\"arithmatex\">||(V_{s2}||)</marimo-tex>)</li>\n</ul>\n<span class=\"paragraph\">This is used to determine the optimal operating frequency.</span>\n<span class=\"paragraph\">The induced EMF according to Faraday's Law:</span>\n<marimo-tex class=\"arithmatex\">||[\\epsilon = -N \\frac{d\\Phi}{dt}||]</marimo-tex><span class=\"paragraph\">For a sinusoidal current <marimo-tex class=\"arithmatex\">||(I_1(t) = I_0 \\sin(\\omega t)||)</marimo-tex>, the induced secondary voltage is proportional to the angular frequency <marimo-tex class=\"arithmatex\">||(\\omega = 2\\pi f||)</marimo-tex>.</span>\n<span class=\"paragraph\">Load the frequency sweep measurements from the data acquisition software:</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "NCOB",
+      "code_hash": "6c0f3326d6c2b16b5d1861a832791de8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "898935e83f947ba45adf8b6fb496b619",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Plot the induced voltage <marimo-tex class=\"arithmatex\">||(V_s||)</marimo-tex> vs frequency <marimo-tex class=\"arithmatex\">||(f||)</marimo-tex> (with logarithmic x-axis), and plot the ratio <marimo-tex class=\"arithmatex\">||(V_s / V_{s0}||)</marimo-tex> to select the optimal frequency:</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "019ef3a3b3ebd225c160e496cba667f4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "72453258b02018ad4462905f3df26138",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"part-b-heating-and-cooling-of-ferrite-core\">Part B: Heating and Cooling of Ferrite Core</h3>\n<span class=\"paragraph\">We measure the induced secondary voltage <marimo-tex class=\"arithmatex\">||(V_s||)</marimo-tex> as a function of temperature <marimo-tex class=\"arithmatex\">||(T||)</marimo-tex> to identify the Curie temperature (<marimo-tex class=\"arithmatex\">||(T_c||)</marimo-tex>) where the magnetic phase transition occurs.\nWe fit the temperature-time profile <marimo-tex class=\"arithmatex\">||(T(t)||)</marimo-tex> during cooling to Newton's law of cooling:</span>\n<marimo-tex class=\"arithmatex\">||[\\frac{dT}{dt} = -k(T - T_{\\text{env}})||]</marimo-tex><span class=\"paragraph\">which has the solution:</span>\n<marimo-tex class=\"arithmatex\">||[T(t) = T_{\\text{env}} + (T_0 - T_{\\text{env}}) e^{-kt}||]</marimo-tex></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "b699a2fef7bdfbe39b98df3c1c295289",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "xXTn",
+      "code_hash": "e34577a62914087fd276ed64c93a6c47",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "AjVT",
+      "code_hash": "bfec8201f2e5456ef861e84d758f59da",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "pHFh",
+      "code_hash": "8635fa627abb0d5ddc9752568ab59879",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"part-c-heating-and-cooling-of-invar-core\">Part C: Heating and Cooling of Invar Core</h3>\n<span class=\"paragraph\">Repeat the same analysis steps for the Invar (ferromagnet) sample:</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "14cc5616e33da3b10cbce22a38c3dc21",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "aqbW",
+      "code_hash": "584fe643421d16987b84a1db032a97c4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TRpd",
+      "code_hash": "b05163cdc5b11662f2649c13081be728",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "dNNg",
+      "code_hash": "8aa7a92223dfb169afa89537247f5fe3",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}

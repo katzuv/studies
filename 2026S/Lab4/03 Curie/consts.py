@@ -9,9 +9,13 @@ import math
 import sys
 from pathlib import Path
 
+# Add studies root path to sys.path to allow importing physlab
+sys.path.append(str(Path(__file__).resolve().parents[3]))
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
+
+from physlab import export_constants
 
 # Force stdout to use UTF-8 to support Unicode subscripts and superscripts natively on Windows
 sys.stdout.reconfigure(encoding="utf-8")
@@ -224,3 +228,201 @@ console.print(q56_table)
 # Save console output to SVG
 output_svg_path = Path(__file__).parent / "constants_output.svg"
 console.save_svg(str(output_svg_path))
+
+# ==========================================
+# Generate JSON and Typst Constants Files
+# ==========================================
+
+# Define uncertainties/errors
+errors = {
+    'R_"coil1"': None,
+    'L_"coil1"': None,
+    'R_"coil2"': None,
+    'L_"coil2"': L_coil2 / 24.0,  # uncertainty due to h2 range (46-50 mm)
+    "I_1": None,
+    "B_1": None,
+    "V_s / V_p": None,
+    'R_"oven"': None,
+    'P_"oven"': None,
+    "dd(T)/dd(t)": None,
+    'R_"th"': None,
+    't_"cool"': None,
+}
+
+
+def format_val(val, err, fmt_spec, scale=1.0, suffix=""):
+    v = val * scale
+    if err is None:
+        v_str = f"{v:{fmt_spec}}"
+        if suffix:
+            v_str = f"{v_str} {suffix}"
+        return v_str
+    e = err * scale
+    v_str = f"{v:{fmt_spec}}"
+    e_str = f"{e:{fmt_spec}}"
+    if suffix:
+        return f"({v_str} +- {e_str}) {suffix}"
+    return f"{v_str} +- {e_str}"
+
+
+raw_constants = [
+    {
+        "hebrew_name": "התנגדות סליל ראשוני",
+        "english_name": "Primary Coil Resistance",
+        "hebrew_var": "התנגדות_סליל_ראשוני",
+        "english_var": "primary_coil_resistance",
+        "symbol": 'R_"coil1"',
+        "value": R_coil1,
+        "error": errors['R_"coil1"'],
+        "units": "Omega",
+        "scale": 1.0,
+        "fmt_spec": ".2f",
+        "suffix": "",
+    },
+    {
+        "hebrew_name": "השראות סליל ראשוני",
+        "english_name": "Primary Coil Inductance",
+        "hebrew_var": "השראות_סליל_ראשוני",
+        "english_var": "primary_coil_inductance",
+        "symbol": 'L_"coil1"',
+        "value": L_coil1,
+        "error": errors['L_"coil1"'],
+        "units": '"H"',
+        "scale": 1000.0,
+        "fmt_spec": ".2f",
+        "suffix": r"dot 10^(-3)",
+    },
+    {
+        "hebrew_name": "התנגדות סליל משני",
+        "english_name": "Secondary Coil Resistance",
+        "hebrew_var": "התנגדות_סליל_משני",
+        "english_var": "secondary_coil_resistance",
+        "symbol": 'R_"coil2"',
+        "value": R_coil2,
+        "error": errors['R_"coil2"'],
+        "units": "Omega",
+        "scale": 1.0,
+        "fmt_spec": ".2f",
+        "suffix": "",
+    },
+    {
+        "hebrew_name": "השראות סליל משני",
+        "english_name": "Secondary Coil Inductance",
+        "hebrew_var": "השראות_סליל_משני",
+        "english_var": "secondary_coil_inductance",
+        "symbol": 'L_"coil2"',
+        "value": L_coil2,
+        "error": errors['L_"coil2"'],
+        "units": '"H"',
+        "scale": 1000.0,
+        "fmt_spec": ".2f",
+        "suffix": r"dot 10^(-3)",
+    },
+    {
+        "hebrew_name": "זרם בסליל הראשוני",
+        "english_name": "Primary Coil Current",
+        "hebrew_var": "זרם_בסליל_הראשוני",
+        "english_var": "primary_coil_current",
+        "symbol": "I_1",
+        "value": I_1,
+        "error": errors["I_1"],
+        "units": '"A"',
+        "scale": 1.0,
+        "fmt_spec": ".4f",
+        "suffix": "",
+    },
+    {
+        "hebrew_name": "שדה מגנטי במרכז הסליל",
+        "english_name": "Central Magnetic Field",
+        "hebrew_var": "שדה_מגנטי_במרכז_הסליל",
+        "english_var": "central_magnetic_field",
+        "symbol": "B_1",
+        "value": B_1,
+        "error": errors["B_1"],
+        "units": '"T"',
+        "scale": 1e5,
+        "fmt_spec": ".2f",
+        "suffix": r"dot 10^(-5)",
+    },
+    {
+        "hebrew_name": "יחס השנאה אידיאלי",
+        "english_name": "Ideal Transformation Ratio",
+        "hebrew_var": "יחס_השנאה_אידיאלי",
+        "english_var": "ideal_transformation_ratio",
+        "symbol": "V_s / V_p",
+        "value": ratio_Vs_Vp,
+        "error": errors["V_s / V_p"],
+        "units": "",
+        "scale": 1.0,
+        "fmt_spec": ".3f",
+        "suffix": "",
+    },
+    {
+        "hebrew_name": "התנגדות חוט החימום",
+        "english_name": "Oven Heater Resistance",
+        "hebrew_var": "התנגדות_חוט_החימום",
+        "english_var": "oven_heater_resistance",
+        "symbol": 'R_"oven"',
+        "value": R_oven,
+        "error": errors['R_"oven"'],
+        "units": "Omega",
+        "scale": 1.0,
+        "fmt_spec": ".2f",
+        "suffix": "",
+    },
+    {
+        "hebrew_name": "הספק התנור",
+        "english_name": "Oven Heater Power",
+        "hebrew_var": "הספק_התנור",
+        "english_var": "oven_heater_power",
+        "symbol": 'P_"oven"',
+        "value": P_oven,
+        "error": errors['P_"oven"'],
+        "units": '"W"',
+        "scale": 1.0,
+        "fmt_spec": ".2f",
+        "suffix": "",
+    },
+    {
+        "hebrew_name": "קצב חימום אידיאלי",
+        "english_name": "Ideal Heating Rate",
+        "hebrew_var": "קצב_חימום_אידיאלי",
+        "english_var": "ideal_heating_rate",
+        "symbol": "dd(T)/dd(t)",
+        "value": dT_dt,
+        "error": errors["dd(T)/dd(t)"],
+        "units": '"K" / "sec"',
+        "scale": 1.0,
+        "fmt_spec": ".2f",
+        "suffix": "",
+    },
+    {
+        "hebrew_name": "התנגדות תרמית של הגליל",
+        "english_name": "Thermal Resistance",
+        "hebrew_var": "התנגדות_תרמית_של_הגליל",
+        "english_var": "thermal_resistance",
+        "symbol": 'R_"th"',
+        "value": R_th,
+        "error": errors['R_"th"'],
+        "units": '"K" / "W"',
+        "scale": 1.0,
+        "fmt_spec": ".3f",
+        "suffix": "",
+    },
+    {
+        "hebrew_name": "זמן התקררות ל-350 קלווין",
+        "english_name": "Cooling Time to 350K",
+        "hebrew_var": "זמן_התקררות_ל_350_קלווין",
+        "english_var": "cooling_time_to_350k",
+        "symbol": 't_"cool"',
+        "value": t_target,
+        "error": errors['t_"cool"'],
+        "units": '"sec"',
+        "scale": 1.0,
+        "fmt_spec": ".2f",
+        "suffix": "",
+    },
+]
+
+# Generate formatted values and export constants to JSON/Typst
+export_constants(raw_constants, Path(__file__).parent)
