@@ -261,8 +261,8 @@ def analysis_helpers():
     def cooling_model(t, T_env, T0, k):
         return T_env + (T0 - T_env) * np.exp(-k * t)
 
-    def erf_model(T, a, b, Tc, dT, c):
-        return a + b * erf((T - Tc) / dT) + c * (T - Tc)
+    def erf_model(T, Tc, dT):
+        return 0.5 * (1.0 - erf((T - Tc) / (dT * np.sqrt(2.0))))
 
     def fit_cooling(cooling_df, p0):
         times = pd.to_datetime(cooling_df["DateTime"], format="%d/%m/%Y %H:%M:%S")
@@ -281,20 +281,28 @@ def analysis_helpers():
             (cooling_df["Temp (C)"] >= c_range[0])
             & (cooling_df["Temp (C)"] <= c_range[1])
         ]
-        V_err_h = np.ones_like(h_transition["Temp (C)"].values) * 0.01
-        V_err_c = np.ones_like(c_transition["Temp (C)"].values) * 0.01
+
+        V_raw_h = h_transition["RMS CH2 (V)"].values
+        V_min_h, V_max_h = V_raw_h.min(), V_raw_h.max()
+        V_norm_h = (V_raw_h - V_min_h) / (V_max_h - V_min_h)
+        V_err_h = np.ones_like(V_raw_h) * (0.01 / (V_max_h - V_min_h))
+
+        V_raw_c = c_transition["RMS CH2 (V)"].values
+        V_min_c, V_max_c = V_raw_c.min(), V_raw_c.max()
+        V_norm_c = (V_raw_c - V_min_c) / (V_max_c - V_min_c)
+        V_err_c = np.ones_like(V_raw_c) * (0.01 / (V_max_c - V_min_c))
 
         fit_h = physics_fit(
             erf_model,
             h_transition["Temp (C)"].values,
-            h_transition["RMS CH2 (V)"].values,
+            V_norm_h,
             V_err_h,
             p0=p0_h,
         )
         fit_c = physics_fit(
             erf_model,
             c_transition["Temp (C)"].values,
-            c_transition["RMS CH2 (V)"].values,
+            V_norm_c,
             V_err_c,
             p0=p0_c,
         )
@@ -334,10 +342,21 @@ def analysis_helpers():
             color="#A23B72",
         )
 
+        h_trans = heating_df[
+            (heating_df["Temp (C)"] >= h_range[0])
+            & (heating_df["Temp (C)"] <= h_range[1])
+        ]
+        c_trans = cooling_df[
+            (cooling_df["Temp (C)"] >= c_range[0])
+            & (cooling_df["Temp (C)"] <= c_range[1])
+        ]
+        V_min_h, V_max_h = h_trans["RMS CH2 (V)"].min(), h_trans["RMS CH2 (V)"].max()
+        V_min_c, V_max_c = c_trans["RMS CH2 (V)"].min(), c_trans["RMS CH2 (V)"].max()
+
         T_fit_h = np.linspace(h_range[0], h_range[1], 300)
         plt.plot(
             T_fit_h,
-            erf_model(T_fit_h, *fit_h.params),
+            V_min_h + (V_max_h - V_min_h) * erf_model(T_fit_h, *fit_h.params),
             color="#0D47A1",
             linewidth=2.0,
             label="Heating Fit",
@@ -345,13 +364,13 @@ def analysis_helpers():
         T_fit_c = np.linspace(c_range[0], c_range[1], 300)
         plt.plot(
             T_fit_c,
-            erf_model(T_fit_c, *fit_c.params),
+            V_min_c + (V_max_c - V_min_c) * erf_model(T_fit_c, *fit_c.params),
             color="#4A148C",
             linewidth=2.0,
             label="Cooling Fit",
         )
 
-        Tc_h, Tc_c = fit_h.params[2], fit_c.params[2]
+        Tc_h, Tc_c = fit_h.params[0], fit_c.params[0]
         plt.axvline(Tc_h, color="#0D47A1", linestyle="--", alpha=0.8)
         plt.axvline(Tc_c, color="#4A148C", linestyle="--", alpha=0.8)
 
@@ -416,8 +435,8 @@ def analysis_helpers():
                 "hebrew_var": f"טמפרטורת_קירי_חימום_{material_name}",
                 "english_var": f"curie_temp_heating_{material_name}",
                 "symbol": 'T_(c, "heat")',
-                "value": fit_h.params[2],
-                "error": fit_h.errors[2],
+                "value": fit_h.params[0],
+                "error": fit_h.params[1],
                 "units": '"°C"',
                 "scale": 1.0,
                 "fmt_spec": ".2f",
@@ -429,8 +448,8 @@ def analysis_helpers():
                 "hebrew_var": f"טמפרטורת_קירי_קירור_{material_name}",
                 "english_var": f"curie_temp_cooling_{material_name}",
                 "symbol": 'T_(c, "cool")',
-                "value": fit_c.params[2],
-                "error": fit_c.errors[2],
+                "value": fit_c.params[0],
+                "error": fit_c.params[1],
                 "units": '"°C"',
                 "scale": 1.0,
                 "fmt_spec": ".2f",
@@ -548,8 +567,8 @@ def run_ferrite_pipeline(
     )
 
     # 4. Fit Curie transition
-    _p0_h = [2.14, -0.17, 133.0, 0.5, -0.001]
-    _p0_c = [2.14, -0.17, 138.0, 0.5, -0.001]
+    _p0_h = [133.0, 0.5]
+    _p0_c = [138.0, 0.5]
     fit_ferrite_h, fit_ferrite_c = fit_curie(
         _ferrite_heating_df,
         _ferrite_cooling_df,
@@ -605,10 +624,10 @@ def display_ferrite_results(
     fit_ferrite_temp,
 ):
     _tc_h_str = format_value(
-        fit_ferrite_h.params[2], fit_ferrite_h.errors[2], ".2f", style="latex"
+        fit_ferrite_h.params[0], fit_ferrite_h.params[1], ".2f", style="latex"
     )
     _tc_c_str = format_value(
-        fit_ferrite_c.params[2], fit_ferrite_c.errors[2], ".2f", style="latex"
+        fit_ferrite_c.params[0], fit_ferrite_c.params[1], ".2f", style="latex"
     )
     _k_exp_str = format_value(
         fit_ferrite_temp.params[2],
@@ -677,8 +696,8 @@ def run_invar_pipeline(
     _invar_t_s, _invar_T_s, fit_invar_temp = fit_cooling(_invar_cooling_df, _p0_cool)
 
     # 4. Fit Curie transition
-    _p0_h = [2.285, -0.315, 246.0, 5.0, -0.001]
-    _p0_c = [2.285, -0.315, 250.0, 5.0, -0.001]
+    _p0_h = [246.0, 5.0]
+    _p0_c = [250.0, 5.0]
     fit_invar_h, fit_invar_c = fit_curie(
         _invar_heating_df,
         _invar_cooling_df,
@@ -728,10 +747,10 @@ def display_invar_results(
     invar_plot2,
 ):
     _tc_h_str = format_value(
-        fit_invar_h.params[2], fit_invar_h.errors[2], ".2f", style="latex"
+        fit_invar_h.params[0], fit_invar_h.params[1], ".2f", style="latex"
     )
     _tc_c_str = format_value(
-        fit_invar_c.params[2], fit_invar_c.errors[2], ".2f", style="latex"
+        fit_invar_c.params[0], fit_invar_c.params[1], ".2f", style="latex"
     )
     _k_exp_str = format_value(
         fit_invar_temp.params[2],
@@ -777,8 +796,8 @@ def part_d_explanation():
 @app.cell
 def summarize_results(fit_ferrite_c, fit_ferrite_h, fit_invar_c, fit_invar_h):
     # Summary of Curie temperatures
-    _ferrite_tc = (fit_ferrite_h.params[2] + fit_ferrite_c.params[2]) / 2
-    _invar_tc = (fit_invar_h.params[2] + fit_invar_c.params[2]) / 2
+    _ferrite_tc = (fit_ferrite_h.params[0] + fit_ferrite_c.params[0]) / 2
+    _invar_tc = (fit_invar_h.params[0] + fit_invar_c.params[0]) / 2
     return
 
 

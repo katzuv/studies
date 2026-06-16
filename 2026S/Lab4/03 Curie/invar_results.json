@@ -5,13 +5,13 @@
     "hebrew_var": "טמפרטורת_קירי_חימום_invar",
     "english_var": "curie_temp_heating_invar",
     "symbol": "T_(c, \"heat\")",
-    "value": 246.21086972287208,
-    "error": 0.06065734517634259,
+    "value": 245.88459503935496,
+    "error": 8.607539824177563,
     "units": "\"°C\"",
     "scale": 1.0,
     "fmt_spec": ".2f",
     "suffix": "",
-    "formatted_value": "246.21 +- 0.06"
+    "formatted_value": "245.88 +- 8.61"
   },
   {
     "hebrew_name": "טמפרטורת קירי בקירור (אינבר)",
@@ -19,13 +19,13 @@
     "hebrew_var": "טמפרטורת_קירי_קירור_invar",
     "english_var": "curie_temp_cooling_invar",
     "symbol": "T_(c, \"cool\")",
-    "value": 250.40788051189816,
-    "error": 0.06787741922997616,
+    "value": 249.44907586768977,
+    "error": 8.858597261809596,
     "units": "\"°C\"",
     "scale": 1.0,
     "fmt_spec": ".2f",
     "suffix": "",
-    "formatted_value": "250.41 +- 0.07"
+    "formatted_value": "249.45 +- 8.86"
   },
   {
     "hebrew_name": "קבוע קירור ניסיוני (אינבר)",

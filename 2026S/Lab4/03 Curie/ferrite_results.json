@@ -5,13 +5,13 @@
     "hebrew_var": "טמפרטורת_קירי_חימום_ferrite",
     "english_var": "curie_temp_heating_ferrite",
     "symbol": "T_(c, \"heat\")",
-    "value": 133.8047012590969,
-    "error": 0.02984684019545749,
+    "value": 134.0012758574235,
+    "error": 1.8139924758622357,
     "units": "\"°C\"",
     "scale": 1.0,
     "fmt_spec": ".2f",
     "suffix": "",
-    "formatted_value": "133.80 +- 0.03"
+    "formatted_value": "134.00 +- 1.81"
   },
   {
     "hebrew_name": "טמפרטורת קירי בקירור (פריט)",
@@ -19,13 +19,13 @@
     "hebrew_var": "טמפרטורת_קירי_קירור_ferrite",
     "english_var": "curie_temp_cooling_ferrite",
     "symbol": "T_(c, \"cool\")",
-    "value": 139.17245437214748,
-    "error": 0.06819018824213924,
+    "value": 141.65460090326255,
+    "error": 6.212614088352059,
     "units": "\"°C\"",
     "scale": 1.0,
     "fmt_spec": ".2f",
     "suffix": "",
-    "formatted_value": "139.17 +- 0.07"
+    "formatted_value": "141.65 +- 6.21"
   },
   {
     "hebrew_name": "קבוע קירור ניסיוני (פריט)",
