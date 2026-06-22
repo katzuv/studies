@@ -1,0 +1,36 @@
+// Automatically generated constants for Typst
+#let pm = $plus.minus$
+#let פמ = $plus.minus$
+
+#let דלתא_2 = $0.4765$
+#let delta_2 = $0.4765$
+#let שגיאת_דלתא_2 = none
+#let delta_2_err = none
+#let דלתא_4 = $0.7444$
+#let delta_4 = $0.7444$
+#let שגיאת_דלתא_4 = none
+#let delta_4_err = none
+#let דלתא_6 = $1.0144$
+#let delta_6 = $1.0144$
+#let שגיאת_דלתא_6 = none
+#let delta_6_err = none
+#let דלתא_8 = $1.2858$
+#let delta_8 = $1.2858$
+#let שגיאת_דלתא_8 = none
+#let delta_8_err = none
+#let שיפוע = $0.1349 "μm/μs"$
+#let slope = $0.1349 "μm/μs"$
+#let שגיאת_שיפוע = none
+#let slope_err = none
+#let חיתוך = $0.2058 "μm"$
+#let intercept = $0.2058 "μm"$
+#let שגיאת_חיתוך = none
+#let intercept_err = none
+#let מסה_קג = $1.1168 times 10^(-26) "kg"$
+#let mass_kg = $1.1168 times 10^(-26) "kg"$
+#let שגיאת_מסה_קג = none
+#let mass_kg_err = none
+#let מסה_אמו = $6.73 "u"$
+#let mass_amu = $6.73 "u"$
+#let שגיאת_מסה_אמו = none
+#let mass_amu_err = none
