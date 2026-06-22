@@ -1,0 +1,26 @@
+fairrite31:
+    type: Web
+    title: "31 Material® Data Sheet"
+    author: "Fair-Rite Products Corp."
+    date: 2026
+    url:
+        value: "https://fair-rite.com/31-material-data-sheet/"
+        date: 2026-06-22
+
+carpenter_invar:
+    type: Web
+    title: "Invar 36® Alloy Technical Data Sheet"
+    author: "Carpenter Technology Corporation"
+    date: 2026
+    url:
+        value: "https://www.carpentertechnology.com/"
+        date: 2026-06-22
+
+alloysintl_super_invar:
+    type: Web
+    title: "Super Invar"
+    author: "Alloys International, Inc."
+    date: 2026
+    url:
+        value: "https://alloysintl.com/inventory/nickel-and-cobalt-alloys-old/super-invar/"
+        date: 2026-06-22
