@@ -399,7 +399,7 @@ def generate_and_save_plots(
     plt.axvline(fit_h.params[0], color="#0D47A1", linestyle="--", alpha=0.8)
     plt.axvline(fit_c.params[0], color="#4A148C", linestyle="--", alpha=0.8)
 
-    set_style(xlabel="Temperature ($^\\circ\\mathrm{C}$)", ylabel="RMS Voltage CH2 ($V_s$ [V])")
+    set_style(xlabel="Temperature ($^\\circ\\mathrm{C}$)", ylabel="Voltage ($V_s$ [V])")
     plt.xlim(left=xmin)
     plt.ylim(bottom=ymin)
     plt.legend(frameon=True)
