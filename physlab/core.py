@@ -172,6 +172,15 @@ def summary_table(results_dict):
     return pd.DataFrame(summary)
 
 
+def to_typst_sci(s: str) -> str:
+    """Helper to convert scientific notation string to Typst math syntax."""
+    if "e" in s:
+        base, exp = s.split("e")
+        exp = str(int(exp))
+        return f"{base} times 10^({exp})"
+    return s
+
+
 def format_value(
     val: float,
     err: float | None = None,
@@ -187,6 +196,8 @@ def format_value(
     v = val * scale
     if err is None:
         v_str = f"{v:{fmt_spec}}"
+        if style == "typst":
+            v_str = to_typst_sci(v_str)
         if suffix:
             if style == "latex" and "10^(" in suffix:
                 s = suffix.replace("dot 10^(", r"\times 10^{").replace(")", "}")
@@ -200,7 +211,9 @@ def format_value(
     e_str = f"{e:{fmt_spec}}"
 
     if style == "typst":
-        sep = " +- "
+        v_str = to_typst_sci(v_str)
+        e_str = to_typst_sci(e_str)
+        sep = " pm "
         if suffix:
             return f"({v_str}{sep}{e_str}) {suffix}"
         return f"{v_str}{sep}{e_str}"
@@ -268,7 +281,7 @@ def export_constants(constants_data: list[dict], directory) -> list[dict]:
     for item in constants_data:
         val_expr = item["formatted_value"]
         if item["units"]:
-            val_expr = rf"{val_expr} \ {item['units']}"
+            val_expr = rf"{val_expr} {item['units']}"
         typst_lines.append(f"#let {item['hebrew_var']} = ${val_expr}$\n")
         typst_lines.append(f"#let {item['english_var']} = ${val_expr}$\n")
 
@@ -281,10 +294,10 @@ def export_constants(constants_data: list[dict], directory) -> list[dict]:
             fmt_spec = item.get("fmt_spec", ".2f")
             suffix = item.get("suffix", "")
             e = err_val * scale
-            e_str = f"{e:{fmt_spec}}"
+            e_str = to_typst_sci(f"{e:{fmt_spec}}")
             err_expr = rf"{e_str} {suffix}" if suffix else e_str
             if item["units"]:
-                err_expr = rf"{err_expr} \ {item['units']}"
+                err_expr = rf"{err_expr} {item['units']}"
             err_expr = f"${err_expr}$"
 
         typst_lines.append(f"#let שגיאת_{item['hebrew_var']} = {err_expr}\n")
