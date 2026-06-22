@@ -32,7 +32,7 @@
     "english_name": "Experimental Cooling Constant - Invar",
     "hebrew_var": "קבוע_קירור_ניסיוני_invar",
     "english_var": "cooling_constant_exp_invar",
-    "symbol": "k_\"exp\"",
+    "symbol": "k_\"exp,cool\"",
     "value": 0.0012001929717148229,
     "error": 7.162068714323653e-07,
     "units": "\"sec\"^(-1)",
@@ -40,5 +40,33 @@
     "fmt_spec": ".6f",
     "suffix": "",
     "formatted_value": "0.001200 pm 0.000001"
+  },
+  {
+    "hebrew_name": "קבוע חימום ניסיוני (אינבר)",
+    "english_name": "Experimental Heating Constant - Invar",
+    "hebrew_var": "קבוע_חימום_ניסיוני_invar",
+    "english_var": "heating_constant_exp_invar",
+    "symbol": "k_\"exp,heat\"",
+    "value": 0.001456114714029447,
+    "error": 4.8088588778157e-07,
+    "units": "\"sec\"^(-1)",
+    "scale": 1.0,
+    "fmt_spec": ".6f",
+    "suffix": "",
+    "formatted_value": "0.001456 pm 0.000000"
+  },
+  {
+    "hebrew_name": "טמפרטורת אסימפטוטת חימום (אינבר)",
+    "english_name": "Heating Asymptotic Temperature - Invar",
+    "hebrew_var": "טמפרטורת_אסימפטוטת_חימום_invar",
+    "english_var": "heating_asymptote_invar",
+    "symbol": "T_\"max,heat\"",
+    "value": 401.4288476370918,
+    "error": 0.07033710428419512,
+    "units": "\"°C\"",
+    "scale": 1.0,
+    "fmt_spec": ".2f",
+    "suffix": "",
+    "formatted_value": "401.43 pm 0.07"
   }
 ]

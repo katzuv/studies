@@ -181,8 +181,6 @@ def part_a_plotting_explanation():
     Plot the induced voltage $V_s$ vs frequency $f$ (with logarithmic x-axis), and plot the ratio $V_s / V_{s0}$ to select the optimal frequency:
     """)
     return
-
-
 @app.cell
 def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     try:
@@ -234,7 +232,26 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     plot2 = mo.as_html(_fig2)
     plt.close(_fig2)
 
-    plots = mo.hstack([plot1, plot2])
+    # Graph 3: Vs directly as a function of frequency
+    _vs0 = vs0_data["CH2 (V)"]
+    _vs1 = vs1_data["CH2 (V)"]
+    _vs2 = vs2_data["CH2 (V)"]
+
+    _fig3, _ax3 = plt.subplots(figsize=(6, 4.5))
+    _ax3.semilogx(_freqs, _vs0, label="Air core ($V_{s0}$)")
+    _ax3.semilogx(_freqs, _vs1, label="Ferrite core ($V_{s1}$)")
+    _ax3.semilogx(_freqs, _vs2, label="Invar core ($V_{s2}$)")
+    set_style(_ax3, xlabel="$f \\ [\\mathrm{Hz}]$", ylabel="$V_s \\ [\\mathrm{V}]$")
+    _ax3.set_xticks(_ticks)
+    _ax3.set_xticklabels([str(t) for t in _ticks])
+    _ax3.legend(frameon=True)
+    plt.tight_layout()
+    fig3_path = _parent_dir / "graphs" / "frequency_response_vs.svg"
+    _fig3.savefig(fig3_path, format="svg", bbox_inches="tight")
+    plot3 = mo.as_html(_fig3)
+    plt.close(_fig3)
+
+    plots = mo.hstack([plot1, plot2, plot3])
     plots  # noqa: B018
     return
 
@@ -263,6 +280,9 @@ def analysis_helpers():
     def cooling_model(t, T_env, T0, k):
         return T_env + (T0 - T_env) * np.exp(-k * t)
 
+    def heating_model(t, T_max, T0, k):
+        return T_max - (T_max - T0) * np.exp(-k * t)
+
     def erf_model(T, Tc, dT):
         return 0.5 * (1.0 - erf((T - Tc) / (dT * np.sqrt(2.0))))
 
@@ -272,6 +292,14 @@ def analysis_helpers():
         T_s = cooling_df["Temp (C)"].values
         T_err = np.ones_like(T_s) * 0.1
         fit_temp = physics_fit(cooling_model, t_s, T_s, T_err, p0=p0)
+        return t_s, T_s, fit_temp
+
+    def fit_heating(heating_df, p0):
+        times = pd.to_datetime(heating_df["DateTime"], format="%d/%m/%Y %H:%M:%S")
+        t_s = (times - times.min()).dt.total_seconds().values
+        T_s = heating_df["Temp (C)"].values
+        T_err = np.ones_like(T_s) * 0.1
+        fit_temp = physics_fit(heating_model, t_s, T_s, T_err, p0=p0)
         return t_s, T_s, fit_temp
 
     def fit_curie(heating_df, cooling_df, h_range, c_range, p0_h, p0_c):
@@ -316,9 +344,12 @@ def analysis_helpers():
         cooling_df,
         fit_h,
         fit_c,
-        fit_temp,
-        t_s,
-        T_s,
+        fit_temp_cool,
+        fit_temp_heat,
+        t_cool,
+        T_cool,
+        t_heat,
+        T_heat,
         h_range,
         c_range,
         xmin,
@@ -393,22 +424,32 @@ def analysis_helpers():
         plot1 = mo.as_html(fig1)
         plt.close(fig1)
 
-        # Graph 2: Cooling Curve Fit
+        # Graph 2: Heating & Cooling Curve Fits (Newton's Law)
         fig2 = plt.figure(figsize=(6, 4.5))
-        plt.scatter(t_s, T_s, s=1.5, alpha=0.5, label="Cooling data", color="#2E86AB")
-        t_fit = np.linspace(0, t_s.max(), 300)
+        t_peak = t_heat.max()
+        plt.scatter(t_heat, T_heat, s=1.5, alpha=0.4, label="Heating data", color="#2E86AB")
+        plt.scatter(t_peak + t_cool, T_cool, s=1.5, alpha=0.4, label="Cooling data", color="#A23B72")
+        
+        t_fit_h = np.linspace(0, t_peak, 300)
         plt.plot(
-            t_fit,
-            cooling_model(t_fit, *fit_temp.params),
+            t_fit_h,
+            heating_model(t_fit_h, *fit_temp_heat.params),
+            color="#0D47A1",
+            linewidth=2.0,
+            label="Heating Fit",
+        )
+        t_fit_c = np.linspace(t_peak, t_peak + t_cool.max(), 300)
+        plt.plot(
+            t_fit_c,
+            cooling_model(t_fit_c - t_peak, *fit_temp_cool.params),
             color="#C73E1D",
             linewidth=2.0,
-            label="Newton Fit",
+            label="Cooling Fit",
         )
         set_style(
             xlabel="Time $[\\mathrm{sec}]$",
             ylabel="Temperature ($^\\circ$C)",
         )
-        plt.yscale("log")
         plt.legend(frameon=True)
         plt.tight_layout()
         fig2.savefig(
@@ -419,14 +460,44 @@ def analysis_helpers():
         plot2 = mo.as_html(fig2)
         plt.close(fig2)
 
-        return plot1, plot2
+        # Graph 3: Temperature derivative dT/dt vs Temperature T
+        fig3 = plt.figure(figsize=(6, 4.5))
+        # Compute smoothed derivatives using central diff with 30s window (15s on each side)
+        h_temp = heating_df["Temp (C)"].values
+        h_dT_dt = np.full_like(h_temp, np.nan)
+        for i in range(15, len(h_temp) - 15):
+            h_dT_dt[i] = (h_temp[i + 15] - h_temp[i - 15]) / 30.0
+
+        c_temp = cooling_df["Temp (C)"].values
+        c_dT_dt = np.full_like(c_temp, np.nan)
+        for i in range(15, len(c_temp) - 15):
+            c_dT_dt[i] = (c_temp[i + 15] - c_temp[i - 15]) / 30.0
+
+        plt.plot(h_temp, h_dT_dt, label="Heating phase", color="#2E86AB", alpha=0.8, linewidth=1.5)
+        plt.plot(c_temp, c_dT_dt, label="Cooling phase", color="#A23B72", alpha=0.8, linewidth=1.5)
+        set_style(
+            xlabel="Temperature ($^\\circ$C)",
+            ylabel="$dT/dt \\ [^\\circ\\mathrm{C}/\\mathrm{s}]$",
+        )
+        plt.legend(frameon=True)
+        plt.tight_layout()
+        fig3.savefig(
+            parent_dir / "graphs" / f"{material_name}_dT_dt.svg",
+            format="svg",
+            bbox_inches="tight",
+        )
+        plot3 = mo.as_html(fig3)
+        plt.close(fig3)
+
+        return plot1, plot2, plot3
 
     def export_material_results(
         material_name,
         hebrew_material,
         fit_h,
         fit_c,
-        fit_temp,
+        fit_temp_cool,
+        fit_temp_heat,
         parent_dir,
     ):
         results = [
@@ -461,12 +532,38 @@ def analysis_helpers():
                 "english_name": f"Experimental Cooling Constant - {material_name.capitalize()}",
                 "hebrew_var": f"קבוע_קירור_ניסיוני_{material_name}",
                 "english_var": f"cooling_constant_exp_{material_name}",
-                "symbol": 'k_"exp"',
-                "value": fit_temp.params[2],
-                "error": fit_temp.errors[2],
+                "symbol": 'k_"exp,cool"',
+                "value": fit_temp_cool.params[2],
+                "error": fit_temp_cool.errors[2],
                 "units": '"sec"^(-1)',
                 "scale": 1.0,
                 "fmt_spec": ".6f",
+                "suffix": "",
+            },
+            {
+                "hebrew_name": f"קבוע חימום ניסיוני ({hebrew_material})",
+                "english_name": f"Experimental Heating Constant - {material_name.capitalize()}",
+                "hebrew_var": f"קבוע_חימום_ניסיוני_{material_name}",
+                "english_var": f"heating_constant_exp_{material_name}",
+                "symbol": 'k_"exp,heat"',
+                "value": fit_temp_heat.params[2],
+                "error": fit_temp_heat.errors[2],
+                "units": '"sec"^(-1)',
+                "scale": 1.0,
+                "fmt_spec": ".6f",
+                "suffix": "",
+            },
+            {
+                "hebrew_name": f"טמפרטורת אסימפטוטת חימום ({hebrew_material})",
+                "english_name": f"Heating Asymptotic Temperature - {material_name.capitalize()}",
+                "hebrew_var": f"טמפרטורת_אסימפטוטת_חימום_{material_name}",
+                "english_var": f"heating_asymptote_{material_name}",
+                "symbol": 'T_"max,heat"',
+                "value": fit_temp_heat.params[0],
+                "error": fit_temp_heat.errors[0],
+                "units": '"°C"',
+                "scale": 1.0,
+                "fmt_spec": ".2f",
                 "suffix": "",
             },
         ]
@@ -526,6 +623,7 @@ def analysis_helpers():
         fit_curie,
         generate_material_plots,
         split_data,
+        fit_heating,
     )
 
 
@@ -536,6 +634,7 @@ def run_ferrite_pipeline(
     fit_curie,
     generate_material_plots,
     split_data,
+    fit_heating,
 ):
     try:
         _parent_dir = Path(__file__).parent
@@ -552,8 +651,15 @@ def run_ferrite_pipeline(
     # 3. Fit cooling curve
     # Initial guesses: T_env ~ 24°C, T0 ~ 174°C, k ~ 0.001 s^-1
     _p0_cool = [24.0, 174.0, 0.001]
-    _ferrite_t_s, _ferrite_T_s, fit_ferrite_temp = fit_cooling(
+    _ferrite_t_c, _ferrite_T_c, fit_ferrite_temp_cool = fit_cooling(
         _ferrite_cooling_df, _p0_cool
+    )
+
+    # Fit heating curve
+    # Initial guesses: T_max ~ 170°C, T0 ~ 25.6°C, k ~ 0.001 s^-1
+    _p0_heat = [170.0, 25.6, 0.001]
+    _ferrite_t_h, _ferrite_T_h, fit_ferrite_temp_heat = fit_heating(
+        _ferrite_heating_df, _p0_heat
     )
 
     # 4. Fit Curie transition
@@ -569,15 +675,18 @@ def run_ferrite_pipeline(
     )
 
     # 5. Generate plots
-    ferrite_plot1, ferrite_plot2 = generate_material_plots(
+    ferrite_plot1, ferrite_plot2, ferrite_plot3 = generate_material_plots(
         "ferrite",
         _ferrite_heating_df,
         _ferrite_cooling_df,
         fit_ferrite_h,
         fit_ferrite_c,
-        fit_ferrite_temp,
-        _ferrite_t_s,
-        _ferrite_T_s,
+        fit_ferrite_temp_cool,
+        fit_ferrite_temp_heat,
+        _ferrite_t_c,
+        _ferrite_T_c,
+        _ferrite_t_h,
+        _ferrite_T_h,
         (120, 150),
         (125, 165),
         100,
@@ -591,15 +700,18 @@ def run_ferrite_pipeline(
         "פריט",
         fit_ferrite_h,
         fit_ferrite_c,
-        fit_ferrite_temp,
+        fit_ferrite_temp_cool,
+        fit_ferrite_temp_heat,
         _parent_dir,
     )
     return (
         ferrite_plot1,
         ferrite_plot2,
+        ferrite_plot3,
         fit_ferrite_c,
         fit_ferrite_h,
-        fit_ferrite_temp,
+        fit_ferrite_temp_cool,
+        fit_ferrite_temp_heat,
     )
 
 
@@ -607,9 +719,10 @@ def run_ferrite_pipeline(
 def display_ferrite_results(
     ferrite_plot1,
     ferrite_plot2,
+    ferrite_plot3,
     fit_ferrite_c,
     fit_ferrite_h,
-    fit_ferrite_temp,
+    fit_ferrite_temp_cool,
 ):
     _tc_h_str = format_value(
         fit_ferrite_h.params[0], fit_ferrite_h.params[1], ".2f", style="latex"
@@ -618,8 +731,8 @@ def display_ferrite_results(
         fit_ferrite_c.params[0], fit_ferrite_c.params[1], ".2f", style="latex"
     )
     _k_exp_str = format_value(
-        fit_ferrite_temp.params[2],
-        fit_ferrite_temp.errors[2],
+        fit_ferrite_temp_cool.params[2],
+        fit_ferrite_temp_cool.errors[2],
         ".6f",
         style="latex",
     )
@@ -640,7 +753,7 @@ def display_ferrite_results(
     _plots = mo.vstack(
         [
             _markdown_summary,
-            mo.hstack([ferrite_plot1, ferrite_plot2]),
+            mo.hstack([ferrite_plot1, ferrite_plot2, ferrite_plot3]),
         ]
     )
     _plots  # noqa: B018
@@ -663,6 +776,7 @@ def run_invar_pipeline(
     fit_curie,
     generate_material_plots,
     split_data,
+    fit_heating,
 ):
     try:
         _parent_dir = Path(__file__).parent
@@ -679,7 +793,16 @@ def run_invar_pipeline(
     # 3. Fit cooling curve
     # Initial guesses: T_env ~ 74°C, T0 ~ 293°C, k ~ 0.001 s^-1
     _p0_cool = [74.0, 293.0, 0.001]
-    _invar_t_s, _invar_T_s, fit_invar_temp = fit_cooling(_invar_cooling_df, _p0_cool)
+    _invar_t_c, _invar_T_c, fit_invar_temp_cool = fit_cooling(
+        _invar_cooling_df, _p0_cool
+    )
+
+    # Fit heating curve
+    # Initial guesses: T_max ~ 310°C, T0 ~ 30.0°C, k ~ 0.001 s^-1
+    _p0_heat = [310.0, 30.0, 0.001]
+    _invar_t_h, _invar_T_h, fit_invar_temp_heat = fit_heating(
+        _invar_heating_df, _p0_heat
+    )
 
     # 4. Fit Curie transition
     _p0_h = [246.0, 5.0]
@@ -694,15 +817,18 @@ def run_invar_pipeline(
     )
 
     # 5. Generate plots
-    invar_plot1, invar_plot2 = generate_material_plots(
+    invar_plot1, invar_plot2, invar_plot3 = generate_material_plots(
         "invar",
         _invar_heating_df,
         _invar_cooling_df,
         fit_invar_h,
         fit_invar_c,
-        fit_invar_temp,
-        _invar_t_s,
-        _invar_T_s,
+        fit_invar_temp_cool,
+        fit_invar_temp_heat,
+        _invar_t_c,
+        _invar_T_c,
+        _invar_t_h,
+        _invar_T_h,
         (220, 275),
         (220, 275),
         100,
@@ -716,19 +842,21 @@ def run_invar_pipeline(
         "אינבר",
         fit_invar_h,
         fit_invar_c,
-        fit_invar_temp,
+        fit_invar_temp_cool,
+        fit_invar_temp_heat,
         _parent_dir,
     )
-    return fit_invar_c, fit_invar_h, fit_invar_temp, invar_plot1, invar_plot2
+    return fit_invar_c, fit_invar_h, fit_invar_temp_cool, fit_invar_temp_heat, invar_plot1, invar_plot2, invar_plot3
 
 
 @app.cell(hide_code=True)
 def display_invar_results(
     fit_invar_c,
     fit_invar_h,
-    fit_invar_temp,
+    fit_invar_temp_cool,
     invar_plot1,
     invar_plot2,
+    invar_plot3,
 ):
     _tc_h_str = format_value(
         fit_invar_h.params[0], fit_invar_h.params[1], ".2f", style="latex"
@@ -737,8 +865,8 @@ def display_invar_results(
         fit_invar_c.params[0], fit_invar_c.params[1], ".2f", style="latex"
     )
     _k_exp_str = format_value(
-        fit_invar_temp.params[2],
-        fit_invar_temp.errors[2],
+        fit_invar_temp_cool.params[2],
+        fit_invar_temp_cool.errors[2],
         ".6f",
         style="latex",
     )
@@ -759,7 +887,7 @@ def display_invar_results(
     _plots = mo.vstack(
         [
             _markdown_summary,
-            mo.hstack([invar_plot1, invar_plot2]),
+            mo.hstack([invar_plot1, invar_plot2, invar_plot3]),
         ]
     )
     _plots  # noqa: B018
