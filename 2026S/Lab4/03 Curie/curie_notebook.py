@@ -512,7 +512,7 @@ def analysis_helpers():
 
         set_style(
             xlabel="Temperature ($^\\circ$C)",
-            ylabel="RMS Voltage CH2 ($V_s$ [V])",
+            ylabel="Voltage ($V_s$ [V])",
         )
 
         plt.xlim(left=xmin)
