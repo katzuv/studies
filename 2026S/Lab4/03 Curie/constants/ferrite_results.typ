@@ -32,11 +32,3 @@
 #let heating_constant_exp_ferrite_err = שגיאת_קבוע_חימום_ניסיוני_ferrite
 #let שגיאת_קבוע_חימום_ניסיוני_ferrite_ערך = $0.000001$
 #let heating_constant_exp_ferrite_err_val = שגיאת_קבוע_חימום_ניסיוני_ferrite_ערך
-#let טמפרטורת_אסימפטוטת_חימום_ferrite = $258.56 pm 0.08 "°C"$
-#let heating_asymptote_ferrite = טמפרטורת_אסימפטוטת_חימום_ferrite
-#let טמפרטורת_אסימפטוטת_חימום_ferrite_ערך = $258.56 pm 0.08$
-#let heating_asymptote_ferrite_val = טמפרטורת_אסימפטוטת_חימום_ferrite_ערך
-#let שגיאת_טמפרטורת_אסימפטוטת_חימום_ferrite = $0.08 "°C"$
-#let heating_asymptote_ferrite_err = שגיאת_טמפרטורת_אסימפטוטת_חימום_ferrite
-#let שגיאת_טמפרטורת_אסימפטוטת_חימום_ferrite_ערך = $0.08$
-#let heating_asymptote_ferrite_err_val = שגיאת_טמפרטורת_אסימפטוטת_חימום_ferrite_ערך

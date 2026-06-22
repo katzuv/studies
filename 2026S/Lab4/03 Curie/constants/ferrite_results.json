@@ -32,7 +32,7 @@
     "english_name": "Experimental Cooling Constant - Ferrite",
     "hebrew_var": "קבוע_קירור_ניסיוני_ferrite",
     "english_var": "cooling_constant_exp_ferrite",
-    "symbol": "k_\"exp,cool\"",
+    "symbol": "k_\"cool\"",
     "value": 0.0009902328743237696,
     "error": 1.6063451273399828e-06,
     "units": "\"sec\"^(-1)",
@@ -46,7 +46,7 @@
     "english_name": "Experimental Heating Constant - Ferrite",
     "hebrew_var": "קבוע_חימום_ניסיוני_ferrite",
     "english_var": "heating_constant_exp_ferrite",
-    "symbol": "k_\"exp,heat\"",
+    "symbol": "k_\"heat\"",
     "value": 0.0011560479817620418,
     "error": 6.155349131524854e-07,
     "units": "\"sec\"^(-1)",
@@ -54,19 +54,5 @@
     "fmt_spec": ".6f",
     "suffix": "",
     "formatted_value": "0.001156 pm 0.000001"
-  },
-  {
-    "hebrew_name": "טמפרטורת אסימפטוטת חימום (פריט)",
-    "english_name": "Heating Asymptotic Temperature - Ferrite",
-    "hebrew_var": "טמפרטורת_אסימפטוטת_חימום_ferrite",
-    "english_var": "heating_asymptote_ferrite",
-    "symbol": "T_\"max,heat\"",
-    "value": 258.55926578268907,
-    "error": 0.0781162919051582,
-    "units": "\"°C\"",
-    "scale": 1.0,
-    "fmt_spec": ".2f",
-    "suffix": "",
-    "formatted_value": "258.56 pm 0.08"
   }
 ]

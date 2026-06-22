@@ -181,6 +181,8 @@ def part_a_plotting_explanation():
     Plot the induced voltage $V_s$ vs frequency $f$ (with logarithmic x-axis), and plot the ratio $V_s / V_{s0}$ to select the optimal frequency:
     """)
     return
+
+
 @app.cell
 def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     try:
@@ -188,19 +190,57 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     except NameError:
         _parent_dir = Path(".")
 
-    # Calculate ratios Vs/Vp
+    # Calculate ratios Vs/Vp and uncertainties based on last digits (CH1: 0.01 V, CH2: 0.001 V)
     _freqs = vs0_data["Frequency (Hz)"]
     _vs0_vp = vs0_data["CH2 (V)"] / vs0_data["CH1 (V)"]
     _vs1_vp = vs1_data["CH2 (V)"] / vs1_data["CH1 (V)"]
     _vs2_vp = vs2_data["CH2 (V)"] / vs2_data["CH1 (V)"]
 
+    _vs0_vp_err = _vs0_vp * np.sqrt(
+        (0.001 / vs0_data["CH2 (V)"]) ** 2 + (0.01 / vs0_data["CH1 (V)"]) ** 2
+    )
+    _vs1_vp_err = _vs1_vp * np.sqrt(
+        (0.001 / vs1_data["CH2 (V)"]) ** 2 + (0.01 / vs1_data["CH1 (V)"]) ** 2
+    )
+    _vs2_vp_err = _vs2_vp * np.sqrt(
+        (0.001 / vs2_data["CH2 (V)"]) ** 2 + (0.01 / vs2_data["CH1 (V)"]) ** 2
+    )
+
     import matplotlib.ticker as ticker
 
     # Graph 1: Vs/Vp as a function of frequency
     _fig1, _ax1 = plt.subplots(figsize=(6, 4.5))
-    _ax1.semilogx(_freqs, _vs0_vp, label="Air core ($V_{s0}/V_p$)")
-    _ax1.semilogx(_freqs, _vs1_vp, label="Ferrite core ($V_{s1}/V_p$)")
-    _ax1.semilogx(_freqs, _vs2_vp, label="Invar core ($V_{s2}/V_p$)")
+    _ax1.errorbar(
+        _freqs,
+        _vs0_vp,
+        yerr=_vs0_vp_err,
+        label="Air core ($V_{s0}/V_p$)",
+        fmt="-o",
+        markersize=3,
+        capsize=3,
+        elinewidth=0.8,
+    )
+    _ax1.errorbar(
+        _freqs,
+        _vs1_vp,
+        yerr=_vs1_vp_err,
+        label="Ferrite core ($V_{s1}/V_p$)",
+        fmt="-o",
+        markersize=3,
+        capsize=3,
+        elinewidth=0.8,
+    )
+    _ax1.errorbar(
+        _freqs,
+        _vs2_vp,
+        yerr=_vs2_vp_err,
+        label="Invar core ($V_{s2}/V_p$)",
+        fmt="-o",
+        markersize=3,
+        capsize=3,
+        elinewidth=0.8,
+    )
+    _ax1.set_xscale("log")
     set_style(_ax1, xlabel="$f \\ [\\mathrm{Hz}]$", ylabel="$V_s / V_p$")
     _ticks = [200, 400, 600, 800, 1000]
     _ax1.set_xticks(_ticks)
@@ -219,9 +259,35 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _vs1_v0 = vs1_data["CH2 (V)"] / vs0_data["CH2 (V)"]
     _vs2_v0 = vs2_data["CH2 (V)"] / vs0_data["CH2 (V)"]
 
+    _vs1_v0_err = _vs1_v0 * np.sqrt(
+        (0.001 / vs1_data["CH2 (V)"]) ** 2 + (0.001 / vs0_data["CH2 (V)"]) ** 2
+    )
+    _vs2_v0_err = _vs2_v0 * np.sqrt(
+        (0.001 / vs2_data["CH2 (V)"]) ** 2 + (0.001 / vs0_data["CH2 (V)"]) ** 2
+    )
+
     _fig2, _ax2 = plt.subplots(figsize=(6, 4.5))
-    _ax2.semilogx(_freqs, _vs1_v0, label="Ferrite core ($V_{s1}/V_{s0}$)")
-    _ax2.semilogx(_freqs, _vs2_v0, label="Invar core ($V_{s2}/V_{s0}$)")
+    _ax2.errorbar(
+        _freqs,
+        _vs1_v0,
+        yerr=_vs1_v0_err,
+        label="Ferrite core ($V_{s1}/V_{s0}$)",
+        fmt="-o",
+        markersize=3,
+        capsize=3,
+        elinewidth=0.8,
+    )
+    _ax2.errorbar(
+        _freqs,
+        _vs2_v0,
+        yerr=_vs2_v0_err,
+        label="Invar core ($V_{s2}/V_{s0}$)",
+        fmt="-o",
+        markersize=3,
+        capsize=3,
+        elinewidth=0.8,
+    )
+    _ax2.set_xscale("log")
     set_style(_ax2, xlabel="$f \\ [\\mathrm{Hz}]$", ylabel="$V_s / V_{\\mathrm{air}}$")
     _ax2.xaxis.set_major_formatter(ticker.ScalarFormatter())
     _ax2.legend(frameon=True)
@@ -237,9 +303,37 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _vs2 = vs2_data["CH2 (V)"]
 
     _fig3, _ax3 = plt.subplots(figsize=(6, 4.5))
-    _ax3.semilogx(_freqs, _vs0, label="Air core ($V_{s0}$)")
-    _ax3.semilogx(_freqs, _vs1, label="Ferrite core ($V_{s1}$)")
-    _ax3.semilogx(_freqs, _vs2, label="Invar core ($V_{s2}$)")
+    _ax3.errorbar(
+        _freqs,
+        _vs0,
+        yerr=0.001,
+        label="Air core ($V_{s0}$)",
+        fmt="-o",
+        markersize=3,
+        capsize=3,
+        elinewidth=0.8,
+    )
+    _ax3.errorbar(
+        _freqs,
+        _vs1,
+        yerr=0.001,
+        label="Ferrite core ($V_{s1}$)",
+        fmt="-o",
+        markersize=3,
+        capsize=3,
+        elinewidth=0.8,
+    )
+    _ax3.errorbar(
+        _freqs,
+        _vs2,
+        yerr=0.001,
+        label="Invar core ($V_{s2}$)",
+        fmt="-o",
+        markersize=3,
+        capsize=3,
+        elinewidth=0.8,
+    )
+    _ax3.set_xscale("log")
     set_style(_ax3, xlabel="$f \\ [\\mathrm{Hz}]$", ylabel="$V_s \\ [\\mathrm{V}]$")
     _ax3.set_xticks(_ticks)
     _ax3.set_xticklabels([str(t) for t in _ticks])
@@ -357,21 +451,31 @@ def analysis_helpers():
     ):
         # Graph 1: Hysteresis loop and erf fits
         fig1 = plt.figure(figsize=(6, 4.5))
-        plt.scatter(
+        plt.errorbar(
             heating_df["Temp (C)"],
             heating_df["RMS CH2 (V)"],
-            s=1.5,
+            xerr=0.01,
+            yerr=0.0001,
+            fmt="o",
+            markersize=1.5,
             alpha=0.4,
+            errorevery=50,
             label="Heating data",
             color="#2E86AB",
+            elinewidth=0.8,
         )
-        plt.scatter(
+        plt.errorbar(
             cooling_df["Temp (C)"],
             cooling_df["RMS CH2 (V)"],
-            s=1.5,
+            xerr=0.01,
+            yerr=0.0001,
+            fmt="o",
+            markersize=1.5,
             alpha=0.4,
+            errorevery=50,
             label="Cooling data",
             color="#A23B72",
+            elinewidth=0.8,
         )
 
         h_trans = heating_df[
@@ -426,9 +530,33 @@ def analysis_helpers():
         # Graph 2: Heating & Cooling Curve Fits (Newton's Law)
         fig2 = plt.figure(figsize=(6, 4.5))
         t_peak = t_heat.max()
-        plt.scatter(t_heat, T_heat, s=1.5, alpha=0.4, label="Heating data", color="#2E86AB")
-        plt.scatter(t_peak + t_cool, T_cool, s=1.5, alpha=0.4, label="Cooling data", color="#A23B72")
-        
+        plt.errorbar(
+            t_heat,
+            T_heat,
+            xerr=0.5,
+            yerr=0.01,
+            fmt="o",
+            markersize=1.5,
+            alpha=0.4,
+            errorevery=50,
+            label="Heating data",
+            color="#2E86AB",
+            elinewidth=0.8,
+        )
+        plt.errorbar(
+            t_peak + t_cool,
+            T_cool,
+            xerr=0.5,
+            yerr=0.01,
+            fmt="o",
+            markersize=1.5,
+            alpha=0.4,
+            errorevery=50,
+            label="Cooling data",
+            color="#A23B72",
+            elinewidth=0.8,
+        )
+
         t_fit_h = np.linspace(0, t_peak, 300)
         plt.plot(
             t_fit_h,
@@ -472,8 +600,32 @@ def analysis_helpers():
         for i in range(15, len(c_temp) - 15):
             c_dT_dt[i] = (c_temp[i + 15] - c_temp[i - 15]) / 30.0
 
-        plt.plot(h_temp, h_dT_dt, label="Heating phase", color="#2E86AB", alpha=0.8, linewidth=1.5)
-        plt.plot(c_temp, c_dT_dt, label="Cooling phase", color="#A23B72", alpha=0.8, linewidth=1.5)
+        plt.errorbar(
+            h_temp,
+            h_dT_dt,
+            xerr=0.01,
+            yerr=0.00047,
+            fmt="-",
+            errorevery=50,
+            label="Heating phase",
+            color="#2E86AB",
+            alpha=0.8,
+            linewidth=1.5,
+            elinewidth=0.8,
+        )
+        plt.errorbar(
+            c_temp,
+            c_dT_dt,
+            xerr=0.01,
+            yerr=0.00047,
+            fmt="-",
+            errorevery=50,
+            label="Cooling phase",
+            color="#A23B72",
+            alpha=0.8,
+            linewidth=1.5,
+            elinewidth=0.8,
+        )
         set_style(
             xlabel="Temperature ($^\\circ$C)",
             ylabel="$dT/dt \\ [^\\circ\\mathrm{C}/\\mathrm{s}]$",
@@ -531,7 +683,7 @@ def analysis_helpers():
                 "english_name": f"Experimental Cooling Constant - {material_name.capitalize()}",
                 "hebrew_var": f"קבוע_קירור_ניסיוני_{material_name}",
                 "english_var": f"cooling_constant_exp_{material_name}",
-                "symbol": 'k_"exp,cool"',
+                "symbol": 'k_"cool"',
                 "value": fit_temp_cool.params[2],
                 "error": fit_temp_cool.errors[2],
                 "units": '"sec"^(-1)',
@@ -544,25 +696,12 @@ def analysis_helpers():
                 "english_name": f"Experimental Heating Constant - {material_name.capitalize()}",
                 "hebrew_var": f"קבוע_חימום_ניסיוני_{material_name}",
                 "english_var": f"heating_constant_exp_{material_name}",
-                "symbol": 'k_"exp,heat"',
+                "symbol": 'k_"heat"',
                 "value": fit_temp_heat.params[2],
                 "error": fit_temp_heat.errors[2],
                 "units": '"sec"^(-1)',
                 "scale": 1.0,
                 "fmt_spec": ".6f",
-                "suffix": "",
-            },
-            {
-                "hebrew_name": f"טמפרטורת אסימפטוטת חימום ({hebrew_material})",
-                "english_name": f"Heating Asymptotic Temperature - {material_name.capitalize()}",
-                "hebrew_var": f"טמפרטורת_אסימפטוטת_חימום_{material_name}",
-                "english_var": f"heating_asymptote_{material_name}",
-                "symbol": 'T_"max,heat"',
-                "value": fit_temp_heat.params[0],
-                "error": fit_temp_heat.errors[0],
-                "units": '"°C"',
-                "scale": 1.0,
-                "fmt_spec": ".2f",
                 "suffix": "",
             },
         ]
@@ -858,7 +997,15 @@ def run_invar_pipeline(
         fit_invar_temp_heat,
         _parent_dir,
     )
-    return fit_invar_c, fit_invar_h, fit_invar_temp_cool, fit_invar_temp_heat, invar_plot1, invar_plot2, invar_plot3
+    return (
+        fit_invar_c,
+        fit_invar_h,
+        fit_invar_temp_cool,
+        fit_invar_temp_heat,
+        invar_plot1,
+        invar_plot2,
+        invar_plot3,
+    )
 
 
 @app.cell(hide_code=True)
