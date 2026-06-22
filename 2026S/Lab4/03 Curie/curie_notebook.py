@@ -196,8 +196,7 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _vs1_vp = vs1_data["CH2 (V)"] / vs1_data["CH1 (V)"]
     _vs2_vp = vs2_data["CH2 (V)"] / vs2_data["CH1 (V)"]
 
-    # Explicit x-ticks for better readability on log scale
-    _ticks = [100, 200, 300, 500, 1000, 2000, 3000, 4000]
+    import matplotlib.ticker as ticker
 
     # Graph 1: Vs/Vp as a function of frequency
     _fig1, _ax1 = plt.subplots(figsize=(6, 4.5))
@@ -205,6 +204,7 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _ax1.semilogx(_freqs, _vs1_vp, label="Ferrite core ($V_{s1}/V_p$)")
     _ax1.semilogx(_freqs, _vs2_vp, label="Invar core ($V_{s2}/V_p$)")
     set_style(_ax1, xlabel="$f \\ [\\mathrm{Hz}]$", ylabel="$V_s / V_p$")
+    _ticks = [200, 400, 600, 800, 1000]
     _ax1.set_xticks(_ticks)
     _ax1.set_xticklabels([str(t) for t in _ticks])
     _ax1.legend(frameon=True)
@@ -225,8 +225,7 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _ax2.semilogx(_freqs, _vs1_v0, label="Ferrite core ($V_{s1}/V_{s0}$)")
     _ax2.semilogx(_freqs, _vs2_v0, label="Invar core ($V_{s2}/V_{s0}$)")
     set_style(_ax2, xlabel="$f \\ [\\mathrm{Hz}]$", ylabel="$V_s / V_{\\mathrm{air}}$")
-    _ax2.set_xticks(_ticks)
-    _ax2.set_xticklabels([str(t) for t in _ticks])
+    _ax2.xaxis.set_major_formatter(ticker.ScalarFormatter())
     _ax2.legend(frameon=True)
     plt.tight_layout()
     fig2_path = _parent_dir / "graphs" / "frequency_response_ratio.svg"
@@ -492,15 +491,21 @@ def analysis_helpers():
         ]
         for item in results:
             val_expr = item["formatted_value"]
+            val_no_units = item["formatted_value"]
             if item["units"]:
                 val_expr = rf"{val_expr} {item['units']}"
             typst_lines.append(f"#let {item['hebrew_var']} = ${val_expr}$\n")
             typst_lines.append(f"#let {item['english_var']} = {item['hebrew_var']}\n")
+            typst_lines.append(f"#let {item['hebrew_var']}_ערך = ${val_no_units}$\n")
+            typst_lines.append(
+                f"#let {item['english_var']}_val = {item['hebrew_var']}_ערך\n"
+            )
 
             # Format and append error variables
             err_val = item["error"]
             if err_val is None:
                 err_expr = "none"
+                err_no_units_expr = "none"
             else:
                 scale = item.get("scale", 1.0)
                 fmt_spec = item.get("fmt_spec", ".2f")
@@ -508,6 +513,7 @@ def analysis_helpers():
                 e = err_val * scale
                 e_str = f"{e:{fmt_spec}}"
                 err_expr = rf"{e_str} {suffix}" if suffix else e_str
+                err_no_units_expr = f"${err_expr}$"
                 if item["units"]:
                     err_expr = rf"{err_expr} {item['units']}"
                 err_expr = f"${err_expr}$"
@@ -515,6 +521,12 @@ def analysis_helpers():
             typst_lines.append(f"#let שגיאת_{item['hebrew_var']} = {err_expr}\n")
             typst_lines.append(
                 f"#let {item['english_var']}_err = שגיאת_{item['hebrew_var']}\n"
+            )
+            typst_lines.append(
+                f"#let שגיאת_{item['hebrew_var']}_ערך = {err_no_units_expr}\n"
+            )
+            typst_lines.append(
+                f"#let {item['english_var']}_err_val = שגיאת_{item['hebrew_var']}_ערך\n"
             )
 
         typst_path = parent_dir / "constants" / f"{material_name}_results.typ"

@@ -250,7 +250,7 @@
         align(
           right,
           if c.units != "" [
-            #c.hebrew_name [#eval(c.units, mode: "math", scope: (dd: dd, sec: sec))]
+            #c.hebrew_name [#text(dir: ltr)[#eval(c.units, mode: "math", scope: (dd: dd, sec: sec))]]
           ] else [
             #c.hebrew_name
           ],
