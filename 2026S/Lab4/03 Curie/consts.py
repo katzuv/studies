@@ -102,21 +102,6 @@ kappa = 1.298  # Thermal conductivity κ [W/(m·K)]
 R_th = math.log(r_ext / r_int) / (2 * math.pi * kappa * h_oven_ceramic)
 
 
-# Helper function to calculate the cooling constant k
-def calculate_cooling_k(length, diameter, rho_m, c_p):
-    volume = length * math.pi * ((diameter / 2) ** 2)
-    mass = rho_m * volume
-    k = 1 / (R_th * mass * c_p)  # k = 1 / (R_th · C_heat)
-    return k
-
-
-# Invar sample
-k_invar = calculate_cooling_k(length=0.040, diameter=0.012, rho_m=8100, c_p=505)
-
-# Ferrite sample
-k_ferrite = calculate_cooling_k(length=0.0254, diameter=0.012, rho_m=5000, c_p=750)
-
-
 # ==========================================
 # Question 5: Water Kettle Heating Time
 # ==========================================
@@ -194,17 +179,6 @@ q3_table.add_row("Heater Power (P)", f"{P_oven:.2f} W")
 q3_table.add_row("Ideal Heating Rate (dT/dt)", f"{dT_dt:.2f} K/sec")
 console.print(q3_table)
 
-# Table 4: Newton's Cooling Law
-q4_table = Table(
-    title="\n[bold cyan]Question 4: Cooling Constants (k)[/bold cyan]",
-    show_header=True,
-    header_style="bold magenta",
-)
-q4_table.add_column("Core Material", style="dim")
-q4_table.add_column("Cooling Constant (k)", justify="right", style="green")
-q4_table.add_row("Invar", f"{k_invar:.4f} sec⁻¹")
-q4_table.add_row("Ferrite", f"{k_ferrite:.4f} sec⁻¹")
-console.print(q4_table)
 
 # Table 5 & 6: Heating/Cooling Scenarios
 q56_table = Table(

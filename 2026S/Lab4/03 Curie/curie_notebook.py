@@ -427,7 +427,6 @@ def analysis_helpers():
         fit_h,
         fit_c,
         fit_temp,
-        k_theory,
         parent_dir,
     ):
         results = [
@@ -468,19 +467,6 @@ def analysis_helpers():
                 "units": '"sec"^(-1)',
                 "scale": 1.0,
                 "fmt_spec": ".6f",
-                "suffix": "",
-            },
-            {
-                "hebrew_name": f"קבוע קירור תיאורטי ({hebrew_material})",
-                "english_name": f"Theoretical Cooling Constant - {material_name.capitalize()}",
-                "hebrew_var": f"קבוע_קירור_תיאורטי_{material_name}",
-                "english_var": f"cooling_constant_theory_{material_name}",
-                "symbol": 'k_"theory"',
-                "value": k_theory,
-                "error": None,
-                "units": '"sec"^(-1)',
-                "scale": 1.0,
-                "fmt_spec": ".4f",
                 "suffix": "",
             },
         ]
@@ -600,14 +586,12 @@ def run_ferrite_pipeline(
     )
 
     # 6. Export results
-    _k_theory = 0.0829
     export_material_results(
         "ferrite",
         "פריט",
         fit_ferrite_h,
         fit_ferrite_c,
         fit_ferrite_temp,
-        _k_theory,
         _parent_dir,
     )
     return (
@@ -639,7 +623,6 @@ def display_ferrite_results(
         ".6f",
         style="latex",
     )
-    _k_theory_str = "$0.0829$"
 
     _markdown_summary = mo.md(f"""
     ### Analysis Results for Ferrite Core
@@ -651,8 +634,7 @@ def display_ferrite_results(
 
     2. **Newton's Cooling Law Fit**:
        * **Experimental cooling constant**: $k_{{\\text{{exp}}}} = {_k_exp_str}\\ \\text{{s}}^{{-1}}$
-       * **Theoretical cooling constant**: $k_{{\\text{{theory}}}} = {_k_theory_str}\\ \\text{{s}}^{{-1}}$
-       * *Explanation*: The experimental cooling constant is much smaller than the theoretical value ($k_{{\\text{{theory}}}} \\approx 0.0829\\ \\text{{s}}^{{-1}}$). This is because the theoretical model assumes the core cools down in isolation via a thermal resistance, whereas experimentally the core is housed inside the oven assembly. The heat capacity of the entire oven structure (ceramic lining, heating coil, metal shields, etc.) is orders of magnitude larger, dramatically slowing down the cooling rate.
+       * *Explanation*: The experimental cooling constant is relatively small ($k_{{\\text{{exp}}}} \\approx {_k_exp_str}\\ \\text{{s}}^{{-1}}$) because the core is housed inside the oven assembly. The heat capacity of the entire oven structure (ceramic lining, heating coil, metal shields, etc.) is large, slowing down the cooling rate.
     """)
 
     _plots = mo.vstack(
@@ -729,14 +711,12 @@ def run_invar_pipeline(
     )
 
     # 6. Export results
-    _k_theory = 0.0483
     export_material_results(
         "invar",
         "אינבר",
         fit_invar_h,
         fit_invar_c,
         fit_invar_temp,
-        _k_theory,
         _parent_dir,
     )
     return fit_invar_c, fit_invar_h, fit_invar_temp, invar_plot1, invar_plot2
@@ -762,7 +742,6 @@ def display_invar_results(
         ".6f",
         style="latex",
     )
-    _k_theory_str = "$0.0483$"
 
     _markdown_summary = mo.md(f"""
     ### Analysis Results for Invar Core
@@ -774,8 +753,7 @@ def display_invar_results(
 
     2. **Newton's Cooling Law Fit**:
        * **Experimental cooling constant**: $k_{{\\text{{exp}}}} = {_k_exp_str}\\ \\text{{s}}^{{-1}}$
-       * **Theoretical cooling constant**: $k_{{\\text{{theory}}}} = {_k_theory_str}\\ \\text{{s}}^{{-1}}$
-       * *Explanation*: The experimental cooling constant is much smaller than the theoretical value ($k_{{\\text{{theory}}}} \\approx 0.0483\\ \\text{{s}}^{{-1}}$) for the same physical reasons (thermal mass of the oven assembly slowing down heat dissipation).
+       * *Explanation*: The experimental cooling constant is relatively small ($k_{{\\text{{exp}}}} \\approx {_k_exp_str}\\ \\text{{s}}^{{-1}}$) for the same physical reasons (thermal mass of the oven assembly slowing down heat dissipation).
     """)
 
     _plots = mo.vstack(

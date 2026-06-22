@@ -40,19 +40,5 @@
     "fmt_spec": ".6f",
     "suffix": "",
     "formatted_value": "0.001200 pm 0.000001"
-  },
-  {
-    "hebrew_name": "קבוע קירור תיאורטי (אינבר)",
-    "english_name": "Theoretical Cooling Constant - Invar",
-    "hebrew_var": "קבוע_קירור_תיאורטי_invar",
-    "english_var": "cooling_constant_theory_invar",
-    "symbol": "k_\"theory\"",
-    "value": 0.0483,
-    "error": null,
-    "units": "\"sec\"^(-1)",
-    "scale": 1.0,
-    "fmt_spec": ".4f",
-    "suffix": "",
-    "formatted_value": "0.0483"
   }
 ]

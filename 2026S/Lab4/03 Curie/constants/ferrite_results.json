@@ -40,19 +40,5 @@
     "fmt_spec": ".6f",
     "suffix": "",
     "formatted_value": "0.000990 pm 0.000002"
-  },
-  {
-    "hebrew_name": "קבוע קירור תיאורטי (פריט)",
-    "english_name": "Theoretical Cooling Constant - Ferrite",
-    "hebrew_var": "קבוע_קירור_תיאורטי_ferrite",
-    "english_var": "cooling_constant_theory_ferrite",
-    "symbol": "k_\"theory\"",
-    "value": 0.0829,
-    "error": null,
-    "units": "\"sec\"^(-1)",
-    "scale": 1.0,
-    "fmt_spec": ".4f",
-    "suffix": "",
-    "formatted_value": "0.0829"
   }
 ]

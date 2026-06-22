@@ -12,7 +12,3 @@
 #let cooling_constant_exp_ferrite = קבוע_קירור_ניסיוני_ferrite
 #let שגיאת_קבוע_קירור_ניסיוני_ferrite = $0.000002 "sec"^(-1)$
 #let cooling_constant_exp_ferrite_err = שגיאת_קבוע_קירור_ניסיוני_ferrite
-#let קבוע_קירור_תיאורטי_ferrite = $0.0829 "sec"^(-1)$
-#let cooling_constant_theory_ferrite = קבוע_קירור_תיאורטי_ferrite
-#let שגיאת_קבוע_קירור_תיאורטי_ferrite = none
-#let cooling_constant_theory_ferrite_err = שגיאת_קבוע_קירור_תיאורטי_ferrite
