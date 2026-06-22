@@ -197,13 +197,13 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _vs2_vp = vs2_data["CH2 (V)"] / vs2_data["CH1 (V)"]
 
     _vs0_vp_err = _vs0_vp * np.sqrt(
-        (0.02 / vs0_data["CH2 (V)"]) ** 2 + (0.05 / vs0_data["CH1 (V)"]) ** 2
+        (0.005 / vs0_data["CH2 (V)"]) ** 2 + (0.01 / vs0_data["CH1 (V)"]) ** 2
     )
     _vs1_vp_err = _vs1_vp * np.sqrt(
-        (0.02 / vs1_data["CH2 (V)"]) ** 2 + (0.05 / vs1_data["CH1 (V)"]) ** 2
+        (0.005 / vs1_data["CH2 (V)"]) ** 2 + (0.01 / vs1_data["CH1 (V)"]) ** 2
     )
     _vs2_vp_err = _vs2_vp * np.sqrt(
-        (0.02 / vs2_data["CH2 (V)"]) ** 2 + (0.05 / vs2_data["CH1 (V)"]) ** 2
+        (0.005 / vs2_data["CH2 (V)"]) ** 2 + (0.01 / vs2_data["CH1 (V)"]) ** 2
     )
 
     import matplotlib.ticker as ticker
