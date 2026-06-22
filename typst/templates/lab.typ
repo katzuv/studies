@@ -1,7 +1,7 @@
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/physica:0.9.8": *
 
-#import "../utils.typ": משל, codly-setup
+#import "../utils.typ": codly-setup, משל
 
 #let project(
   experiment_name,
