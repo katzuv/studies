@@ -11,7 +11,7 @@
     "scale": 1.0,
     "fmt_spec": ".2f",
     "suffix": "",
-    "formatted_value": "134.00 +- 1.81"
+    "formatted_value": "134.00 pm 1.81"
   },
   {
     "hebrew_name": "טמפרטורת קירי בקירור (פריט)",
@@ -25,7 +25,7 @@
     "scale": 1.0,
     "fmt_spec": ".2f",
     "suffix": "",
-    "formatted_value": "141.65 +- 6.21"
+    "formatted_value": "141.65 pm 6.21"
   },
   {
     "hebrew_name": "קבוע קירור ניסיוני (פריט)",
@@ -39,7 +39,7 @@
     "scale": 1.0,
     "fmt_spec": ".6f",
     "suffix": "",
-    "formatted_value": "0.000990 +- 0.000002"
+    "formatted_value": "0.000990 pm 0.000002"
   },
   {
     "hebrew_name": "קבוע קירור תיאורטי (פריט)",

@@ -11,7 +11,7 @@
     "scale": 1.0,
     "fmt_spec": ".2f",
     "suffix": "",
-    "formatted_value": "245.88 +- 8.61"
+    "formatted_value": "245.88 pm 8.61"
   },
   {
     "hebrew_name": "טמפרטורת קירי בקירור (אינבר)",
@@ -25,7 +25,7 @@
     "scale": 1.0,
     "fmt_spec": ".2f",
     "suffix": "",
-    "formatted_value": "249.45 +- 8.86"
+    "formatted_value": "249.45 pm 8.86"
   },
   {
     "hebrew_name": "קבוע קירור ניסיוני (אינבר)",
@@ -39,7 +39,7 @@
     "scale": 1.0,
     "fmt_spec": ".6f",
     "suffix": "",
-    "formatted_value": "0.001200 +- 0.000001"
+    "formatted_value": "0.001200 pm 0.000001"
   },
   {
     "hebrew_name": "קבוע קירור תיאורטי (אינבר)",
