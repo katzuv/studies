@@ -1,0 +1,47 @@
+[
+  {
+    "frequency": 100,
+    "Vp": 1.65,
+    "Vs": 0.524,
+    "ratio_meas": 0.3175757575757576,
+    "ratio_theory_ideal": 0.1897363549403709,
+    "ratio_theory_empirical": 0.3293449051008428,
+    "phase_theory_deg": 106.88355789428999
+  },
+  {
+    "frequency": 500,
+    "Vp": 1.67,
+    "Vs": 1.54,
+    "ratio_meas": 0.9221556886227545,
+    "ratio_theory_ideal": 0.5455116806220558,
+    "ratio_theory_empirical": 0.9469007283413611,
+    "phase_theory_deg": 146.61682331066794
+  },
+  {
+    "frequency": 950,
+    "Vp": 1.65,
+    "Vs": 1.75,
+    "ratio_meas": 1.0606060606060606,
+    "ratio_theory_ideal": 0.6172322628808274,
+    "ratio_theory_empirical": 1.0713935192206616,
+    "phase_theory_deg": 160.87244984281494
+  },
+  {
+    "frequency": 2000,
+    "Vp": 1.65,
+    "Vs": 1.83,
+    "ratio_meas": 1.1090909090909091,
+    "ratio_theory_ideal": 0.6446114845562516,
+    "ratio_theory_empirical": 1.1189184501558078,
+    "phase_theory_deg": 170.64515513020388
+  },
+  {
+    "frequency": 4000,
+    "Vp": 1.64,
+    "Vs": 1.86,
+    "ratio_meas": 1.1341463414634148,
+    "ratio_theory_ideal": 0.6510949717860866,
+    "ratio_theory_empirical": 1.1301725057483882,
+    "phase_theory_deg": 175.29119609085384
+  }
+]

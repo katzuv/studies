@@ -262,9 +262,9 @@ def format_val(val, err, fmt_spec, scale=1.0, suffix=""):
 
 raw_constants = [
     {
-        "hebrew_name": "התנגדות סליל ראשוני",
+        "hebrew_name": "התנגדות סליל ראשי",
         "english_name": "Primary Coil Resistance",
-        "hebrew_var": "התנגדות_סליל_ראשוני",
+        "hebrew_var": "התנגדות_סליל_ראשי",
         "english_var": "primary_coil_resistance",
         "symbol": 'R_"coil1"',
         "value": R_coil1,
@@ -275,9 +275,9 @@ raw_constants = [
         "suffix": "",
     },
     {
-        "hebrew_name": "השראות סליל ראשוני",
+        "hebrew_name": "השראות סליל ראשי",
         "english_name": "Primary Coil Inductance",
-        "hebrew_var": "השראות_סליל_ראשוני",
+        "hebrew_var": "השראות_סליל_ראשי",
         "english_var": "primary_coil_inductance",
         "symbol": 'L_"coil1"',
         "value": L_coil1,
@@ -314,9 +314,9 @@ raw_constants = [
         "suffix": r"dot 10^(-3)",
     },
     {
-        "hebrew_name": "זרם בסליל הראשוני",
+        "hebrew_name": "זרם בסליל הראשי",
         "english_name": "Primary Coil Current",
-        "hebrew_var": "זרם_בסליל_הראשוני",
+        "hebrew_var": "זרם_בסליל_הראשי",
         "english_var": "primary_coil_current",
         "symbol": "I_1",
         "value": I_1,
