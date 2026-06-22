@@ -280,15 +280,19 @@ def export_constants(constants_data: list[dict], directory) -> list[dict]:
     ]
     for item in constants_data:
         val_expr = item["formatted_value"]
+        val_no_units = item["formatted_value"]
         if item["units"]:
             val_expr = rf"{val_expr} {item['units']}"
         typst_lines.append(f"#let {item['hebrew_var']} = ${val_expr}$\n")
         typst_lines.append(f"#let {item['english_var']} = {item['hebrew_var']}\n")
+        typst_lines.append(f"#let {item['hebrew_var']}_ערך = ${val_no_units}$\n")
+        typst_lines.append(f"#let {item['english_var']}_val = {item['hebrew_var']}_ערך\n")
 
         # Format and append error variables
         err_val = item["error"]
         if err_val is None:
             err_expr = "none"
+            err_no_units_expr = "none"
         else:
             scale = item.get("scale", 1.0)
             fmt_spec = item.get("fmt_spec", ".2f")
@@ -296,6 +300,7 @@ def export_constants(constants_data: list[dict], directory) -> list[dict]:
             e = err_val * scale
             e_str = to_typst_sci(f"{e:{fmt_spec}}")
             err_expr = rf"{e_str} {suffix}" if suffix else e_str
+            err_no_units_expr = f"${err_expr}$"
             if item["units"]:
                 err_expr = rf"{err_expr} {item['units']}"
             err_expr = f"${err_expr}$"
@@ -303,6 +308,10 @@ def export_constants(constants_data: list[dict], directory) -> list[dict]:
         typst_lines.append(f"#let שגיאת_{item['hebrew_var']} = {err_expr}\n")
         typst_lines.append(
             f"#let {item['english_var']}_err = שגיאת_{item['hebrew_var']}\n"
+        )
+        typst_lines.append(f"#let שגיאת_{item['hebrew_var']}_ערך = {err_no_units_expr}\n")
+        typst_lines.append(
+            f"#let {item['english_var']}_err_val = שגיאת_{item['hebrew_var']}_ערך\n"
         )
 
     typst_path = output_dir / "constants.typ"
