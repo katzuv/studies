@@ -1,7 +1,7 @@
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/physica:0.9.8": *
 
-#import "../utils.typ": משל
+#import "../utils.typ": משל, codly-setup
 
 // Helper to add geresh to single Hebrew letters (e.g., א -> א')
 #let fix-geresh(s) = {
@@ -169,6 +169,7 @@
 
   // Main body.
   set par(justify: true)
+  show: codly-setup
 
   body
 }

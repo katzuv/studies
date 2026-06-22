@@ -58,3 +58,50 @@ $ del(a, b) $
 ]
 
 #let heb(hebrew-text) = { return text(font: "David")[#hebrew-text] }
+
+#import "@preview/codly:1.3.0": *
+
+#let python-icon = (
+  box(
+    image("Python-logo-notext.svg", height: 1.0em),
+    baseline: 0.25em,
+    inset: 0pt,
+    outset: 0pt,
+  )
+    + h(0.5em)
+)
+
+#let python-lang-config = (
+  py: (
+    name: "Python",
+    icon: python-icon,
+    color: rgb("#3776AB"),
+  ),
+  python: (
+    name: "Python",
+    icon: python-icon,
+    color: rgb("#3776AB"),
+  ),
+)
+
+#let codly-setup(body) = {
+  show: codly-init
+  show raw: set text(font: ("Noto Sans Mono", "Noto Sans Hebrew"), size: 0.9em)
+
+  codly(
+    languages: python-lang-config,
+    radius: 6pt,
+    stroke: 0.5pt + rgb("#cbd5e1"),
+    fill: rgb("#f8fafc"),
+    zebra-fill: rgb("#e2e8f0"),
+    number-format: number => text(fill: rgb("#94a3b8"), size: 0.8em)[#number],
+    lang-radius: 4pt,
+    lang-stroke: lang => 0.5pt + lang.color.lighten(40%),
+    lang-fill: lang => lang.color.lighten(90%),
+    lang-inset: (x: 8pt, y: 4pt),
+    inset: (x: 10pt, y: 4pt),
+    breakable: true,
+  )
+  body
+}
+

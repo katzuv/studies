@@ -1,7 +1,7 @@
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/physica:0.9.8": *
 
-#import "../utils.typ": משל
+#import "../utils.typ": משל, codly-setup
 
 #let project(
   experiment_name,
@@ -132,6 +132,7 @@
 
   // Main body.
   set par(justify: true)
+  show: codly-setup
 
   body
 
