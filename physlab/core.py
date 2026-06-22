@@ -283,7 +283,7 @@ def export_constants(constants_data: list[dict], directory) -> list[dict]:
         if item["units"]:
             val_expr = rf"{val_expr} {item['units']}"
         typst_lines.append(f"#let {item['hebrew_var']} = ${val_expr}$\n")
-        typst_lines.append(f"#let {item['english_var']} = ${val_expr}$\n")
+        typst_lines.append(f"#let {item['english_var']} = {item['hebrew_var']}\n")
 
         # Format and append error variables
         err_val = item["error"]
@@ -301,7 +301,9 @@ def export_constants(constants_data: list[dict], directory) -> list[dict]:
             err_expr = f"${err_expr}$"
 
         typst_lines.append(f"#let שגיאת_{item['hebrew_var']} = {err_expr}\n")
-        typst_lines.append(f"#let {item['english_var']}_err = {err_expr}\n")
+        typst_lines.append(
+            f"#let {item['english_var']}_err = שגיאת_{item['hebrew_var']}\n"
+        )
 
     typst_path = output_dir / "constants.typ"
     typst_path.write_text("".join(typst_lines), encoding="utf-8")

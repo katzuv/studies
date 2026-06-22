@@ -1,10 +1,3 @@
-# /// script
-# requires-python = ">=3.14"
-# dependencies = [
-#     "rich",
-# ]
-# ///
-
 import math
 import sys
 from pathlib import Path
@@ -226,19 +219,47 @@ q56_table.add_row("Q6: Cool body (550 K → 350 K, k = 0.5 sec⁻¹)", f"{t_targ
 console.print(q56_table)
 
 # Save console output to SVG
-output_svg_path = Path(__file__).parent / "constants_output.svg"
+output_svg_path = Path(__file__).parent / "graphs" / "constants_output.svg"
 console.save_svg(str(output_svg_path))
 
 # ==========================================
 # Generate JSON and Typst Constants Files
 # ==========================================
 
+
 # Define uncertainties/errors
+# 1. Multimeter resistance accuracy (Agilent 34401A 6.5 digit DMM datasheet)
+# Formula: ± (% of reading + % of range)
+# 1 year spec for 100 Ohm and 1 kOhm range: 0.050% of reading + 0.008% of range
+def calculate_dmm_resistance_error(reading, range_val):
+    return (reading * 0.050 / 100) + (range_val * 0.008 / 100)
+
+
+R_coil1_err = calculate_dmm_resistance_error(R_coil1, range_val=100.0)  # 100 Ohm range
+R_coil2_err = calculate_dmm_resistance_error(R_coil2, range_val=1000.0)  # 1 kOhm range
+
+
+# 2. LCR meter inductance accuracy (Amprobe LCR55A datasheet)
+# Formula: ± (3.0% of reading + 20 digits)
+# 20 mH range: resolution 0.01 mH, so 1 digit = 0.01 mH
+# 200 mH range: resolution 0.1 mH, so 1 digit = 0.1 mH
+def calculate_lcr_inductance_error(reading_henry, resolution_henry):
+    return (reading_henry * 0.03) + (20 * resolution_henry)
+
+
+L_coil1_err = calculate_lcr_inductance_error(
+    L_coil1, resolution_henry=0.01e-3
+)  # 20 mH range
+L_coil2_err = calculate_lcr_inductance_error(
+    L_coil2, resolution_henry=0.1e-3
+)  # 200 mH range
+
+
 errors = {
-    'R_"coil1"': None,
-    'L_"coil1"': None,
-    'R_"coil2"': None,
-    'L_"coil2"': L_coil2 / 24.0,  # uncertainty due to h2 range (46-50 mm)
+    'R_"coil1"': R_coil1_err,
+    'L_"coil1"': L_coil1_err,
+    'R_"coil2"': R_coil2_err,
+    'L_"coil2"': L_coil2_err,
     "I_1": None,
     "B_1": None,
     "V_s / V_p": None,
@@ -425,4 +446,4 @@ raw_constants = [
 ]
 
 # Generate formatted values and export constants to JSON/Typst
-export_constants(raw_constants, Path(__file__).parent)
+export_constants(raw_constants, Path(__file__).parent / "constants")
