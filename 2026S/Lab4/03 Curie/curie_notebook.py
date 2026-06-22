@@ -190,20 +190,20 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     except NameError:
         _parent_dir = Path(".")
 
-    # Calculate ratios Vs/Vp and uncertainties based on last digits (CH1: 0.01 V, CH2: 0.001 V)
+    # Calculate ratios Vs/Vp and uncertainties based on instrumental accuracy (CH1: 0.05 V, CH2: 0.02 V)
     _freqs = vs0_data["Frequency (Hz)"]
     _vs0_vp = vs0_data["CH2 (V)"] / vs0_data["CH1 (V)"]
     _vs1_vp = vs1_data["CH2 (V)"] / vs1_data["CH1 (V)"]
     _vs2_vp = vs2_data["CH2 (V)"] / vs2_data["CH1 (V)"]
 
     _vs0_vp_err = _vs0_vp * np.sqrt(
-        (0.001 / vs0_data["CH2 (V)"]) ** 2 + (0.01 / vs0_data["CH1 (V)"]) ** 2
+        (0.02 / vs0_data["CH2 (V)"]) ** 2 + (0.05 / vs0_data["CH1 (V)"]) ** 2
     )
     _vs1_vp_err = _vs1_vp * np.sqrt(
-        (0.001 / vs1_data["CH2 (V)"]) ** 2 + (0.01 / vs1_data["CH1 (V)"]) ** 2
+        (0.02 / vs1_data["CH2 (V)"]) ** 2 + (0.05 / vs1_data["CH1 (V)"]) ** 2
     )
     _vs2_vp_err = _vs2_vp * np.sqrt(
-        (0.001 / vs2_data["CH2 (V)"]) ** 2 + (0.01 / vs2_data["CH1 (V)"]) ** 2
+        (0.02 / vs2_data["CH2 (V)"]) ** 2 + (0.05 / vs2_data["CH1 (V)"]) ** 2
     )
 
     import matplotlib.ticker as ticker
@@ -260,10 +260,10 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _vs2_v0 = vs2_data["CH2 (V)"] / vs0_data["CH2 (V)"]
 
     _vs1_v0_err = _vs1_v0 * np.sqrt(
-        (0.001 / vs1_data["CH2 (V)"]) ** 2 + (0.001 / vs0_data["CH2 (V)"]) ** 2
+        (0.02 / vs1_data["CH2 (V)"]) ** 2 + (0.02 / vs0_data["CH2 (V)"]) ** 2
     )
     _vs2_v0_err = _vs2_v0 * np.sqrt(
-        (0.001 / vs2_data["CH2 (V)"]) ** 2 + (0.001 / vs0_data["CH2 (V)"]) ** 2
+        (0.02 / vs2_data["CH2 (V)"]) ** 2 + (0.02 / vs0_data["CH2 (V)"]) ** 2
     )
 
     _fig2, _ax2 = plt.subplots(figsize=(6, 4.5))
@@ -306,7 +306,7 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _ax3.errorbar(
         _freqs,
         _vs0,
-        yerr=0.001,
+        yerr=0.02,
         label="Air core ($V_{s0}$)",
         fmt="-o",
         markersize=3,
@@ -316,7 +316,7 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _ax3.errorbar(
         _freqs,
         _vs1,
-        yerr=0.001,
+        yerr=0.02,
         label="Ferrite core ($V_{s1}$)",
         fmt="-o",
         markersize=3,
@@ -326,7 +326,7 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _ax3.errorbar(
         _freqs,
         _vs2,
-        yerr=0.001,
+        yerr=0.02,
         label="Invar core ($V_{s2}$)",
         fmt="-o",
         markersize=3,
