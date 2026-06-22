@@ -46,7 +46,7 @@ def coil_geometry_explanation():
 @app.cell
 def load_constants_from_json():
     _parent_dir = Path(__file__).parent
-    _json_path = _parent_dir / "constants.json"
+    _json_path = _parent_dir / "constants" / "constants.json"
     constants_data = json.loads(_json_path.read_text(encoding="utf-8"))
     return (constants_data,)
 
@@ -165,7 +165,7 @@ def load_frequency_response_data():
         _parent_dir = Path(__file__).parent
     except NameError:
         _parent_dir = Path(".")
-    _csv_path = _parent_dir / "freq_sweep.csv"
+    _csv_path = _parent_dir / "data" / "freq_sweep.csv"
     _df = pd.read_csv(_csv_path)
 
     # Filter by core type
@@ -210,7 +210,9 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _ax1.legend(frameon=True)
     plt.tight_layout()
     _fig1.savefig(
-        _parent_dir / "frequency_response_vs_vp.svg", format="svg", bbox_inches="tight"
+        _parent_dir / "graphs" / "frequency_response_vs_vp.svg",
+        format="svg",
+        bbox_inches="tight",
     )
     plot1 = mo.as_html(_fig1)
     plt.close(_fig1)
@@ -227,7 +229,7 @@ def plot_frequency_response(vs0_data, vs1_data, vs2_data):
     _ax2.set_xticklabels([str(t) for t in _ticks])
     _ax2.legend(frameon=True)
     plt.tight_layout()
-    fig2_path = _parent_dir / "frequency_response_ratio.svg"
+    fig2_path = _parent_dir / "graphs" / "frequency_response_ratio.svg"
     _fig2.savefig(fig2_path, format="svg", bbox_inches="tight")
     plot2 = mo.as_html(_fig2)
     plt.close(_fig2)
@@ -375,7 +377,7 @@ def analysis_helpers():
         plt.axvline(Tc_c, color="#4A148C", linestyle="--", alpha=0.8)
 
         set_style(
-            xlabel="Temperature ($^\\circ\\mathrm{C}$)",
+            xlabel="Temperature ($^\\circ$C)",
             ylabel="RMS Voltage CH2 ($V_s$ [V])",
         )
 
@@ -384,7 +386,7 @@ def analysis_helpers():
         plt.legend(frameon=True)
         plt.tight_layout()
         fig1.savefig(
-            parent_dir / f"{material_name}_curie_fit.svg",
+            parent_dir / "graphs" / f"{material_name}_curie_fit.svg",
             format="svg",
             bbox_inches="tight",
         )
@@ -403,14 +405,14 @@ def analysis_helpers():
             label="Newton Fit",
         )
         set_style(
-            xlabel="Time $t \\ [\\mathrm{sec}]$",
-            ylabel="Temperature ($^\\circ\\mathrm{C}$)",
+            xlabel="Time $[\\mathrm{sec}]$",
+            ylabel="Temperature ($^\\circ$C)",
         )
         plt.yscale("log")
         plt.legend(frameon=True)
         plt.tight_layout()
         fig2.savefig(
-            parent_dir / f"{material_name}_cooling_fit.svg",
+            parent_dir / "graphs" / f"{material_name}_cooling_fit.svg",
             format="svg",
             bbox_inches="tight",
         )
@@ -493,7 +495,7 @@ def analysis_helpers():
             )
 
         # Save JSON
-        json_path = parent_dir / f"{material_name}_results.json"
+        json_path = parent_dir / "constants" / f"{material_name}_results.json"
         json_path.write_text(
             json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8"
         )
@@ -505,9 +507,9 @@ def analysis_helpers():
         for item in results:
             val_expr = item["formatted_value"]
             if item["units"]:
-                val_expr = rf"{val_expr} \ {item['units']}"
+                val_expr = rf"{val_expr} {item['units']}"
             typst_lines.append(f"#let {item['hebrew_var']} = ${val_expr}$\n")
-            typst_lines.append(f"#let {item['english_var']} = ${val_expr}$\n")
+            typst_lines.append(f"#let {item['english_var']} = {item['hebrew_var']}\n")
 
             # Format and append error variables
             err_val = item["error"]
@@ -521,13 +523,15 @@ def analysis_helpers():
                 e_str = f"{e:{fmt_spec}}"
                 err_expr = rf"{e_str} {suffix}" if suffix else e_str
                 if item["units"]:
-                    err_expr = rf"{err_expr} \ {item['units']}"
+                    err_expr = rf"{err_expr} {item['units']}"
                 err_expr = f"${err_expr}$"
 
             typst_lines.append(f"#let שגיאת_{item['hebrew_var']} = {err_expr}\n")
-            typst_lines.append(f"#let {item['english_var']}_err = {err_expr}\n")
+            typst_lines.append(
+                f"#let {item['english_var']}_err = שגיאת_{item['hebrew_var']}\n"
+            )
 
-        typst_path = parent_dir / f"{material_name}_results.typ"
+        typst_path = parent_dir / "constants" / f"{material_name}_results.typ"
         typst_path.write_text("".join(typst_lines), encoding="utf-8")
 
     return (
@@ -553,7 +557,7 @@ def run_ferrite_pipeline(
         _parent_dir = Path(".")
 
     # 1. Load data
-    _csv_path = _parent_dir / "curie_data_ferrit.csv"
+    _csv_path = _parent_dir / "data" / "curie_data_ferrit.csv"
     _df = pd.read_csv(_csv_path, comment="#")
 
     # 2. Split data
@@ -684,7 +688,7 @@ def run_invar_pipeline(
         _parent_dir = Path(".")
 
     # 1. Load data
-    _csv_path = _parent_dir / "curie_data_invar.csv"
+    _csv_path = _parent_dir / "data" / "curie_data_invar.csv"
     _df = pd.read_csv(_csv_path, comment="#")
 
     # 2. Split data
