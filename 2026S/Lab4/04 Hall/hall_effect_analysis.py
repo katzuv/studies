@@ -21,26 +21,16 @@ def _():
     import pandas as pd
     import numpy as np
     import matplotlib.pyplot as plt
-    from scipy import stats
     from scipy.constants import e, k
     import os
-
-    # Modern styling
-    plt.rcParams['font.family'] = 'sans-serif'
-    plt.rcParams['text.color'] = '#2c3e50'
-    plt.rcParams['axes.labelcolor'] = '#2c3e50'
-    plt.rcParams['xtick.color'] = '#7f8c8d'
-    plt.rcParams['ytick.color'] = '#7f8c8d'
-    plt.rcParams['grid.color'] = '#ecf0f1'
-    plt.rcParams['grid.linestyle'] = '-'
-    plt.rcParams['axes.edgecolor'] = '#bdc3c7'
-    plt.rcParams['axes.linewidth'] = 0.8
+    from physlab.core import physics_fit, set_style, export_constants
 
     # Constants
     d = 1.0e-3  # m
     W = 10.0e-3  # m
     L = 16.0e-3  # m
-    q_e = -e  # C (electron charge)
+    q_e = -e  # C
+    kB_eV = k / e
 
     # Generic Helper Functions
     def load_data(filename, cols, header_exists=False):
@@ -52,50 +42,27 @@ def _():
             df = pd.read_csv(path, sep=r'\s+', comment='#', names=cols)
         return df
 
-    def fit_linear(x, y):
-        slope, intercept, r_val, _, _ = stats.linregress(x, y)
-        return slope, intercept, r_val**2
-
-    def format_sci_latex(val, precision=4):
-        if val == 0:
-            return "0"
-        exponent = int(np.floor(np.log10(abs(val))))
-        mantissa = val / (10**exponent)
-        if exponent == 0:
-            return f"{mantissa:.{precision}f}"
-        return f"{mantissa:.{precision}f} \\times 10^{{{exponent}}}"
-
-    def plot_scatter_with_fit(x, y, xlabel, ylabel, title, fit_x=None, fit_y=None, fit_lbl="", filename=None, color='#3498db', fit_color='#e74c3c', highlight_x=None, highlight_y=None, highlight_lbl=""):
-        fig, ax = plt.subplots(figsize=(6, 4))
-        ax.scatter(x, y, color=color, s=45, alpha=0.8, label='Data points', zorder=3)
-        if highlight_x is not None and highlight_y is not None:
-            ax.scatter(highlight_x, highlight_y, color='#e74c3c', s=45, label=highlight_lbl, zorder=4)
-        if fit_x is not None and fit_y is not None:
-            ax.plot(fit_x, fit_y, color=fit_color, linewidth=1.8, linestyle='--', label=fit_lbl, zorder=5)
-        ax.set_xlabel(xlabel, fontsize=10)
-        ax.set_ylabel(ylabel, fontsize=10)
-        ax.set_title(title, fontsize=11, fontweight='bold', pad=12)
-        ax.grid(True, zorder=1)
-        ax.legend(frameon=True, facecolor='white', edgecolor='none')
-        fig.tight_layout()
-        if filename:
-            os.makedirs('graphs', exist_ok=True)
-            fig.savefig(f"graphs/{filename}", format='svg')
-        plt.show()
+    def linear_model(x, a, b):
+        return a * x + b
 
     return (
         L,
         W,
         d,
         e,
-        fit_linear,
-        format_sci_latex,
+        physics_fit,
+        set_style,
+        export_constants,
         k,
         load_data,
         mo,
         np,
-        plot_scatter_with_fit,
+        pd,
+        plt,
         q_e,
+        kB_eV,
+        linear_model,
+        os,
     )
 
 
@@ -132,63 +99,81 @@ def _(data_suffix, mo):
 @app.cell(hide_code=True)
 def _(
     data_suffix,
-    fit_linear,
-    format_sci_latex,
+    linear_model,
     load_data,
     np,
-    plot_scatter_with_fit,
+    physics_fit,
+    plt,
+    set_style,
+    W,
+    d,
+    L,
 ):
     # Load and fit Zero Field Data
     df_zf = load_data(f"zero_field{data_suffix}.txt", ['Ip_mA', 'T_C', 'Uh_mV', 'Up_mV'])
 
-    # 1. Conductance fit
-    slope_cond, intercept_cond, _ = fit_linear(df_zf['Up_mV'], df_zf['Ip_mA'])
-    R_zf = 1.0 / slope_cond
+    # 1. Conductance fit: Ip = G * Up + intercept
+    res_cond_init = physics_fit(linear_model, df_zf['Up_mV'], df_zf['Ip_mA'], np.ones_like(df_zf['Ip_mA']))
+    G_init = res_cond_init.params[0]
+    y_err_cond = np.sqrt(1.0**2 + (G_init * 1.0)**2)
+    fit_cond = physics_fit(linear_model, df_zf['Up_mV'], df_zf['Ip_mA'], np.full_like(df_zf['Ip_mA'], y_err_cond))
+    G = fit_cond.params[0]
+    dG = fit_cond.errors[0]
+    R_zf = 1.0 / G
+    dR_zf = dG / (G**2)
 
-    # 2. Misalignment fit
-    slope_beta, intercept_beta, _ = fit_linear(df_zf['Up_mV'], df_zf['Uh_mV'])
+    # 2. Misalignment fit: Uh' = beta * Up + intercept
+    res_beta_init = physics_fit(linear_model, df_zf['Up_mV'], df_zf['Uh_mV'], np.ones_like(df_zf['Uh_mV']))
+    beta_init = res_beta_init.params[0]
+    y_err_beta = 1.0 * np.sqrt(1.0 + beta_init**2)
+    fit_beta = physics_fit(linear_model, df_zf['Up_mV'], df_zf['Uh_mV'], np.full_like(df_zf['Uh_mV'], y_err_beta))
+    beta = fit_beta.params[0]
+    dbeta = fit_beta.errors[0]
 
-    # Plots
-    _x = np.linspace(df_zf['Up_mV'].min(), df_zf['Up_mV'].max(), 100)
+    # Plots (using private variables to avoid multiple-definition issues in Marimo)
+    _fig, _ax = plt.subplots(figsize=(6, 4))
+    x_line = np.linspace(df_zf['Up_mV'].min(), df_zf['Up_mV'].max(), 100)
+    _ax.errorbar(df_zf['Up_mV'], df_zf['Uh_mV'], xerr=1.0, yerr=1.0, fmt='o', color='#2ecc71', markersize=4, elinewidth=1, capsize=1.5, label='Data points', zorder=3)
+    _ax.plot(x_line, linear_model(x_line, *fit_beta.params), color='#f39c12', linewidth=1.5, linestyle='--', label='Fit', zorder=5)
+    set_style(ax=_ax, xlabel='Probe Voltage $U_p$ (mV)', ylabel='Hall Voltage $U\'_H$ (mV)', grid=True)
+    _ax.legend(frameon=True, facecolor='white', edgecolor='none')
+    _fig.tight_layout()
+    _fig.savefig(f"graphs/uh_vs_up{data_suffix}.svg", format='svg', metadata={'Date': None})
+    plt.close(_fig)
 
-    # Graph 1
-    plot_scatter_with_fit(
-        df_zf['Up_mV'], df_zf['Uh_mV'], 'Probe Voltage $U_p$ (mV)', 'Measured Hall Voltage $U\'_H$ (mV)',
-        'Measured Hall Voltage $U\'_H$ vs Probe Voltage $U_p$',
-        _x, slope_beta * _x + intercept_beta, fr'Fit: $U_H = {format_sci_latex(slope_beta, precision=2)} U_p + {intercept_beta:.2f}$',
-        f"uh_vs_up{data_suffix}.svg", color='#2ecc71', fit_color='#f39c12'
-    )
+    _fig2, _ax2 = plt.subplots(figsize=(6, 4))
+    _ax2.errorbar(df_zf['Up_mV'], df_zf['Ip_mA'], xerr=1.0, yerr=1.0, fmt='o', color='#3498db', markersize=4, elinewidth=1, capsize=1.5, label='Data points', zorder=3)
+    _ax2.plot(x_line, linear_model(x_line, *fit_cond.params), color='#e74c3c', linewidth=1.5, linestyle='--', label='Fit', zorder=5)
+    set_style(ax=_ax2, xlabel='Probe Voltage $U_p$ (mV)', ylabel='Sample Current $I_p$ (mA)', grid=True)
+    _ax2.legend(frameon=True, facecolor='white', edgecolor='none')
+    _fig2.tight_layout()
+    _fig2.savefig(f"graphs/ip_vs_up{data_suffix}.svg", format='svg', metadata={'Date': None})
+    plt.close(_fig2)
 
-    # Graph 2
-    plot_scatter_with_fit(
-        df_zf['Up_mV'], df_zf['Ip_mA'], 'Probe Voltage $U_p$ (mV)', 'Sample Current $I_p$ (mA)',
-        'Sample Current $I_p$ vs Probe Voltage $U_p$',
-        _x, slope_cond * _x + intercept_cond, f'Fit: $I_p = {slope_cond:.5f} U_p + {intercept_cond:.2f}$',
-        f"ip_vs_up{data_suffix}.svg", color='#3498db', fit_color='#e74c3c'
-    )
-    return R_zf, intercept_beta, slope_beta, slope_cond
+    return R_zf, dR_zf, beta, dbeta, G, dG
 
 
 @app.cell(hide_code=True)
 def _(
     L,
     R_zf,
+    dR_zf,
     W,
     d,
-    format_sci_latex,
-    intercept_beta,
+    beta,
+    dbeta,
     mo,
-    slope_beta,
-    slope_cond,
+    G,
 ):
     rho_zf = R_zf * W * d / L
+    drho_zf = dR_zf * W * d / L
     mo.md(fr"""
     ### Zero Field Results
-    * **Sample Resistance $R$:** $1/G = {R_zf:.4f}\ \Omega$ (Conductance $G = {slope_cond:.6f}\ \text{{S}}$)
-    * **Resistivity $\rho_{{xx}}$ (at $B = 0$):** ${format_sci_latex(rho_zf)}\ \Omega\cdot\text{{m}}$
-    * **Misalignment Parameter $\beta$:** ${format_sci_latex(slope_beta)}$ (Offset: ${intercept_beta:.2f}\ \text{{mV}}$)
+    * **Sample Resistance $R$:** $1/G = {R_zf:.4f} \pm {dR_zf:.4f}\ \Omega$
+    * **Resistivity $\rho_{{xx}}$ (at $B = 0$):** ${rho_zf:.5e} \pm {drho_zf:.5e}\ \Omega\cdot\text{{m}}$
+    * **Misalignment Parameter $\beta$:** ${beta:.5f} \pm {dbeta:.5f}$
     """)
-    return
+    return drho_zf, rho_zf
 
 
 @app.cell(hide_code=True)
@@ -197,162 +182,435 @@ def _(
     W,
     d,
     data_suffix,
-    fit_linear,
+    linear_model,
     load_data,
     np,
-    plot_scatter_with_fit,
-    q_e,
-    slope_beta,
+    physics_fit,
+    plt,
+    set_style,
+    beta,
+    dbeta,
+    e,
 ):
     # Load RT datasets
     df_curr = load_data(f"varying_current{data_suffix}.txt", ['Ip_mA', 'T_C', 'Uh_mV', 'Up_mV'])
-    df_curr['Uh_corr_mV'] = df_curr['Uh_mV'] - slope_beta * df_curr['Up_mV']
+    dUh_curr = np.sqrt(1.0**2 + (df_curr['Up_mV'] * dbeta)**2 + (beta * 1.0)**2)
+    df_curr['Uh_corr_mV'] = df_curr['Uh_mV'] - beta * df_curr['Up_mV']
 
     df_field = load_data(f"varying_field{data_suffix}.txt", ['B_mT', 'T_C', 'Uh_mV', 'Up_mV'])
-    df_field['Uh_corr_mV'] = df_field['Uh_mV'] - slope_beta * df_field['Up_mV']
+    dUh_field = np.sqrt(1.0**2 + (df_field['Up_mV'] * dbeta)**2 + (beta * 1.0)**2) / 1000.0
 
     # 1. Varying Current Analysis (constant B = 301 mT)
-    s_curr, int_curr, _ = fit_linear(df_curr['Ip_mA'], df_curr['Uh_corr_mV'])
-    B_curr = 301.0e-3
-    RH_curr = s_curr * d / B_curr
-    carrier_type_curr = "p-type" if RH_curr > 0 else "n-type"
-    q_carrier_curr = -q_e if RH_curr > 0 else q_e
-    n_curr = 1.0 / (abs(RH_curr) * q_carrier_curr)
+    res_s_curr_init = physics_fit(linear_model, df_curr['Ip_mA'], df_curr['Uh_corr_mV'], dUh_curr)
+    s_curr_init = res_s_curr_init.params[0]
+    y_err_s_curr = np.sqrt(dUh_curr**2 + (s_curr_init * 1.0)**2)
+    fit_s_curr = physics_fit(linear_model, df_curr['Ip_mA'], df_curr['Uh_corr_mV'], y_err_s_curr)
+    s_curr = fit_s_curr.params[0]
+    ds_curr = fit_s_curr.errors[0]
 
-    r_0_curr, _, _ = fit_linear(df_curr['Ip_mA'], df_curr['Up_mV'])
-    rho_curr = r_0_curr * W * d / L
+    B_curr = 301.0e-3
+    dB_curr = 1.0e-3
+    RH_curr = s_curr * d / B_curr
+    dRH_curr = abs(RH_curr) * np.sqrt((ds_curr / s_curr)**2 + (dB_curr / B_curr)**2)
+
+    carrier_type_curr = "p-type" if RH_curr > 0 else "n-type"
+    n_curr = 1.0 / (abs(RH_curr) * e)
+    dn_curr = n_curr * (dRH_curr / abs(RH_curr))
+
+    res_r0_curr_init = physics_fit(linear_model, df_curr['Ip_mA'], df_curr['Up_mV'], np.ones_like(df_curr['Ip_mA']))
+    r0_curr_init = res_r0_curr_init.params[0]
+    y_err_r0_curr = np.sqrt(1.0**2 + (r0_curr_init * 1.0)**2)
+    fit_r0_curr = physics_fit(linear_model, df_curr['Ip_mA'], df_curr['Up_mV'], np.full_like(df_curr['Ip_mA'], y_err_r0_curr))
+    r0_curr = fit_r0_curr.params[0]
+    dr0_curr = fit_r0_curr.errors[0]
+
+    rho_curr = r0_curr * W * d / L
+    drho_curr = dr0_curr * W * d / L
     mu_curr = abs(RH_curr) / rho_curr
+    dmu_curr = mu_curr * np.sqrt((dRH_curr / RH_curr)**2 + (drho_curr / rho_curr)**2)
 
     # 2. Varying Field Analysis (constant Ip = 30 mA)
     B_T = df_field['B_mT'] / 1000.0
-    Uh_V = df_field['Uh_corr_mV'] / 1000.0
-    s_field, int_field, _ = fit_linear(B_T, Uh_V)
+    dB_T = 1.0e-3
+    Uh_corr_V = (df_field['Uh_mV'] - beta * df_field['Up_mV']) / 1000.0
+
+    res_s_field_init = physics_fit(linear_model, B_T, Uh_corr_V, dUh_field)
+    s_field_init = res_s_field_init.params[0]
+    y_err_s_field = np.sqrt(dUh_field**2 + (s_field_init * 1.0e-3)**2)
+    fit_s_field = physics_fit(linear_model, B_T, Uh_corr_V, y_err_s_field)
+    s_field = fit_s_field.params[0]
+    ds_field = fit_s_field.errors[0]
+
     I_field = 30.0e-3
+    dI_field = 1.0e-3
     RH_field = s_field * d / I_field
+    dRH_field = abs(RH_field) * np.sqrt((ds_field / s_field)**2 + (dI_field / I_field)**2)
+
     carrier_type_field = "p-type" if RH_field > 0 else "n-type"
-    q_carrier_field = -q_e if RH_field > 0 else q_e
-    n_field = 1.0 / (abs(RH_field) * q_carrier_field)
+    n_field = 1.0 / (abs(RH_field) * e)
+    dn_field = n_field * (dRH_field / abs(RH_field))
 
-    r_0_field = (df_field['Up_mV'].mean() / 1000.0) / I_field
-    rho_field = r_0_field * W * d / L
+    mean_Up_V = df_field['Up_mV'].mean() / 1000.0
+    dmean_Up_V = 0.001
+    r0_field = mean_Up_V / I_field
+    dr0_field = r0_field * np.sqrt((dmean_Up_V / mean_Up_V)**2 + (dI_field / I_field)**2)
+
+    rho_field = r0_field * W * d / L
+    drho_field = dr0_field * W * d / L
     mu_field = abs(RH_field) / rho_field
+    dmu_field = mu_field * np.sqrt((dRH_field / RH_field)**2 + (drho_field / rho_field)**2)
 
-    # Plots
-    # Graph 3
-    _x3 = np.linspace(df_curr['Ip_mA'].min(), df_curr['Ip_mA'].max(), 100)
-    plot_scatter_with_fit(
-        df_curr['Ip_mA'], df_curr['Uh_corr_mV'], 'Sample Current $I_p$ (mA)', 'Corrected Hall Voltage $U_H$ (mV)',
-        'Corrected Hall Voltage $U_H$ vs Sample Current $I_p$',
-        _x3, s_curr * _x3 + int_curr, f'Fit: $U_H = {s_curr:.3f} I_p + {int_curr:.2f}$',
-        f"uh_vs_ip_varying_current{data_suffix}.svg", color='#9b59b6', fit_color='#2ecc71'
-    )
+    # Plots using private variables to avoid multiple definition issues
+    _fig3, _ax3 = plt.subplots(figsize=(6, 4))
+    x_line_curr = np.linspace(df_curr['Ip_mA'].min(), df_curr['Ip_mA'].max(), 100)
+    _ax3.errorbar(df_curr['Ip_mA'], df_curr['Uh_corr_mV'], xerr=1.0, yerr=dUh_curr, fmt='o', color='#9b59b6', markersize=4, elinewidth=1, capsize=1.5, label='Data points', zorder=3)
+    _ax3.plot(x_line_curr, linear_model(x_line_curr, *fit_s_curr.params), color='#2ecc71', linewidth=1.5, linestyle='--', label='Fit', zorder=5)
+    set_style(ax=_ax3, xlabel='Sample Current $I_p$ (mA)', ylabel='Corrected Hall Voltage $U_H$ (mV)', grid=True)
+    _ax3.legend(frameon=True, facecolor='white', edgecolor='none')
+    _fig3.tight_layout()
+    _fig3.savefig(f"graphs/uh_vs_ip_varying_current{data_suffix}.svg", format='svg', metadata={'Date': None})
+    plt.close(_fig3)
 
-    # Graph 4
-    _x4 = np.linspace(B_T.min(), B_T.max(), 100)
-    plot_scatter_with_fit(
-        B_T, Uh_V, 'Magnetic Field $B$ (T)', 'Corrected Hall Voltage $U_H$ (V)',
-        'Corrected Hall Voltage $U_H$ vs Magnetic Field $B$',
-        _x4, s_field * _x4 + int_field, f'Fit: $U_H = {s_field:.4f} B + {int_field:.4f}$',
-        f"uh_vs_b_varying_field{data_suffix}.svg", color='#e67e22', fit_color='#34495e'
-    )
+    _fig4, _ax4 = plt.subplots(figsize=(6, 4))
+    x_line_field = np.linspace(B_T.min(), B_T.max(), 100)
+    _ax4.errorbar(B_T, Uh_corr_V, xerr=dB_T, yerr=dUh_field, fmt='o', color='#e67e22', markersize=4, elinewidth=1, capsize=1.5, label='Data points', zorder=3)
+    _ax4.plot(x_line_field, linear_model(x_line_field, *fit_s_field.params), color='#34495e', linewidth=1.5, linestyle='--', label='Fit', zorder=5)
+    set_style(ax=_ax4, xlabel='Magnetic Field $B$ (T)', ylabel='Corrected Hall Voltage $U_H$ (V)', grid=True)
+    _ax4.legend(frameon=True, facecolor='white', edgecolor='none')
+    _fig4.tight_layout()
+    _fig4.savefig(f"graphs/uh_vs_b_varying_field{data_suffix}.svg", format='svg', metadata={'Date': None})
+    plt.close(_fig4)
+
     return (
         B_curr,
+        dB_curr,
         I_field,
+        dI_field,
         RH_curr,
+        dRH_curr,
         RH_field,
+        dRH_field,
         carrier_type_curr,
         carrier_type_field,
         mu_curr,
+        dmu_curr,
         mu_field,
+        dmu_field,
         n_curr,
+        dn_curr,
         n_field,
+        dn_field,
         rho_curr,
+        drho_curr,
         rho_field,
+        drho_field,
         s_curr,
+        ds_curr,
         s_field,
+        ds_field,
     )
 
 
 @app.cell(hide_code=True)
 def _(
     B_curr,
+    dB_curr,
     I_field,
+    dI_field,
     RH_curr,
+    dRH_curr,
     RH_field,
+    dRH_field,
     carrier_type_curr,
     carrier_type_field,
-    format_sci_latex,
     material,
     mo,
     mu_curr,
+    dmu_curr,
     mu_field,
+    dmu_field,
     n_curr,
+    dn_curr,
     n_field,
-    q_e,
+    dn_field,
     rho_curr,
+    drho_curr,
     rho_field,
+    drho_field,
     s_curr,
+    ds_curr,
     s_field,
+    ds_field,
 ):
     mo.md(fr"""
-    ### Room Temperature Results & Parameter Comparison ({material})
+    ### Room Temperature Results ({material})
 
-    We calculate the physical parameters using the electron charge constant $q_e = {format_sci_latex(q_e)}\ \text{{C}}$:
-
-    | Parameter | Varying Current ($B = {B_curr*1000.0:.1f}\ \text{{mT}}$) | Varying Field ($I_p = {I_field*1000.0:.1f}\ \text{{mA}}$) |
+    | Parameter | Varying Current ($B = {B_curr*1000.0:.1f} \pm {dB_curr*1000.0:.1f}\ \text{{mT}}$) | Varying Field ($I_p = {I_field*1000.0:.1f} \pm {dI_field*1000.0:.1f}\ \text{{mA}}$) |
     |---|---|---|
-    | **Fit Slope** | $S_{{H, I}} = {s_curr:.5f}\ \Omega$ | $S_{{H, B}} = {s_field:.5f}\ \text{{V/T}}$ |
-    | **Hall Coefficient ($R_H$)** | ${format_sci_latex(RH_curr)}\ \text{{m}}^3/\text{{C}}$ | ${format_sci_latex(RH_field)}\ \text{{m}}^3/\text{{C}}$ |
+    | **Fit Slope** | $S_{{H, I}} = {s_curr:.4f} \pm {ds_curr:.4f}\ \Omega$ | $S_{{H, B}} = {s_field:.4f} \pm {ds_field:.4f}\ \text{{V/T}}$ |
+    | **Hall Coefficient ($R_H$)** | ${RH_curr:.2e} \pm {dRH_curr:.2e}\ \text{{m}}^3/\text{{C}}$ | ${RH_field:.2e} \pm {dRH_field:.2e}\ \text{{m}}^3/\text{{C}}$ |
     | **Carrier Type** | **{carrier_type_curr.upper()}** | **{carrier_type_field.upper()}** |
-    | **Carrier Concentration ($n$)** | ${format_sci_latex(n/1.0e6 if (n:=n_curr) else 0.0)}\ \text{{cm}}^{{-3}}$ | ${format_sci_latex(n/1.0e6 if (n:=n_field) else 0.0)}\ \text{{cm}}^{{-3}}$ |
-    | **Resistivity ($\rho_{{xx}}$)** | ${format_sci_latex(rho_curr)}\ \Omega\cdot\text{{m}}$ | ${format_sci_latex(rho_field)}\ \Omega\cdot\text{{m}}$ |
-    | **Hall Mobility ($\mu$)** | ${mu_curr:.4f}\ \text{{m}}^2/(\text{{V}}\cdot\text{{s}})$ | ${mu_field:.4f}\ \text{{m}}^2/(\text{{V}}\cdot\text{{s}})$ |
+    | **Carrier Concentration ($n$)** | ${n_curr:.2e} \pm {dn_curr:.2e}\ \text{{m}}^{{-3}}$ | ${n_field:.2e} \pm {dn_field:.2e}\ \text{{m}}^{{-3}}$ |
+    | **Resistivity ($\rho_{{xx}}$)** | ${rho_curr:.2e} \pm {drho_curr:.2e}\ \Omega\cdot\text{{m}}$ | ${rho_field:.2e} \pm {drho_field:.2e}\ \Omega\cdot\text{{m}}$ |
+    | **Hall Mobility ($\mu$)** | ${mu_curr:.4f} \pm {dmu_curr:.4f}\ \text{{m}}^2/(\text{{V}}\cdot\text{{s}})$ | ${mu_field:.4f} \pm {dmu_field:.4f}\ \text{{m}}^2/(\text{{V}}\cdot\text{{s}})$ |
     """)
     return
 
 
 @app.cell(hide_code=True)
-def _(data_suffix, e, fit_linear, k, load_data, np, plot_scatter_with_fit):
-    # Load dataset
+def _(
+    data_suffix,
+    linear_model,
+    load_data,
+    np,
+    physics_fit,
+    plt,
+    set_style,
+    kB_eV,
+):
     df_heat = load_data(f"varying_temp{data_suffix}.txt", ['T_C', 'Uh_mV', 'Up_mV'], header_exists=True)
     df_heat['T_K'] = df_heat['T_C'] + 273.15
     df_heat['inv_T'] = 1.0 / df_heat['T_K']
 
-    # Calculate ln(sigma/sigma_0) where sigma is proportional to 1/Up
-    # We use the first point as the reference Up_0 (lowest temperature)
     Up_0 = df_heat['Up_mV'].iloc[0]
     df_heat['ln_sigma_sigma0'] = np.log(Up_0 / df_heat['Up_mV'])
+    dln_sig = 1.0 * np.sqrt(1.0 / (Up_0**2) + 1.0 / (df_heat['Up_mV']**2))
+    df_heat['dln_sigma'] = dln_sig
 
-    # Intrinsic fit range (T >= 100°C)
     df_high_T = df_heat[df_heat['T_C'] >= 100.0]
-    slope_Eg, intercept_Eg, _ = fit_linear(df_high_T['inv_T'], df_high_T['ln_sigma_sigma0'])
+    fit_Eg = physics_fit(linear_model, df_high_T['inv_T'], df_high_T['ln_sigma_sigma0'], df_high_T['dln_sigma'])
+    slope_Eg = fit_Eg.params[0]
+    dslope_Eg = fit_Eg.errors[0]
 
-    kB = k / e
-    # For ln(sigma/sigma_0) = -Eg / (2 * kB * T) + const, the slope is -Eg / (2 * kB)
-    # Therefore, Eg = -2.0 * kB * slope
-    Eg_val = -2.0 * kB * slope_Eg
+    Eg_val = -2.0 * kB_eV * slope_Eg
+    dEg_val = 2.0 * kB_eV * dslope_Eg
 
-    # Graph 5 Plot
-    _x5 = np.linspace(df_high_T['inv_T'].min(), df_high_T['inv_T'].max(), 100)
-    plot_scatter_with_fit(
-        df_heat['inv_T'], df_heat['ln_sigma_sigma0'], r'$1/T$ ($\text{K}^{-1}$)', r'$\ln(\sigma/\sigma_0)$',
-        r'$\ln(\sigma/\sigma_0)$ vs $1/T$ (Bandgap Fitting)',
-        _x5, slope_Eg * _x5 + intercept_Eg, fr'Fit: $E_g = {Eg_val:.4f}\ \text{{eV}}$',
-        f"ln_sigma_vs_inv_t{data_suffix}.svg", color='#bdc3c7', fit_color='#c0392b',
-        highlight_x=df_high_T['inv_T'], highlight_y=df_high_T['ln_sigma_sigma0'], highlight_lbl=r'Intrinsic regime ($T \geq 100^\circ\text{C}$)'
-    )
-    return Eg_val, intercept_Eg, slope_Eg
+    # Plot using private variables
+    _fig5, _ax5 = plt.subplots(figsize=(6, 4))
+    x_line_heat = np.linspace(df_high_T['inv_T'].min(), df_high_T['inv_T'].max(), 100)
+    _ax5.errorbar(df_heat['inv_T'], df_heat['ln_sigma_sigma0'], yerr=df_heat['dln_sigma'], fmt='o', color='#bdc3c7', markersize=4, elinewidth=1, capsize=1.5, label='Data points', zorder=3)
+    _ax5.errorbar(df_high_T['inv_T'], df_high_T['ln_sigma_sigma0'], yerr=df_high_T['dln_sigma'], fmt='o', color='#c0392b', markersize=4, elinewidth=1, capsize=1.5, label='Intrinsic regime ($T \geq 100^\circ$C)', zorder=4)
+    _ax5.plot(x_line_heat, linear_model(x_line_heat, *fit_Eg.params), color='#c0392b', linewidth=1.5, linestyle='--', label='Fit', zorder=5)
+    set_style(ax=_ax5, xlabel='$1/T$ ($\text{K}^{-1}$)', ylabel='$\ln(\sigma/\sigma_0)$', grid=True)
+    _ax5.legend(frameon=True, facecolor='white', edgecolor='none')
+    _fig5.tight_layout()
+    _fig5.savefig(f"graphs/ln_sigma_vs_inv_t{data_suffix}.svg", format='svg', metadata={'Date': None})
+    plt.close(_fig5)
+
+    return Eg_val, dEg_val, slope_Eg, dslope_Eg
 
 
 @app.cell(hide_code=True)
-def _(Eg_val, intercept_Eg, mo, slope_Eg):
+def _(Eg_val, dEg_val, mo):
     mo.md(fr"""
     ### Bandgap Results
-    * **High-Temperature Fit Slope:** ${slope_Eg:.2f}\ \text{{K}}$
-    * **Intercept:** ${intercept_Eg:.4f}$
-    * **Calculated Energy Gap ($E_g = -2 \cdot k_B \cdot \text{{Slope}}$):** **{Eg_val:.4f} eV**
+    * **Calculated Energy Gap ($E_g = -2 \cdot k_B \cdot \text{{Slope}}$):** **{Eg_val:.4f} $\pm$ {dEg_val:.4f} eV**
     """)
     return
+
+
+@app.cell(hide_code=True)
+def _(
+    L,
+    W,
+    d,
+    e,
+    physics_fit,
+    kB_eV,
+    linear_model,
+    load_data,
+    export_constants,
+    os,
+    plt,
+    set_style,
+    np,
+):
+    # Batch run cell that exports all constants and graphs for BOTH P-Type and N-Type
+    # This runs automatically in the background to ensure consistency with main.typ
+    def run_batch_analysis_for(data_suffix):
+        material_lbl = "P-Type" if data_suffix == "" else "N-Type"
+        mat_lower = "p" if data_suffix == "" else "n"
+        
+        # 1. Zero Field Experiment
+        df_zf = load_data(f"zero_field{data_suffix}.txt", ['Ip_mA', 'T_C', 'Uh_mV', 'Up_mV'])
+        res_cond_init = physics_fit(linear_model, df_zf['Up_mV'], df_zf['Ip_mA'], np.ones_like(df_zf['Ip_mA']))
+        G_init = res_cond_init.params[0]
+        y_err_cond = np.sqrt(1.0**2 + (G_init * 1.0)**2)
+        fit_cond = physics_fit(linear_model, df_zf['Up_mV'], df_zf['Ip_mA'], np.full_like(df_zf['Ip_mA'], y_err_cond))
+        G = fit_cond.params[0]
+        dG = fit_cond.errors[0]
+        R_zf = 1.0 / G
+        dR_zf = dG / (G**2)
+        rho_zf = R_zf * W * d / L
+        drho_zf = dR_zf * W * d / L
+        
+        res_beta_init = physics_fit(linear_model, df_zf['Up_mV'], df_zf['Uh_mV'], np.ones_like(df_zf['Uh_mV']))
+        beta_init = res_beta_init.params[0]
+        y_err_beta = 1.0 * np.sqrt(1.0 + beta_init**2)
+        fit_beta = physics_fit(linear_model, df_zf['Up_mV'], df_zf['Uh_mV'], np.full_like(df_zf['Uh_mV'], y_err_beta))
+        beta = fit_beta.params[0]
+        dbeta = fit_beta.errors[0]
+        
+        # Plot Zero Field
+        _fig_zf, _ax_zf = plt.subplots(figsize=(6, 4))
+        x_line = np.linspace(df_zf['Up_mV'].min(), df_zf['Up_mV'].max(), 100)
+        _ax_zf.errorbar(df_zf['Up_mV'], df_zf['Uh_mV'], xerr=1.0, yerr=1.0, fmt='o', color='#2ecc71', markersize=4, elinewidth=1, capsize=1.5, label='Data points', zorder=3)
+        _ax_zf.plot(x_line, linear_model(x_line, *fit_beta.params), color='#f39c12', linewidth=1.5, linestyle='--', label='Fit', zorder=5)
+        set_style(ax=_ax_zf, xlabel='Probe Voltage $U_p$ (mV)', ylabel='Hall Voltage $U\'_H$ (mV)', grid=True)
+        _ax_zf.legend(frameon=True, facecolor='white', edgecolor='none')
+        _fig_zf.tight_layout()
+        _fig_zf.savefig(f"graphs/uh_vs_up{data_suffix}.svg", format='svg', metadata={'Date': None})
+        plt.close(_fig_zf)
+        
+        _fig_cond, _ax_cond = plt.subplots(figsize=(6, 4))
+        _ax_cond.errorbar(df_zf['Up_mV'], df_zf['Ip_mA'], xerr=1.0, yerr=1.0, fmt='o', color='#3498db', markersize=4, elinewidth=1, capsize=1.5, label='Data points', zorder=3)
+        _ax_cond.plot(x_line, linear_model(x_line, *fit_cond.params), color='#e74c3c', linewidth=1.5, linestyle='--', label='Fit', zorder=5)
+        set_style(ax=_ax_cond, xlabel='Probe Voltage $U_p$ (mV)', ylabel='Sample Current $I_p$ (mA)', grid=True)
+        _ax_cond.legend(frameon=True, facecolor='white', edgecolor='none')
+        _fig_cond.tight_layout()
+        _fig_cond.savefig(f"graphs/ip_vs_up{data_suffix}.svg", format='svg', metadata={'Date': None})
+        plt.close(_fig_cond)
+        
+        # 2. Room Temperature - Varying Current (constant B = 301 mT)
+        df_curr = load_data(f"varying_current{data_suffix}.txt", ['Ip_mA', 'T_C', 'Uh_mV', 'Up_mV'])
+        dUh_curr = np.sqrt(1.0**2 + (df_curr['Up_mV'] * dbeta)**2 + (beta * 1.0)**2)
+        df_curr['Uh_corr_mV'] = df_curr['Uh_mV'] - beta * df_curr['Up_mV']
+        
+        res_s_curr_init = physics_fit(linear_model, df_curr['Ip_mA'], df_curr['Uh_corr_mV'], dUh_curr)
+        s_curr_init = res_s_curr_init.params[0]
+        y_err_s_curr = np.sqrt(dUh_curr**2 + (s_curr_init * 1.0)**2)
+        fit_s_curr = physics_fit(linear_model, df_curr['Ip_mA'], df_curr['Uh_corr_mV'], y_err_s_curr)
+        s_curr = fit_s_curr.params[0]
+        ds_curr = fit_s_curr.errors[0]
+        
+        B_curr = 301.0e-3  # T
+        dB_curr = 1.0e-3   # T
+        RH_curr = s_curr * d / B_curr
+        dRH_curr = abs(RH_curr) * np.sqrt((ds_curr / s_curr)**2 + (dB_curr / B_curr)**2)
+        carrier_type_curr = "p-type" if RH_curr > 0 else "n-type"
+        n_curr = 1.0 / (abs(RH_curr) * e)
+        dn_curr = n_curr * (dRH_curr / abs(RH_curr))
+        
+        res_r0_curr_init = physics_fit(linear_model, df_curr['Ip_mA'], df_curr['Up_mV'], np.ones_like(df_curr['Ip_mA']))
+        r0_curr_init = res_r0_curr_init.params[0]
+        y_err_r0_curr = np.sqrt(1.0**2 + (r0_curr_init * 1.0)**2)
+        fit_r0_curr = physics_fit(linear_model, df_curr['Ip_mA'], df_curr['Up_mV'], np.full_like(df_curr['Ip_mA'], y_err_r0_curr))
+        r0_curr = fit_r0_curr.params[0]
+        dr0_curr = fit_r0_curr.errors[0]
+        rho_curr = r0_curr * W * d / L
+        drho_curr = dr0_curr * W * d / L
+        mu_curr = abs(RH_curr) / rho_curr
+        dmu_curr = mu_curr * np.sqrt((dRH_curr / RH_curr)**2 + (drho_curr / rho_curr)**2)
+        
+        # Plot Varying Current
+        _fig_curr, _ax_curr = plt.subplots(figsize=(6, 4))
+        x_line_curr = np.linspace(df_curr['Ip_mA'].min(), df_curr['Ip_mA'].max(), 100)
+        _ax_curr.errorbar(df_curr['Ip_mA'], df_curr['Uh_corr_mV'], xerr=1.0, yerr=dUh_curr, fmt='o', color='#9b59b6', markersize=4, elinewidth=1, capsize=1.5, label='Data points', zorder=3)
+        _ax_curr.plot(x_line_curr, linear_model(x_line_curr, *fit_s_curr.params), color='#2ecc71', linewidth=1.5, linestyle='--', label='Fit', zorder=5)
+        set_style(ax=_ax_curr, xlabel='Sample Current $I_p$ (mA)', ylabel='Corrected Hall Voltage $U_H$ (mV)', grid=True)
+        _ax_curr.legend(frameon=True, facecolor='white', edgecolor='none')
+        _fig_curr.tight_layout()
+        _fig_curr.savefig(f"graphs/uh_vs_ip_varying_current{data_suffix}.svg", format='svg', metadata={'Date': None})
+        plt.close(_fig_curr)
+        
+        # 3. Room Temperature - Varying Field (constant Ip = 30 mA)
+        df_field = load_data(f"varying_field{data_suffix}.txt", ['B_mT', 'T_C', 'Uh_mV', 'Up_mV'])
+        B_T = df_field['B_mT'] / 1000.0
+        dB_T = 1.0e-3 # T
+        Uh_corr_V = (df_field['Uh_mV'] - beta * df_field['Up_mV']) / 1000.0
+        dUh_field = np.sqrt(1.0**2 + (df_field['Up_mV'] * dbeta)**2 + (beta * 1.0)**2) / 1000.0
+        
+        res_s_field_init = physics_fit(linear_model, B_T, Uh_corr_V, dUh_field)
+        s_field_init = res_s_field_init.params[0]
+        y_err_s_field = np.sqrt(dUh_field**2 + (s_field_init * 1.0e-3)**2)
+        fit_s_field = physics_fit(linear_model, B_T, Uh_corr_V, y_err_s_field)
+        s_field = fit_s_field.params[0]
+        ds_field = fit_s_field.errors[0]
+        
+        I_field = 30.0e-3  # A
+        dI_field = 1.0e-3  # A
+        RH_field = s_field * d / I_field
+        dRH_field = abs(RH_field) * np.sqrt((ds_field / s_field)**2 + (dI_field / I_field)**2)
+        carrier_type_field = "p-type" if RH_field > 0 else "n-type"
+        n_field = 1.0 / (abs(RH_field) * e)
+        dn_field = n_field * (dRH_field / abs(RH_field))
+        
+        mean_Up_V = df_field['Up_mV'].mean() / 1000.0
+        dmean_Up_V = 0.001
+        r0_field = mean_Up_V / I_field
+        dr0_field = r0_field * np.sqrt((dmean_Up_V / mean_Up_V)**2 + (dI_field / I_field)**2)
+        rho_field = r0_field * W * d / L
+        drho_field = dr0_field * W * d / L
+        mu_field = abs(RH_field) / rho_field
+        dmu_field = mu_field * np.sqrt((dRH_field / RH_field)**2 + (drho_field / rho_field)**2)
+        
+        # Plot Varying Field
+        _fig_field, _ax_field = plt.subplots(figsize=(6, 4))
+        x_line_field = np.linspace(B_T.min(), B_T.max(), 100)
+        _ax_field.errorbar(B_T, Uh_corr_V, xerr=dB_T, yerr=dUh_field, fmt='o', color='#e67e22', markersize=4, elinewidth=1, capsize=1.5, label='Data points', zorder=3)
+        _ax_field.plot(x_line_field, linear_model(x_line_field, *fit_s_field.params), color='#34495e', linewidth=1.5, linestyle='--', label='Fit', zorder=5)
+        set_style(ax=_ax_field, xlabel='Magnetic Field $B$ (T)', ylabel='Corrected Hall Voltage $U_H$ (V)', grid=True)
+        _ax_field.legend(frameon=True, facecolor='white', edgecolor='none')
+        _fig_field.tight_layout()
+        _fig_field.savefig(f"graphs/uh_vs_b_varying_field{data_suffix}.svg", format='svg', metadata={'Date': None})
+        plt.close(_fig_field)
+        
+        # 4. Bandgap energy
+        df_heat = load_data(f"varying_temp{data_suffix}.txt", ['T_C', 'Uh_mV', 'Up_mV'], header_exists=True)
+        df_heat['T_K'] = df_heat['T_C'] + 273.15
+        df_heat['inv_T'] = 1.0 / df_heat['T_K']
+        Up_0 = df_heat['Up_mV'].iloc[0]
+        df_heat['ln_sigma_sigma0'] = np.log(Up_0 / df_heat['Up_mV'])
+        dln_sig = 1.0 * np.sqrt(1.0 / (Up_0**2) + 1.0 / (df_heat['Up_mV']**2))
+        df_heat['dln_sigma'] = dln_sig
+        
+        df_high_T = df_heat[df_heat['T_C'] >= 100.0]
+        fit_Eg = physics_fit(linear_model, df_high_T['inv_T'], df_high_T['ln_sigma_sigma0'], df_high_T['dln_sigma'])
+        slope_Eg = fit_Eg.params[0]
+        dslope_Eg = fit_Eg.errors[0]
+        Eg_val = -2.0 * kB_eV * slope_Eg
+        dEg_val = 2.0 * kB_eV * dslope_Eg
+        
+        # Plot Bandgap
+        _fig_heat, _ax_heat = plt.subplots(figsize=(6, 4))
+        x_line_heat = np.linspace(df_high_T['inv_T'].min(), df_high_T['inv_T'].max(), 100)
+        _ax_heat.errorbar(df_heat['inv_T'], df_heat['ln_sigma_sigma0'], yerr=df_heat['dln_sigma'], fmt='o', color='#bdc3c7', markersize=4, elinewidth=1, capsize=1.5, label='Data points', zorder=3)
+        _ax_heat.errorbar(df_high_T['inv_T'], df_high_T['ln_sigma_sigma0'], yerr=df_high_T['dln_sigma'], fmt='o', color='#c0392b', markersize=4, elinewidth=1, capsize=1.5, label='Intrinsic regime ($T \geq 100^\circ$C)', zorder=4)
+        _ax_heat.plot(x_line_heat, linear_model(x_line_heat, *fit_Eg.params), color='#c0392b', linewidth=1.5, linestyle='--', label='Fit', zorder=5)
+        set_style(ax=_ax_heat, xlabel='$1/T$ ($\text{K}^{-1}$)', ylabel='$\ln(\sigma/\sigma_0)$', grid=True)
+        _ax_heat.legend(frameon=True, facecolor='white', edgecolor='none')
+        _fig_heat.tight_layout()
+        _fig_heat.savefig(f"graphs/ln_sigma_vs_inv_t{data_suffix}.svg", format='svg', metadata={'Date': None})
+        plt.close(_fig_heat)
+        
+        results = [
+            {"hebrew_name": f"התנגדות אפס שדה ({material_lbl})", "english_name": f"Zero Field Resistance ({material_lbl})", "hebrew_var": f"R_zf_{mat_lower}", "english_var": f"R_zf_{mat_lower}", "symbol": f"R_(\"zf\", {mat_lower})", "value": R_zf, "error": dR_zf, "units": "Omega", "fmt_spec": ".3f"},
+            {"hebrew_name": f"התנגדות סגולית אפס שדה ({material_lbl})", "english_name": f"Zero Field Resistivity ({material_lbl})", "hebrew_var": f"rho_zf_{mat_lower}", "english_var": f"rho_zf_{mat_lower}", "symbol": f"rho_(\"zf\", {mat_lower})", "value": rho_zf, "error": drho_zf, "units": "Omega * \"m\"", "scale": 1.0, "fmt_spec": ".5e"},
+            {"hebrew_name": f"פרמטר אי-תיאום ({material_lbl})", "english_name": f"Misalignment Parameter ({material_lbl})", "hebrew_var": f"beta_{mat_lower}", "english_var": f"beta_{mat_lower}", "symbol": f"beta_{mat_lower}", "value": beta, "error": dbeta, "units": "", "fmt_spec": ".5f"},
+            
+            {"hebrew_name": f"שיפוע מתח הול זרם ({material_lbl})", "english_name": f"Hall Voltage Current Slope ({material_lbl})", "hebrew_var": f"s_curr_{mat_lower}", "english_var": f"s_curr_{mat_lower}", "symbol": f"S_(\"H,I\", {mat_lower})", "value": s_curr, "error": ds_curr, "units": "Omega", "fmt_spec": ".4f"},
+            {"hebrew_name": f"קבוע הול מזרם משתנה ({material_lbl})", "english_name": f"Hall Coefficient from Current ({material_lbl})", "hebrew_var": f"RH_curr_{mat_lower}", "english_var": f"RH_curr_{mat_lower}", "symbol": f"R_(\"H,I\", {mat_lower})", "value": RH_curr, "error": dRH_curr, "units": "\"m\"^3 / \"C\"", "fmt_spec": ".2e"},
+            {"hebrew_name": f"ריכוז נושאי מטען מזרם ({material_lbl})", "english_name": f"Carrier Concentration from Current ({material_lbl})", "hebrew_var": f"n_curr_{mat_lower}", "english_var": f"n_curr_{mat_lower}", "symbol": f"n_(\"I\", {mat_lower})", "value": n_curr, "error": dn_curr, "units": "\"m\"^(-3)", "fmt_spec": ".2e"},
+            {"hebrew_name": f"התנגדות סגולית מזרם ({material_lbl})", "english_name": f"Resistivity from Current ({material_lbl})", "hebrew_var": f"rho_curr_{mat_lower}", "english_var": f"rho_curr_{mat_lower}", "symbol": f"rho_(\"I\", {mat_lower})", "value": rho_curr, "error": drho_curr, "units": "Omega * \"m\"", "fmt_spec": ".5e"},
+            {"hebrew_name": f"מוביליות הול מזרם ({material_lbl})", "english_name": f"Hall Mobility from Current ({material_lbl})", "hebrew_var": f"mu_curr_{mat_lower}", "english_var": f"mu_curr_{mat_lower}", "symbol": f"mu_(\"I\", {mat_lower})", "value": mu_curr, "error": dmu_curr, "units": "\"m\"^2 / (\"V\" * sec)", "fmt_spec": ".4f"},
+            
+            {"hebrew_name": f"שיפוע מתח הול שדה ({material_lbl})", "english_name": f"Hall Voltage Field Slope ({material_lbl})", "hebrew_var": f"s_field_{mat_lower}", "english_var": f"s_field_{mat_lower}", "symbol": f"S_(\"H,B\", {mat_lower})", "value": s_field, "error": ds_field, "units": "\"V\"/\"T\"", "fmt_spec": ".4f"},
+            {"hebrew_name": f"קבוע הול משדה משתנה ({material_lbl})", "english_name": f"Hall Coefficient from Field ({material_lbl})", "hebrew_var": f"RH_field_{mat_lower}", "english_var": f"RH_field_{mat_lower}", "symbol": f"R_(\"H,B\", {mat_lower})", "value": RH_field, "error": dRH_field, "units": "\"m\"^3 / \"C\"", "fmt_spec": ".2e"},
+            {"hebrew_name": f"ריכוז נושאי מטען משדה ({material_lbl})", "english_name": f"Carrier Concentration from Field ({material_lbl})", "hebrew_var": f"n_field_{mat_lower}", "english_var": f"n_field_{mat_lower}", "symbol": f"n_(\"B\", {mat_lower})", "value": n_field, "error": dn_field, "units": "\"m\"^(-3)", "fmt_spec": ".2e"},
+            {"hebrew_name": f"התנגדות סגולית משדה ({material_lbl})", "english_name": f"Resistivity from Field ({material_lbl})", "hebrew_var": f"rho_field_{mat_lower}", "english_var": f"rho_field_{mat_lower}", "symbol": f"rho_(\"B\", {mat_lower})", "value": rho_field, "error": drho_field, "units": "Omega * \"m\"", "fmt_spec": ".5e"},
+            {"hebrew_name": f"מוביליות הול משדה ({material_lbl})", "english_name": f"Hall Mobility from Field ({material_lbl})", "hebrew_var": f"mu_field_{mat_lower}", "english_var": f"mu_field_{mat_lower}", "symbol": f"mu_(\"B\", {mat_lower})", "value": mu_field, "error": dmu_field, "units": "\"m\"^2 / (\"V\" * sec)", "fmt_spec": ".4f"},
+            
+            {"hebrew_name": f"פער אנרגיה ({material_lbl})", "english_name": f"Bandgap Energy ({material_lbl})", "hebrew_var": f"Eg_{mat_lower}", "english_var": f"Eg_{mat_lower}", "symbol": f"E_(\"g\", {mat_lower})", "value": Eg_val, "error": dEg_val, "units": "\"eV\"", "fmt_spec": ".4f"}
+        ]
+        return results
+
+    # Run for both and export constants
+    os.makedirs("graphs", exist_ok=True)
+    os.makedirs("constants", exist_ok=True)
+    res_p = run_batch_analysis_for("")
+    res_n = run_batch_analysis_for("_n_type")
+    export_constants(res_p + res_n, "constants")
+    return (run_batch_analysis_for,)
 
 
 if __name__ == "__main__":
