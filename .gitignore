@@ -39,6 +39,7 @@ venv/
 ENV/
 env/
 .venv/
+__marimo__/
 
 # IDE
 .vscode/
