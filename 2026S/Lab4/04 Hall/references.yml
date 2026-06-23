@@ -1,0 +1,15 @@
+ioffe_ge_bandstr:
+    type: Web
+    title: "Band structure and carrier concentration of Germanium (Ge)"
+    author: "Ioffe Institute"
+    date: 2026
+    url:
+        value: "https://www.ioffe.ru/SVA/NSM/Semicond/Ge/bandstr.html"
+        date: 2026-06-23
+
+technion_physics_hall_effect_manual:
+    type: Misc
+    title: "Hall Effect Guide 2025–2026, v.2.1.1"
+    author: "Physics Faculty, Technion"
+    date: 2026
+    note: "Laboratory manual for the Hall effect experiment; contains theory, experimental procedure, sample dimensions, and data-analysis instructions."
