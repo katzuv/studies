@@ -8,7 +8,10 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 
-app = typer.Typer(add_completion=False)
+app = typer.Typer(
+    add_completion=False,
+    context_settings={"help_option_names": ["-h", "--help"]},
+)
 
 
 @app.command()
@@ -28,8 +31,18 @@ def main(
             help="Explicit PDF file name or path.",
         ),
     ] = None,
+    force: Annotated[
+        bool,
+        typer.Option(
+            "--force",
+            "-f",
+            help="Force compilation of non-Typst files.",
+        ),
+    ] = False,
 ):
     """Compile Typst files to PDF with smart naming based on directory structure."""
+    console = Console(highlight=False)
+
     try:
         sys.stdout.reconfigure(errors="replace")
         sys.stderr.reconfigure(errors="replace")
@@ -39,12 +52,34 @@ def main(
     file_path = file_path.resolve()
     if not file_path.exists():
         if file_path == Path.cwd() / "main.typ":
-            typer.echo("Usage: uv run tc.py <file.typ>")
+            console.print(
+                "[bold red]Error:[/bold red] No [cyan]main.typ[/cyan] found in the current directory."
+            )
+            console.print("[yellow]Usage:[/yellow] uv run tc <file.typ>")
         else:
-            typer.echo(f"Error: File {file_path} not found.")
+            console.print(
+                f"[bold red]Error:[/bold red] File [cyan]{file_path}[/cyan] not found."
+            )
+        raise typer.Exit(code=1)
+
+    if file_path.suffix.lower() != ".typ" and not force:
+        console.print(
+            f"[bold yellow]Warning:[/bold yellow] The file [cyan]{file_path.name}[/cyan] does not have a [cyan].typ[/cyan] extension."
+        )
+        console.print(
+            "Use [bold]--force[/bold] or [bold]-f[/bold] to compile it anyway."
+        )
         raise typer.Exit(code=1)
 
     parent = file_path.parent
+
+    # Locate project root dynamically
+    project_root = None
+    for p in [file_path] + list(file_path.parents):
+        if (p / "pyproject.toml").exists() or (p / ".git").exists():
+            project_root = p
+            break
+
     if output:
         output_path = Path(output)
         if output_path.suffix.lower() != ".pdf":
@@ -58,18 +93,17 @@ def main(
         # Path format example: 2026S/Quantum1/HW/HW02/main.typ
         hw_number = parent.name
 
-        # Subject is the first ancestor that isn't 'HW', 'HWs', or 'Numeric'
-        subject = "document"
-        for ancestor in parent.parents:
-            # Stop at project root (assuming tc.py is at root)
-            if ancestor == Path.cwd():
-                break
-            name_lower = ancestor.name.lower()
-            if name_lower not in ("hw", "hws", "numeric"):
-                subject = ancestor.name
-                break
+        # Subject is exactly two directories down from the project root
+        subject = None
+        if project_root:
+            try:
+                rel_parts = file_path.relative_to(project_root).parts
+                if len(rel_parts) >= 3:
+                    subject = rel_parts[1]
+            except ValueError:
+                pass
 
-        filename = f"{subject} {hw_number}.pdf"
+        filename = f"{subject} – {hw_number}.pdf" if subject else f"{hw_number}.pdf"
 
         # Clean filename for OS compatibility
         for char in '<>:"/\\|?*':
@@ -87,7 +121,9 @@ def main(
     except ValueError:
         relative_output = output_path
 
-    typer.echo(f"Compiling {relative_file} -> {relative_output}...")
+    console.print(
+        f"[bold blue]Compiling:[/bold blue] [cyan]{relative_file}[/cyan] [dim]→[/dim] [green]{relative_output}[/green]"
+    )
 
     try:
         subprocess.run(
@@ -97,18 +133,17 @@ def main(
                 "always",
                 "compile",
                 "--root",
-                ".",
+                str(project_root) if project_root else ".",
                 str(file_path),
                 str(output_path),
             ],
             capture_output=True,
             check=True,
         )
-        typer.echo("Success!")
+        console.print("[bold green]✓ Success![/bold green]")
     except subprocess.CalledProcessError as e:
         stderr_str = e.stderr.decode("utf-8", errors="replace")
         error_text = Text.from_ansi(stderr_str.strip())
-        console = Console()
         console.print(
             Panel(
                 error_text,
