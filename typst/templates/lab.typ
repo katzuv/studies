@@ -207,6 +207,10 @@
 #let RR = $bb(R)$
 
 // Units (upright in math mode)
+#let mm = $"mm"$
+#let cm = $"cm"$
+#let mps = $"m/s"$
+#let ev = "eV"
 #let Hz = $"Hz"$
 #let mHz = $"mHz"$
 #let rad = $"rad"$

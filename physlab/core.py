@@ -88,6 +88,9 @@ mpl.rcParams["ytick.major.width"] = 1.2
 mpl.rcParams["figure.facecolor"] = "#ffffff"
 mpl.rcParams["axes.facecolor"] = "#ffffff"
 
+# Make SVG generation deterministic by setting a fixed seed/salt
+mpl.rcParams["svg.hashsalt"] = "fixed-string"
+
 
 def set_style(ax=None, title=None, xlabel=None, ylabel=None, grid=True):
     """Applies a stunning, publication-ready style to plots."""
@@ -207,6 +210,32 @@ def format_value(
         return v_str
 
     e = err * scale
+    if "e" in fmt_spec:
+        v_str_raw = f"{v:{fmt_spec}}"
+        if "e" in v_str_raw:
+            v_mant, v_exp_str = v_str_raw.split("e")
+            v_exp = int(v_exp_str)
+            e_aligned = e / (10**v_exp)
+            digits = "".join([c for c in fmt_spec if c.isdigit()])
+            prec = int(digits) if digits else 2
+
+            v_str_aligned = f"{float(v_mant):.{prec}f}"
+            e_str_aligned = f"{e_aligned:.{prec}f}"
+
+            if style == "typst":
+                res = f"({v_str_aligned} pm {e_str_aligned}) times 10^({v_exp})"
+                if suffix:
+                    return f"{res} {suffix}"
+                return res
+            else:  # style == "latex"
+                res = f"({v_str_aligned} \\pm {e_str_aligned}) \\times 10^{{{v_exp}}}"
+                if suffix:
+                    if "10^(" in suffix:
+                        s = suffix.replace("dot 10^(", r"\times 10^{").replace(")", "}")
+                        return f"{res} {s}"
+                    return f"{res} {suffix}"
+                return res
+
     v_str = f"{v:{fmt_spec}}"
     e_str = f"{e:{fmt_spec}}"
 
@@ -286,7 +315,9 @@ def export_constants(constants_data: list[dict], directory) -> list[dict]:
         typst_lines.append(f"#let {item['hebrew_var']} = ${val_expr}$\n")
         typst_lines.append(f"#let {item['english_var']} = {item['hebrew_var']}\n")
         typst_lines.append(f"#let {item['hebrew_var']}_ערך = ${val_no_units}$\n")
-        typst_lines.append(f"#let {item['english_var']}_val = {item['hebrew_var']}_ערך\n")
+        typst_lines.append(
+            f"#let {item['english_var']}_val = {item['hebrew_var']}_ערך\n"
+        )
 
         # Format and append error variables
         err_val = item["error"]
@@ -309,7 +340,9 @@ def export_constants(constants_data: list[dict], directory) -> list[dict]:
         typst_lines.append(
             f"#let {item['english_var']}_err = שגיאת_{item['hebrew_var']}\n"
         )
-        typst_lines.append(f"#let שגיאת_{item['hebrew_var']}_ערך = {err_no_units_expr}\n")
+        typst_lines.append(
+            f"#let שגיאת_{item['hebrew_var']}_ערך = {err_no_units_expr}\n"
+        )
         typst_lines.append(
             f"#let {item['english_var']}_err_val = שגיאת_{item['hebrew_var']}_ערך\n"
         )
