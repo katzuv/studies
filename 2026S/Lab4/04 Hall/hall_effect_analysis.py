@@ -1094,7 +1094,7 @@ def _(
                 "symbol": f'rho_("zf", {mat_lower})',
                 "value": rho_zf,
                 "error": drho_zf,
-                "units": 'Omega * "m"',
+                "units": 'Omega dot "m"',
                 "scale": 1.0,
                 "fmt_spec": ".5e",
             },
@@ -1150,7 +1150,7 @@ def _(
                 "symbol": f'rho_("I", {mat_lower})',
                 "value": rho_curr,
                 "error": drho_curr,
-                "units": 'Omega * "m"',
+                "units": 'Omega dot "m"',
                 "fmt_spec": ".5e",
             },
             {
@@ -1161,7 +1161,7 @@ def _(
                 "symbol": f'mu_("I", {mat_lower})',
                 "value": mu_curr,
                 "error": dmu_curr,
-                "units": '"m"^2 / ("V" * sec)',
+                "units": '"m"^2 / ("V" dot sec)',
                 "fmt_spec": ".4f",
             },
             {
@@ -1205,7 +1205,7 @@ def _(
                 "symbol": f'rho_("B", {mat_lower})',
                 "value": rho_field,
                 "error": drho_field,
-                "units": 'Omega * "m"',
+                "units": 'Omega dot "m"',
                 "fmt_spec": ".5e",
             },
             {
@@ -1216,7 +1216,7 @@ def _(
                 "symbol": f'mu_("B", {mat_lower})',
                 "value": mu_field,
                 "error": dmu_field,
-                "units": '"m"^2 / ("V" * sec)',
+                "units": '"m"^2 / ("V" dot sec)',
                 "fmt_spec": ".4f",
             },
             {
