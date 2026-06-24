@@ -1,7 +1,7 @@
 import marimo
 
 __generated_with = "0.23.10"
-app = marimo.App(width="medium")
+app = marimo.App(width="full", app_title="Hall effect in semiconductors")
 
 
 @app.cell(hide_code=True)
