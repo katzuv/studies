@@ -42,3 +42,5 @@
 #let U2 = $U_2$
 
 #let pm = $plus.minus$
+
+#let intoo = $integral_(-oo)^oo$
