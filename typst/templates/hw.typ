@@ -32,6 +32,7 @@
   // show math.equation: set text(weight: 400) // Removed to allow bold in math
   set heading(numbering: none)
   set math.equation(numbering: "(1)")
+  set math.cases(gap: 0.6em)
 
   show: super-T-as-transpose // Render "..^T" as transposed matrix
   show: super-plus-as-dagger // Render "..^+" as dagger
