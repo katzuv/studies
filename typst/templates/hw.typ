@@ -1,7 +1,7 @@
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/physica:0.9.8": *
 
-#import "../utils.typ": משל, codly-setup
+#import "../utils.typ": codly-setup, משל
 
 // Helper to add geresh to single Hebrew letters (e.g., א -> א')
 #let fix-geresh(s) = {
@@ -83,7 +83,7 @@
 
     if el.level == 1 {
       let entry = link(loc, block(width: 100%, {
-        strong(el.body)
+        strong(el.body + [\u{200f}])
         box(width: 1fr, it.fill)
         it.page()
       }))
@@ -94,9 +94,10 @@
         entry
       }
     } else if el.level == 2 {
+      v(0.25em)
       link(loc, block({
         h(1.2em)
-        el.body
+        el.body + [\u{200f}]
         box(width: 1fr, it.fill)
         it.page()
       }))
@@ -130,17 +131,17 @@
     if el != none and el.func() == heading {
       let loc = el.location()
       let num = counter(heading).at(loc)
-      
+
       // Try to parse the label name if it has dots (e.g., <2.2.ב>)
       let label_str = str(it.target)
       let parts = label_str.split(".")
-      
+
       let content = if parts.len() > 1 {
         context {
           let curr = counter(heading).get()
           let q_num = parts.first()
           let c_num = fix-geresh(parts.slice(1).join("."))
-          
+
           if curr.len() > 0 and str(curr.first()) == q_num {
             [סעיף #c_num]
           } else {
@@ -193,24 +194,26 @@
 #let שאלה(כותרת: "", מזהה: none, טקסט) = {
   pagebreak()
   counter(heading).step(level: 1)
-  
+
   context {
     let n = if מזהה != none {
       fix-geresh(str(מזהה).split(".").at(0))
     } else {
       fix-geresh(str(counter(heading).get().at(0)))
     }
-    
+
     [#heading(level: 1, supplement: [שאלה])[שאלה #n: #כותרת] #מזהה]
 
     let color = rgb("#1a5fb4") // Deep Navy Blue
     let border-col = color.darken(frame-darken)
     let title-bg = rgb("#2e62da")
-    
+
     // Split intro text from clauses
     let children = if טקסט.has("children") { טקסט.children } else { (טקסט,) }
-    let idx = children.position(c => (c.func() == heading and c.level == 2) or (c.has("label") and str(c.label) == "is-clause"))
-    
+    let idx = children.position(c => (
+      (c.func() == heading and c.level == 2) or (c.has("label") and str(c.label) == "is-clause")
+    ))
+
     let intro = if idx == none { טקסט } else { children.slice(0, idx).join() }
     let rest = if idx == none { [] } else { children.slice(idx).join() }
 
@@ -222,7 +225,7 @@
       inset: it.inset,
       fill: title-bg-altered,
       stroke: 1pt + border-col,
-      it.body
+      it.body,
     )
 
     let is-empty(it) = {
@@ -242,7 +245,7 @@
         stroke: 1pt + border-col,
         radius: (top-right: 10pt, bottom-left: 10pt, rest: 0pt),
         inset: (x: 15pt, y: 8pt),
-        text(fill: white, weight: 600, [שאלה #n – #כותרת])
+        text(fill: white, weight: 600, [שאלה #n – #כותרת]),
       )))
     } else {
       smart-breakable(showybox(
@@ -265,7 +268,7 @@
           offset: 2pt,
         ),
         title: [שאלה #n – #כותרת],
-        intro
+        intro,
       ))
     }
 
@@ -276,7 +279,7 @@
 #let סעיף(מזהה: none, טקסט) = {
   [#metadata("is-clause") <is-clause>]
   counter(heading).step(level: 2)
-  
+
   context {
     let label_str = if מזהה != none { str(מזהה) } else { "" }
     let parts = label_str.split(".")
@@ -285,9 +288,9 @@
     } else {
       fix-geresh(str(counter(heading).get().at(1, default: 1)))
     }
-    
+
     [#heading(level: 2, supplement: [סעיף])[סעיף #last-num] #מזהה]
-    
+
     let color = rgb("#26a269") // Deep Emerald Green
     smart-breakable(showybox(
       frame: (
@@ -316,7 +319,7 @@
 #let תתסעיף(מזהה: none, טקסט) = {
   [#metadata("is-subclause") <is-subclause>]
   counter(heading).step(level: 3)
-  
+
   context {
     let label_str = if מזהה != none { str(מזהה) } else { "" }
     let parts = label_str.split(".")
@@ -327,9 +330,9 @@
     } else {
       fix-geresh(str(counter(heading).get().at(2, default: 1)))
     }
-    
+
     [#heading(level: 3, supplement: [תתסעיף])[תתסעיף #last-num] #מזהה]
-    
+
     let color = rgb("#5c6f84") // Slate Blue
     smart-breakable(showybox(
       frame: (
@@ -356,7 +359,7 @@
 #let תשובה(טקסט) = {
   let color = rgb("#e66100") // Deep Vermilion (Orange-Red)
   smart-breakable(showybox(
-    breakable: true, 
+    breakable: true,
     title: [תשובה סופית],
     frame: (
       border-color: color.darken(frame-darken - 10%),
