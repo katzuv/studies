@@ -1,0 +1,58 @@
+[
+  {
+    "hebrew_name": "פרמטר קושי A",
+    "english_name": "Cauchy Parameter A",
+    "hebrew_var": "פרמטר_קושי_A",
+    "english_var": "cauchy_a",
+    "symbol": "A",
+    "value": 1.6084575287059437,
+    "error": 0.0002620667630066639,
+    "units": "",
+    "formatted_value": "1.60846 pm 0.00026",
+    "scale": 1.0,
+    "fmt_spec": ".5f",
+    "suffix": ""
+  },
+  {
+    "hebrew_name": "פרמטר קושי B",
+    "english_name": "Cauchy Parameter B",
+    "hebrew_var": "פרמטר_קושי_B",
+    "english_var": "cauchy_b",
+    "symbol": "B",
+    "value": 9196.056858950335,
+    "error": 70.46384869736488,
+    "units": "nm^2",
+    "formatted_value": "9196.1 pm 70.5",
+    "scale": 1.0,
+    "fmt_spec": ".1f",
+    "suffix": ""
+  },
+  {
+    "hebrew_name": "קבוע רידברג (מנסרה)",
+    "english_name": "Rydberg Constant (Prism)",
+    "hebrew_var": "קבוע_רידברג_מנסרה",
+    "english_var": "rydberg_prism",
+    "symbol": "R_p",
+    "value": 10973213.600414734,
+    "error": 31003.946240304587,
+    "units": "m^(-1)",
+    "formatted_value": "(1.0973 pm 0.0031) times 10^(7)",
+    "scale": 1.0,
+    "fmt_spec": ".4e",
+    "suffix": ""
+  },
+  {
+    "hebrew_name": "קבוע רידברג (סריג)",
+    "english_name": "Rydberg Constant (Grating)",
+    "hebrew_var": "קבוע_רידברג_סריג",
+    "english_var": "rydberg_grating",
+    "symbol": "R_g",
+    "value": 10970431.71841804,
+    "error": 4958.557522954805,
+    "units": "m^(-1)",
+    "formatted_value": "(1.0970 pm 0.0005) times 10^(7)",
+    "scale": 1.0,
+    "fmt_spec": ".4e",
+    "suffix": ""
+  }
+]

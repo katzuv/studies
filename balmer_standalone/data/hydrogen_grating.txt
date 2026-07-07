@@ -1,0 +1,8 @@
+# Hydrogen Grating Measurements Data (d = 1666.67 nm)
+# line_id color literature_wavelength order beta_plus(deg) beta_minus(deg) dbeta(deg)
+657 Red 657 1 19.158 18.888 0.073
+486 Blue-Green 486 1 14.062 13.848 0.073
+434 Blue 434 1 12.521 12.329 0.073
+657 Red 657 2 41.04 40.5 0.073
+486 Blue-Green 486 2 29.103 28.721 0.073
+434 Blue 434 2 25.683 25.413 0.073

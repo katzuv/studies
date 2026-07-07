@@ -1,0 +1,36 @@
+// Automatically generated constants for Typst
+#let pm = $plus.minus$
+#let פמ = $plus.minus$
+
+#let פרמטר_קושי_A = $1.59692 pm 0.00027$
+#let cauchy_a = פרמטר_קושי_A
+#let פרמטר_קושי_A_ערך = $1.59692 pm 0.00027$
+#let cauchy_a_val = פרמטר_קושי_A_ערך
+#let שגיאת_פרמטר_קושי_A = $0.00027$
+#let cauchy_a_err = שגיאת_פרמטר_קושי_A
+#let שגיאת_פרמטר_קושי_A_ערך = $0.00027$
+#let cauchy_a_err_val = שגיאת_פרמטר_קושי_A_ערך
+#let פרמטר_קושי_B = $8394.9 pm 72.0 nm^2$
+#let cauchy_b = פרמטר_קושי_B
+#let פרמטר_קושי_B_ערך = $8394.9 pm 72.0$
+#let cauchy_b_val = פרמטר_קושי_B_ערך
+#let שגיאת_פרמטר_קושי_B = $72.0 nm^2$
+#let cauchy_b_err = שגיאת_פרמטר_קושי_B
+#let שגיאת_פרמטר_קושי_B_ערך = $72.0$
+#let cauchy_b_err_val = שגיאת_פרמטר_קושי_B_ערך
+#let קבוע_רידברג_מנסרה = $(1.1120 pm 0.0043) times 10^(7) m^(-1)$
+#let rydberg_prism = קבוע_רידברג_מנסרה
+#let קבוע_רידברג_מנסרה_ערך = $(1.1120 pm 0.0043) times 10^(7)$
+#let rydberg_prism_val = קבוע_רידברג_מנסרה_ערך
+#let שגיאת_קבוע_רידברג_מנסרה = $4.2689 times 10^(4) m^(-1)$
+#let rydberg_prism_err = שגיאת_קבוע_רידברג_מנסרה
+#let שגיאת_קבוע_רידברג_מנסרה_ערך = $4.2689 times 10^(4)$
+#let rydberg_prism_err_val = שגיאת_קבוע_רידברג_מנסרה_ערך
+#let קבוע_רידברג_סריג = $(1.1033 pm 0.0009) times 10^(7) m^(-1)$
+#let rydberg_grating = קבוע_רידברג_סריג
+#let קבוע_רידברג_סריג_ערך = $(1.1033 pm 0.0009) times 10^(7)$
+#let rydberg_grating_val = קבוע_רידברג_סריג_ערך
+#let שגיאת_קבוע_רידברג_סריג = $8.8428 times 10^(3) m^(-1)$
+#let rydberg_grating_err = שגיאת_קבוע_רידברג_סריג
+#let שגיאת_קבוע_רידברג_סריג_ערך = $8.8428 times 10^(3)$
+#let rydberg_grating_err_val = שגיאת_קבוע_רידברג_סריג_ערך

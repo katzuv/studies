@@ -1,0 +1,3 @@
+# Mercury Prism Verification Data
+# lambda(nm) beta(deg) dbeta(deg)
+546 48.689 0.02

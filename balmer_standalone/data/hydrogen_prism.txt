@@ -1,0 +1,5 @@
+# Hydrogen Prism Measurements Data
+# line_id color literature_wavelength beta(deg) dbeta(deg)
+657 Red 656.27 47.812 0.02
+486 Blue-Green 486.13 49.488 0.02
+434 Blue 434.05 50.534 0.02
