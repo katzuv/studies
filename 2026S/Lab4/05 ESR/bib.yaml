@@ -1,0 +1,21 @@
+ilic2010dpph:
+  type: Article
+  title: "Single crystals of DPPH grown from diethyl ether and carbon disulfide solutions - crystal structures, IR, EPR and magnetization studies"
+  author:
+    - "ilić, D."
+    - "Pajić, D."
+    - "Jurić, M."
+    - "Molčanov, K."
+    - "Rakvin, B."
+    - "Planinić, P."
+    - "Zadro, K."
+  date: 2010-11
+  page-range: 34-41
+  doi: 10.1016/j.jmr.2010.08.005
+  serial-number:
+    pmid: "20833090"
+  parent:
+    type: Periodical
+    title: "Journal of Magnetic Resonance"
+    volume: 207
+    issue: 1
