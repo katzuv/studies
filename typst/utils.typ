@@ -105,3 +105,19 @@ $ del(a, b) $
   body
 }
 
+#let equation-setup(body) = {
+  set math.equation(numbering: none, number-align: left)
+  show: body => context {
+    let labeled_eqs = query(math.equation.where(block: true))
+      .filter(eq => eq.has("label"))
+      .map(eq => eq.label)
+      .dedup()
+    if labeled_eqs.len() > 0 {
+      show selector.or(..labeled_eqs): set math.equation(numbering: "(1)")
+      body
+    } else {
+      body
+    }
+  }
+  body
+}

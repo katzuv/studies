@@ -1,7 +1,7 @@
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/physica:0.9.8": *
 
-#import "../utils.typ": codly-setup, משל
+#import "../utils.typ": codly-setup, משל, equation-setup
 
 #let project(
   experiment_name,
@@ -31,7 +31,7 @@
 
   show strong: set text(weight: 700)
   set heading(numbering: "1.1")
-  set math.equation(numbering: "(1)")
+  // math equation numbering set via equation-setup
 
   show: super-T-as-transpose // Render "..^T" as transposed matrix
   show: super-plus-as-dagger // Render "..^+" as dagger
@@ -133,6 +133,7 @@
   // Main body.
   set par(justify: true)
   show: codly-setup
+  show: equation-setup
 
   body
 

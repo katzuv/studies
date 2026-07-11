@@ -1,7 +1,7 @@
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/physica:0.9.8": *
 
-#import "../utils.typ": codly-setup, משל
+#import "../utils.typ": codly-setup, משל, equation-setup
 
 // Helper to add geresh to single Hebrew letters (e.g., א -> א')
 #let fix-geresh(s) = {
@@ -31,7 +31,7 @@
 
   // show math.equation: set text(weight: 400) // Removed to allow bold in math
   set heading(numbering: none)
-  set math.equation(numbering: "(1)")
+  // math equation numbering set via equation-setup
   set math.cases(gap: 0.6em)
 
   show: super-T-as-transpose // Render "..^T" as transposed matrix
@@ -172,6 +172,7 @@
   // Main body.
   set par(justify: true)
   show: codly-setup
+  show: equation-setup
 
   body
 }
