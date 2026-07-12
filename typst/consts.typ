@@ -44,3 +44,5 @@
 #let pm = $plus.minus$
 
 #let intoo = $integral_(-oo)^oo$
+
+#let tp = $times.o$
