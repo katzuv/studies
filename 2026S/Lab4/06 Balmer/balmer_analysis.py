@@ -914,24 +914,35 @@ def hydrogen_grating_analysis(
         _bm_rad = np.radians(_bm)
         _db_rad = np.radians(_db)
 
-        # Incidence angle calculation:
-        # sin(i0) = (sin(beta+) - sin(beta-)) / 2
-        # Let's use get_i0 function behavior or calculate directly
-        _sin_i0 = (np.sin(_bp_rad) - np.sin(_bm_rad)) / 2.0
-        _i0_rad = np.arcsin(_sin_i0)
+        # Wavelength and i0 calculation
+        def _calc_lam_and_i0(bp_val, bm_val):
+            bp_r = np.radians(bp_val)
+            bm_r = np.radians(bm_val)
+            tan_val = (np.sin(bp_r) - np.sin(bm_r)) / (2.0 - np.cos(bp_r) - np.cos(bm_r))
+            i0_r = np.arctan(tan_val)
+            lam_val = (d_grating / _m) * (np.sin(bp_r - i0_r) + np.sin(i0_r))
+            return lam_val, i0_r
 
-        # d(sin(i0)) = 0.5 * (cos(beta+)dbeta + cos(beta-)dbeta)
-        _dsin_i0 = 0.5 * (np.cos(_bp_rad) + np.cos(_bm_rad)) * _db_rad
-        _di0_rad = _dsin_i0 / np.cos(_i0_rad)
+        _lam, _i0_rad = _calc_lam_and_i0(_bp, _bm)
 
-        # Wavelength lambda = d/m * (sin(beta+) + sin(beta-)) / 2
-        # which is lambda = d/m * sin((beta+ + beta-)/2) * cos((beta+ - beta-)/2)
-        _sin_term = (np.sin(_bp_rad) + np.sin(_bm_rad)) / 2.0
-        _lam = (d_grating / _m) * _sin_term
+        # Error propagation in quadrature via central difference numerical derivative
+        eps = 1e-5
+        
+        # for i0
+        def _calc_i0_only(bp_val, bm_val):
+            return _calc_lam_and_i0(bp_val, bm_val)[1]
+            
+        di0_dbp = (_calc_i0_only(_bp + eps, _bm) - _calc_i0_only(_bp - eps, _bm)) / (2 * eps)
+        di0_dbm = (_calc_i0_only(_bp, _bm + eps) - _calc_i0_only(_bp, _bm - eps)) / (2 * eps)
+        _di0_rad = np.sqrt((di0_dbp * _db)**2 + (di0_dbm * _db)**2) * (np.pi / 180.0)
 
-        # Error propagation for wavelength
-        _dsin_term = 0.5 * (np.cos(_bp_rad) + np.cos(_bm_rad)) * _db_rad
-        _dlam = (d_grating / _m) * _dsin_term
+        # for lam
+        def _calc_lam_only(bp_val, bm_val):
+            return _calc_lam_and_i0(bp_val, bm_val)[0]
+            
+        dlam_dbp = (_calc_lam_only(_bp + eps, _bm) - _calc_lam_only(_bp - eps, _bm)) / (2 * eps)
+        dlam_dbm = (_calc_lam_only(_bp, _bm + eps) - _calc_lam_only(_bp, _bm - eps)) / (2 * eps)
+        _dlam = np.sqrt((dlam_dbp * _db)**2 + (dlam_dbm * _db)**2)
 
         # Rydberg calculation
         _n_q = _quantum_n.get(_line, 3)
