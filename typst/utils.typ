@@ -108,10 +108,7 @@ $ del(a, b) $
 #let equation-setup(body) = {
   set math.equation(numbering: none, number-align: left)
   show: body => context {
-    let labeled_eqs = query(math.equation.where(block: true))
-      .filter(eq => eq.has("label"))
-      .map(eq => eq.label)
-      .dedup()
+    let labeled_eqs = query(math.equation.where(block: true)).filter(eq => eq.has("label")).map(eq => eq.label).dedup()
     if labeled_eqs.len() > 0 {
       show selector.or(..labeled_eqs): set math.equation(numbering: "(1)")
       body
@@ -120,4 +117,13 @@ $ del(a, b) $
     }
   }
   body
+}
+
+#let typst_evangelist(source-link: none) = {
+  let content = [מסמך זה נכתב באמצעות #link("https://typst.app/")[Typst], שפה לכתיבת מסמכים.]
+  if source-link != none {
+    content += [ ניתן לראות את קוד המקור #link(source-link)[#underline[כאן]].]
+  }
+  footnote(numbering: _ => [])[#content]
+  counter(footnote).update(n => n - 1)
 }

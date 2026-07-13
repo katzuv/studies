@@ -1,7 +1,8 @@
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/physica:0.9.8": *
 
-#import "../utils.typ": codly-setup, equation-setup, משל
+#import "../utils.typ": codly-setup, equation-setup, משל, typst_evangelist
+#import "../consts.typ": *
 
 #let project(
   experiment_name,
@@ -64,10 +65,6 @@
   )
 
   // Typst credit footnote
-  let typst_evangelist(body) = {
-    footnote(numbering: _ => [])[#body]
-    counter(footnote).update(n => n - 1)
-  }
 
   // Title page.
   v(4fr) // Significantly lower the title
@@ -107,7 +104,7 @@
   )
 
   v(2.4fr)
-  typst_evangelist[דו"ח זה נכתב ב-#link("https://typst.app/")[Typst], שפה לכתיבת מסמכים.]
+  typst_evangelist()
   pagebreak()
 
   // Abstract & Title
@@ -209,6 +206,7 @@
 
 // Units (upright in math mode)
 #let nm = $"nm"$
+#let um = $upright(mu m)$
 #let mm = $"mm"$
 #let cm = $"cm"$
 #let mps = $"m/s"$

@@ -1,3 +1,4 @@
+#import "../../typst/utils.typ": typst_evangelist
 // The project function defines how your document looks.
 // It takes your content and some metadata and formats it.
 // Go ahead and customize it to your liking!
@@ -21,11 +22,8 @@
 //   underline(link(it.target, it))
 // }
 
-  let typst_evangelist(body) = {
-    footnote(numbering: _ => [])[#body]
-    counter(footnote).update(n => n - 1)
-  }
-  typst_evangelist[דו"ח זה נכתב ב-#link("https://typst.app/")[#underline[Typst]], שפה לכתיבת מסמכים. ניתן לראות את קוד המקור #link("https://typst.app/project/ryNVs59Kpm1qxphJr4NmSd")[#underline[כאן]].]
+
+  typst_evangelist(source-link: "https://typst.app/project/ryNVs59Kpm1qxphJr4NmSd")
 
   // Title page.
   // The page can contain a logo if you pass one with `logo: "logo.png"`.
