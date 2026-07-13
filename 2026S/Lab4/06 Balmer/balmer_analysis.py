@@ -460,10 +460,10 @@ def plot_calibration(
     B_fit,
     cauchy_model,
     exp_dir,
-    fit_res,
     he_dns,
     he_lambdas,
     he_ns,
+    fit_res,
     np,
     plt,
     set_style,
@@ -479,8 +479,9 @@ def plot_calibration(
     r_sq = 1.0 - (ss_res / ss_tot)
     chi_red = fit_res.chi_red
 
+    # Format R^2 to 3 decimal places
     stats_text = (
-        f"$R^2 = {r_sq:.6f}$\n"
+        f"$R^2 = {r_sq:.3f}$\n"
         f"$\\chi^2_\\mathrm{{red}} = {chi_red:.3f}$"
     )
 
@@ -503,7 +504,7 @@ def plot_calibration(
     }
     display_colors = {
         "Red": "#D32F2F",
-        "Yellow": "#FBC02D",
+        "Yellow": "#C48400",  # Darker yellow
         "Green": "#388E3C",
         "Blue-Green": "#0097A7",
         "Blue": "#1976D2",
@@ -535,16 +536,36 @@ def plot_calibration(
             zorder=2,
             label="Helium Data" if lam == he_lambdas[0] else "",
         )
+        
+        # Position labels left/right as requested:
+        # Green right, Blue-Green left, Blues left
+        if name == "Green":
+            x_pos = lam + 7
+            ha_align = "left"
+        elif name in ("Blue-Green", "Blue"):
+            x_pos = lam - 7
+            ha_align = "right"
+        else:
+            x_pos = lam
+            ha_align = "center"
+
+        y_pos = n_val
+        if ha_align == "center":
+            y_pos += 0.0008
+            va_align = "bottom"
+        else:
+            va_align = "center"
+
         # Add color text label
         ax1.text(
-            lam,
-            n_val + 0.0008,
+            x_pos,
+            y_pos,
             name,
             fontsize=8,
             color=dot_color,
             fontweight="bold",
-            ha="center",
-            va="bottom",
+            ha=ha_align,
+            va=va_align,
         )
 
     l_grid = np.linspace(400, 750, 200)
@@ -602,16 +623,35 @@ def plot_calibration(
             s=60,
             zorder=2,
         )
+        
+        # Position labels: green left, blue green right, both blue right
+        if name == "Green":
+            x_pos = inv_lam_val - 0.06e-6
+            ha_align = "right"
+        elif name in ("Blue-Green", "Blue"):
+            x_pos = inv_lam_val + 0.06e-6
+            ha_align = "left"
+        else:
+            x_pos = inv_lam_val
+            ha_align = "center"
+
+        y_pos = _n_val
+        if ha_align == "center":
+            y_pos += 0.0008
+            va_align = "bottom"
+        else:
+            va_align = "center"
+
         # Add color text label
         ax2.text(
-            inv_lam_val,
-            _n_val + 0.0008,
+            x_pos,
+            y_pos,
             name,
             fontsize=8,
             color=dot_color,
             fontweight="bold",
-            ha="center",
-            va="bottom",
+            ha=ha_align,
+            va=va_align,
         )
 
     ax2.plot(
@@ -627,6 +667,7 @@ def plot_calibration(
         ylabel=r"Refractive Index $n$",
     )
     ax2.set_ylim(min(he_ns) - 0.005, max(he_ns) + 0.005)
+    ax2.set_xlim(left=1.0 / (750.0**2))  # Left xlimit = 750 nm on 2nd graph
     ax2.legend()
     # Add stats box
     ax2.text(
@@ -659,16 +700,7 @@ def plot_calibration(
         xlabel=r"$\lambda \ \text{[nm]}$",
         ylabel=r"Residuals $n - n_{\mathrm{fit}}$",
     )
-    # Add stats box
-    ax3.text(
-        0.95,
-        0.95,
-        stats_text,
-        transform=ax3.transAxes,
-        va="top",
-        ha="right",
-        bbox=dict(boxstyle="round", facecolor="white", alpha=0.8),
-    )
+    # Stats box removed from residuals plot as requested/logical
     plt.tight_layout()
     fig3.savefig(graphs_dir / "helium_residuals.svg", format="svg")
     plt.close(fig3)
