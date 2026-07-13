@@ -86,7 +86,7 @@
   }
 
   v(1em)
-  text(1.4em)[מדריך: #instructor]
+  text(1.4em)[#instructor]
   linebreak()
   v(0.2em)
   text(1.1em, lab_info)
