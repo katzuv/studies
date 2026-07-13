@@ -1,7 +1,7 @@
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/physica:0.9.8": *
 
-#import "../utils.typ": codly-setup, משל, equation-setup
+#import "../utils.typ": codly-setup, equation-setup, משל
 
 #let project(
   experiment_name,
@@ -208,6 +208,7 @@
 #let RR = $bb(R)$
 
 // Units (upright in math mode)
+#let nm = $"nm"$
 #let mm = $"mm"$
 #let cm = $"cm"$
 #let mps = $"m/s"$

@@ -1,0 +1,602 @@
+--- PAGE 1 ---
+measuring visible lines in the hydrogen spectrum 1
+Measuring Visible Lines in the Hydrogen Spectrum
+2025, v.0.1.7
+In this experiment, students use light dispersion and diffraction to mea-
+sure the wavelengths of spectral lines. Reliable results require care-
+ful calibration of the device, and the basic principles of calibration are
+briefly introduced. The data analysis involves propagating measure-
+ment uncertainties and applying weighted regression to obtain accurate
+wavelength values. The experiment shows how simple measurements
+can reveal the quantum nature of matter.
+Introduction
+When matter is heated or exposed to external energy sources such as
+electric discharge or cathode rays, it begins to emit electromagnetic
+radiation. This radiation is not uniform but consists of waves of dif-
+ferent wavelengths, forming what is known as aspectrum. Spectra
+can be studied by using dispersion and diffraction, which separate the
+radiation into its wavelength components.
+Different states of matter produce different types of spectra. Hot
+solids and liquids emit radiation across almost all wavelengths, form-
+ing acontinuous spectrum— seen as a smooth band of colors from
+red to violet. Heated gases and vapors, in contrast, produce either
+band spectra(broad colored bands separated by dark gaps) orline
+spectra(sharp, discrete lines). Thus, the type of spectrum depends
+strongly on the physical state of the substance.
+In solids, atoms are arranged in a rigid lattice due to strong in-
+teractions. In liquids and amorphous solids, interactions are weaker
+because of greater atomic motion. In gases and vapors, atoms and
+molecules are far less bound, so their emission spectra consist of dis-
+tinct lines that directly reflect the internal structure of the atoms.
+The hydrogen atom, being the simplest of all, provides the clearest
+example of such a line spectrum. Its study opened the way to mod-
+ern atomic physics and serves as the foundation for this laboratory
+experiment.
+Hydrogen Spectrum Empirical Models
+The simplest atomic spectrum is that of hydrogen, the lightest chem-
+ical element. In1885 1 Johann Balmer studied its visible lines and 1 Johann Jakob Balmer. Notiz über die
+spectrallinien des wasserstoffs.Annalen
+der Physik und Chemie,25:80–87,1885discovered a simple mathematical regularity in their wavelengths. He
+expressed these wavelengthsλas
+λ=λ 0 · n2
+n2 −4 ,
+--- PAGE 2 ---
+measuring visible lines in the hydrogen spectrum 2
+whereλ 0 =364.56 nm (Balmer’s constant), andntakes integer values
+3, 4, 5, 6 . . . .
+The lines described by this relation are known as theBalmer series.
+In the visible spectrum, Balmer identified four strong lines.
+Later, further study revealed that all of hydrogen’s spectral lines
+could be described more generally by theRydberg formula: 2 2 Johannes Robert Rydberg. On the
+structure of the line-spectra of the
+chemical elements (preliminary notice).
+The London, Edinburgh, and Dublin
+Philosophical Magazine and Journal of
+Science,29(179):331–337,1890. doi:
+10.1080/14786449008619945.
+1
+λ =R
+ 1
+m2 − 1
+n2
+
+(1)
+wheremandnare positive integers withn>m, andR=109 721.6 cm −1
+is the Rydberg constant.
+Form=1 the formula givesLymanseries in the ultraviolet. For
+m=2 it reproduces theBalmerseries. Form=3, 4, 5 it yields the
+Paschen,BrackettandPfundseries respectively, lying in the infrared.
+Expressing the relation in terms of frequencyν=c/λgives:Herec=299 792 458 m/s is speed of
+light.
+ν= cR
+m2 − cR
+n2 =T m −T n, (2)
+whereT k = cR
+k2 is called aspectral term. The frequency of each spectral
+line can thus be represented as the difference between two terms, a
+structure that hints at the quantized energy levels within the atom.
+The empirical models of Balmer and Rydberg provided remarkably
+accurate predictions for hydrogen’s spectrum, even before the physical
+nature of these spectral terms was understood. Their success paved the
+way for later theoretical explanations based on the quantum structure
+of atoms.
+Bohr’s Theory of the Hydrogen Atom
+Early models treated atoms as tiny oscillators that emit electromag-
+netic waves when their charges move. While this idea could explain
+some optical effects, it could not predict the specific frequencies ob-
+served in atomic spectra. Experiments showed that the charge-to-mass
+ratio of the “oscillating particle” matched that of the electron, suggest-
+ing that light emission is tied to the motion of electrons inside atoms.
+Ernest Rutherford’s experiments withα-particle scattering on gold
+foil led him to propose aplanetary modelof the atom: a dense, pos-
+itively charged nucleus at the center with electrons orbiting around it
+(Figure1).
+Figure1: Atom planetary model
+(Z=1 for hydrogen). Image:
+[Krane(1996), p.183].
+According to this model, the center of the atom is the positively
+charged nucleus with a diameter of the order of 10 −15 −10 −14 m,
+where almost the entire mass of the atom is concentrated. The charge
+of the nucleusq=eZ, whereZis the number of the element in the
+periodic table,eis the value of the electron charge. Since the atom as
+--- PAGE 3 ---
+measuring visible lines in the hydrogen spectrum 3
+a whole is neutral, the number of electrons in it is equal toZ. Elec-
+trons interact with the nucleus and with each other by electric forces
+according to Coulomb’s law.
+In this model, the electron’s motion should determine the frequency
+of emitted radiation. However, classical physics predicts that an accel-
+erating electron continuously radiates energy, spirals into the nucleus,
+and the atom collapses in a fraction of a second (it is of order 10 −12
+sec, as shown in textbooks 3). Moreover, the model allows orbits of any 3 e.g. Chapter4of Eisberg and Resnick.
+Quantum Physics of Atoms, Molecules,
+Solids, Nuclei, and Particles.Wiley,
+New York,2nd edition,1985. ISBN978-
+0471873730.
+size and energy, while experiments show that atoms emit only discrete
+spectral lines. Clearly, a new idea was needed.
+To overcome this difficulty, Niels Bohr in1913combined Planck ’s
+idea of quantized energy with Rutherford’s planetary model and in-
+troduced postulates that explained atomic stability and predicted hy-
+drogen’s spectrum. Here is what he wrote in his revolutionary article
+"On the constitution of atoms and molecules"[Bohr(1913)]:
+1. "The dynamical equilibrium of the systems in the stationary
+states can be discussed by help of the ordinary mechanics,
+while the passing of the systems between different stationary
+states cannot be treated on that basis".
+2. "The latter process is followed by the emission of a homoge-
+neous radiation, for which the relation between the frequency
+and the amount of energy emitted is the one given by Planck’s
+theory".
+Bohr’s postulates:
+Figure2: Bohr’s model: Transition
+of electron from stationary staten 1
+to stationary staten 2 with emission
+of a photon. Image [Krane(1996),
+p.186].
+The first postulate introduces the idea of thestationary state. The
+second postulate describesphoton emission and absorptionphenom-
+ena that can be written as
+∆E=hν=E n1 −E n2,
+wherehis Planck’s constant, andνis photon frequency (see Figure2).
+Further in this article Bohr suggested thequantization rule, often
+called Bohr’s third postulate:
+The electron’s angular momentum is restricted to discrete values:
+mevr=n¯h,n=1, 2, 3, . . .
+3. Quantization rule
+Herem e is the mass of the electron,vis electron’s speed,ris radius
+of the stationary orbit, ¯h= h
+2π , andnis a positive integer called a
+quantum number.
+--- PAGE 4 ---
+measuring visible lines in the hydrogen spectrum 4
+Using classical Newton’s forces equation of the electron on a sta-
+tionary orbit and the quantization rule, Bohr derived an expression
+Electron’s centripetal acceleration bal-
+anced by electrostatic force
+mev2
+r = e2Z
+4πε 0r2
+for the electron’s allowed energies:
+En =− 1
+(4πε 0)2
+mee4Z2
+2¯h2n2 .
+Theground statecorresponds to quantum numbern=1, and higher
+values ofnrepresent excited states.
+When an electron jumps from statento statem, the emitted or
+absorbed photon frequency is
+ν= En
+h − Em
+h .
+This matches the structure of the Rydberg formula (1), linking Bohr’s
+theory directly to the observed spectral lines. Equating spectral termsν= cR
+m2 − cR
+n2 =T m −T n
+Tn andE n/hfor hydrogen (Z=1), we can express the Rydberg con-
+stantRin universal constants ¯h,m e,eandc, known from other exper-
+iments: Values of constants:
+¯h=1.054 588 7×10 −34 J·s,
+me =9.109 534×10 −31 kg,
+e=1.602 189 2×10 −19 C,
+c=299 792 458 m/s,
+ε0 =8.854 187 819×10 −12 F/m.
+R∞ = 1
+(4πε 0)2
+mee4
+4πc¯h3 . (3)
+Subscript∞here denotes that the value ofRis calculated according to
+the assumption that mass of nucleus is infinitely greater than the mass
+of electron.
+Bohr’s model successfully explained the main features of hydro-
+gen’s spectrum and gave a physical meaning to the empirical formu-
+las of Balmer and Rydberg. However, it could not account for fine
+structure, magnetic effects (Zeeman splitting), or multi-electron atoms.
+These shortcomings were later resolved with the development of quan-
+tum mechanics.
+Spectral Analysis
+Experiments show that many elements have spectral regularities sim-
+ilar to hydrogen. They also form series of spectral lines, but the pat-
+terns are usually more complex. According to quantum mechanics,
+these regularities arise because each atom has a unique set of discrete
+energy states. The arrangement of these states determines the posi-
+tions of spectral lines, making every element’s spectrum unique —
+essentially a “fingerprint” of the atom.
+This uniqueness makes spectroscopy a powerful tool forqualitative
+spectral analysis.By comparing observed spectral lines with known
+reference values, one can identify the chemical elements present in a
+sample.
+To study spectra, physicists use special instruments: spectroscopes
+– for direct visual observation of spectral lines, spectrographs – which
+--- PAGE 5 ---
+measuring visible lines in the hydrogen spectrum 5
+record spectra photographically, and spectrometers – which use detec-
+tors to measure the position and intensity of spectral lines with high
+precision.
+Figure3: Light diffraction on grat-
+ing (scheme on left) and dispersion
+on prism (scheme on right). Note
+that blue rays, which have a shorter
+wavelength, are refracted by the
+prism more strongly than red rays
+having longer wavelength. On
+grating (scheme on left) the effect is
+opposite: red waves are diffracted
+more than blue. Image: UTexas
+At the heart of each device is adispersing element— either aprism
+or adiffraction grating. This element spreads white or mixed light into
+its component wavelengths. An interesting point is that prisms and
+gratings disperse light in opposite directions: the prism spreads the
+colors from red to blue, while the grating spreads them from blue to
+red (see Figure3). Why this happens will become clear a bit later.
+Prism as a Dispersing Element
+When a beam of monochromatic light enters a prism, it bends twice
+— once upon entering and once upon exiting. The total bending of
+the beam is described by the deviation angleβ, which depends on the
+prism’srefractive index ˆn, the prism’s apex angleαand the angle of
+incidence (Figure4).
+Figure4: Light refraction on prism.
+Light rayJfalls on prism surface,
+passes the prism and exits out of
+second surface as light rayT. The
+deviation angle between falling ray
+Jand exiting rayTdepends on ray
+Jincident angle, refraction index
+ˆnand prism apex angleα. Image:
+[Jenkins and White(1976), p.31]
+For an equilateral prism (α=60 ◦) the relation between the refractive
+index and the deviation angle at the position ofminimum deviation
+is:
+ˆn=2 sin
+
+30◦ + β
+2
+
+. (4)
+The refractive index itself depends on the light’s wavelength. This
+dependence is described empirically by the Cauchy equation
+[Jenkins and White(1976), p.479]:
+ˆn(λ) =A+ B
+λ2 , (5)
+whereAandBare material constants for the prism. Shorter wave-
+lengths (blue light) are refracted more strongly than longer wave-
+lengths (red light).
+Because the refractive properties of the prism glass are not known
+in advance, the prism must becalibrated. Calibration means estab-
+lishing a relationship between measured deviation angles and known
+wavelengths using a set of reference spectral lines. Once this relation is
+determined, the prism can be used to calculate unknown wavelengths.
+Calibration establishes a relation between the measurement de-
+vice readings and the true physical quantity: we measure a set
+of data with known values andcalibrate, i.e., estimate the pa-
+rameters of a chosen functional dependence between the read-
+ings and the quantity. Good to remember the calibration basics.
+Firstly, the resulting calibration is generally reliable only within
+Calibration basics
+--- PAGE 6 ---
+measuring visible lines in the hydrogen spectrum 6
+the range covered by the observations, so the dataset should span
+the full working range and subsequent measurements should
+rely oninterpolationrather thanextrapolation. Secondly , choose
+the simplest adequate model that captures the trend without un-
+necessary flexibility to escapeoverfitting. Finally , set aside a sub-
+set of data not used in fitting for an independent check.
+For observed deviation angleβin the equilateral prism with known
+Cauchy parametersAandB, the wavelengthλcan be calculated by
+combining equations (4) and (5):
+λ=
+r
+B
+ˆn−A , ˆn=2 sin
+
+30◦ + β
+2
+
+, (6)
+and a calibration equationλ(β)could be obtained.
+Diffraction Grating as a Dispersing Element
+A diffraction grating consists of many parallel lines or grooves that
+cause light to spread into its component wavelengths. The condition
+for constructive interference, known as thegrating condition, isSee the textbook
+[Jenkins and White(1976), p.358–360]
+nλ=d(sinθ−sini 0),
+wheren=±1,±2, . . . is the diffraction order,λis the wavelength,d
+is the spacing between grating lines,i 0 is the angle of light incidence,
+measured from the grating normal, andθis the diffraction angle, also
+measured from the normal.
+In practice, the experiment records anglesβ≡θ−i 0, measured rel-
+ative to the incoming beam. After some trigonometric manipulation,
+the grating condition can be written as:
+nλ=2dsin β
+2 cos
+
+i0 + β
+2
+
+,n=±1,±2, .. (7)
+Figure5: Schematic drawing for
+incident light falling on diffraction
+grating plane under an arbitrary
+non-zero incidence anglei 0 rel-
+ative to the normal. In this case
+anglesβ + andβ − for symmetric
+diffracted ordersn + andn − will be
+not equal.
+Because of the setup, the exact incidence anglei 0 is not measured
+directly. Instead, it can be determined from the asymmetry of diffrac-
+tion orders (see Figure5). If the same spectral line is observed at angles
+β+ andβ − for the+nand−norders, the relation
+sin β+
+2 cos
+
+i0 + β+
+2
+
++sin β−
+2 cos
+
+i0 + β−
+2
+
+=0
+leads to a solution fori 0:
+i0 =arctan sinβ + +sinβ −
+2−cosβ + −cosβ −
+. (8)
+This approach allows the experimenter to determine the effective inci-
+dence angle indirectly, even when the grating perioddand wavelength
+λare unknown.
+--- PAGE 7 ---
+measuring visible lines in the hydrogen spectrum 7
+Performing the Experiment
+•High voltage caution!Please turn off high voltage power
+supply whenever it is not used.
+•Sensitive optics.Please do not touch the surfaces of the
+diffraction grating and other optical elements: lenses, prism.
+Fingerprints can damage the coatings.
+Safety note
+Getting to Know the Workplace
+The workplace is equipped with optical spectroscope with digital an-
+gle counter, a prism and a diffraction grating (interchangeable as dis-
+persing elements), a set of spectral lamps in one housing, and a high
+voltage5kV power supply.
+Figure6: Spectrometer apparatus
+overview. The manufacturer de-
+clares wavelength accuracy mea-
+surements up to 0.1 nm when used
+as a grating spectroscope and up to
+2 nm when used as a prism spec-
+troscope. Note the TELESCOPE
+rotation lock screw and fine-adjust
+knobs. Image: PASCO.
+The opticalspectroscope(Figure6) is the classical apparatus de-
+signed for a teaching laboratory. The schema of the spectroscope with
+collimator for light collection and telescope for observations and mea-
+surements is shown in Figure7. The apparatus is equipped with knobs
+for fixing and fine-tuning the rotation angle of the telescope. Make
+sure that you understand how to use them. This will be a help when
+making measurements in the dark.
+--- PAGE 8 ---
+measuring visible lines in the hydrogen spectrum 8
+Figure7: The light rays pass the
+slit and enter the collimator. Colli-
+mator collects the light as a parallel
+beam and sends to the dispersing el-
+ement (prism or diffraction grating).
+The dispersed monochromatic ray
+can be observed using rotating tele-
+scope with eyepiece and measured
+with angle counter. Image: PASCO.
+The digital anglecounteris a replacement for the original mechan-
+ical vernier scales. The digital counter sensor returns32,000counts
+per revolution. The counter’s display shows the angle converted to
+degrees. The display has a button to reset the reading to zero.
+The prism and the diffraction grating can be installed on a spectro-
+scope table asdispersing element. The diffraction grating should be
+fixed on the table with the screw upon installation. The prism should
+not be fixed to allow minimal deviation angle tuning.
+The set ofspectral lampsis equipped with mercury, helium and
+hydrogen lamps. The sliding protective plank opens and closes the
+lamp. Each lamp has its own plug to the power supply.
+The high voltage5kVpower supplyhas ON/OFF switch and HY-
+DROGEN switch. This switch is used to make the spectral lamp light
+brighter.
+The experiment is performed in a darkened room. Abacklight
+lampunder the table does not interfere with observations and can be
+used for writing notes or to backlight the crosshair in the eyepiece.
+The lamp switch is located on the right side below the table surface.
+Setting the Apparatus
+Figure8: Telescope aligned directly
+opposite the collimator. Image:
+PASCO.
+1. PLUG IN the light source lamp and TURN ON the high voltage
+power supply. Shift the plank on the lamp housing to open the
+lamp and ensure that you see the light source.
+2. Gently ALIGN the apparatus collimator straight against the light
+source. FIX the table rotation lock-screw. Turn aside the telescope
+tube to ensure that you see bright vertical line on the second lens of
+the collimator.
+3. INSTALL the dispersing element: prism or grating.
+4. ALIGN the telescope with the collimator (see Figure8).
+5. Make sure by adjusting SLIT width screw and FOCUS knobs that
+the light source is seen in eyepiece as narrow sharp vertical line.
+--- PAGE 9 ---
+measuring visible lines in the hydrogen spectrum 9
+Make sure that you see the crosshair. Crosshair eyepiece is ad-
+justable: shift it along optical axis to see the crosshair in focus.
+6. Fine-tune the telescope rotation angle with LOCK screw and FINE
+ADJUST knob to make sure that the sharp narrow vertical line of
+the light source coincides with crosshair you see in the eyepiece.
+7. SET the digital angle counter to zero.
+Measurements with Prism
+1. INSTALL the prism on the spectrometer table as shown on the Fig-
+ure9. Do not fix the prism table: you will need to swing it when
+finding the minimal deviation angles.
+Figure9: Prism orientation, view
+from top. Image: PASCO.
+2. TURN ON theheliumlamp and SET the apparatus to zero position
+as described above.
+3. ROTATE the telescope counter-clockwise until you see the lamp
+spectral lines. They are expected to be seen somewhere at angles
+40° –60°.
+4. IDENTIFY each spectral line. Refer to NIST database or see the
+figures in Appendix. Spectrum lines wavelengths. You should see
+seven strong spectral lines, from blue to red, and some weaker lines.
+5. Choose a spectral line and focus on it. Identify its wavelength.
+SWING gently the prism table. You will see the line is shifting left
+(to smaller angles) or right (to greater angles). Find the minimal
+(leftmost) deviation angle of the line.
+Line ID β, deg δβ, deg
+Red706 48.000 0.033
+Red668 .. ..
+.. .. ..
+Table1: Sample table for prism
+measurements
+6. Fine-tune the telescope position. Estimate the observation uncer-
+tainty. RECORD the observation in the Table1.
+7. REPEAT the measurements for all helium spectral lines identified.
+8. TURN OFF the high voltage supply and unplug the lamp.
+9. Turn on themercurylamp, align the apparatus and REPEAT the
+measurements for the mercury strong green line. Write it down in
+the table. You will use this measurement to test the calibration.
+10. Build weighted linear regression model ([Taylor(1996), Ch.8]) to
+find calibration parametersAandBwith their uncertainties using
+helium observation data, prism equation (4) and Cauchy empirical
+ˆn=2 sin
+
+30◦ + β
+2
+
+, ˆn=A+ B
+λ2 .equation (5).
+11. Test your model on mercury green line observation using eq. (6).λ=
+q
+B
+ˆn−A
+The wavelengthλtrue value should lie within uncertainty interval.
+--- PAGE 10 ---
+measuring visible lines in the hydrogen spectrum 10
+12. Repeat the measurements forhydrogenspectrum lines. You should
+see three or four spectrum lines. Identify the lines using NIST
+database or by referring to the Appendix.
+13. Apply the model and calculate the hydrogen spectrum wavelengths
+with their uncertainties.
+Measurements with Diffraction Grating
+In this part of the experiment we perform measurements immediately
+with the hydrogen spectrum lamp, assuming that the diffraction grat-
+ing parameterdis known and we accept its nominal value. When
+dis unknown, calibration on the known wavelengths of helium and
+mercury should be performed before hydrogen measurements.
+1. TURN ON thehydrogenlamp and ALIGN the apparatus against
+the lamp as described above. SET the digital angle counter to zero.
+Line ID n β,deg δβ,deg
+Red656 1 9.045 ±0.011
+.. .. .. ..
+Table2: Sample table for measure-
+ments with a diffraction grating.
+2. INSTALL the diffraction grating and fix it with the screw.It is
+important not to move the apparatus or the grating after set up,
+otherwise the results will be inconsistent.
+3. Observe light diffraction by rotating telescope clockwise and counter-
+clockwise. In both directions you should see spectrum lines of sev-
+eral orders — the first ordersn=±1 are the brightest, the others
+are less and less bright. You may need to increase the light bright-
+ness by turning on the HYDROGEN switch on the power supply for
+short time. In each order you should see lines of the hydrogen spec-
+trum. Identify them referring to NIST database or with the Figure
+13in the Appendix.
+Figure10: Measuring diffraction
+angle. Image: PASCO
+4. Choose a spectral line and focus on it. IDENTIFY the line’s wave-
+lengthλand the ordern. Fine-tune the telescope rotation angle with
+LOCK screw and FINE ADJUST knob to make sure that the sharp
+narrow spectral line coincides with the crosshair. Measure the devi-
+ation angleβ. Estimate its uncertainty. RECORD the observation to
+the Table2.
+5. Proceed with all spectral lines seen, both positive and negative or-
+ders.
+6. TURN OFF the high voltage power supply and disconnect lamp.
+7. For all pairs of the same spectral color of order±ncalculatei 0 as
+in eq.(8). Use weighted average [Taylor(1996), Ch.7] to estimate i0 =arctan sinβ + +sinβ −
+2−cosβ + −cosβ −
+.
+value ofi 0 and its uncertainty.
+--- PAGE 11 ---
+measuring visible lines in the hydrogen spectrum 11
+8. Use equation (7) for all measured ordersnand anglesβ n to cal-
+nλ=2dsin βn
+2 cos
+
+i0 + βn
+2
+
+culate wavelengths. Again, use error propagation and weighted
+average to estimate values with their uncertainties.
+Data Analysis
+1. Having hydrogen Balmer series wavelengthsλmeasured with prism
+and diffraction grating spectroscopy methods, identify their respec-
+tive quantum numbersnand calculate Rydberg’s constantRfrom
+1
+λ =R
+ 1
+22 − 1
+n2
+
+empiric equation (1) using weighted averages for uncertainty esti-
+mation. Note thatnas diffraction order, referred above, and quan-
+tum numbernhere are not the same.
+2. Compare measured Rydberg’s constantRwith theoretical expecta-
+R∞ = 1
+(4πε 0)2
+mee4
+4πc¯h3tion (3) derived from Bohr’s postulates.
+References
+[Bohr(1913)] Niels Bohr. On the constitution of atoms and molecules. part i.Philosophical Magazine,26(151):
+1–25,1913. doi:10.1080/14786441308634955.
+[Jenkins and White(1976)] Francis A. Jenkins and Harvey E. White.Fundamentals of Optics. McGraw-Hill,
+New York,3rd edition,1976. ISBN978-0070322722.
+[Krane(1996)] Kenneth S. Krane.Modern Physics. Wiley, New York,2nd edition,1996. ISBN978-0471828723.
+[Taylor(1996)] John R. Taylor.An Introduction to Error Analysis: The Study of Uncertainties in Physical Measure-
+ments. University Science Books,1996. ISBN093570275X.
+Acknowledgments
+The theoretical part of this document is inspired by the laboratory experiment manual Studying the
+Atomic Hydrogen Spectrum, written by Associate Professor G.E.Pustovalov, Moscow State University, Physics
+Dept,2012(in Russian).
+Spectrometer apparatus images and setting instructions adapted from PASCO Student spectrometer man-
+ual (model sp-9268a) Instruction Manual and Experiment Guide.
+Written by Dr.Evgeny Kolonskyunder edition of Dr.Yulia Preesant.
+--- PAGE 12 ---
+measuring visible lines in the hydrogen spectrum 12
+Appendix. Spectrum lines wavelengths
+Here are shown the results of spectral lamp intensity measurements performed on the laboratory lamps
+set with a digital spectrographAvantes. Note that the the figures are for illustration only. Follow to NIST
+reference database for accurate wavelengths values.
+Figure11: Helium lamp spectrum
+measurements. Strong lines of He
+spectrum occur at447.1nm (blue),
+471.3nm (weaker blue),492.1nm
+(weaker green),501.5nm (green),
+587.5nm (strong yellow),667.9nm
+(red),706.5nm (red). Weak lines
+are402.6nm and414.4nm (violet),
+438.8nm and468.5nm (blue).
+Figure12: Mercury lamp spec-
+trum measurements. Strong line
+of Hg spectrum occurs at435.8
+nm (strongest blue line),546.1nm
+(strong green line), yellow-orange:
+577.0nm and579.1nm (a pair of
+strong lines). Weaker blue line:
+404.7nm. Note that red lines at697
+nm and707nm are not of Hg spec-
+trum. These red lines belong to ar-
+gon, which is used as starter gas.
+Figure13: Hydrogen lamp spec-
+trum measurements. Strong lines
+are656.3nm (red),486.1nm (blue-
+green),434.0nm (blue). Weaker line
+is410.2nm (weak violet). These
+lines are emitted by an electrons
+transition to then=2 energy level
+from higher levels (n=3, 4, 5, and
+6 respectively).
