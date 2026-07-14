@@ -6,61 +6,38 @@ app = marimo.App(width="medium")
 
 @app.cell(hide_code=True)
 def _():
-    import marimo as mo
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from pathlib import Path
     import json
-    from scipy.optimize import curve_fit
-    from scipy.integrate import trapezoid
 
     # Import the custom physics lab helper library
     import sys
-    sys.path.append(str(Path(r"c:\Users\danda\PycharmProjects\studies")))
+    from pathlib import Path
+
+    import marimo as mo
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import scipy.constants as sp
+    from scipy.integrate import trapezoid
+    sys.path.append(str(Path(r"c:\Users\Student\studies")))
     import physlab.core as phys
 
     # Ensure output data directory exists
     data_dir = Path("data")
     data_dir.mkdir(parents=True, exist_ok=True)
-    return Path, data_dir, json, mo, np, phys, plt, trapezoid
+    return Path, data_dir, json, mo, np, phys, plt, sp, trapezoid
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
     # Bragg X-ray Spectroscopy Data Analysis
-    This interactive notebook assists in analyzing X-ray emission spectra. You can switch between **Simulation Mode** (for testing at home) and **Lab Mode** (for uploading real files recorded in the lab).
+    This interactive notebook assists in analyzing X-ray emission spectra. Please upload your goniometer scan files below to begin.
     """)
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    # User selects the operating mode
-    mode_selector = mo.ui.radio(
-        options=["Simulation / Testing", "Lab Data (File Upload)"],
-        value="Simulation / Testing",
-        label="Select Mode:"
-    )
-    mode_selector
-    return (mode_selector,)
-
-
-@app.cell(hide_code=True)
-def _(mo, mode_selector):
-    is_sim = mode_selector.value == "Simulation / Testing"
-
-    # Render file upload components or instructions based on mode
-    if is_sim:
-        mode_instruction = mo.md(
-            r"**Simulation Mode Active**: The notebook will automatically generate and use high-fidelity simulated datasets for LiF (2mm), KBr (2mm), and LiF (1mm) with a Copper (Cu) tube."
-        ).callout(kind="info")
-    else:
-        mode_instruction = mo.md(
-            r"**Lab Mode Active**: Please upload your goniometer scan data. The expected format is a text file with two tab/space/comma separated columns: `Angle (deg)` and `Intensity (cps)`."
-        ).callout(kind="warn")
-
-    mode_instruction
+def _():
+    is_sim = False
     return (is_sim,)
 
 
@@ -69,26 +46,26 @@ def _(is_sim, mo):
     # File uploaders for Lab Mode
     lif_2mm_uploader = mo.ui.file(label="Upload LiF (2mm) Scan File", filetypes=[".txt", ".csv"]) if not is_sim else None
     kbr_2mm_uploader = mo.ui.file(label="Upload KBr (2mm) Scan File", filetypes=[".txt", ".csv"]) if not is_sim else None
-    lif_1mm_uploader = mo.ui.file(label="Upload LiF (1mm) Scan File", filetypes=[".txt", ".csv"]) if not is_sim else None
+    lif_5mm_uploader = mo.ui.file(label="Upload LiF (5mm) Scan File", filetypes=[".txt", ".csv"]) if not is_sim else None
 
     # Show them in a row/column if not in simulation mode
     if not is_sim:
         upload_ui = mo.vstack([
             lif_2mm_uploader,
             kbr_2mm_uploader,
-            lif_1mm_uploader
+            lif_5mm_uploader
         ])
     else:
         upload_ui = mo.md("Uploaders hidden in Simulation Mode.")
 
     upload_ui
-    return kbr_2mm_uploader, lif_1mm_uploader, lif_2mm_uploader
+    return kbr_2mm_uploader, lif_2mm_uploader, lif_5mm_uploader
 
 
 @app.cell(hide_code=True)
 def _(data_dir, np):
-    def generate_synthetic_data(crystal_name, diaphragm_mm, noise_scale=15.0):
-        """Generates realistic Bragg diffraction intensities for Copper (Cu) anode tube (35kV, 1mA)."""
+    def generate_synthetic_data(crystal_name, diaphragm_mm, noise_scale=3.0):
+        """Generates realistic Bragg diffraction intensities for anode tubes (35kV, 1mA)."""
         angles = np.arange(3.0, 75.1, 0.1) # Bragg angles in degrees
 
         # Crystal parameters
@@ -106,8 +83,8 @@ def _(data_dir, np):
 
         # Only energy values below E_max are produced
         valid_mask = energies_n1_kev < E_max
-        # Kramers law / smooth background curve
-        I_brem[valid_mask] = 1200.0 * (E_max - energies_n1_kev[valid_mask]) * (1.0 - np.exp(-energies_n1_kev[valid_mask] / 5.0)) / (energies_n1_kev[valid_mask] ** 0.5)
+        # Kramers law / smooth background curve, scaled to ~100-300 cps background
+        I_brem[valid_mask] = 100.0 * (E_max - energies_n1_kev[valid_mask]) * (1.0 - np.exp(-energies_n1_kev[valid_mask] / 5.0)) / (energies_n1_kev[valid_mask] ** 0.5)
 
         # Absorption edge step for Bromine K-edge in KBr (13.47 keV)
         if crystal_name == "KBr":
@@ -115,26 +92,33 @@ def _(data_dir, np):
             step_mask = energies_n1_kev > 13.47
             I_brem[step_mask] *= 0.35
 
-        # Add characteristic lines (Cu Ka = 8.04 keV, Cu Kb = 8.91 keV)
-        # We model diffraction orders n = 1, 2, 3
+        # Set peaks definition depending on the crystal/anode:
+        # LiF uses Cu (Ka = 8.04, Kb = 8.91 keV)
+        # KBr uses Mo (Ka = 17.48, Kb = 19.61 keV)
+        if crystal_name == "LiF":
+            peaks_def = [
+                {"name": "Ka", "E": 8.04, "rel_int": 2000.0},
+                {"name": "Kb", "E": 8.91, "rel_int": 500.0}
+            ]
+        else: # KBr
+            peaks_def = [
+                {"name": "Ka", "E": 17.48, "rel_int": 600.0},
+                {"name": "Kb", "E": 19.61, "rel_int": 150.0}
+            ]
+
         I_peaks = np.zeros_like(angles)
 
         # Resolution of peaks depends on diaphragm size
-        sigma_theta = 0.15 if diaphragm_mm == 2.0 else 0.08
+        sigma_theta = 0.15 if diaphragm_mm == 2.0 else (0.35 if diaphragm_mm == 5.0 else 0.08)
 
-        peaks_def = [
-            {"name": "Ka", "E": 8.04, "rel_int": 10000.0},
-            {"name": "Kb", "E": 8.91, "rel_int": 2500.0}
-        ]
-
-        for n in [1, 2, 3]:
+        for n in [1, 2, 3, 4, 5, 6]:
             for p in peaks_def:
                 # Find Bragg angle for this order n and energy E
                 val_to_arcsin = (hc * n) / (2 * d * p["E"])
                 if val_to_arcsin <= 1.0:
                     theta_peak_deg = np.degrees(np.arcsin(val_to_arcsin))
                     # Scale intensity by 1/n^1.5 for higher order efficiency loss
-                    peak_amp = p["rel_int"] * (1.0 / (n ** 1.5)) * (1.0 if diaphragm_mm == 2.0 else 0.55)
+                    peak_amp = p["rel_int"] * (1.0 / (n ** 1.5)) * (1.0 if diaphragm_mm == 2.0 else (1.8 if diaphragm_mm == 5.0 else 0.55))
                     # Gaussian peak shape
                     I_peaks += peak_amp * np.exp(-0.5 * ((angles - theta_peak_deg) / sigma_theta) ** 2)
 
@@ -163,8 +147,8 @@ def _(
     generate_synthetic_data,
     is_sim,
     kbr_2mm_uploader,
-    lif_1mm_uploader,
     lif_2mm_uploader,
+    lif_5mm_uploader,
     np,
 ):
     # Parse files based on current mode
@@ -179,7 +163,7 @@ def _(
                 return None, None, None
 
             # Get filename and extension
-            orig_name = uploader.value[0]["name"]
+            orig_name = uploader.value[0].name
             ext = Path(orig_name).suffix
             if not ext:
                 ext = ".txt"
@@ -189,46 +173,51 @@ def _(
             dest_path = data_dir / dest_filename
 
             # Save the file to data/ directory
-            dest_path.write_bytes(uploader.value[0]["contents"])
+            dest_path.write_bytes(uploader.value[0].contents)
 
             # Read bytes and convert to text
-            content = uploader.value[0]["contents"].decode("utf-8")
+            content = uploader.value[0].contents.decode("utf-8")
             angles = []
             intensity = []
 
             for line in content.splitlines():
                 line = line.strip()
-                if not line or line.startswith("#"):
+                if not line or line.startswith("#") or line.startswith("Time") or "θ" in line:
                     continue
                 parts = line.split()
-                if len(parts) >= 2:
-                    try:
+                try:
+                    if len(parts) == 6:
+                        # 6 columns format: Time, Impulse, U, I, Detector_angle, Crystal_angle
+                        angles.append(float(parts[5]))
+                        intensity.append(float(parts[1]))
+                    elif len(parts) >= 2:
+                        # Default 2 columns format: Bragg_angle, Intensity
                         angles.append(float(parts[0]))
                         intensity.append(float(parts[1]))
-                    except ValueError:
-                        continue
+                except ValueError:
+                    continue
 
             return np.array(angles), np.array(intensity), dest_path
 
     # Load all three datasets
     lif_2mm_ang, lif_2mm_int, lif_2mm_file = load_data(lif_2mm_uploader, "LiF", 2.0)
     kbr_2mm_ang, kbr_2mm_int, kbr_2mm_file = load_data(kbr_2mm_uploader, "KBr", 2.0)
-    lif_1mm_ang, lif_1mm_int, lif_1mm_file = load_data(lif_1mm_uploader, "LiF", 1.0)
+    lif_5mm_ang, lif_5mm_int, lif_5mm_file = load_data(lif_5mm_uploader, "LiF", 5.0)
     return (
         kbr_2mm_ang,
         kbr_2mm_file,
         kbr_2mm_int,
-        lif_1mm_ang,
-        lif_1mm_file,
-        lif_1mm_int,
         lif_2mm_ang,
         lif_2mm_file,
         lif_2mm_int,
+        lif_5mm_ang,
+        lif_5mm_file,
+        lif_5mm_int,
     )
 
 
 @app.cell(hide_code=True)
-def _(kbr_2mm_file, lif_1mm_file, lif_2mm_file, mo):
+def _(kbr_2mm_file, lif_2mm_file, lif_5mm_file, mo):
     # Status display
     def file_status(filename, label):
         if filename:
@@ -238,14 +227,14 @@ def _(kbr_2mm_file, lif_1mm_file, lif_2mm_file, mo):
     status_block = mo.vstack([
         file_status(lif_2mm_file, "LiF (2mm)"),
         file_status(kbr_2mm_file, "KBr (2mm)"),
-        file_status(lif_1mm_file, "LiF (1mm)"),
+        file_status(lif_5mm_file, "LiF (5mm)"),
     ])
     status_block
     return
 
 
 @app.cell(hide_code=True)
-def _(np):
+def _(np, sp):
     def angle_to_energy(angle_deg, d_pm, n=1):
         """Converts Bragg angle in degrees to energy in keV."""
         hc = 1239.84193 # eV*nm
@@ -254,38 +243,456 @@ def _(np):
         energy_ev = hc / wavelength
         return energy_ev / 1000.0 # Convert to keV
 
+    def findtheta(E_ev, d_meters, n=1):
+        """Converts photon energy (eV) to Bragg angle (degrees) for order n."""
+        # Convert energy from eV to Joules (multiply by elementary charge)
+        E_joules = E_ev * sp.electron_volt
+        # Correct wavelength formula: lam = h * c / E
+        lam = (sp.Planck * sp.speed_of_light) / E_joules
+        # Bragg's Law: sin(theta) = n * lam / (2 * d)
+        sinth = (n * lam) / (2.0 * d_meters)
+        if sinth > 1.0:
+            return None
+        return np.degrees(np.arcsin(sinth))
 
-    return (angle_to_energy,)
+    return angle_to_energy, findtheta
 
 
 @app.cell(hide_code=True)
-def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, phys, plt):
-    # 1. Plot raw spectrum vs angle and energy
-    fig_raw = None
+def _(
+    angle_to_energy,
+    findtheta,
+    kbr_2mm_ang,
+    kbr_2mm_int,
+    lif_2mm_ang,
+    lif_2mm_int,
+    lif_5mm_ang,
+    lif_5mm_int,
+    np,
+    phys,
+    plt,
+):
+    fig_raw_angle = None
+    fig_raw_energy = None
+    fig_kbr_angle = None
+    fig_kbr_energy = None
+    fig_lif5mm_angle = None
+    fig_lif5mm_energy = None
+
+    _cu_lines = {"K_alpha": 8.04, "K_beta": 8.91}
+    _mo_lines = {"K_alpha": 17.48, "K_beta": 19.61}
+
+    # 1. LiF (2mm) Plots
     if lif_2mm_ang is not None and len(lif_2mm_ang) > 0:
-        # Create double panel plot (Angle vs Energy)
-        _fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+        _box = np.ones(7) / 7.0
+        _smoothed = np.convolve(lif_2mm_int, _box, mode="same")
+        import scipy.signal as _sig
 
-        # Plot vs Angle (linear and log scale)
-        ax1.plot(lif_2mm_ang, lif_2mm_int, label="LiF (2mm)", color="#2E86AB")
-        ax1.set_yscale("log")
-        phys.set_style(ax1, xlabel=r"Bragg Angle $\theta_B$ ($^\circ$)", ylabel="Intensity (log cps)")
-        ax1.legend()
+        _peaks, _ = _sig.find_peaks(_smoothed, prominence=20, distance=5)
+        _peaks_found_lif = [(lif_2mm_ang[_p], lif_2mm_int[_p]) for _p in _peaks if lif_2mm_ang[_p] > 5.0]
 
-        # Convert angles to Energy (n=1) for plot
-        energies_kev = angle_to_energy(lif_2mm_ang, 201.4, n=1)
-        # filter out very small angles that give non-physical large energies
-        valid_idx = lif_2mm_ang > 3.0
+        # Use best match per theoretical line
+        _peaks_x = []
+        _peaks_y = []
+        for _line_name, _E in _cu_lines.items():
+            _E_ev = 8040.0 if _line_name == "K_alpha" else 8910.0
+            for _n in [1, 2, 3]:
+                _ta = findtheta(_E_ev, 201.4 * 1e-12, _n)
+                if _ta is not None:
+                    _best_pe = None
+                    _min_diff = float("inf")
+                    for _exp_angle, _counts in _peaks_found_lif:
+                        _diff = abs(_exp_angle - _ta)
+                        if _diff < _min_diff and _diff < 1.0:
+                            _min_diff = _diff
+                            _best_pe = (_exp_angle, _counts)
+                    if _best_pe:
+                        _peaks_x.append(_best_pe[0])
+                        _peaks_y.append(_best_pe[1])
 
-        ax2.plot(energies_kev[valid_idx], lif_2mm_int[valid_idx], label="LiF (2mm)", color="#A23B72")
-        phys.set_style(ax2, xlabel=r"Energy $E$ (keV)", ylabel="Intensity (cps)")
-        ax2.legend()
+        # Angle Plot
+        _fig_ang, ax_ang = plt.subplots(figsize=(7, 5))
+        ax_ang.plot(
+            lif_2mm_ang,
+            lif_2mm_int,
+            label="LiF (2mm) Data",
+            color="#2E86AB",
+        )
+        if _peaks_x:
+            ax_ang.scatter(
+                _peaks_x,
+                _peaks_y,
+                color="#C73E1D",
+                marker="x",
+                s=60,
+                zorder=5,
+                label="Detected Peaks",
+            )
+            for _px, _py in zip(_peaks_x, _peaks_y, strict=True):
+                ax_ang.text(
+                    _px + 0.5,
+                    _py * 1.1,
+                    f"{_px:.2f}°",
+                    color="#C73E1D",
+                    fontsize=9,
+                    fontweight="bold",
+                )
+                ax_ang.axvline(_px, color="#C73E1D", linestyle=":", alpha=0.5)
 
+        ax_ang.set_yscale("log")
+        phys.set_style(
+            ax_ang,
+            xlabel=r"Bragg Angle $\theta_B$ ($^\circ$)",
+            ylabel="Intensity (log cps)",
+        )
+        ax_ang.yaxis.set_minor_locator(plt.NullLocator())
+        ax_ang.legend()
         plt.tight_layout()
-        fig_raw = _fig
-        _fig.savefig("data/spectrum_orders.svg")
+        fig_raw_angle = _fig_ang
+        _fig_ang.savefig("data/spectrum_vs_angle.svg")
 
-    fig_raw
+        # Energy Plot
+        _fig_eng, ax_eng = plt.subplots(figsize=(7, 5))
+        _energies_kev = angle_to_energy(lif_2mm_ang, 201.4, n=1)
+        _valid_idx = lif_2mm_ang > 3.0
+        ax_eng.plot(
+            _energies_kev[_valid_idx],
+            lif_2mm_int[_valid_idx],
+            label="LiF (2mm) Data",
+            color="#A23B72",
+        )
+        if _peaks_x:
+            _peaks_e = angle_to_energy(np.array(_peaks_x), 201.4, n=1)
+            ax_eng.scatter(
+                _peaks_e,
+                _peaks_y,
+                color="#C73E1D",
+                marker="x",
+                s=60,
+                zorder=5,
+                label="Detected Peaks",
+            )
+            for _pe, _py in zip(_peaks_e, _peaks_y, strict=True):
+                _best_line = ""
+                _best_n = 1
+                _min_diff = float("inf")
+                for _line, _E_ref in _cu_lines.items():
+                    for _n_val in [1, 2, 3]:
+                        _apparent_E = _E_ref / _n_val
+                        _diff = abs(_pe - _apparent_E)
+                        if _diff < _min_diff:
+                            _min_diff = _diff
+                            _best_line = _line
+                            _best_n = _n_val
+
+                _label = (
+                    r"$K_\alpha$" if _best_line == "K_alpha" else r"$K_\beta$"
+                )
+                ax_eng.text(
+                    _pe + 0.2,
+                    _py * 1.05,
+                    f"{_label} (n={_best_n})\n{_pe:.2f} keV",
+                    color="#C73E1D",
+                    fontsize=9,
+                    fontweight="bold",
+                )
+                ax_eng.axvline(_pe, color="#C73E1D", linestyle=":", alpha=0.5)
+
+        phys.set_style(ax_eng, xlabel=r"Energy $E$ (keV)", ylabel="Intensity (cps)")
+        ax_eng.set_xlim(3.0, 25.0)
+        ax_eng.legend()
+        plt.tight_layout()
+        fig_raw_energy = _fig_eng
+        _fig_eng.savefig("data/spectrum_vs_energy.svg")
+
+    # 2. KBr (2mm) Plots
+    if kbr_2mm_ang is not None and len(kbr_2mm_ang) > 0:
+        import scipy.signal as _sig
+
+        # Use raw data for KBr to resolve sharp peak at 5.5 deg
+        _peaks, _ = _sig.find_peaks(kbr_2mm_int, prominence=25, distance=4)
+        _peaks_found_kbr = [(kbr_2mm_ang[_p], kbr_2mm_int[_p]) for _p in _peaks if kbr_2mm_ang[_p] > 5.0]
+
+        # Use best match per theoretical line
+        _peaks_x = []
+        _peaks_y = []
+        for _line_name, _E in _mo_lines.items():
+            _E_ev = 17479.34 if _line_name == "K_alpha" else 19608.3
+            for _n in [1, 2, 3, 4, 5, 6]:
+                _ta = findtheta(_E_ev, 329.9 * 1e-12, _n)
+                if _ta is not None:
+                    _best_pe = None
+                    _min_diff = float("inf")
+                    for _exp_angle, _counts in _peaks_found_kbr:
+                        _diff = abs(_exp_angle - _ta)
+                        if _diff < _min_diff and _diff < 1.5:
+                            _min_diff = _diff
+                            _best_pe = (_exp_angle, _counts)
+                    if _best_pe:
+                        _peaks_x.append(_best_pe[0])
+                        _peaks_y.append(_best_pe[1])
+
+        # Angle Plot
+        _fig_ang_kbr, ax_ang_kbr = plt.subplots(figsize=(7, 5))
+        ax_ang_kbr.plot(
+            kbr_2mm_ang,
+            kbr_2mm_int,
+            label="KBr (2mm) Data",
+            color="#F18F01",
+        )
+        if _peaks_x:
+            ax_ang_kbr.scatter(
+                _peaks_x,
+                _peaks_y,
+                color="#C73E1D",
+                marker="x",
+                s=60,
+                zorder=5,
+                label="Detected Peaks",
+            )
+            for _px, _py in zip(_peaks_x, _peaks_y, strict=True):
+                ax_ang_kbr.text(
+                    _px + 0.5,
+                    _py * 1.1,
+                    f"{_px:.2f}°",
+                    color="#C73E1D",
+                    fontsize=9,
+                    fontweight="bold",
+                )
+                ax_ang_kbr.axvline(
+                    _px, color="#C73E1D", linestyle=":", alpha=0.5
+                )
+
+        ax_ang_kbr.set_yscale("log")
+        phys.set_style(
+            ax_ang_kbr,
+            xlabel=r"Bragg Angle $\theta_B$ ($^\circ$)",
+            ylabel="Intensity (log cps)",
+        )
+        ax_ang_kbr.yaxis.set_minor_locator(plt.NullLocator())
+        ax_ang_kbr.legend()
+        plt.tight_layout()
+        fig_kbr_angle = _fig_ang_kbr
+        _fig_ang_kbr.savefig("data/kbr_spectrum_vs_angle.svg")
+
+        # Energy Plot
+        _fig_eng_kbr, ax_eng_kbr = plt.subplots(figsize=(7, 5))
+        _energies_kev_kbr = angle_to_energy(kbr_2mm_ang, 329.9, n=1)
+        _valid_idx_kbr = kbr_2mm_ang > 3.0
+        ax_eng_kbr.plot(
+            _energies_kev_kbr[_valid_idx_kbr],
+            kbr_2mm_int[_valid_idx_kbr],
+            label="KBr (2mm) Data",
+            color="#C73E1D",
+        )
+        if _peaks_x:
+            _peaks_e = angle_to_energy(np.array(_peaks_x), 329.9, n=1)
+            ax_eng_kbr.scatter(
+                _peaks_e,
+                _peaks_y,
+                color="#C73E1D",
+                marker="x",
+                s=60,
+                zorder=5,
+                label="Detected Peaks",
+            )
+            for _pe, _py in zip(_peaks_e, _peaks_y, strict=True):
+                _best_line = ""
+                _best_n = 1
+                _min_diff = float("inf")
+                for _line, _E_ref in _mo_lines.items():
+                    for _n_val in [1, 2, 3, 4, 5, 6]:
+                        _apparent_E = _E_ref / _n_val
+                        _diff = abs(_pe - _apparent_E)
+                        if _diff < _min_diff:
+                            _min_diff = _diff
+                            _best_line = _line
+                            _best_n = _n_val
+
+                _label = (
+                    r"$K_\alpha$" if _best_line == "K_alpha" else r"$K_\beta$"
+                )
+                ax_eng_kbr.text(
+                    _pe + 0.2,
+                    _py * 1.05,
+                    f"{_label} (n={_best_n})\n{_pe:.2f} keV",
+                    color="#C73E1D",
+                    fontsize=9,
+                    fontweight="bold",
+                )
+                ax_eng_kbr.axvline(
+                    _pe, color="#C73E1D", linestyle=":", alpha=0.5
+                )
+
+        phys.set_style(
+            ax_eng_kbr, xlabel=r"Energy $E$ (keV)", ylabel="Intensity (cps)"
+        )
+        ax_eng_kbr.set_xlim(3.0, 25.0)
+        ax_eng_kbr.legend()
+        plt.tight_layout()
+        fig_kbr_energy = _fig_eng_kbr
+        _fig_eng_kbr.savefig("data/kbr_spectrum_vs_energy.svg")
+
+    # 3. LiF (5mm) Plots
+    if lif_5mm_ang is not None and len(lif_5mm_ang) > 0:
+        _box = np.ones(7) / 7.0
+        _smoothed = np.convolve(lif_5mm_int, _box, mode="same")
+        import scipy.signal as _sig
+
+        _peaks, _ = _sig.find_peaks(_smoothed, prominence=20, distance=5)
+        _peaks_found_lif5mm = [(lif_5mm_ang[_p], lif_5mm_int[_p]) for _p in _peaks if lif_5mm_ang[_p] > 5.0]
+
+        # Use best match per theoretical line
+        _peaks_x = []
+        _peaks_y = []
+        for _line_name, _E in _cu_lines.items():
+            _E_ev = 8040.0 if _line_name == "K_alpha" else 8910.0
+            for _n in [1, 2, 3]:
+                _ta = findtheta(_E_ev, 201.4 * 1e-12, _n)
+                if _ta is not None:
+                    _best_pe = None
+                    _min_diff = float("inf")
+                    for _exp_angle, _counts in _peaks_found_lif5mm:
+                        _diff = abs(_exp_angle - _ta)
+                        if _diff < _min_diff and _diff < 1.0:
+                            _min_diff = _diff
+                            _best_pe = (_exp_angle, _counts)
+                    if _best_pe:
+                        _peaks_x.append(_best_pe[0])
+                        _peaks_y.append(_best_pe[1])
+
+        # Angle Plot
+        _fig_ang, ax_ang = plt.subplots(figsize=(7, 5))
+        ax_ang.plot(
+            lif_5mm_ang,
+            lif_5mm_int,
+            label="LiF (5mm) Data",
+            color="#2E86AB",
+        )
+        if _peaks_x:
+            ax_ang.scatter(
+                _peaks_x,
+                _peaks_y,
+                color="#C73E1D",
+                marker="x",
+                s=60,
+                zorder=5,
+                label="Detected Peaks",
+            )
+            for _px, _py in zip(_peaks_x, _peaks_y, strict=True):
+                ax_ang.text(
+                    _px + 0.5,
+                    _py * 1.1,
+                    f"{_px:.2f}°",
+                    color="#C73E1D",
+                    fontsize=9,
+                    fontweight="bold",
+                )
+                ax_ang.axvline(_px, color="#C73E1D", linestyle=":", alpha=0.5)
+
+        ax_ang.set_yscale("log")
+        phys.set_style(
+            ax_ang,
+            xlabel=r"Bragg Angle $\theta_B$ ($^\circ$)",
+            ylabel="Intensity (log cps)",
+        )
+        ax_ang.yaxis.set_minor_locator(plt.NullLocator())
+        ax_ang.legend()
+        plt.tight_layout()
+        fig_lif5mm_angle = _fig_ang
+        _fig_ang.savefig("data/lif5mm_spectrum_vs_angle.svg")
+
+        # Energy Plot
+        _fig_eng, ax_eng = plt.subplots(figsize=(7, 5))
+        _energies_kev = angle_to_energy(lif_5mm_ang, 201.4, n=1)
+        _valid_idx = lif_5mm_ang > 3.0
+        ax_eng.plot(
+            _energies_kev[_valid_idx],
+            lif_5mm_int[_valid_idx],
+            label="LiF (5mm) Data",
+            color="#A23B72",
+        )
+        if _peaks_x:
+            _peaks_e = angle_to_energy(np.array(_peaks_x), 201.4, n=1)
+            ax_eng.scatter(
+                _peaks_e,
+                _peaks_y,
+                color="#C73E1D",
+                marker="x",
+                s=60,
+                zorder=5,
+                label="Detected Peaks",
+            )
+            for _pe, _py in zip(_peaks_e, _peaks_y, strict=True):
+                _best_line = ""
+                _best_n = 1
+                _min_diff = float("inf")
+                for _line, _E_ref in _cu_lines.items():
+                    for _n_val in [1, 2, 3]:
+                        _apparent_E = _E_ref / _n_val
+                        _diff = abs(_pe - _apparent_E)
+                        if _diff < _min_diff:
+                            _min_diff = _diff
+                            _best_line = _line
+                            _best_n = _n_val
+
+                _label = (
+                    r"$K_\alpha$" if _best_line == "K_alpha" else r"$K_\beta$"
+                )
+                ax_eng.text(
+                    _pe + 0.2,
+                    _py * 1.05,
+                    f"{_label} (n={_best_n})\n{_pe:.2f} keV",
+                    color="#C73E1D",
+                    fontsize=9,
+                    fontweight="bold",
+                )
+                ax_eng.axvline(_pe, color="#C73E1D", linestyle=":", alpha=0.5)
+
+        phys.set_style(ax_eng, xlabel=r"Energy $E$ (keV)", ylabel="Intensity (cps)")
+        ax_eng.set_xlim(3.0, 25.0)
+        ax_eng.legend()
+        plt.tight_layout()
+        fig_lif5mm_energy = _fig_eng
+        _fig_eng.savefig("data/lif5mm_spectrum_vs_energy.svg")
+    return (
+        fig_kbr_angle,
+        fig_kbr_energy,
+        fig_lif5mm_angle,
+        fig_lif5mm_energy,
+        fig_raw_angle,
+        fig_raw_energy,
+    )
+
+
+@app.cell(hide_code=True)
+def _(
+    fig_kbr_angle,
+    fig_kbr_energy,
+    fig_lif5mm_angle,
+    fig_lif5mm_energy,
+    fig_raw_angle,
+    fig_raw_energy,
+    mo,
+):
+    _plots = []
+    if fig_raw_angle is not None:
+        _plots.extend([
+            mo.md("### LiF (2mm) Spectra"),
+            mo.hstack([fig_raw_angle, fig_raw_energy])
+        ])
+    if fig_kbr_angle is not None:
+        _plots.extend([
+            mo.md("### KBr (2mm) Spectra"),
+            mo.hstack([fig_kbr_angle, fig_kbr_energy])
+        ])
+    if fig_lif5mm_angle is not None:
+        _plots.extend([
+            mo.md("### LiF (5mm) Spectra"),
+            mo.hstack([fig_lif5mm_angle, fig_lif5mm_energy])
+        ])
+    _layout = mo.vstack(_plots) if _plots else None
+    _layout
     return
 
 
@@ -330,30 +737,30 @@ def _(
 
 @app.cell(hide_code=True)
 def _(
-    lif_1mm_ang,
-    lif_1mm_int,
     lif_2mm_ang,
     lif_2mm_int,
+    lif_5mm_ang,
+    lif_5mm_int,
     phys,
     plt,
     trapezoid,
 ):
-    # 3. Compare Diaphragms (2mm vs 1mm)
+    # 3. Compare Diaphragms (2mm vs 5mm)
     fig_diaphragm = None
-    if lif_2mm_ang is not None and lif_1mm_ang is not None:
+    if lif_2mm_ang is not None and lif_5mm_ang is not None:
         _fig, ax_dia = plt.subplots(figsize=(8, 5))
 
         # Crop to the Cu Ka and Kb first-order peak region
         # For LiF, 8.04 keV is around 22.4 degrees, 8.91 keV is around 20.1 degrees
         mask_2mm = (lif_2mm_ang > 18.0) & (lif_2mm_ang < 25.0)
-        mask_1mm = (lif_1mm_ang > 18.0) & (lif_1mm_ang < 25.0)
+        mask_5mm = (lif_5mm_ang > 18.0) & (lif_5mm_ang < 25.0)
 
         # Normalize by area to compare line resolution
         y_2mm_norm = lif_2mm_int[mask_2mm] / trapezoid(lif_2mm_int[mask_2mm], lif_2mm_ang[mask_2mm])
-        y_1mm_norm = lif_1mm_int[mask_1mm] / trapezoid(lif_1mm_int[mask_1mm], lif_1mm_ang[mask_1mm])
+        y_5mm_norm = lif_5mm_int[mask_5mm] / trapezoid(lif_5mm_int[mask_5mm], lif_5mm_ang[mask_5mm])
 
-        ax_dia.plot(lif_2mm_ang[mask_2mm], y_2mm_norm, label="2mm Diaphragm", color="#2E86AB")
-        ax_dia.plot(lif_1mm_ang[mask_1mm], y_1mm_norm, label="1mm Diaphragm", color="#A23B72")
+        ax_dia.scatter(lif_2mm_ang[mask_2mm], y_2mm_norm, label="2mm Diaphragm", color="#2E86AB", s=4, alpha=0.8)
+        ax_dia.scatter(lif_5mm_ang[mask_5mm], y_5mm_norm, label="5mm Diaphragm", color="#A23B72", s=4, alpha=0.8)
 
         phys.set_style(ax_dia, xlabel=r"Bragg Angle $\theta_B$ ($^\circ$)", ylabel="Normalized Intensity")
         ax_dia.legend()
@@ -367,10 +774,162 @@ def _(
 
 
 @app.cell(hide_code=True)
+def _(findtheta, kbr_2mm_ang, kbr_2mm_int, lif_2mm_ang, lif_2mm_int, mo, np):
+    # 1. Construct the Theoretical Angles Reference Table
+    _theo_data = []
+
+    # LiF uses Copper anode tube (Ka = 8.04 keV, Kb = 8.91 keV)
+    _cu_lines = {
+        "Cu K_alpha (8.040 keV)": 8040.0,
+        "Cu K_beta (8.910 keV)": 8910.0
+    }
+    for _line_name, _E in _cu_lines.items():
+        _n = 1
+        while True:
+            _theta = findtheta(_E, 201.4 * 1e-12, _n)
+            if _theta is None:
+                break
+            _theo_data.append({
+                "Crystal": "LiF (d=201.4 pm)",
+                "Emission Line": _line_name,
+                "Order (n)": _n,
+                "Bragg Angle θ_B (deg)": round(_theta, 2)
+            })
+            _n += 1
+
+    # KBr uses Molybdenum anode tube (Ka = 17.479 keV, Kb = 19.608 keV)
+    _mo_lines = {
+        "Mo K_alpha (17.479 keV)": 17479.34,
+        "Mo K_beta (19.608 keV)": 19608.3
+    }
+    for _line_name, _E in _mo_lines.items():
+        _n = 1
+        while True:
+            _theta = findtheta(_E, 329.9 * 1e-12, _n)
+            if _theta is None:
+                break
+            _theo_data.append({
+                "Crystal": "KBr (d=329.9 pm)",
+                "Emission Line": _line_name,
+                "Order (n)": _n,
+                "Bragg Angle θ_B (deg)": round(_theta, 2)
+            })
+            _n += 1
+
+    _theo_table = mo.ui.table(
+        _theo_data,
+        label="Theoretical Bragg Angles (Cu on LiF, Mo on KBr)"
+    )
+
+    import scipy.signal as _sig
+
+    # 2. Match LiF experimental peaks
+    _comp_data_lif = []
+    _offsets_lif = []
+    if lif_2mm_ang is not None and len(lif_2mm_ang) > 0:
+        _box = np.ones(7) / 7.0
+        _smoothed = np.convolve(lif_2mm_int, _box, mode='same')
+        _peaks, _ = _sig.find_peaks(_smoothed, prominence=20, distance=5)
+        _peaks_found_lif = [(lif_2mm_ang[_p], lif_2mm_int[_p]) for _p in _peaks if lif_2mm_ang[_p] > 5.0]
+
+        for _row in _theo_data:
+            if "LiF" in _row["Crystal"]:
+                _best_pe = None
+                _min_diff = float("inf")
+                for _exp_angle, _counts in _peaks_found_lif:
+                    _diff = abs(_exp_angle - _row["Bragg Angle θ_B (deg)"])
+                    if _diff < _min_diff and _diff < 1.0:
+                        _min_diff = _diff
+                        _best_pe = (_exp_angle, _counts)
+
+                if _best_pe:
+                    _exp_angle, _counts = _best_pe
+                    _theo_angle = _row["Bragg Angle θ_B (deg)"]
+                    _offset = _exp_angle - _theo_angle
+                    _offsets_lif.append(_offset)
+                    _comp_data_lif.append({
+                        "Line": _row["Emission Line"].split(" ")[1],
+                        "Order (n)": _row["Order (n)"],
+                        "Theoretical θ_B (deg)": round(_theo_angle, 2),
+                        "Experimental θ_B (deg)": round(_exp_angle, 2),
+                        "Offset Δθ_B (deg)": round(_offset, 2),
+                        "Intensity (cps)": int(_counts)
+                    })
+
+    _comp_table_lif = mo.ui.table(
+        _comp_data_lif,
+        label="Experimental vs. Theoretical Peaks (Mo on LiF)"
+    )
+
+    # 3. Match KBr experimental peaks
+    _comp_data_kbr = []
+    _offsets_kbr = []
+    if kbr_2mm_ang is not None and len(kbr_2mm_ang) > 0:
+        # Use raw data for KBr to resolve sharp peak at 5.5 deg
+        _peaks, _ = _sig.find_peaks(kbr_2mm_int, prominence=25, distance=4)
+        _peaks_found_kbr = [(kbr_2mm_ang[_p], kbr_2mm_int[_p]) for _p in _peaks if kbr_2mm_ang[_p] > 5.0]
+
+        for _row in _theo_data:
+            if "KBr" in _row["Crystal"]:
+                _best_pe = None
+                _min_diff = float("inf")
+                for _exp_angle, _counts in _peaks_found_kbr:
+                    _diff = abs(_exp_angle - _row["Bragg Angle θ_B (deg)"])
+                    if _diff < _min_diff and _diff < 1.5:
+                        _min_diff = _diff
+                        _best_pe = (_exp_angle, _counts)
+
+                if _best_pe:
+                    _exp_angle, _counts = _best_pe
+                    _theo_angle = _row["Bragg Angle θ_B (deg)"]
+                    _offset = _exp_angle - _theo_angle
+                    _offsets_kbr.append(_offset)
+                    _comp_data_kbr.append({
+                        "Line": _row["Emission Line"].split(" ")[1],
+                        "Order (n)": _row["Order (n)"],
+                        "Theoretical θ_B (deg)": round(_theo_angle, 2),
+                        "Experimental θ_B (deg)": round(_exp_angle, 2),
+                        "Offset Δθ_B (deg)": round(_offset, 2),
+                        "Intensity (cps)": int(_counts)
+                    })
+
+    _comp_table_kbr = mo.ui.table(
+        _comp_data_kbr,
+        label="Experimental vs. Theoretical Peaks (Mo on KBr)"
+    )
+
+    # 4. Construct comparison summary layout
+    _avg_offset_text_lif = ""
+    if _offsets_lif:
+        _avg_offset_lif = np.mean(_offsets_lif)
+        _avg_offset_text_lif = f"💡 **Average LiF Goniometer Zero-Point Shift:** $\\Delta\\theta_B = {_avg_offset_lif:+.2f}^\\circ$."
+
+    _avg_offset_text_kbr = ""
+    if _offsets_kbr:
+        _avg_offset_kbr = np.mean(_offsets_kbr)
+        _avg_offset_text_kbr = f"💡 **Average KBr Goniometer Zero-Point Shift:** $\\Delta\\theta_B = {_avg_offset_kbr:+.2f}^\\circ$."
+
+    _layout = mo.vstack([
+        mo.md("## Theoretical Reference & Experimental Peak Comparison"),
+        mo.md("This section compares calculated Bragg angles $\\theta_B$ with experimental peaks."),
+        mo.md("### 1. Molybdenum Theoretical Bragg Angles $\\theta_B$"),
+        _theo_table,
+        mo.md("### 2. Experimental Peak Match & Alignment Deviation $\\Delta\\theta_B$ (LiF)"),
+        _comp_table_lif,
+        mo.md(_avg_offset_text_lif) if _avg_offset_text_lif else mo.md(""),
+        mo.md("### 3. Experimental Peak Match & Alignment Deviation $\\Delta\\theta_B$ (KBr)"),
+        _comp_table_kbr,
+        mo.md(_avg_offset_text_kbr) if _avg_offset_text_kbr else mo.md("")
+    ])
+
+    _layout
+    return
+
+
+@app.cell(hide_code=True)
 def _(lif_2mm_ang, lif_2mm_int, np, phys, plt):
     # 4. Peak Fitting (Gaussian fit of Cu Ka and Kb first-order peaks)
     fit_status = ""
-    fig_fit = None
     results = {}
 
     if lif_2mm_ang is not None and len(lif_2mm_ang) > 0:
@@ -415,7 +974,6 @@ def _(lif_2mm_ang, lif_2mm_int, np, phys, plt):
             ax_fit.legend()
 
             plt.tight_layout()
-            fig_fit = _fig
             _fig.savefig("data/peak_fit.svg")
 
             # Convert angle centroids to energy (keV) using d = 201.4 pm

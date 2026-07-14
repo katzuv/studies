@@ -54,6 +54,8 @@ extend-select = [
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401", "F403"]
 "*.ipynb" = ["E402"]
+"*analysis.py" = ["B018"]
+"*notebook.py" = ["B018"]
 
 [tool.marimo.runtime]
 watcher_on_save = "autorun"
