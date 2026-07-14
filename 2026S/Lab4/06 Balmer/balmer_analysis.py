@@ -1429,5 +1429,56 @@ def export_results(
     return
 
 
+@app.cell
+def pretty_print_results(
+    A_fit,
+    B_fit,
+    R_avg_grating,
+    R_avg_prism,
+    R_inf_theo,
+    dA_fit,
+    dB_fit,
+    dlam_pred,
+    dR_avg_grating,
+    dR_avg_prism,
+    grating_sig,
+    lam_pred,
+    lam_ref,
+    np,
+    prism_sig,
+    sigma_dist,
+):
+    _prism_disc = (
+        abs(R_avg_prism - R_inf_theo) / R_inf_theo * 100.0
+        if not np.isnan(R_avg_prism)
+        else np.nan
+    )
+    _grating_disc = (
+        abs(R_avg_grating - R_inf_theo) / R_inf_theo * 100.0
+        if not np.isnan(R_avg_grating)
+        else np.nan
+    )
+
+    print("=" * 80)
+    print("               BALMER SERIES EXPERIMENT ANALYSES RESULTS")
+    print("=" * 80)
+    print(f" {'Parameter':<45} | {'Value':<30}")
+    print("-" * 80)
+    print(f" {'Cauchy Parameter A':<45} | {A_fit:.6f} \\u00b1 {dA_fit:.6f}")
+    print(f" {'Cauchy Parameter B':<45} | {B_fit:.1f} \\u00b1 {dB_fit:.1f} nm\\u00b2")
+    print("-" * 80)
+    print(f" {'Mercury Green predicted wavelength':<45} | {lam_pred:.2f} \\u00b1 {dlam_pred:.2f} nm")
+    print(f" {'Mercury Green reference wavelength':<45} | {lam_ref:.2f} nm")
+    print(f" {'Mercury Green statistical distance':<45} | {sigma_dist:.2f} \\u03c3")
+    print("-" * 80)
+    print(f" {'Rydberg Constant (Prism Method)':<45} | {R_avg_prism:.4e} \\u00b1 {dR_avg_prism:.4e} m\\u207b\\u00b9")
+    print(f" {'Prism Rydberg Discrepancy from Bohr':<45} | {_prism_disc:.3f}% ({prism_sig:.2f} \\u03c3)")
+    print(f" {'Rydberg Constant (Grating Method)':<45} | {R_avg_grating:.4e} \\u00b1 {dR_avg_grating:.4e} m\\u207b\\u00b9")
+    print(f" {'Grating Rydberg Discrepancy from Bohr':<45} | {_grating_disc:.3f}% ({grating_sig:.2f} \\u03c3)")
+    print(f" {'Theoretical Bohr Rydberg Prediction (R_inf)':<45} | {R_inf_theo:.4e} m\\u207b\\u00b9")
+    print("=" * 80)
+    return
+
+
 if __name__ == "__main__":
     app.run()
