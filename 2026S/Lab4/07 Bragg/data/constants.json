@@ -1,12 +1,30 @@
-{
-    "Copper K-alpha Energy": {
-        "value": 8.183129133426144,
-        "error": 0.061769764451979,
-        "units": "keV"
-    },
-    "Copper K-beta Energy": {
-        "value": 9.431457981766327,
-        "error": 0.0866910398167311,
-        "units": "keV"
-    }
-}
+[
+  {
+    "hebrew_name": "אנרגיית קו אלפא נחושת",
+    "english_name": "Copper K-alpha Energy",
+    "hebrew_var": "אנרגיית_קא_נחושת",
+    "english_var": "E_Cu_Ka",
+    "symbol": "E_(K_alpha)",
+    "value": 8.183129133426144,
+    "error": 0.061769764451979,
+    "units": "\"keV\"",
+    "formatted_value": "8.183 pm 0.062",
+    "scale": 1.0,
+    "fmt_spec": ".3f",
+    "suffix": ""
+  },
+  {
+    "hebrew_name": "אנרגיית קו בטא נחושת",
+    "english_name": "Copper K-beta Energy",
+    "hebrew_var": "אנרגיית_קב_נחושת",
+    "english_var": "E_Cu_Kb",
+    "symbol": "E_(K_beta)",
+    "value": 9.431457981766327,
+    "error": 0.0866910398167311,
+    "units": "\"keV\"",
+    "formatted_value": "9.431 pm 0.087",
+    "scale": 1.0,
+    "fmt_spec": ".3f",
+    "suffix": ""
+  }
+]
