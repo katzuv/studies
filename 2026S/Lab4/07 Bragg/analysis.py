@@ -1015,6 +1015,12 @@ def _(
                     _theo_angle = _row["Bragg Angle θ_B (deg)"]
                     _offset = _exp_angle - _theo_angle
                     _offsets_lif.append(_offset)
+
+                    # Estimate local background as the minimum in a 3-degree window around the peak
+                    _bg_mask = (lif_2mm_ang >= _exp_angle - 1.5) & (lif_2mm_ang <= _exp_angle + 1.5)
+                    _bg_val = np.min(lif_2mm_int[_bg_mask]) if np.any(_bg_mask) else 0.0
+                    _snr = (_counts - _bg_val) / np.sqrt(max(_counts, 1.0))
+
                     _comp_data_lif.append(
                         {
                             "Line": _row["Emission Line"].split(" ")[1],
@@ -1023,6 +1029,7 @@ def _(
                             "Experimental θ_B (deg)": round(_exp_angle, 2),
                             "Offset Δθ_B (deg)": round(_offset, 2),
                             "Intensity (cps)": int(_counts),
+                            "SNR": round(max(_snr, 0.0), 1),
                         }
                     )
 
@@ -1053,6 +1060,11 @@ def _(
 
             _offsets_kbr.append(_offset)
 
+            # Estimate local background as the minimum in a 3-degree window around the peak
+            _bg_mask = (kbr_2mm_ang >= _actual_ang - 1.5) & (kbr_2mm_ang <= _actual_ang + 1.5)
+            _bg_val = np.min(kbr_2mm_int[_bg_mask]) if np.any(_bg_mask) else 0.0
+            _snr = (_actual_int - _bg_val) / np.sqrt(max(_actual_int, 1.0))
+
             _comp_data_kbr.append(
                 {
                     "Line": _line_name.split(" ")[1],
@@ -1061,6 +1073,7 @@ def _(
                     "Experimental θ_B (deg)": round(_actual_ang, 2),
                     "Offset Δθ_B (deg)": round(_offset, 2),
                     "Intensity (cps)": int(_actual_int),
+                    "SNR": round(max(_snr, 0.0), 1),
                 }
             )
 
