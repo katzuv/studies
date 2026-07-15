@@ -92,13 +92,11 @@ def _(data_dir, np):
             step_mask = energies_n1_kev > 13.47
             I_brem[step_mask] *= 0.35
 
-        # Set peaks definition depending on the crystal/anode:
-        # LiF uses Cu (Ka = 8.04, Kb = 8.91 keV)
-        # KBr uses Mo (Ka = 17.48, Kb = 19.61 keV)
+        # Both use Mo (Ka = 17.48, Kb = 19.61 keV)
         if crystal_name == "LiF":
             peaks_def = [
-                {"name": "Ka", "E": 8.04, "rel_int": 2000.0},
-                {"name": "Kb", "E": 8.91, "rel_int": 500.0}
+                {"name": "Ka", "E": 17.48, "rel_int": 2000.0},
+                {"name": "Kb", "E": 19.61, "rel_int": 500.0}
             ]
         else: # KBr
             peaks_def = [
@@ -158,46 +156,56 @@ def _(
             angles, intensity, filepath = generate_synthetic_data(crystal_name, diaphragm_mm)
             return angles, intensity, filepath
         else:
-            # Load uploaded file
-            if uploader is None or not uploader.value:
-                return None, None, None
+            # Check if there is an uploaded file
+            has_upload = uploader is not None and uploader.value
 
-            # Get filename and extension
-            orig_name = uploader.value[0].name
-            ext = Path(orig_name).suffix
-            if not ext:
-                ext = ".txt"
-
-            # Destination name based on parameters (e.g. lif2mm.csv)
-            dest_filename = f"{crystal_name.lower()}{int(diaphragm_mm)}mm{ext}"
+            # Destination path default
+            dest_filename = f"{crystal_name.lower()}{int(diaphragm_mm)}mm.txt"
             dest_path = data_dir / dest_filename
 
-            # Save the file to data/ directory
-            dest_path.write_bytes(uploader.value[0].contents)
+            if has_upload:
+                # Save the uploaded file to data/ directory
+                orig_name = uploader.value[0].name
+                ext = Path(orig_name).suffix or ".txt"
+                dest_filename = f"{crystal_name.lower()}{int(diaphragm_mm)}mm{ext}"
+                dest_path = data_dir / dest_filename
+                dest_path.write_bytes(uploader.value[0].contents)
 
-            # Read bytes and convert to text
-            content = uploader.value[0].contents.decode("utf-8")
-            angles = []
-            intensity = []
+            # Look for existing files (.txt or .csv)
+            chosen_path = None
+            if dest_path.exists():
+                chosen_path = dest_path
+            elif dest_path.with_suffix(".csv").exists():
+                chosen_path = dest_path.with_suffix(".csv")
+            elif dest_path.with_suffix(".txt").exists():
+                chosen_path = dest_path.with_suffix(".txt")
 
-            for line in content.splitlines():
-                line = line.strip()
-                if not line or line.startswith("#") or line.startswith("Time") or "θ" in line:
-                    continue
-                parts = line.split()
-                try:
-                    if len(parts) == 6:
-                        # 6 columns format: Time, Impulse, U, I, Detector_angle, Crystal_angle
-                        angles.append(float(parts[5]))
-                        intensity.append(float(parts[1]))
-                    elif len(parts) >= 2:
-                        # Default 2 columns format: Bragg_angle, Intensity
-                        angles.append(float(parts[0]))
-                        intensity.append(float(parts[1]))
-                except ValueError:
-                    continue
+            if chosen_path is not None:
+                # Read bytes and convert to text
+                content = chosen_path.read_text(encoding="utf-8")
+                angles = []
+                intensity = []
 
-            return np.array(angles), np.array(intensity), dest_path
+                for line in content.splitlines():
+                    line = line.strip()
+                    if not line or line.startswith("#") or line.startswith("Time") or "θ" in line:
+                        continue
+                    parts = line.split()
+                    try:
+                        if len(parts) == 6:
+                            # 6 columns format: Time, Impulse, U, I, Detector_angle, Crystal_angle
+                            angles.append(float(parts[5]))
+                            intensity.append(float(parts[1]))
+                        elif len(parts) >= 2:
+                            # Default 2 columns format: Bragg_angle, Intensity
+                            angles.append(float(parts[0]))
+                            intensity.append(float(parts[1]))
+                    except ValueError:
+                        continue
+
+                return np.array(angles), np.array(intensity), chosen_path
+
+            return None, None, None
 
     # Load all three datasets
     lif_2mm_ang, lif_2mm_int, lif_2mm_file = load_data(lif_2mm_uploader, "LiF", 2.0)
@@ -284,19 +292,17 @@ def _(
 
     # 1. LiF (2mm) Plots
     if lif_2mm_ang is not None and len(lif_2mm_ang) > 0:
-        _box = np.ones(7) / 7.0
-        _smoothed = np.convolve(lif_2mm_int, _box, mode="same")
         import scipy.signal as _sig
 
-        _peaks, _ = _sig.find_peaks(_smoothed, prominence=20, distance=5)
+        _peaks, _ = _sig.find_peaks(lif_2mm_int, prominence=30, distance=3)
         _peaks_found_lif = [(lif_2mm_ang[_p], lif_2mm_int[_p]) for _p in _peaks if lif_2mm_ang[_p] > 5.0]
 
         # Use best match per theoretical line
         _peaks_x = []
         _peaks_y = []
-        for _line_name, _E in _cu_lines.items():
-            _E_ev = 8040.0 if _line_name == "K_alpha" else 8910.0
-            for _n in [1, 2, 3]:
+        for _line_name, _E in _mo_lines.items():
+            _E_ev = 17479.34 if _line_name == "K_alpha" else 19608.3
+            for _n in [1, 2, 3, 4, 5, 6]:
                 _ta = findtheta(_E_ev, 201.4 * 1e-12, _n)
                 if _ta is not None:
                     _best_pe = None
@@ -376,8 +382,8 @@ def _(
                 _best_line = ""
                 _best_n = 1
                 _min_diff = float("inf")
-                for _line, _E_ref in _cu_lines.items():
-                    for _n_val in [1, 2, 3]:
+                for _line, _E_ref in _mo_lines.items():
+                    for _n_val in [1, 2, 3, 4, 5, 6]:
                         _apparent_E = _E_ref / _n_val
                         _diff = abs(_pe - _apparent_E)
                         if _diff < _min_diff:
@@ -410,7 +416,7 @@ def _(
         import scipy.signal as _sig
 
         # Use raw data for KBr to resolve sharp peak at 5.5 deg
-        _peaks, _ = _sig.find_peaks(kbr_2mm_int, prominence=25, distance=4)
+        _peaks, _ = _sig.find_peaks(kbr_2mm_int, prominence=50, distance=4)
         _peaks_found_kbr = [(kbr_2mm_ang[_p], kbr_2mm_int[_p]) for _p in _peaks if kbr_2mm_ang[_p] > 5.0]
 
         # Use best match per theoretical line
@@ -486,9 +492,9 @@ def _(
             color="#C73E1D",
         )
         if _peaks_x:
-            _peaks_e = angle_to_energy(np.array(_peaks_x), 329.9, n=1)
+            _peaks_e_kbr = angle_to_energy(np.array(_peaks_x), 329.9, n=1)
             ax_eng_kbr.scatter(
-                _peaks_e,
+                _peaks_e_kbr,
                 _peaks_y,
                 color="#C73E1D",
                 marker="x",
@@ -496,7 +502,7 @@ def _(
                 zorder=5,
                 label="Detected Peaks",
             )
-            for _pe, _py in zip(_peaks_e, _peaks_y, strict=True):
+            for _pe, _py in zip(_peaks_e_kbr, _peaks_y, strict=True):
                 _best_line = ""
                 _best_n = 1
                 _min_diff = float("inf")
@@ -535,19 +541,17 @@ def _(
 
     # 3. LiF (5mm) Plots
     if lif_5mm_ang is not None and len(lif_5mm_ang) > 0:
-        _box = np.ones(7) / 7.0
-        _smoothed = np.convolve(lif_5mm_int, _box, mode="same")
         import scipy.signal as _sig
 
-        _peaks, _ = _sig.find_peaks(_smoothed, prominence=20, distance=5)
+        _peaks, _ = _sig.find_peaks(lif_5mm_int, prominence=30, distance=3)
         _peaks_found_lif5mm = [(lif_5mm_ang[_p], lif_5mm_int[_p]) for _p in _peaks if lif_5mm_ang[_p] > 5.0]
 
         # Use best match per theoretical line
         _peaks_x = []
         _peaks_y = []
-        for _line_name, _E in _cu_lines.items():
-            _E_ev = 8040.0 if _line_name == "K_alpha" else 8910.0
-            for _n in [1, 2, 3]:
+        for _line_name, _E in _mo_lines.items():
+            _E_ev = 17479.34 if _line_name == "K_alpha" else 19608.3
+            for _n in [1, 2, 3, 4, 5, 6]:
                 _ta = findtheta(_E_ev, 201.4 * 1e-12, _n)
                 if _ta is not None:
                     _best_pe = None
@@ -627,8 +631,8 @@ def _(
                 _best_line = ""
                 _best_n = 1
                 _min_diff = float("inf")
-                for _line, _E_ref in _cu_lines.items():
-                    for _n_val in [1, 2, 3]:
+                for _line, _E_ref in _mo_lines.items():
+                    for _n_val in [1, 2, 3, 4, 5, 6]:
                         _apparent_E = _E_ref / _n_val
                         _diff = abs(_pe - _apparent_E)
                         if _diff < _min_diff:
@@ -759,8 +763,8 @@ def _(
         y_2mm_norm = lif_2mm_int[mask_2mm] / trapezoid(lif_2mm_int[mask_2mm], lif_2mm_ang[mask_2mm])
         y_5mm_norm = lif_5mm_int[mask_5mm] / trapezoid(lif_5mm_int[mask_5mm], lif_5mm_ang[mask_5mm])
 
-        ax_dia.scatter(lif_2mm_ang[mask_2mm], y_2mm_norm, label="2mm Diaphragm", color="#2E86AB", s=4, alpha=0.8)
-        ax_dia.scatter(lif_5mm_ang[mask_5mm], y_5mm_norm, label="5mm Diaphragm", color="#A23B72", s=4, alpha=0.8)
+        ax_dia.plot(lif_2mm_ang[mask_2mm], y_2mm_norm, label="2mm Diaphragm", color="#2E86AB", alpha=0.9, linewidth=1.5)
+        ax_dia.plot(lif_5mm_ang[mask_5mm], y_5mm_norm, label="5mm Diaphragm", color="#A23B72", alpha=0.9, linewidth=1.5)
 
         phys.set_style(ax_dia, xlabel=r"Bragg Angle $\theta_B$ ($^\circ$)", ylabel="Normalized Intensity")
         ax_dia.legend()
@@ -778,12 +782,14 @@ def _(findtheta, kbr_2mm_ang, kbr_2mm_int, lif_2mm_ang, lif_2mm_int, mo, np):
     # 1. Construct the Theoretical Angles Reference Table
     _theo_data = []
 
-    # LiF uses Copper anode tube (Ka = 8.04 keV, Kb = 8.91 keV)
-    _cu_lines = {
-        "Cu K_alpha (8.040 keV)": 8040.0,
-        "Cu K_beta (8.910 keV)": 8910.0
+    # Both crystals use Molybdenum anode tube (Ka = 17.479 keV, Kb = 19.608 keV)
+    _mo_lines = {
+        "Mo K_alpha (17.479 keV)": 17479.34,
+        "Mo K_beta (19.608 keV)": 19608.3
     }
-    for _line_name, _E in _cu_lines.items():
+
+    # LiF
+    for _line_name, _E in _mo_lines.items():
         _n = 1
         while True:
             _theta = findtheta(_E, 201.4 * 1e-12, _n)
@@ -797,11 +803,7 @@ def _(findtheta, kbr_2mm_ang, kbr_2mm_int, lif_2mm_ang, lif_2mm_int, mo, np):
             })
             _n += 1
 
-    # KBr uses Molybdenum anode tube (Ka = 17.479 keV, Kb = 19.608 keV)
-    _mo_lines = {
-        "Mo K_alpha (17.479 keV)": 17479.34,
-        "Mo K_beta (19.608 keV)": 19608.3
-    }
+    # KBr
     for _line_name, _E in _mo_lines.items():
         _n = 1
         while True:
@@ -818,7 +820,7 @@ def _(findtheta, kbr_2mm_ang, kbr_2mm_int, lif_2mm_ang, lif_2mm_int, mo, np):
 
     _theo_table = mo.ui.table(
         _theo_data,
-        label="Theoretical Bragg Angles (Cu on LiF, Mo on KBr)"
+        label="Theoretical Bragg Angles (Mo on both LiF and KBr)"
     )
 
     import scipy.signal as _sig
