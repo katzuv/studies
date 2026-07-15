@@ -30,11 +30,24 @@ def _():
     import scipy.constants as sp
     from scipy.integrate import trapezoid
 
-    # Dynamic path resolution to studies directory
-    studies_path = Path(__file__).resolve().parents[3]
-    if str(studies_path) not in sys.path:
-        sys.path.append(str(studies_path))
+    # Dynamic path resolution to studies directory containing physlab
+    studies_path = None
+    try:
+        for p in Path(__file__).resolve().parents:
+            if (p / "physlab").is_dir():
+                studies_path = p
+                break
+    except Exception:
+        pass
+    if not studies_path:
+        for p in [Path.cwd()] + list(Path.cwd().parents):
+            if (p / "physlab").is_dir():
+                studies_path = p
+                break
+    if studies_path and str(studies_path) not in sys.path:
+        sys.path.insert(0, str(studies_path))
     import physlab.core as phys
+
 
     # Ensure output data directory exists
     data_dir = Path("data")
@@ -806,10 +819,10 @@ def _(
     if lif_2mm_ang is not None and lif_5mm_ang is not None:
         _fig, ax_dia = plt.subplots(figsize=(8, 5), layout="constrained")
 
-        # Crop to the Cu Ka and Kb first-order peak region
-        # For LiF, 8.04 keV is around 22.4 degrees, 8.91 keV is around 20.1 degrees
-        mask_2mm = (lif_2mm_ang > 18.0) & (lif_2mm_ang < 25.0)
-        mask_5mm = (lif_5mm_ang > 18.0) & (lif_5mm_ang < 25.0)
+        # Crop to the Mo Ka and Kb first-order peak region
+        # For LiF, 17.48 keV is around 10.1 degrees, 19.61 keV is around 9.0 degrees
+        mask_2mm = (lif_2mm_ang > 8.0) & (lif_2mm_ang < 11.5)
+        mask_5mm = (lif_5mm_ang > 8.0) & (lif_5mm_ang < 11.5)
 
         # Normalize by area to compare line resolution
         y_2mm_norm = lif_2mm_int[mask_2mm] / trapezoid(
@@ -843,12 +856,58 @@ def _(
         )
         ax_dia.legend()
 
-        # plt.tight_layout()
         fig_diaphragm = _fig
         _fig.savefig("data/collimator_comparison.svg")
 
     fig_diaphragm
     return
+
+
+@app.cell(hide_code=True)
+def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, np, phys, plt):
+    # 3b. Compare Diffraction Orders (n=1, 2, 3) vs Actual Energy for LiF (2mm)
+    fig_orders = None
+    if lif_2mm_ang is not None and len(lif_2mm_ang) > 0:
+        fig_orders, ax_ord = plt.subplots(figsize=(8, 5), layout="constrained")
+        
+        # Divide into angles and plot each order n=1, 2, 3
+        # n=1: 5.0 - 15.0 deg
+        # n=2: 15.0 - 25.0 deg
+        # n=3: 25.0 - 45.0 deg
+        ranges = {
+            1: (5.0, 15.0, "#2E86AB"),
+            2: (15.0, 25.0, "#A23B72"),
+            3: (25.0, 45.0, "#F18F01")
+        }
+        
+        for n, (min_a, max_a, color) in ranges.items():
+            mask = (lif_2mm_ang >= min_a) & (lif_2mm_ang <= max_a)
+            if np.any(mask):
+                ord_ang = lif_2mm_ang[mask]
+                ord_int = lif_2mm_int[mask]
+                ord_energy = angle_to_energy(ord_ang, 201.4, n=n)
+                
+                # Plot in range of characteristic lines
+                valid = (ord_energy >= 12.0) & (ord_energy <= 24.0)
+                if np.any(valid):
+                    sort_idx = np.argsort(ord_energy[valid])
+                    ax_ord.plot(
+                        ord_energy[valid][sort_idx], 
+                        ord_int[valid][sort_idx], 
+                        label=f"Order n={n}", 
+                        color=color, 
+                        linewidth=1.5
+                    )
+        
+        # Mark literature values
+        ax_ord.axvline(17.48, color="#C73E1D", linestyle="--", alpha=0.7, label=r"Mo $K_\alpha$ (17.48 keV)")
+        ax_ord.axvline(19.61, color="#333333", linestyle="--", alpha=0.7, label=r"Mo $K_\beta$ (19.61 keV)")
+        
+        phys.set_style(ax_ord, xlabel="Energy (keV)", ylabel="Intensity (cps)")
+        ax_ord.legend()
+        fig_orders.savefig("data/spectrum_orders.svg")
+        
+    return fig_orders,
 
 
 @app.cell(hide_code=True)
@@ -916,7 +975,7 @@ def _(findtheta, kbr_2mm_ang, kbr_2mm_int, lif_2mm_ang, lif_2mm_int, mo, np):
                 _min_diff = float("inf")
                 for _exp_angle, _counts in _peaks_found_lif:
                     _diff = abs(_exp_angle - _row["Bragg Angle θ_B (deg)"])
-                    if _diff < _min_diff and _diff < 1.0:
+                    if _diff < _min_diff and _diff < 0.3:
                         _min_diff = _diff
                         _best_pe = (_exp_angle, _counts)
 
@@ -956,7 +1015,7 @@ def _(findtheta, kbr_2mm_ang, kbr_2mm_int, lif_2mm_ang, lif_2mm_int, mo, np):
                 _min_diff = float("inf")
                 for _exp_angle, _counts in _peaks_found_kbr:
                     _diff = abs(_exp_angle - _row["Bragg Angle θ_B (deg)"])
-                    if _diff < _min_diff and _diff < 1.5:
+                    if _diff < _min_diff and _diff < 0.3:
                         _min_diff = _diff
                         _best_pe = (_exp_angle, _counts)
 
@@ -1032,14 +1091,14 @@ def _(lif_2mm_ang, lif_2mm_int, np, phys, plt):
             bg = bg_slope * x + bg_inter
             return gauss_a + gauss_b + bg
 
-        # Fit in angle domain first around n=1 peaks (18.5 - 24.5 degrees)
-        fit_mask = (lif_2mm_ang >= 18.5) & (lif_2mm_ang <= 24.5)
+        # Fit in angle domain first around n=1 Mo peaks (8.0 - 11.5 degrees)
+        fit_mask = (lif_2mm_ang >= 8.0) & (lif_2mm_ang <= 11.5)
         x_fit = lif_2mm_ang[fit_mask]
         y_fit = lif_2mm_int[fit_mask]
         y_err = np.sqrt(np.clip(y_fit, 1.0, None))  # Poisson error approximation
 
         # Initial guesses: [amp_a, ctr_a, sig_a, amp_b, ctr_b, sig_b, bg_slope, bg_inter]
-        p0 = [max(y_fit), 22.4, 0.15, max(y_fit) / 4.0, 20.1, 0.15, 0.0, min(y_fit)]
+        p0 = [max(y_fit), 10.3, 0.15, max(y_fit) / 4.0, 9.2, 0.15, 0.0, min(y_fit)]
 
         try:
             fit_res = phys.physics_fit(
@@ -1109,9 +1168,9 @@ def _(lif_2mm_ang, lif_2mm_int, np, phys, plt):
             E_ka_err = get_de(ctr_ka, err_ka)
             E_kb_err = get_de(ctr_kb, err_kb)
 
-            results = {"Cu_Ka": (E_ka, E_ka_err), "Cu_Kb": (E_kb, E_kb_err)}
+            results = {"Mo_Ka": (E_ka, E_ka_err), "Mo_Kb": (E_kb, E_kb_err)}
 
-            fit_status = f"Successfully fitted peaks: $\\text{{Cu }} K_\\alpha = {E_ka / 1000.0:.3f} \\pm {E_ka_err / 1000.0:.3f} \\text{{ keV}}$ and $\\text{{Cu }} K_\\beta = {E_kb / 1000.0:.3f} \\pm {E_kb_err / 1000.0:.3f} \\text{{ keV}}$."
+            fit_status = f"Successfully fitted peaks: $\\text{{Mo }} K_\\alpha = {E_ka / 1000.0:.3f} \\pm {E_ka_err / 1000.0:.3f} \\text{{ keV}}$ and $\\text{{Mo }} K_\\beta = {E_kb / 1000.0:.3f} \\pm {E_kb_err / 1000.0:.3f} \\text{{ keV}}$."
 
         except Exception as e:
             fit_status = f"Fit failed: {str(e)}"
@@ -1134,26 +1193,26 @@ def _(data_dir, json, mo, phys, results):
         # complying with studies project rules.
         constants_list = [
             {
-                "hebrew_name": "אנרגיית קו אלפא נחושת",
-                "english_name": "Copper K-alpha Energy",
-                "hebrew_var": "אנרגיית_קא_נחושת",
-                "english_var": "E_Cu_Ka",
+                "hebrew_name": "אנרגיית קו אלפא מוליבדן",
+                "english_name": "Molybdenum K-alpha Energy",
+                "hebrew_var": "אנרגיית_קא_מוליבדן",
+                "english_var": "E_Mo_Ka",
                 "symbol": "E_(K_alpha)",
-                "value": results["Cu_Ka"][0] / 1000.0,
-                "error": results["Cu_Ka"][1] / 1000.0,
+                "value": results["Mo_Ka"][0] / 1000.0,
+                "error": results["Mo_Ka"][1] / 1000.0,
                 "units": '"keV"',
                 "scale": 1.0,
                 "fmt_spec": ".3f",
                 "suffix": "",
             },
             {
-                "hebrew_name": "אנרגיית קו בטא נחושת",
-                "english_name": "Copper K-beta Energy",
-                "hebrew_var": "אנרגיית_קב_נחושת",
-                "english_var": "E_Cu_Kb",
+                "hebrew_name": "אנרגיית קו בטא מוליבדן",
+                "english_name": "Molybdenum K-beta Energy",
+                "hebrew_var": "אנרגיית_קב_מוליבדן",
+                "english_var": "E_Mo_Kb",
                 "symbol": "E_(K_beta)",
-                "value": results["Cu_Kb"][0] / 1000.0,
-                "error": results["Cu_Kb"][1] / 1000.0,
+                "value": results["Mo_Kb"][0] / 1000.0,
+                "error": results["Mo_Kb"][1] / 1000.0,
                 "units": '"keV"',
                 "scale": 1.0,
                 "fmt_spec": ".3f",
