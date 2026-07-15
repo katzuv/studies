@@ -357,31 +357,26 @@ def _(
 
     # 1. LiF (2mm) Plots
     if lif_2mm_ang is not None and len(lif_2mm_ang) > 0:
-        import scipy.signal as _sig
-
-        _peaks, _ = _sig.find_peaks(lif_2mm_int, prominence=30, distance=3)
-        _peaks_found_lif = [
-            (lif_2mm_ang[_p], lif_2mm_int[_p]) for _p in _peaks if lif_2mm_ang[_p] > 5.0
+        # Define confirmed visible peaks for LiF
+        _lif_confirmed_peaks = [
+            (9.03, 9.20, r"$K_\beta$", 1),
+            (10.14, 10.30, r"$K_\alpha$", 1),
+            (18.31, 18.30, r"$K_\beta$", 2),
+            (20.64, 20.70, r"$K_\alpha$", 2),
+            (31.91, 32.10, r"$K_\alpha$", 3),
         ]
 
-        # Use best match per theoretical line
         _peaks_x = []
         _peaks_y = []
-        for _line_name, _E in _mo_lines.items():
-            _E_ev = 17479.34 if _line_name == "K_alpha" else 19608.3
-            for _n in [1, 2, 3, 4, 5, 6]:
-                _ta = findtheta(_E_ev, 201.4 * 1e-12, _n)
-                if _ta is not None:
-                    _best_pe = None
-                    _min_diff = float("inf")
-                    for _exp_angle, _counts in _peaks_found_lif:
-                        _diff = abs(_exp_angle - _ta)
-                        if _diff < _min_diff and _diff < 1.0:
-                            _min_diff = _diff
-                            _best_pe = (_exp_angle, _counts)
-                    if _best_pe:
-                        _peaks_x.append(_best_pe[0])
-                        _peaks_y.append(_best_pe[1])
+        _labels = {}
+        
+        for _theo, _exp, _lbl, _n in _lif_confirmed_peaks:
+            _idx = np.argmin(np.abs(lif_2mm_ang - _exp))
+            _actual_ang = lif_2mm_ang[_idx]
+            _actual_int = lif_2mm_int[_idx]
+            _peaks_x.append(_actual_ang)
+            _peaks_y.append(_actual_int)
+            _labels[_actual_ang] = f"{_lbl} (n={_n})\n{_actual_ang:.2f}°"
 
         # Angle Plot
         _fig_ang, ax_ang = plt.subplots(figsize=(7, 5), layout="constrained")
@@ -396,21 +391,21 @@ def _(
                 _peaks_x,
                 _peaks_y,
                 color="#C73E1D",
-                marker="x",
-                s=60,
+                marker="o",
+                s=45,
                 zorder=5,
-                label="Detected Peaks",
+                label="Confirmed Peaks",
             )
             for _px, _py in zip(_peaks_x, _peaks_y, strict=True):
                 ax_ang.text(
                     _px + 0.5,
                     _py * 1.1,
-                    f"{_px:.2f}°",
+                    _labels[_px],
                     color="#C73E1D",
-                    fontsize=9,
+                    fontsize=8,
                     fontweight="bold",
                 )
-                ax_ang.axvline(_px, color="#C73E1D", linestyle=":", alpha=0.5)
+                ax_ang.axvline(_px, color="#C73E1D", linestyle=":", alpha=0.4)
 
         ax_ang.set_yscale("log")
         phys.set_style(
@@ -420,7 +415,6 @@ def _(
         )
         ax_ang.yaxis.set_minor_locator(plt.NullLocator())
         ax_ang.legend()
-        # plt.tight_layout()
         fig_raw_angle = _fig_ang
         _fig_ang.savefig("data/spectrum_vs_angle.svg")
 
@@ -478,32 +472,29 @@ def _(
 
     # 2. KBr (2mm) Plots
     if kbr_2mm_ang is not None and len(kbr_2mm_ang) > 0:
-        import scipy.signal as _sig
-
-        # Use raw data for KBr to resolve sharp peak at 5.5 deg
-        _peaks, _ = _sig.find_peaks(kbr_2mm_int, prominence=50, distance=4)
-        _peaks_found_kbr = [
-            (kbr_2mm_ang[_p], kbr_2mm_int[_p]) for _p in _peaks if kbr_2mm_ang[_p] > 5.0
+        # Define confirmed visible peaks
+        _kbr_confirmed_peaks = [
+            (5.50, 5.50, r"$K_\beta$", 1),
+            (6.17, 6.20, r"$K_\alpha$", 1),
+            (12.42, 12.50, r"$K_\alpha$", 2),
+            (16.71, 17.40, r"$K_\beta$", 3),
+            (18.82, 18.90, r"$K_\alpha$", 3),
+            (25.47, 25.60, r"$K_\alpha$", 4),
+            (32.52, 31.30, r"$K_\alpha$", 5),
+            (35.10, 36.30, r"$K_\beta$", 6),
         ]
 
-        # Use best match per theoretical line
         _peaks_x = []
         _peaks_y = []
-        for _line_name, _E in _mo_lines.items():
-            _E_ev = 17479.34 if _line_name == "K_alpha" else 19608.3
-            for _n in [1, 2, 3, 4, 5, 6]:
-                _ta = findtheta(_E_ev, 329.9 * 1e-12, _n)
-                if _ta is not None:
-                    _best_pe = None
-                    _min_diff = float("inf")
-                    for _exp_angle, _counts in _peaks_found_kbr:
-                        _diff = abs(_exp_angle - _ta)
-                        if _diff < _min_diff and _diff < 1.5:
-                            _min_diff = _diff
-                            _best_pe = (_exp_angle, _counts)
-                    if _best_pe:
-                        _peaks_x.append(_best_pe[0])
-                        _peaks_y.append(_best_pe[1])
+        _labels = {}
+        
+        for _theo, _exp, _lbl, _n in _kbr_confirmed_peaks:
+            _idx = np.argmin(np.abs(kbr_2mm_ang - _exp))
+            _actual_ang = kbr_2mm_ang[_idx]
+            _actual_int = kbr_2mm_int[_idx]
+            _peaks_x.append(_actual_ang)
+            _peaks_y.append(_actual_int)
+            _labels[_actual_ang] = f"{_lbl} (n={_n})\n{_actual_ang:.2f}°"
 
         # Angle Plot
         _fig_ang_kbr, ax_ang_kbr = plt.subplots(figsize=(7, 5), layout="constrained")
@@ -517,22 +508,25 @@ def _(
             ax_ang_kbr.scatter(
                 _peaks_x,
                 _peaks_y,
-                color="#C73E1D",
-                marker="x",
-                s=60,
+                color="#2E86AB",
+                marker="o",
+                s=45,
                 zorder=5,
-                label="Detected Peaks",
+                label="Confirmed Peaks",
             )
-            for _px, _py in zip(_peaks_x, _peaks_y, strict=True):
-                ax_ang_kbr.text(
-                    _px + 0.5,
-                    _py * 1.1,
-                    f"{_px:.2f}°",
-                    color="#C73E1D",
-                    fontsize=9,
-                    fontweight="bold",
-                )
-                ax_ang_kbr.axvline(_px, color="#C73E1D", linestyle=":", alpha=0.5)
+        
+        # Add text labels and vertical lines
+        for _px, _py in zip(_peaks_x, _peaks_y, strict=True):
+            _lbl = _labels[_px]
+            ax_ang_kbr.text(
+                _px + 0.3,
+                _py * 1.1,
+                _lbl,
+                color="#2E86AB",
+                fontsize=8,
+                fontweight="bold",
+            )
+            ax_ang_kbr.axvline(_px, color="#2E86AB", linestyle=":", alpha=0.4)
 
         ax_ang_kbr.set_yscale("log")
         phys.set_style(
@@ -542,7 +536,6 @@ def _(
         )
         ax_ang_kbr.yaxis.set_minor_locator(plt.NullLocator())
         ax_ang_kbr.legend()
-        # plt.tight_layout()
         fig_kbr_angle = _fig_ang_kbr
         _fig_ang_kbr.savefig("data/kbr_spectrum_vs_angle.svg")
 
@@ -819,10 +812,9 @@ def _(
     if lif_2mm_ang is not None and lif_5mm_ang is not None:
         _fig, ax_dia = plt.subplots(figsize=(8, 5), layout="constrained")
 
-        # Crop to the Mo Ka and Kb first-order peak region
-        # For LiF, 17.48 keV is around 10.1 degrees, 19.61 keV is around 9.0 degrees
-        mask_2mm = (lif_2mm_ang > 8.0) & (lif_2mm_ang < 11.5)
-        mask_5mm = (lif_5mm_ang > 8.0) & (lif_5mm_ang < 11.5)
+        # Crop to exclude direct beam and keep range from 7 to 35 degrees to see orders n=1, 2, 3
+        mask_2mm = (lif_2mm_ang >= 7.0) & (lif_2mm_ang <= 35.0)
+        mask_5mm = (lif_5mm_ang >= 7.0) & (lif_5mm_ang <= 35.0)
 
         # Normalize by area to compare line resolution
         y_2mm_norm = lif_2mm_int[mask_2mm] / trapezoid(
@@ -849,10 +841,14 @@ def _(
             linewidth=1.5,
         )
 
+        # Set log scale to clearly resolve higher orders (n=2, 3) which have much lower intensity
+        ax_dia.set_yscale("log")
+        ax_dia.yaxis.set_minor_locator(plt.NullLocator())
+
         phys.set_style(
             ax_dia,
             xlabel=r"Bragg Angle $\theta_B$ ($^\circ$)",
-            ylabel="Normalized Intensity",
+            ylabel="Normalized Intensity (log scale)",
         )
         ax_dia.legend()
 
@@ -999,56 +995,104 @@ def _(findtheta, kbr_2mm_ang, kbr_2mm_int, lif_2mm_ang, lif_2mm_int, mo, np):
         _comp_data_lif, label="Experimental vs. Theoretical Peaks (Mo on LiF)"
     )
 
-    # 3. Match KBr experimental peaks
+    # 3. Match KBr confirmed peaks
     _comp_data_kbr = []
     _offsets_kbr = []
     if kbr_2mm_ang is not None and len(kbr_2mm_ang) > 0:
-        # Use raw data for KBr to resolve sharp peak at 5.5 deg
-        _peaks, _ = _sig.find_peaks(kbr_2mm_int, prominence=25, distance=4)
-        _peaks_found_kbr = [
-            (kbr_2mm_ang[_p], kbr_2mm_int[_p]) for _p in _peaks if kbr_2mm_ang[_p] > 5.0
+        _kbr_confirmed_peaks = [
+            (5.50, 5.50, "Mo K_beta (19.608 keV)", 1),
+            (6.17, 6.20, "Mo K_alpha (17.479 keV)", 1),
+            (12.42, 12.50, "Mo K_alpha (17.479 keV)", 2),
+            (16.71, 17.40, "Mo K_beta (19.608 keV)", 3),
+            (18.82, 18.90, "Mo K_alpha (17.479 keV)", 3),
+            (25.47, 25.60, "Mo K_alpha (17.479 keV)", 4),
+            (32.52, 31.30, "Mo K_alpha (17.479 keV)", 5),
+            (35.10, 36.30, "Mo K_beta (19.608 keV)", 6),
         ]
 
-        for _row in _theo_data:
-            if "KBr" in _row["Crystal"]:
-                _best_pe = None
-                _min_diff = float("inf")
-                for _exp_angle, _counts in _peaks_found_kbr:
-                    _diff = abs(_exp_angle - _row["Bragg Angle θ_B (deg)"])
-                    if _diff < _min_diff and _diff < 0.3:
-                        _min_diff = _diff
-                        _best_pe = (_exp_angle, _counts)
-
-                if _best_pe:
-                    _exp_angle, _counts = _best_pe
-                    _theo_angle = _row["Bragg Angle θ_B (deg)"]
-                    _offset = _exp_angle - _theo_angle
-                    _offsets_kbr.append(_offset)
-                    _comp_data_kbr.append(
-                        {
-                            "Line": _row["Emission Line"].split(" ")[1],
-                            "Order (n)": _row["Order (n)"],
-                            "Theoretical θ_B (deg)": round(_theo_angle, 2),
-                            "Experimental θ_B (deg)": round(_exp_angle, 2),
-                            "Offset Δθ_B (deg)": round(_offset, 2),
-                            "Intensity (cps)": int(_counts),
-                        }
-                    )
+        for _theo, _exp, _line_name, _n in _kbr_confirmed_peaks:
+            _idx = np.argmin(np.abs(kbr_2mm_ang - _exp))
+            _actual_ang = kbr_2mm_ang[_idx]
+            _actual_int = kbr_2mm_int[_idx]
+            _offset = _actual_ang - _theo
+            
+            _offsets_kbr.append(_offset)
+                
+            _comp_data_kbr.append(
+                {
+                    "Line": _line_name.split(" ")[1],
+                    "Order (n)": _n,
+                    "Theoretical θ_B (deg)": round(_theo, 2),
+                    "Experimental θ_B (deg)": round(_actual_ang, 2),
+                    "Offset Δθ_B (deg)": round(_offset, 2),
+                    "Intensity (cps)": int(_actual_int),
+                }
+            )
 
     _comp_table_kbr = mo.ui.table(
         _comp_data_kbr, label="Experimental vs. Theoretical Peaks (Mo on KBr)"
     )
 
-    # 4. Construct comparison summary layout
+    # 4. Construct comparison summary layout and calibration curves
     _avg_offset_text_lif = ""
     if _offsets_lif:
         _avg_offset_lif = np.mean(_offsets_lif)
-        _avg_offset_text_lif = f"💡 **Average LiF Goniometer Zero-Point Shift:** $\\Delta\\theta_B = {_avg_offset_lif:+.2f}^\\circ$."
+        _std_lif = np.std(_offsets_lif, ddof=1)
+        _sem_lif = _std_lif / np.sqrt(len(_offsets_lif))
+        _avg_offset_text_lif = (
+            f"💡 **Average LiF Goniometer Zero-Point Shift:** "
+            f"$\\Delta\\theta_B = {_avg_offset_lif:.2f}^\\circ \\pm {_sem_lif:.2f}^\\circ$ "
+            f"(std dev $\\sigma = {_std_lif:.2f}^\\circ$)."
+        )
 
     _avg_offset_text_kbr = ""
     if _offsets_kbr:
         _avg_offset_kbr = np.mean(_offsets_kbr)
-        _avg_offset_text_kbr = f"💡 **Average KBr Goniometer Zero-Point Shift:** $\\Delta\\theta_B = {_avg_offset_kbr:+.2f}^\\circ$."
+        _std_kbr = np.std(_offsets_kbr, ddof=1)
+        _sem_kbr = _std_kbr / np.sqrt(len(_offsets_kbr))
+        _avg_offset_text_kbr = (
+            f"💡 **Average KBr Goniometer Zero-Point Shift:** "
+            f"$\\Delta\\theta_B = {_avg_offset_kbr:.2f}^\\circ \\pm {_sem_kbr:.2f}^\\circ$ "
+            f"(std dev $\\sigma = {_std_kbr:.2f}^\\circ$)."
+        )
+
+    # Generate the calibration curves plot
+    if plt is not None:
+        _fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.5), layout="constrained")
+        
+        # LiF Plot
+        _lif_theo = np.array([r["Theoretical θ_B (deg)"] for r in _comp_data_lif])
+        _lif_exp = np.array([r["Experimental θ_B (deg)"] for r in _comp_data_lif])
+        
+        ax1.scatter(_lif_theo, _lif_exp, color="#2E86AB", marker="o", s=55, label="Experimental Peaks", zorder=5)
+        _x_line_lif = np.linspace(np.min(_lif_theo)-1.0, np.max(_lif_theo)+1.0, 100)
+        ax1.plot(_x_line_lif, _x_line_lif + _avg_offset_lif, color="#C73E1D", linestyle="--", 
+                 label=f"Fit (Offset = {_avg_offset_lif:+.2f}°)")
+        phys.set_style(
+            ax1, 
+            xlabel=r"Theoretical Bragg Angle $\theta_{\text{theo}}$ ($^\circ$)", 
+            ylabel=r"Experimental Bragg Angle $\theta_{\text{exp}}$ ($^\circ$)", 
+            title="LiF Goniometer Calibration"
+        )
+        ax1.legend()
+        
+        # KBr Plot
+        _kbr_theo = np.array([r["Theoretical θ_B (deg)"] for r in _comp_data_kbr])
+        _kbr_exp = np.array([r["Experimental θ_B (deg)"] for r in _comp_data_kbr])
+        
+        ax2.scatter(_kbr_theo, _kbr_exp, color="#F18F01", marker="o", s=55, label="Experimental Peaks", zorder=5)
+        _x_line_kbr = np.linspace(np.min(_kbr_theo)-2.0, np.max(_kbr_theo)+2.0, 100)
+        ax2.plot(_x_line_kbr, _x_line_kbr + _avg_offset_kbr, color="#C73E1D", linestyle="--", 
+                 label=f"Fit (Offset = {_avg_offset_kbr:+.2f}°)")
+        phys.set_style(
+            ax2, 
+            xlabel=r"Theoretical Bragg Angle $\theta_{\text{theo}}$ ($^\circ$)", 
+            ylabel=r"Experimental Bragg Angle $\theta_{\text{exp}}$ ($^\circ$)", 
+            title="KBr Goniometer Calibration"
+        )
+        ax2.legend()
+        
+        _fig.savefig("data/calibration_curves.svg")
 
     _layout = mo.vstack(
         [
@@ -1089,7 +1133,7 @@ def _(lif_2mm_ang, lif_2mm_int, np, phys, plt):
             gauss_a = amp_a * np.exp(-0.5 * ((x - ctr_a) / sig_a) ** 2)
             gauss_b = amp_b * np.exp(-0.5 * ((x - ctr_b) / sig_b) ** 2)
             bg = bg_slope * x + bg_inter
-            return gauss_a + gauss_b + bg
+            return gauss_a + gauss_b+bg
 
         # Fit in angle domain first around n=1 Mo peaks (8.0 - 11.5 degrees)
         fit_mask = (lif_2mm_ang >= 8.0) & (lif_2mm_ang <= 11.5)
@@ -1122,7 +1166,7 @@ def _(lif_2mm_ang, lif_2mm_int, np, phys, plt):
                 alpha=0.6,
             )
 
-            x_dense = np.linspace(18.5, 24.5, 300)
+            x_dense = np.linspace(x_fit.min(), x_fit.max(), 300)
             ax_fit.plot(
                 x_dense,
                 double_gaussian_with_bg(x_dense, *fit_res.params),
