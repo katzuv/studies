@@ -1030,7 +1030,7 @@ def _(data_dir, json, mo, phys, results):
                 "symbol": "E_(K_alpha)",
                 "value": results["Cu_Ka"][0] / 1000.0,
                 "error": results["Cu_Ka"][1] / 1000.0,
-                "units": r"$" + '"keV"' + r"$",
+                "units": '"keV"',
                 "scale": 1.0,
                 "fmt_spec": ".3f",
                 "suffix": ""
@@ -1043,7 +1043,7 @@ def _(data_dir, json, mo, phys, results):
                 "symbol": "E_(K_beta)",
                 "value": results["Cu_Kb"][0] / 1000.0,
                 "error": results["Cu_Kb"][1] / 1000.0,
-                "units": r"$" + '"keV"' + r"$",
+                "units": '"keV"',
                 "scale": 1.0,
                 "fmt_spec": ".3f",
                 "suffix": ""
