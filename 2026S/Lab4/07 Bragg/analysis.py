@@ -1,6 +1,18 @@
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "autograd>=1.6.2",
+#     "marimo>=0.23.14",
+#     "matplotlib>=3.11.0",
+#     "numpy>=2.5.1",
+#     "pandas>=2.2.2",
+#     "scipy>=1.18.0",
+# ]
+# ///
+
 import marimo
 
-__generated_with = "0.23.14"
+__generated_with = "0.23.9"
 app = marimo.App(width="medium")
 
 
@@ -18,7 +30,10 @@ def _():
     import scipy.constants as sp
     from scipy.integrate import trapezoid
 
-    sys.path.append(str(Path(r"c:\Users\Student\studies")))
+    # Dynamic path resolution to studies directory
+    studies_path = Path(__file__).resolve().parents[3]
+    if str(studies_path) not in sys.path:
+        sys.path.append(str(studies_path))
     import physlab.core as phys
 
     # Ensure output data directory exists
@@ -356,7 +371,7 @@ def _(
                         _peaks_y.append(_best_pe[1])
 
         # Angle Plot
-        _fig_ang, ax_ang = plt.subplots(figsize=(7, 5))
+        _fig_ang, ax_ang = plt.subplots(figsize=(7, 5), layout="constrained")
         ax_ang.plot(
             lif_2mm_ang,
             lif_2mm_int,
@@ -392,12 +407,12 @@ def _(
         )
         ax_ang.yaxis.set_minor_locator(plt.NullLocator())
         ax_ang.legend()
-        plt.tight_layout()
+        # plt.tight_layout()
         fig_raw_angle = _fig_ang
         _fig_ang.savefig("data/spectrum_vs_angle.svg")
 
         # Energy Plot
-        _fig_eng, ax_eng = plt.subplots(figsize=(7, 5))
+        _fig_eng, ax_eng = plt.subplots(figsize=(7, 5), layout="constrained")
         _energies_kev = angle_to_energy(lif_2mm_ang, 201.4, n=1)
         _valid_idx = lif_2mm_ang > 3.0
         ax_eng.plot(
@@ -444,7 +459,7 @@ def _(
         phys.set_style(ax_eng, xlabel=r"Energy $E$ (keV)", ylabel="Intensity (cps)")
         ax_eng.set_xlim(3.0, 25.0)
         ax_eng.legend()
-        plt.tight_layout()
+        # plt.tight_layout()
         fig_raw_energy = _fig_eng
         _fig_eng.savefig("data/spectrum_vs_energy.svg")
 
@@ -478,7 +493,7 @@ def _(
                         _peaks_y.append(_best_pe[1])
 
         # Angle Plot
-        _fig_ang_kbr, ax_ang_kbr = plt.subplots(figsize=(7, 5))
+        _fig_ang_kbr, ax_ang_kbr = plt.subplots(figsize=(7, 5), layout="constrained")
         ax_ang_kbr.plot(
             kbr_2mm_ang,
             kbr_2mm_int,
@@ -514,12 +529,12 @@ def _(
         )
         ax_ang_kbr.yaxis.set_minor_locator(plt.NullLocator())
         ax_ang_kbr.legend()
-        plt.tight_layout()
+        # plt.tight_layout()
         fig_kbr_angle = _fig_ang_kbr
         _fig_ang_kbr.savefig("data/kbr_spectrum_vs_angle.svg")
 
         # Energy Plot
-        _fig_eng_kbr, ax_eng_kbr = plt.subplots(figsize=(7, 5))
+        _fig_eng_kbr, ax_eng_kbr = plt.subplots(figsize=(7, 5), layout="constrained")
         _energies_kev_kbr = angle_to_energy(kbr_2mm_ang, 329.9, n=1)
         _valid_idx_kbr = kbr_2mm_ang > 3.0
         ax_eng_kbr.plot(
@@ -566,7 +581,7 @@ def _(
         phys.set_style(ax_eng_kbr, xlabel=r"Energy $E$ (keV)", ylabel="Intensity (cps)")
         ax_eng_kbr.set_xlim(3.0, 25.0)
         ax_eng_kbr.legend()
-        plt.tight_layout()
+        # plt.tight_layout()
         fig_kbr_energy = _fig_eng_kbr
         _fig_eng_kbr.savefig("data/kbr_spectrum_vs_energy.svg")
 
@@ -599,7 +614,7 @@ def _(
                         _peaks_y.append(_best_pe[1])
 
         # Angle Plot
-        _fig_ang, ax_ang = plt.subplots(figsize=(7, 5))
+        _fig_ang, ax_ang = plt.subplots(figsize=(7, 5), layout="constrained")
         ax_ang.plot(
             lif_5mm_ang,
             lif_5mm_int,
@@ -635,12 +650,12 @@ def _(
         )
         ax_ang.yaxis.set_minor_locator(plt.NullLocator())
         ax_ang.legend()
-        plt.tight_layout()
+        # plt.tight_layout()
         fig_lif5mm_angle = _fig_ang
         _fig_ang.savefig("data/lif5mm_spectrum_vs_angle.svg")
 
         # Energy Plot
-        _fig_eng, ax_eng = plt.subplots(figsize=(7, 5))
+        _fig_eng, ax_eng = plt.subplots(figsize=(7, 5), layout="constrained")
         _energies_kev = angle_to_energy(lif_5mm_ang, 201.4, n=1)
         _valid_idx = lif_5mm_ang > 3.0
         ax_eng.plot(
@@ -687,7 +702,7 @@ def _(
         phys.set_style(ax_eng, xlabel=r"Energy $E$ (keV)", ylabel="Intensity (cps)")
         ax_eng.set_xlim(3.0, 25.0)
         ax_eng.legend()
-        plt.tight_layout()
+        # plt.tight_layout()
         fig_lif5mm_energy = _fig_eng
         _fig_eng.savefig("data/lif5mm_spectrum_vs_energy.svg")
     return (
@@ -744,7 +759,7 @@ def _(
     # 2. Compare Crystals (LiF vs KBr)
     fig_crystal = None
     if lif_2mm_ang is not None and kbr_2mm_ang is not None:
-        _fig, ax_crys = plt.subplots(figsize=(8, 5))
+        _fig, ax_crys = plt.subplots(figsize=(8, 5), layout="constrained")
 
         # Convert both to energy (n=1)
         lif_e = angle_to_energy(lif_2mm_ang[lif_2mm_ang > 3.0], 201.4, n=1)
@@ -768,7 +783,7 @@ def _(
         phys.set_style(ax_crys, xlabel="Energy (keV)", ylabel="Intensity (cps)")
         ax_crys.legend()
 
-        plt.tight_layout()
+        # plt.tight_layout()
         fig_crystal = _fig
         _fig.savefig("data/crystal_comparison.svg")
 
@@ -789,7 +804,7 @@ def _(
     # 3. Compare Diaphragms (2mm vs 5mm)
     fig_diaphragm = None
     if lif_2mm_ang is not None and lif_5mm_ang is not None:
-        _fig, ax_dia = plt.subplots(figsize=(8, 5))
+        _fig, ax_dia = plt.subplots(figsize=(8, 5), layout="constrained")
 
         # Crop to the Cu Ka and Kb first-order peak region
         # For LiF, 8.04 keV is around 22.4 degrees, 8.91 keV is around 20.1 degrees
@@ -828,7 +843,7 @@ def _(
         )
         ax_dia.legend()
 
-        plt.tight_layout()
+        # plt.tight_layout()
         fig_diaphragm = _fig
         _fig.savefig("data/collimator_comparison.svg")
 
@@ -1036,7 +1051,7 @@ def _(lif_2mm_ang, lif_2mm_int, np, phys, plt):
             err_ka, err_kb = fit_res.errors[1], fit_res.errors[4]
 
             # Plot the fit results
-            _fig, ax_fit = plt.subplots(figsize=(8, 5))
+            _fig, ax_fit = plt.subplots(figsize=(8, 5), layout="constrained")
             ax_fit.errorbar(
                 x_fit,
                 y_fit,
@@ -1073,7 +1088,7 @@ def _(lif_2mm_ang, lif_2mm_int, np, phys, plt):
             )
             ax_fit.legend()
 
-            plt.tight_layout()
+            # plt.tight_layout()
             _fig.savefig("data/peak_fit.svg")
 
             # Convert angle centroids to energy (keV) using d = 201.4 pm
