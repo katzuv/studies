@@ -12,7 +12,7 @@
 
 import marimo
 
-__generated_with = "0.23.9"
+__generated_with = "0.23.14"
 app = marimo.App(width="medium")
 
 
@@ -25,10 +25,25 @@ def _():
     from pathlib import Path
 
     import marimo as mo
+    import matplotlib
     import matplotlib.pyplot as plt
     import numpy as np
     import scipy.constants as sp
     from scipy.integrate import trapezoid
+
+    matplotlib.rcParams["svg.hashsalt"] = "bragg-lab-svg-salt"
+
+    # Monkeypatch savefig to enforce deterministic SVG metadata
+    _original_savefig = matplotlib.figure.Figure.savefig
+
+    def _deterministic_savefig(self, *args, **kwargs):
+        if len(args) > 0 and str(args[0]).endswith(".svg") or "format" in kwargs and kwargs["format"] == "svg":
+            meta = kwargs.get("metadata", {}) or {}
+            meta["Date"] = None
+            kwargs["metadata"] = meta
+        return _original_savefig(self, *args, **kwargs)
+
+    matplotlib.figure.Figure.savefig = _deterministic_savefig
 
     # Dynamic path resolution to studies directory containing physlab
     studies_path = None
@@ -47,7 +62,6 @@ def _():
     if studies_path and str(studies_path) not in sys.path:
         sys.path.insert(0, str(studies_path))
     import physlab.core as phys
-
 
     # Ensure output data directory exists
     data_dir = Path("data")
@@ -369,7 +383,7 @@ def _(
         _peaks_x = []
         _peaks_y = []
         _labels = {}
-        
+
         for _theo, _exp, _lbl, _n in _lif_confirmed_peaks:
             _idx = np.argmin(np.abs(lif_2mm_ang - _exp))
             _actual_ang = lif_2mm_ang[_idx]
@@ -487,7 +501,7 @@ def _(
         _peaks_x = []
         _peaks_y = []
         _labels = {}
-        
+
         for _theo, _exp, _lbl, _n in _kbr_confirmed_peaks:
             _idx = np.argmin(np.abs(kbr_2mm_ang - _exp))
             _actual_ang = kbr_2mm_ang[_idx]
@@ -514,7 +528,7 @@ def _(
                 zorder=5,
                 label="Confirmed Peaks",
             )
-        
+
         # Add text labels and vertical lines
         for _px, _py in zip(_peaks_x, _peaks_y, strict=True):
             _lbl = _labels[_px]
@@ -865,7 +879,7 @@ def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, np, phys, plt):
     fig_orders = None
     if lif_2mm_ang is not None and len(lif_2mm_ang) > 0:
         fig_orders, ax_ord = plt.subplots(figsize=(8, 5), layout="constrained")
-        
+
         # Divide into angles and plot each order n=1, 2, 3
         # n=1: 5.0 - 15.0 deg
         # n=2: 15.0 - 25.0 deg
@@ -873,41 +887,62 @@ def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, np, phys, plt):
         ranges = {
             1: (5.0, 15.0, "#2E86AB"),
             2: (15.0, 25.0, "#A23B72"),
-            3: (25.0, 45.0, "#F18F01")
+            3: (25.0, 45.0, "#F18F01"),
         }
-        
+
         for n, (min_a, max_a, color) in ranges.items():
             mask = (lif_2mm_ang >= min_a) & (lif_2mm_ang <= max_a)
             if np.any(mask):
                 ord_ang = lif_2mm_ang[mask]
                 ord_int = lif_2mm_int[mask]
                 ord_energy = angle_to_energy(ord_ang, 201.4, n=n)
-                
+
                 # Plot in range of characteristic lines
                 valid = (ord_energy >= 12.0) & (ord_energy <= 24.0)
                 if np.any(valid):
                     sort_idx = np.argsort(ord_energy[valid])
                     ax_ord.plot(
-                        ord_energy[valid][sort_idx], 
-                        ord_int[valid][sort_idx], 
-                        label=f"Order n={n}", 
-                        color=color, 
-                        linewidth=1.5
+                        ord_energy[valid][sort_idx],
+                        ord_int[valid][sort_idx],
+                        label=f"Order n={n}",
+                        color=color,
+                        linewidth=1.5,
                     )
-        
+
         # Mark literature values
-        ax_ord.axvline(17.48, color="#C73E1D", linestyle="--", alpha=0.7, label=r"Mo $K_\alpha$ (17.48 keV)")
-        ax_ord.axvline(19.61, color="#333333", linestyle="--", alpha=0.7, label=r"Mo $K_\beta$ (19.61 keV)")
-        
+        ax_ord.axvline(
+            17.48,
+            color="#C73E1D",
+            linestyle="--",
+            alpha=0.7,
+            label=r"Mo $K_\alpha$ (17.48 keV)",
+        )
+        ax_ord.axvline(
+            19.61,
+            color="#333333",
+            linestyle="--",
+            alpha=0.7,
+            label=r"Mo $K_\beta$ (19.61 keV)",
+        )
+
         phys.set_style(ax_ord, xlabel="Energy (keV)", ylabel="Intensity (cps)")
         ax_ord.legend()
         fig_orders.savefig("data/spectrum_orders.svg")
-        
-    return fig_orders,
+    return
 
 
 @app.cell(hide_code=True)
-def _(findtheta, kbr_2mm_ang, kbr_2mm_int, lif_2mm_ang, lif_2mm_int, mo, np):
+def _(
+    findtheta,
+    kbr_2mm_ang,
+    kbr_2mm_int,
+    lif_2mm_ang,
+    lif_2mm_int,
+    mo,
+    np,
+    phys,
+    plt,
+):
     # 1. Construct the Theoretical Angles Reference Table
     _theo_data = []
 
@@ -1015,9 +1050,9 @@ def _(findtheta, kbr_2mm_ang, kbr_2mm_int, lif_2mm_ang, lif_2mm_int, mo, np):
             _actual_ang = kbr_2mm_ang[_idx]
             _actual_int = kbr_2mm_int[_idx]
             _offset = _actual_ang - _theo
-            
+
             _offsets_kbr.append(_offset)
-                
+
             _comp_data_kbr.append(
                 {
                     "Line": _line_name.split(" ")[1],
@@ -1059,39 +1094,65 @@ def _(findtheta, kbr_2mm_ang, kbr_2mm_int, lif_2mm_ang, lif_2mm_int, mo, np):
     # Generate the calibration curves plot
     if plt is not None:
         _fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.5), layout="constrained")
-        
+
         # LiF Plot
         _lif_theo = np.array([r["Theoretical θ_B (deg)"] for r in _comp_data_lif])
         _lif_exp = np.array([r["Experimental θ_B (deg)"] for r in _comp_data_lif])
-        
-        ax1.scatter(_lif_theo, _lif_exp, color="#2E86AB", marker="o", s=55, label="Experimental Peaks", zorder=5)
-        _x_line_lif = np.linspace(np.min(_lif_theo)-1.0, np.max(_lif_theo)+1.0, 100)
-        ax1.plot(_x_line_lif, _x_line_lif + _avg_offset_lif, color="#C73E1D", linestyle="--", 
-                 label=f"Fit (Offset = {_avg_offset_lif:+.2f}°)")
+
+        ax1.scatter(
+            _lif_theo,
+            _lif_exp,
+            color="#2E86AB",
+            marker="o",
+            s=55,
+            label="Experimental Peaks",
+            zorder=5,
+        )
+        _x_line_lif = np.linspace(np.min(_lif_theo) - 1.0, np.max(_lif_theo) + 1.0, 100)
+        ax1.plot(
+            _x_line_lif,
+            _x_line_lif + _avg_offset_lif,
+            color="#C73E1D",
+            linestyle="--",
+            label=f"Fit (Offset = {_avg_offset_lif:+.2f}°)",
+        )
         phys.set_style(
-            ax1, 
-            xlabel=r"Theoretical Bragg Angle $\theta_{\text{theo}}$ ($^\circ$)", 
-            ylabel=r"Experimental Bragg Angle $\theta_{\text{exp}}$ ($^\circ$)", 
-            title="LiF Goniometer Calibration"
+            ax1,
+            xlabel=r"Theoretical Bragg Angle $\theta_{\text{theo}}$ ($^\circ$)",
+            ylabel=r"Experimental Bragg Angle $\theta_{\text{exp}}$ ($^\circ$)",
+            title="LiF Goniometer Calibration",
         )
         ax1.legend()
-        
+
         # KBr Plot
         _kbr_theo = np.array([r["Theoretical θ_B (deg)"] for r in _comp_data_kbr])
         _kbr_exp = np.array([r["Experimental θ_B (deg)"] for r in _comp_data_kbr])
-        
-        ax2.scatter(_kbr_theo, _kbr_exp, color="#F18F01", marker="o", s=55, label="Experimental Peaks", zorder=5)
-        _x_line_kbr = np.linspace(np.min(_kbr_theo)-2.0, np.max(_kbr_theo)+2.0, 100)
-        ax2.plot(_x_line_kbr, _x_line_kbr + _avg_offset_kbr, color="#C73E1D", linestyle="--", 
-                 label=f"Fit (Offset = {_avg_offset_kbr:+.2f}°)")
+
+        ax2.scatter(
+            _kbr_theo,
+            _kbr_exp,
+            color="#F18F01",
+            marker="o",
+            s=55,
+            label="Experimental Peaks",
+            zorder=5,
+        )
+        _x_line_kbr = np.linspace(np.min(_kbr_theo) - 2.0, np.max(_kbr_theo) + 2.0, 100)
+        ax2.plot(
+            _x_line_kbr,
+            _x_line_kbr + _avg_offset_kbr,
+            color="#C73E1D",
+            linestyle="--",
+            label=f"Fit (Offset = {_avg_offset_kbr:+.2f}°)",
+        )
         phys.set_style(
-            ax2, 
-            xlabel=r"Theoretical Bragg Angle $\theta_{\text{theo}}$ ($^\circ$)", 
-            ylabel=r"Experimental Bragg Angle $\theta_{\text{exp}}$ ($^\circ$)", 
-            title="KBr Goniometer Calibration"
+            ax2,
+            xlabel=r"Theoretical Bragg Angle $\theta_{\text{theo}}$ ($^\circ$)",
+            ylabel=r"Experimental Bragg Angle $\theta_{\text{exp}}$ ($^\circ$)",
+            title="KBr Goniometer Calibration",
         )
         ax2.legend()
-        
+
         _fig.savefig("data/calibration_curves.svg")
 
     _layout = mo.vstack(
@@ -1133,7 +1194,7 @@ def _(lif_2mm_ang, lif_2mm_int, np, phys, plt):
             gauss_a = amp_a * np.exp(-0.5 * ((x - ctr_a) / sig_a) ** 2)
             gauss_b = amp_b * np.exp(-0.5 * ((x - ctr_b) / sig_b) ** 2)
             bg = bg_slope * x + bg_inter
-            return gauss_a + gauss_b+bg
+            return gauss_a + gauss_b + bg
 
         # Fit in angle domain first around n=1 Mo peaks (8.0 - 11.5 degrees)
         fit_mask = (lif_2mm_ang >= 8.0) & (lif_2mm_ang <= 11.5)
