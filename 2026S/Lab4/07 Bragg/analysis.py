@@ -37,7 +37,12 @@ def _():
     _original_savefig = matplotlib.figure.Figure.savefig
 
     def _deterministic_savefig(self, *args, **kwargs):
-        if len(args) > 0 and str(args[0]).endswith(".svg") or "format" in kwargs and kwargs["format"] == "svg":
+        if (
+            len(args) > 0
+            and str(args[0]).endswith(".svg")
+            or "format" in kwargs
+            and kwargs["format"] == "svg"
+        ):
             meta = kwargs.get("metadata", {}) or {}
             meta["Date"] = None
             kwargs["metadata"] = meta
@@ -1017,7 +1022,9 @@ def _(
                     _offsets_lif.append(_offset)
 
                     # Estimate local background as the minimum in a 3-degree window around the peak
-                    _bg_mask = (lif_2mm_ang >= _exp_angle - 1.5) & (lif_2mm_ang <= _exp_angle + 1.5)
+                    _bg_mask = (lif_2mm_ang >= _exp_angle - 1.5) & (
+                        lif_2mm_ang <= _exp_angle + 1.5
+                    )
                     _bg_val = np.min(lif_2mm_int[_bg_mask]) if np.any(_bg_mask) else 0.0
                     _snr = (_counts - _bg_val) / np.sqrt(max(_counts, 1.0))
 
@@ -1061,7 +1068,9 @@ def _(
             _offsets_kbr.append(_offset)
 
             # Estimate local background as the minimum in a 3-degree window around the peak
-            _bg_mask = (kbr_2mm_ang >= _actual_ang - 1.5) & (kbr_2mm_ang <= _actual_ang + 1.5)
+            _bg_mask = (kbr_2mm_ang >= _actual_ang - 1.5) & (
+                kbr_2mm_ang <= _actual_ang + 1.5
+            )
             _bg_val = np.min(kbr_2mm_int[_bg_mask]) if np.any(_bg_mask) else 0.0
             _snr = (_actual_int - _bg_val) / np.sqrt(max(_actual_int, 1.0))
 
@@ -1229,29 +1238,37 @@ def _(
     def _angle_to_energy(angle_deg, d_nm):
         return hc / (2 * d_nm * np.sin(np.radians(angle_deg)))
 
-    def _analyze_dataset(ang, intensity, d_nm, min_ang, max_ang, p0, crystal_name, diaphragm_mm, plot_filename):
+    def _analyze_dataset(
+        ang,
+        intensity,
+        d_nm,
+        min_ang,
+        max_ang,
+        p0,
+        crystal_name,
+        diaphragm_mm,
+        plot_filename,
+    ):
         if ang is None or len(ang) == 0:
             return None
-        
+
         # Fit double Gaussian
         fit_mask = (ang >= min_ang) & (ang <= max_ang)
         x_fit = ang[fit_mask]
         y_fit = intensity[fit_mask]
         y_err = np.sqrt(np.clip(y_fit, 1.0, None))
-        
-        fit_res = phys.physics_fit(
-            _double_gaussian_with_bg, x_fit, y_fit, y_err, p0=p0
-        )
-        
+
+        fit_res = phys.physics_fit(_double_gaussian_with_bg, x_fit, y_fit, y_err, p0=p0)
+
         # Centroids and standard errors from fit
         ctr_ka, ctr_kb = fit_res.params[1], fit_res.params[4]
         err_ka, err_kb = fit_res.errors[1], fit_res.errors[4]
-        
+
         fit_E_ka = _angle_to_energy(ctr_ka, d_nm)
-        fit_E_ka_err = _get_de(ctr_ka, err_ka, d_nm)
+        fit_E_ka_err = _get_de(ctr_ka, np.sqrt(err_ka**2 + d_theta**2), d_nm)
         fit_E_kb = _angle_to_energy(ctr_kb, d_nm)
-        fit_E_kb_err = _get_de(ctr_kb, err_kb, d_nm)
-        
+        fit_E_kb_err = _get_de(ctr_kb, np.sqrt(err_kb**2 + d_theta**2), d_nm)
+
         # Plot the fit results
         _fig, ax_fit = plt.subplots(figsize=(8, 5), layout="constrained")
         ax_fit.errorbar(
@@ -1291,7 +1308,7 @@ def _(
         ax_fit.legend()
         _fig.savefig(f"data/{plot_filename}")
         plt.close(_fig)
-        
+
         # Max Intensity for Ka and Kb in their specific windows
         ka_mask = (x_fit >= (ctr_ka - 0.5)) & (x_fit <= (ctr_ka + 0.5))
         x_ka = x_fit[ka_mask]
@@ -1299,14 +1316,14 @@ def _(
         max_ang_ka = x_ka[np.argmax(y_ka)]
         max_E_ka = _angle_to_energy(max_ang_ka, d_nm)
         max_E_ka_err = _get_de(max_ang_ka, d_theta, d_nm)
-        
+
         kb_mask = (x_fit >= (ctr_kb - 0.5)) & (x_fit <= (ctr_kb + 0.5))
         x_kb = x_fit[kb_mask]
         y_kb = y_fit[kb_mask]
         max_ang_kb = x_kb[np.argmax(y_kb)]
         max_E_kb = _angle_to_energy(max_ang_kb, d_nm)
         max_E_kb_err = _get_de(max_ang_kb, d_theta, d_nm)
-        
+
         # Centroid (Center of mass) in the same windows
         def _get_centroid(px, py):
             y_bg = np.linspace(py[0], py[-1], len(py))
@@ -1320,11 +1337,11 @@ def _(
         cent_ang_ka = _get_centroid(x_ka, y_ka)
         cent_E_ka = _angle_to_energy(cent_ang_ka, d_nm)
         cent_E_ka_err = _get_de(cent_ang_ka, d_theta, d_nm)
-        
+
         cent_ang_kb = _get_centroid(x_kb, y_kb)
         cent_E_kb = _angle_to_energy(cent_ang_kb, d_nm)
         cent_E_kb_err = _get_de(cent_ang_kb, d_theta, d_nm)
-        
+
         return {
             "max_ka": (max_E_ka, max_E_ka_err),
             "max_kb": (max_E_kb, max_E_kb_err),
@@ -1344,24 +1361,24 @@ def _(
         [3700.0, 10.3, 0.15, 1000.0, 9.2, 0.15, 0.0, 50.0],
         "LiF",
         2.0,
-        "peak_fit.svg"
+        "peak_fit.svg",
     )
     if res_lif2:
         results["Mo_Ka"] = res_lif2["fit_ka"]
         results["Mo_Kb"] = res_lif2["fit_kb"]
-        
+
         results["Mo_Ka_LiF_2mm_max"] = res_lif2["max_ka"]
         results["Mo_Ka_LiF_2mm_centroid"] = res_lif2["centroid_ka"]
         results["Mo_Ka_LiF_2mm_gaussian"] = res_lif2["fit_ka"]
-        
+
         results["Mo_Kb_LiF_2mm_max"] = res_lif2["max_kb"]
         results["Mo_Kb_LiF_2mm_centroid"] = res_lif2["centroid_kb"]
         results["Mo_Kb_LiF_2mm_gaussian"] = res_lif2["fit_kb"]
-        
+
         fit_status_list.append(
-            f"**LiF 2mm**: $K_\\alpha = {res_lif2['fit_ka'][0]/1000.0:.3f} \\pm {res_lif2['fit_ka'][1]/1000.0:.3f} \\text{{ keV}}$, $K_\\beta = {res_lif2['fit_kb'][0]/1000.0:.3f} \\pm {res_lif2['fit_kb'][1]/1000.0:.3f} \\text{{ keV}}$"
+            f"**LiF 2mm**: $K_\\alpha = {res_lif2['fit_ka'][0] / 1000.0:.3f} \\pm {res_lif2['fit_ka'][1] / 1000.0:.3f} \\text{{ keV}}$, $K_\\beta = {res_lif2['fit_kb'][0] / 1000.0:.3f} \\pm {res_lif2['fit_kb'][1] / 1000.0:.3f} \\text{{ keV}}$"
         )
-        
+
     # 2. KBr 2mm Fit
     res_kbr2 = _analyze_dataset(
         kbr_2mm_ang,
@@ -1372,21 +1389,21 @@ def _(
         [770.0, 6.2, 0.15, 270.0, 5.5, 0.15, 0.0, 50.0],
         "KBr",
         2.0,
-        "kbr_peak_fit.svg"
+        "kbr_peak_fit.svg",
     )
     if res_kbr2:
         results["Mo_Ka_KBr_2mm_max"] = res_kbr2["max_ka"]
         results["Mo_Ka_KBr_2mm_centroid"] = res_kbr2["centroid_ka"]
         results["Mo_Ka_KBr_2mm_gaussian"] = res_kbr2["fit_ka"]
-        
+
         results["Mo_Kb_KBr_2mm_max"] = res_kbr2["max_kb"]
         results["Mo_Kb_KBr_2mm_centroid"] = res_kbr2["centroid_kb"]
         results["Mo_Kb_KBr_2mm_gaussian"] = res_kbr2["fit_kb"]
-        
+
         fit_status_list.append(
-            f"**KBr 2mm**: $K_\\alpha = {res_kbr2['fit_ka'][0]/1000.0:.3f} \\pm {res_kbr2['fit_ka'][1]/1000.0:.3f} \\text{{ keV}}$, $K_\\beta = {res_kbr2['fit_kb'][0]/1000.0:.3f} \\pm {res_kbr2['fit_kb'][1]/1000.0:.3f} \\text{{ keV}}$"
+            f"**KBr 2mm**: $K_\\alpha = {res_kbr2['fit_ka'][0] / 1000.0:.3f} \\pm {res_kbr2['fit_ka'][1] / 1000.0:.3f} \\text{{ keV}}$, $K_\\beta = {res_kbr2['fit_kb'][0] / 1000.0:.3f} \\pm {res_kbr2['fit_kb'][1] / 1000.0:.3f} \\text{{ keV}}$"
         )
-        
+
     # 3. LiF 5mm Fit
     res_lif5 = _analyze_dataset(
         lif_5mm_ang,
@@ -1397,19 +1414,19 @@ def _(
         [3700.0, 10.3, 0.3, 1000.0, 9.2, 0.3, 0.0, 50.0],
         "LiF",
         5.0,
-        "lif5mm_peak_fit.svg"
+        "lif5mm_peak_fit.svg",
     )
     if res_lif5:
         results["Mo_Ka_LiF_5mm_max"] = res_lif5["max_ka"]
         results["Mo_Ka_LiF_5mm_centroid"] = res_lif5["centroid_ka"]
         results["Mo_Ka_LiF_5mm_gaussian"] = res_lif5["fit_ka"]
-        
+
         results["Mo_Kb_LiF_5mm_max"] = res_lif5["max_kb"]
         results["Mo_Kb_LiF_5mm_centroid"] = res_lif5["centroid_kb"]
         results["Mo_Kb_LiF_5mm_gaussian"] = res_lif5["fit_kb"]
-        
+
         fit_status_list.append(
-            f"**LiF 5mm**: $K_\\alpha = {res_lif5['fit_ka'][0]/1000.0:.3f} \\pm {res_lif5['fit_ka'][1]/1000.0:.3f} \\text{{ keV}}$, $K_\\beta = {res_lif5['fit_kb'][0]/1000.0:.3f} \\pm {res_lif5['fit_kb'][1]/1000.0:.3f} \\text{{ keV}}$"
+            f"**LiF 5mm**: $K_\\alpha = {res_lif5['fit_ka'][0] / 1000.0:.3f} \\pm {res_lif5['fit_ka'][1] / 1000.0:.3f} \\text{{ keV}}$, $K_\\beta = {res_lif5['fit_kb'][0] / 1000.0:.3f} \\pm {res_lif5['fit_kb'][1] / 1000.0:.3f} \\text{{ keV}}$"
         )
 
     fit_status = "Successfully fitted peaks:\n\n" + "\n\n".join(fit_status_list)
@@ -1463,16 +1480,13 @@ def _(data_dir, json, mo, phys, results):
         crystals = [
             ("LiF_2mm", "ליפ_2ממ", "LiF 2mm"),
             ("KBr_2mm", "קבר_2ממ", "KBr 2mm"),
-            ("LiF_5mm", "ליפ_5ממ", "LiF 5mm")
+            ("LiF_5mm", "ליפ_5ממ", "LiF 5mm"),
         ]
-        lines = [
-            ("Ka", "קא", "K-alpha", "K_alpha"),
-            ("Kb", "קב", "K-beta", "K_beta")
-        ]
+        lines = [("Ka", "קא", "K-alpha", "K_alpha"), ("Kb", "קב", "K-beta", "K_beta")]
         criteria = [
             ("max", "עוצמה", "Max", "max"),
             ("centroid", "צנטרואיד", "Centroid", "centroid"),
-            ("gaussian", "גאוסיאן", "Gaussian", "gaussian")
+            ("gaussian", "גאוסיאן", "Gaussian", "gaussian"),
         ]
 
         for crys_code, crys_heb, crys_eng in crystals:
@@ -1481,36 +1495,98 @@ def _(data_dir, json, mo, phys, results):
                     res_key = f"Mo_{line_code}_{crys_code}_{crit_code}"
                     if res_key in results:
                         # Export English suffix version (e.g. _max)
-                        constants_list.append({
-                            "hebrew_name": f"אנרגיית קו {line_heb} מוליבדן {crys_heb.replace('_', ' ')} {crit_heb}",
-                            "english_name": f"Molybdenum {line_eng_name} {crys_eng} {crit_eng_name} Energy",
-                            "hebrew_var": f"אנרגיית_{line_heb}_מוליבדן_{crys_heb}_{crit_code}",
-                            "english_var": f"E_Mo_{line_code}_{crys_code}_{crit_code}",
-                            "symbol": f"E_({line_symbol}, \"{crys_eng}, {crit_symbol}\")",
-                            "value": results[res_key][0] / 1000.0,
-                            "error": results[res_key][1] / 1000.0,
-                            "units": '"keV"',
-                            "scale": 1.0,
-                            "fmt_spec": ".3f",
-                            "suffix": "",
-                        })
+                        constants_list.append(
+                            {
+                                "hebrew_name": f"אנרגיית קו {line_heb} מוליבדן {crys_heb.replace('_', ' ')} {crit_heb}",
+                                "english_name": f"Molybdenum {line_eng_name} {crys_eng} {crit_eng_name} Energy",
+                                "hebrew_var": f"אנרגיית_{line_heb}_מוליבדן_{crys_heb}_{crit_code}",
+                                "english_var": f"E_Mo_{line_code}_{crys_code}_{crit_code}",
+                                "symbol": f'E_({line_symbol}, "{crys_eng}, {crit_symbol}")',
+                                "value": results[res_key][0] / 1000.0,
+                                "error": results[res_key][1] / 1000.0,
+                                "units": '"keV"',
+                                "scale": 1.0,
+                                "fmt_spec": ".3f",
+                                "suffix": "",
+                            }
+                        )
                         # Export Hebrew suffix version (e.g. _עוצמה)
-                        constants_list.append({
-                            "hebrew_name": f"אנרגיית קו {line_heb} מוליבדן {crys_heb.replace('_', ' ')} {crit_heb} עברית",
-                            "english_name": f"Molybdenum {line_eng_name} {crys_eng} {crit_eng_name} Energy Hebrew",
-                            "hebrew_var": f"אנרגיית_{line_heb}_מוליבדן_{crys_heb}_{crit_heb}",
-                            "english_var": f"E_Mo_{line_code}_{crys_code}_{crit_code}_heb",
-                            "symbol": f"E_({line_symbol}, \"{crys_eng}, {crit_symbol}\")",
-                            "value": results[res_key][0] / 1000.0,
-                            "error": results[res_key][1] / 1000.0,
-                            "units": '"keV"',
-                            "scale": 1.0,
-                            "fmt_spec": ".3f",
-                            "suffix": "",
-                        })
+                        constants_list.append(
+                            {
+                                "hebrew_name": f"אנרגיית קו {line_heb} מוליבדן {crys_heb.replace('_', ' ')} {crit_heb} עברית",
+                                "english_name": f"Molybdenum {line_eng_name} {crys_eng} {crit_eng_name} Energy Hebrew",
+                                "hebrew_var": f"אנרגיית_{line_heb}_מוליבדן_{crys_heb}_{crit_heb}",
+                                "english_var": f"E_Mo_{line_code}_{crys_code}_{crit_code}_heb",
+                                "symbol": f'E_({line_symbol}, "{crys_eng}, {crit_symbol}")',
+                                "value": results[res_key][0] / 1000.0,
+                                "error": results[res_key][1] / 1000.0,
+                                "units": '"keV"',
+                                "scale": 1.0,
+                                "fmt_spec": ".3f",
+                                "suffix": "",
+                            }
+                        )
 
         # Export the constants to data/ directory
         exported = phys.export_constants(constants_list, data_dir)
+
+        # Append statistical distances (z-scores) dynamically to constants.typ
+        typ_path = data_dir / "constants.typ"
+        if typ_path.exists():
+            typ_content = typ_path.read_text(encoding="utf-8")
+            z_lines = []
+            lit_vals = {"Ka": 17.479, "Kb": 19.608}
+            for crys_code, crys_heb, _crys_eng in crystals:
+                for line_code, line_heb, _line_eng_name, _line_symbol in lines:
+                    for crit_code, crit_heb, _crit_eng_name, _crit_symbol in criteria:
+                        res_key = f"Mo_{line_code}_{crys_code}_{crit_code}"
+                        if res_key in results:
+                            val_kev = results[res_key][0] / 1000.0
+                            err_kev = results[res_key][1] / 1000.0
+                            lit_kev = lit_vals[line_code]
+                            z_score = abs(val_kev - lit_kev) / err_kev
+                            rel_err = (abs(val_kev - lit_kev) / lit_kev) * 100.0
+
+                            var_base = (
+                                f"אנרגיית_{line_heb}_מוליבדן_{crys_heb}_{crit_code}"
+                            )
+                            eng_base = f"E_Mo_{line_code}_{crys_code}_{crit_code}"
+
+                            z_lines.append(
+                                f"#let {var_base}_מרחק = ${z_score:.1f} sigma$\n"
+                            )
+                            z_lines.append(f"#let {eng_base}_z = {var_base}_מרחק\n")
+                            z_lines.append(
+                                f"#let {var_base}_שגיאה_יחסית = ${rel_err:.2f} %$\n"
+                            )
+                            z_lines.append(
+                                f"#let {eng_base}_rel_err = {var_base}_שגיאה_יחסית\n"
+                            )
+
+                            var_heb_base = (
+                                f"אנרגיית_{line_heb}_מוליבדן_{crys_heb}_{crit_heb}"
+                            )
+                            eng_heb_base = (
+                                f"E_Mo_{line_code}_{crys_code}_{crit_code}_heb"
+                            )
+                            z_lines.append(
+                                f"#let {var_heb_base}_מרחק = ${z_score:.1f} sigma$\n"
+                            )
+                            z_lines.append(
+                                f"#let {eng_heb_base}_z = {var_heb_base}_מרחק\n"
+                            )
+                            z_lines.append(
+                                f"#let {var_heb_base}_שגיאה_יחסית = ${rel_err:.2f} %$\n"
+                            )
+                            z_lines.append(
+                                f"#let {eng_heb_base}_rel_err = {var_heb_base}_שגיאה_יחסית\n"
+                            )
+
+            typ_path.write_text(
+                typ_content + "\n// Statistical distances\n" + "".join(z_lines),
+                encoding="utf-8",
+            )
+
         export_msg = mo.md(
             f"""**Constants Saved**: Successfully saved fitted physical parameters to `data/constants.json` and `data/constants.typ`.
 
