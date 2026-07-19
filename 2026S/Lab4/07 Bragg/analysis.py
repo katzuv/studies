@@ -1105,6 +1105,16 @@ def _(angle_to_energy, kbr_2mm_ang, kbr_2mm_int, mo, np, phys, plt):
                 "sigma": sig_val,
             }
 
+        # Mark Br K-edge absorption line (13.47 keV)
+        ax_ord.axvline(
+            13.47,
+            color="#27AE60",
+            linestyle="-.",
+            alpha=0.85,
+            linewidth=1.5,
+            label=r"Br $K$-edge (13.47 keV)",
+        )
+
         # Mark literature values
         ax_ord.axvline(
             17.48,
