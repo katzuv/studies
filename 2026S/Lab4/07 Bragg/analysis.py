@@ -7,6 +7,7 @@
 #     "numpy>=2.5.1",
 #     "pandas>=2.2.2",
 #     "scipy>=1.18.0",
+#     "rich>=13.7.0",
 # ]
 # ///
 
@@ -938,7 +939,15 @@ def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, mo, np, phys, plt):
             e_max = angle_to_energy(ang_max, 201.4, n=n)
 
             # Scatter point ('x') & annotation on figure
-            ax_ord.scatter(e_max, counts_max, color="#C73E1D", marker="x", s=55, linewidth=1.8, zorder=5)
+            ax_ord.scatter(
+                e_max,
+                counts_max,
+                color="#C73E1D",
+                marker="x",
+                s=55,
+                linewidth=1.8,
+                zorder=5,
+            )
             ax_ord.annotate(
                 f"{p['lbl']} (n={n})\n{e_max:.2f} keV",
                 (e_max, counts_max),
@@ -1083,7 +1092,15 @@ def _(angle_to_energy, kbr_2mm_ang, kbr_2mm_int, mo, np, phys, plt):
             e_max = angle_to_energy(ang_max, 329.9, n=n)
 
             # Scatter point ('x') & annotation on figure
-            ax_ord.scatter(e_max, counts_max, color="#C73E1D", marker="x", s=55, linewidth=1.8, zorder=5)
+            ax_ord.scatter(
+                e_max,
+                counts_max,
+                color="#C73E1D",
+                marker="x",
+                s=55,
+                linewidth=1.8,
+                zorder=5,
+            )
             ax_ord.annotate(
                 f"{p['lbl']} (n={n})\n{e_max:.2f} keV",
                 (e_max, counts_max),
@@ -1440,6 +1457,39 @@ def _(
         ]
     )
 
+    import marimo
+
+    if not marimo.running_in_notebook():
+        try:
+            from rich.console import Console
+            from rich.table import Table
+
+            _console = Console()
+            if _comp_data_lif:
+                _t_lif = Table(
+                    title="LiF (2mm) Peak Alignment",
+                    show_header=True,
+                    header_style="bold blue",
+                )
+                for _k in _comp_data_lif[0]:
+                    _t_lif.add_column(_k)
+                for _row in _comp_data_lif:
+                    _t_lif.add_row(*[str(_v) for _v in _row.values()])
+                _console.print(_t_lif)
+            if _comp_data_kbr:
+                _t_kbr = Table(
+                    title="KBr (2mm) Peak Alignment",
+                    show_header=True,
+                    header_style="bold green",
+                )
+                for _k in _comp_data_kbr[0]:
+                    _t_kbr.add_column(_k)
+                for _row in _comp_data_kbr:
+                    _t_kbr.add_row(*[str(_v) for _v in _row.values()])
+                _console.print(_t_kbr)
+        except Exception:
+            pass
+
     _layout
     return
 
@@ -1672,6 +1722,18 @@ def _(
         )
 
     fit_status = "Successfully fitted peaks:\n\n" + "\n\n".join(fit_status_list)
+
+    import marimo
+
+    if not marimo.running_in_notebook():
+        try:
+            from rich.console import Console
+
+            _console = Console()
+            _console.print(f"\n[bold green]{fit_status}[/bold green]\n")
+        except Exception:
+            pass
+
     return fit_status, results
 
 
@@ -1846,4 +1908,58 @@ def _(data_dir, json, mo, phys, results):
 
 
 if __name__ == "__main__":
-    app.run()
+    import sys
+
+    if "--script" in sys.argv or "-s" in sys.argv:
+        import json
+        from pathlib import Path
+
+        from rich.console import Console
+        from rich.table import Table
+
+        console = Console()
+        console.print(
+            "[bold cyan]=======================================================[/]"
+        )
+        console.print(
+            "[bold cyan]       Bragg Spectroscopy Marimo Analysis Results      [/]"
+        )
+        console.print(
+            "[bold cyan]=======================================================[/]"
+        )
+
+        # Load constants.json if it exists
+        constants_path = Path("data/constants.json")
+        if constants_path.exists():
+            try:
+                data = json.loads(constants_path.read_text(encoding="utf-8"))
+                table = Table(
+                    title="Fitted X-ray Energies & Error Analysis",
+                    show_header=True,
+                    header_style="bold magenta",
+                )
+                table.add_column("Parameter / Line", style="dim")
+                table.add_column("Experimental Value (keV)", justify="right")
+                table.add_column("Uncertainty (keV)", justify="right")
+                table.add_column("Literature (keV)", justify="right")
+                table.add_column("Relative Error", justify="right")
+                table.add_column("Statistical Distance", justify="right")
+
+                for item in data:
+                    table.add_row(
+                        item.get("name", ""),
+                        f"{item.get('value', 0.0):.3f}",
+                        f"{item.get('error', 0.0):.3f}",
+                        f"{item.get('lit', 0.0):.3f}",
+                        f"{item.get('percentage_error', 0.0):.2f}%",
+                        f"{item.get('z_score', 0.0):.1f} sigma",
+                    )
+                console.print(table)
+            except Exception as e:
+                console.print(f"[red]Error parsing constants.json: {e}[/]")
+        else:
+            console.print(
+                "[yellow]No data/constants.json found. Run the marimo server or standalone.py first to export it.[/]"
+            )
+    else:
+        app.run()
