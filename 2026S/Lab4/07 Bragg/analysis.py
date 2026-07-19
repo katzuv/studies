@@ -830,22 +830,21 @@ def _(
     # 3. Compare Diaphragms (2mm vs 5mm)
     fig_diaphragm = None
     if lif_2mm_ang is not None and lif_5mm_ang is not None:
-        _fig, ax_dia = plt.subplots(figsize=(8, 5), layout="constrained")
+        _max_ang = min(lif_2mm_ang.max(), lif_5mm_ang.max())
 
-        # Crop to exclude direct beam and keep range from 7 to 35 degrees to see orders n=1, 2, 3
-        mask_2mm = (lif_2mm_ang >= 7.0) & (lif_2mm_ang <= 35.0)
-        mask_5mm = (lif_5mm_ang >= 7.0) & (lif_5mm_ang <= 35.0)
+        mask_2mm = (lif_2mm_ang >= 5.0) & (lif_2mm_ang <= _max_ang)
+        mask_5mm = (lif_5mm_ang >= 5.0) & (lif_5mm_ang <= _max_ang)
+
+        a2_sub, i2_sub = lif_2mm_ang[mask_2mm], lif_2mm_int[mask_2mm]
+        a5_sub, i5_sub = lif_5mm_ang[mask_5mm], lif_5mm_int[mask_5mm]
 
         # Normalize by area to compare line resolution
-        y_2mm_norm = lif_2mm_int[mask_2mm] / trapezoid(
-            lif_2mm_int[mask_2mm], lif_2mm_ang[mask_2mm]
-        )
-        y_5mm_norm = lif_5mm_int[mask_5mm] / trapezoid(
-            lif_5mm_int[mask_5mm], lif_5mm_ang[mask_5mm]
-        )
+        y_2mm_norm = i2_sub / trapezoid(i2_sub, a2_sub)
+        y_5mm_norm = i5_sub / trapezoid(i5_sub, a5_sub)
 
+        _fig, ax_dia = plt.subplots(figsize=(8.5, 5), layout="constrained")
         ax_dia.plot(
-            lif_2mm_ang[mask_2mm],
+            a2_sub,
             y_2mm_norm,
             label="2mm Diaphragm",
             color="#2E86AB",
@@ -853,7 +852,7 @@ def _(
             linewidth=1.5,
         )
         ax_dia.plot(
-            lif_5mm_ang[mask_5mm],
+            a5_sub,
             y_5mm_norm,
             label="5mm Diaphragm",
             color="#A23B72",
@@ -861,19 +860,55 @@ def _(
             linewidth=1.5,
         )
 
-        # Set log scale to clearly resolve higher orders (n=2, 3) which have much lower intensity
         ax_dia.set_yscale("log")
+        ax_dia.set_xlim(5.0, _max_ang)
         ax_dia.yaxis.set_minor_locator(plt.NullLocator())
 
         phys.set_style(
             ax_dia,
             xlabel=r"Bragg Angle $\theta_B$ ($^\circ$)",
             ylabel="Normalized Intensity (log scale)",
+            title="Diaphragm Resolution Comparison (LiF 200)",
         )
-        ax_dia.legend()
+        ax_dia.legend(loc="upper right")
 
         fig_diaphragm = _fig
         _fig.savefig("data/collimator_comparison.svg")
+        _fig.savefig("data/collimator_comparison.png", dpi=300)
+
+        # Raw Intensity comparison plot cut at end of data
+        _fig_raw, ax_raw = plt.subplots(figsize=(8.5, 5), layout="constrained")
+        ax_raw.plot(
+            a2_sub,
+            i2_sub,
+            label="2mm Diaphragm",
+            color="#2E86AB",
+            alpha=0.9,
+            linewidth=1.5,
+        )
+        ax_raw.plot(
+            a5_sub,
+            i5_sub,
+            label="5mm Diaphragm",
+            color="#A23B72",
+            alpha=0.9,
+            linewidth=1.5,
+        )
+        ax_raw.set_yscale("log")
+        ax_raw.set_xlim(5.0, _max_ang)
+        ax_raw.yaxis.set_minor_locator(plt.NullLocator())
+
+        phys.set_style(
+            ax_raw,
+            xlabel=r"Bragg Angle $\theta_B$ ($^\circ$)",
+            ylabel="Intensity (cps, log scale)",
+            title="Raw Intensity Comparison (2mm vs 5mm Diaphragm)",
+        )
+        ax_raw.legend(loc="upper right")
+
+        _fig_raw.savefig("data/collimator_comparison_raw.svg")
+        _fig_raw.savefig("data/collimator_comparison_raw.png", dpi=300)
+        plt.close(_fig_raw)
 
     fig_diaphragm
     return
@@ -1038,14 +1073,20 @@ def _(angle_to_energy, kbr_2mm_ang, kbr_2mm_int, mo, np, phys, plt):
     if kbr_2mm_ang is not None and len(kbr_2mm_ang) > 0:
         _fig_kbr_orders, _ax_ord = plt.subplots(figsize=(8, 5.5), layout="constrained")
 
-        # Angle ranges for KBr orders:
+        # Angle ranges for KBr orders (n=1..6):
         # n=1: 3.0 - 10.0 deg
         # n=2: 10.0 - 15.0 deg
         # n=3: 15.0 - 22.0 deg
+        # n=4: 22.0 - 27.5 deg
+        # n=5: 27.5 - 34.0 deg
+        # n=6: 34.0 - 39.0 deg
         _ranges = {
             1: (3.0, 10.0, "#2E86AB"),
             2: (10.0, 15.0, "#A23B72"),
             3: (15.0, 22.0, "#F18F01"),
+            4: (22.0, 27.5, "#E76F51"),
+            5: (27.5, 34.0, "#2A9D8F"),
+            6: (34.0, 39.0, "#6A4C93"),
         }
 
         for _n, (_min_a, _max_a, _color) in _ranges.items():
@@ -1067,60 +1108,57 @@ def _(angle_to_energy, kbr_2mm_ang, kbr_2mm_int, mo, np, phys, plt):
                         linewidth=1.5,
                     )
 
-        # Confirmed peak search windows for KBr (2mm)
+        # Confirmed peak search windows for KBr (2mm) across n=1..6
         _peaks_order_info = [
             {"n": 1, "line": "K_beta", "win": (5.2, 5.8), "lbl": r"$K_\beta$"},
             {"n": 1, "line": "K_alpha", "win": (5.9, 6.5), "lbl": r"$K_\alpha$"},
             {"n": 2, "line": "K_alpha", "win": (12.1, 12.9), "lbl": r"$K_\alpha$"},
             {"n": 3, "line": "K_beta", "win": (16.8, 17.8), "lbl": r"$K_\beta$"},
             {"n": 3, "line": "K_alpha", "win": (18.4, 19.4), "lbl": r"$K_\alpha$"},
+            {"n": 4, "line": "K_beta", "win": (22.0, 23.2), "lbl": r"$K_\beta$"},
+            {"n": 4, "line": "K_alpha", "win": (25.0, 26.2), "lbl": r"$K_\alpha$"},
+            {"n": 5, "line": "K_beta", "win": (27.8, 29.0), "lbl": r"$K_\beta$"},
+            {"n": 5, "line": "K_alpha", "win": (32.0, 33.2), "lbl": r"$K_\alpha$"},
+            {"n": 6, "line": "K_beta", "win": (34.4, 35.6), "lbl": r"$K_\beta$"},
         ]
 
         _theo_ka, _theo_kb = 17.48, 19.61
         _d_theta_rad = np.radians(0.05)
 
-        _results_by_order = {1: {}, 2: {}, 3: {}}
+        _results_by_order = {1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}}
 
         for _p in _peaks_order_info:
             _n = _p["n"]
             _mask = (kbr_2mm_ang >= _p["win"][0]) & (kbr_2mm_ang <= _p["win"][1])
             _sub_ang = kbr_2mm_ang[_mask]
             _sub_int = kbr_2mm_int[_mask]
-            _max_idx = np.argmax(_sub_int)
-            _ang_max = _sub_ang[_max_idx]
-            _counts_max = _sub_int[_max_idx]
-            _e_max = angle_to_energy(_ang_max, 329.9, n=_n)
+            if len(_sub_int) > 0:
+                _max_idx = np.argmax(_sub_int)
+                _ang_max = _sub_ang[_max_idx]
+                _counts_max = _sub_int[_max_idx]
+                _e_max = angle_to_energy(_ang_max, 329.9, n=_n)
 
-            # Scatter point ('x') & annotation on figure
-            _ax_ord.scatter(
-                _e_max,
-                _counts_max,
-                color="#C73E1D",
-                marker="x",
-                s=55,
-                linewidth=1.8,
-                zorder=5,
-            )
-            _ax_ord.annotate(
-                f"{_p['lbl']} (n={_n})\n{_e_max:.2f} keV",
-                (_e_max, _counts_max),
-                xytext=(_e_max + 0.3, _counts_max * 1.15),
-                arrowprops=dict(arrowstyle="->", color="#C73E1D", lw=0.8),
-                color="#C73E1D",
-                fontsize=8,
-                fontweight="bold",
-            )
+                # Scatter point ('x') on figure
+                _ax_ord.scatter(
+                    _e_max,
+                    _counts_max,
+                    color="#C73E1D",
+                    marker="x",
+                    s=55,
+                    linewidth=1.8,
+                    zorder=5,
+                )
 
-            _theo_val = _theo_ka if _p["line"] == "K_alpha" else _theo_kb
-            _diff_val = abs(_e_max - _theo_val)
-            _dE_val = _e_max * (1 / np.tan(np.radians(_ang_max))) * _d_theta_rad
-            _sig_val = _diff_val / _dE_val
+                _theo_val = _theo_ka if _p["line"] == "K_alpha" else _theo_kb
+                _diff_val = abs(_e_max - _theo_val)
+                _dE_val = _e_max * (1 / np.tan(np.radians(_ang_max))) * _d_theta_rad
+                _sig_val = _diff_val / _dE_val
 
-            _results_by_order[_n][_p["line"]] = {
-                "energy": _e_max,
-                "diff": _diff_val,
-                "sigma": _sig_val,
-            }
+                _results_by_order[_n][_p["line"]] = {
+                    "energy": _e_max,
+                    "diff": _diff_val,
+                    "sigma": _sig_val,
+                }
 
         # Mark Br K-edge absorption line (13.47 keV)
         _ax_ord.axvline(
@@ -1152,10 +1190,11 @@ def _(angle_to_energy, kbr_2mm_ang, kbr_2mm_int, mo, np, phys, plt):
         _ax_ord.grid(True, linestyle=":", alpha=0.6)
         _ax_ord.legend(loc="upper right")
         _fig_kbr_orders.savefig("data/kbr_spectrum_orders.svg")
+        _fig_kbr_orders.savefig("data/kbr_spectrum_orders.png", dpi=300)
 
         # Table rows for marimo UI
         _table_rows = []
-        for _n in [1, 2, 3]:
+        for _n in [1, 2, 3, 4, 5, 6]:
             _ka_info = _results_by_order[_n].get("K_alpha")
             _kb_info = _results_by_order[_n].get("K_beta")
 
