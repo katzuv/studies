@@ -879,16 +879,14 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, np, phys, plt):
+def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, mo, np, phys, plt):
     # 3b. Compare Diffraction Orders (n=1, 2, 3) vs Actual Energy for LiF (2mm)
     fig_orders = None
+    orders_table_ui = None
     if lif_2mm_ang is not None and len(lif_2mm_ang) > 0:
-        fig_orders, ax_ord = plt.subplots(figsize=(8, 5), layout="constrained")
+        fig_orders, ax_ord = plt.subplots(figsize=(8, 5.5), layout="constrained")
 
         # Divide into angles and plot each order n=1, 2, 3
-        # n=1: 5.0 - 15.0 deg
-        # n=2: 15.0 - 25.0 deg
-        # n=3: 25.0 - 45.0 deg
         ranges = {
             1: (5.0, 15.0, "#2E86AB"),
             2: (15.0, 25.0, "#A23B72"),
@@ -914,26 +912,260 @@ def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, np, phys, plt):
                         linewidth=1.5,
                     )
 
+        # Confirmed peak search windows for LiF (2mm)
+        peaks_order_info = [
+            {"n": 1, "line": "K_beta", "win": (8.8, 9.5), "lbl": r"$K_\beta$"},
+            {"n": 1, "line": "K_alpha", "win": (9.8, 10.6), "lbl": r"$K_\alpha$"},
+            {"n": 2, "line": "K_beta", "win": (18.0, 18.8), "lbl": r"$K_\beta$"},
+            {"n": 2, "line": "K_alpha", "win": (20.3, 21.1), "lbl": r"$K_\alpha$"},
+            {"n": 3, "line": "K_alpha", "win": (31.5, 32.5), "lbl": r"$K_\alpha$"},
+        ]
+
+        theo_ka, theo_kb = 17.48, 19.61
+        d_theta_rad = np.radians(0.05)
+
+        # Mark peaks on the graph and collect table data
+        results_by_order = {1: {}, 2: {}, 3: {}}
+
+        for p in peaks_order_info:
+            n = p["n"]
+            mask = (lif_2mm_ang >= p["win"][0]) & (lif_2mm_ang <= p["win"][1])
+            sub_ang = lif_2mm_ang[mask]
+            sub_int = lif_2mm_int[mask]
+            max_idx = np.argmax(sub_int)
+            ang_max = sub_ang[max_idx]
+            counts_max = sub_int[max_idx]
+            e_max = angle_to_energy(ang_max, 201.4, n=n)
+
+            # Scatter point ('x') & annotation on figure
+            ax_ord.scatter(e_max, counts_max, color="#C73E1D", marker="x", s=55, linewidth=1.8, zorder=5)
+            ax_ord.annotate(
+                f"{p['lbl']} (n={n})\n{e_max:.2f} keV",
+                (e_max, counts_max),
+                xytext=(e_max + 0.3, counts_max * 1.15),
+                arrowprops=dict(arrowstyle="->", color="#C73E1D", lw=0.8),
+                color="#C73E1D",
+                fontsize=8,
+                fontweight="bold",
+            )
+
+            theo_val = theo_ka if p["line"] == "K_alpha" else theo_kb
+            diff_val = abs(e_max - theo_val)
+            dE_val = e_max * (1 / np.tan(np.radians(ang_max))) * d_theta_rad
+            sig_val = diff_val / dE_val
+
+            results_by_order[n][p["line"]] = {
+                "energy": e_max,
+                "diff": diff_val,
+                "sigma": sig_val,
+            }
+
         # Mark literature values
         ax_ord.axvline(
             17.48,
             color="#C73E1D",
             linestyle="--",
-            alpha=0.7,
+            alpha=0.6,
             label=r"Mo $K_\alpha$ (17.48 keV)",
         )
         ax_ord.axvline(
             19.61,
             color="#333333",
             linestyle="--",
-            alpha=0.7,
+            alpha=0.6,
             label=r"Mo $K_\beta$ (19.61 keV)",
         )
 
         phys.set_style(ax_ord, xlabel="Energy (keV)", ylabel="Intensity (cps)")
-        ax_ord.legend()
+        ax_ord.grid(True, linestyle=":", alpha=0.6)
+        ax_ord.legend(loc="upper right")
         fig_orders.savefig("data/spectrum_orders.svg")
-    return
+
+        # Table rows for marimo UI
+        table_rows = []
+        for n in [1, 2, 3]:
+            ka_info = results_by_order[n].get("K_alpha")
+            kb_info = results_by_order[n].get("K_beta")
+
+            ka_str = f"{ka_info['energy']:.2f} keV" if ka_info else "—"
+            sig_ka_str = (
+                f"{ka_info['diff']:.2f} keV ({ka_info['sigma']:.1f}σ)"
+                if ka_info
+                else "—"
+            )
+
+            kb_str = f"{kb_info['energy']:.2f} keV" if kb_info else "—"
+            sig_kb_str = (
+                f"{kb_info['diff']:.2f} keV ({kb_info['sigma']:.1f}σ)"
+                if kb_info
+                else "—"
+            )
+
+            table_rows.append(
+                {
+                    "Order (n)": n,
+                    "E(K_alpha)": ka_str,
+                    "K_alpha Sigma": sig_ka_str,
+                    "E(K_beta)": kb_str,
+                    "K_beta Sigma": sig_kb_str,
+                }
+            )
+
+        orders_table_ui = mo.ui.table(
+            table_rows, label="Peak Energies per Diffraction Order (LiF 2mm)"
+        )
+
+    orders_layout = (
+        mo.vstack([fig_orders, orders_table_ui]) if fig_orders is not None else None
+    )
+    return (orders_layout,)
+
+
+@app.cell(hide_code=True)
+def _(angle_to_energy, kbr_2mm_ang, kbr_2mm_int, mo, np, phys, plt):
+    # 3c. Compare Diffraction Orders (n=1, 2, 3) vs Actual Energy for KBr (2mm)
+    fig_kbr_orders = None
+    kbr_orders_table_ui = None
+    if kbr_2mm_ang is not None and len(kbr_2mm_ang) > 0:
+        fig_kbr_orders, ax_ord = plt.subplots(figsize=(8, 5.5), layout="constrained")
+
+        # Angle ranges for KBr orders:
+        # n=1: 3.0 - 10.0 deg
+        # n=2: 10.0 - 15.0 deg
+        # n=3: 15.0 - 22.0 deg
+        ranges = {
+            1: (3.0, 10.0, "#2E86AB"),
+            2: (10.0, 15.0, "#A23B72"),
+            3: (15.0, 22.0, "#F18F01"),
+        }
+
+        for n, (min_a, max_a, color) in ranges.items():
+            mask = (kbr_2mm_ang >= min_a) & (kbr_2mm_ang <= max_a)
+            if np.any(mask):
+                ord_ang = kbr_2mm_ang[mask]
+                ord_int = kbr_2mm_int[mask]
+                ord_energy = angle_to_energy(ord_ang, 329.9, n=n)
+
+                # Plot in range of characteristic lines
+                valid = (ord_energy >= 12.0) & (ord_energy <= 24.0)
+                if np.any(valid):
+                    sort_idx = np.argsort(ord_energy[valid])
+                    ax_ord.plot(
+                        ord_energy[valid][sort_idx],
+                        ord_int[valid][sort_idx],
+                        label=f"Order n={n}",
+                        color=color,
+                        linewidth=1.5,
+                    )
+
+        # Confirmed peak search windows for KBr (2mm)
+        peaks_order_info = [
+            {"n": 1, "line": "K_beta", "win": (5.2, 5.8), "lbl": r"$K_\beta$"},
+            {"n": 1, "line": "K_alpha", "win": (5.9, 6.5), "lbl": r"$K_\alpha$"},
+            {"n": 2, "line": "K_alpha", "win": (12.1, 12.9), "lbl": r"$K_\alpha$"},
+            {"n": 3, "line": "K_beta", "win": (16.8, 17.8), "lbl": r"$K_\beta$"},
+            {"n": 3, "line": "K_alpha", "win": (18.4, 19.4), "lbl": r"$K_\alpha$"},
+        ]
+
+        theo_ka, theo_kb = 17.48, 19.61
+        d_theta_rad = np.radians(0.05)
+
+        results_by_order = {1: {}, 2: {}, 3: {}}
+
+        for p in peaks_order_info:
+            n = p["n"]
+            mask = (kbr_2mm_ang >= p["win"][0]) & (kbr_2mm_ang <= p["win"][1])
+            sub_ang = kbr_2mm_ang[mask]
+            sub_int = kbr_2mm_int[mask]
+            max_idx = np.argmax(sub_int)
+            ang_max = sub_ang[max_idx]
+            counts_max = sub_int[max_idx]
+            e_max = angle_to_energy(ang_max, 329.9, n=n)
+
+            # Scatter point ('x') & annotation on figure
+            ax_ord.scatter(e_max, counts_max, color="#C73E1D", marker="x", s=55, linewidth=1.8, zorder=5)
+            ax_ord.annotate(
+                f"{p['lbl']} (n={n})\n{e_max:.2f} keV",
+                (e_max, counts_max),
+                xytext=(e_max + 0.3, counts_max * 1.15),
+                arrowprops=dict(arrowstyle="->", color="#C73E1D", lw=0.8),
+                color="#C73E1D",
+                fontsize=8,
+                fontweight="bold",
+            )
+
+            theo_val = theo_ka if p["line"] == "K_alpha" else theo_kb
+            diff_val = abs(e_max - theo_val)
+            dE_val = e_max * (1 / np.tan(np.radians(ang_max))) * d_theta_rad
+            sig_val = diff_val / dE_val
+
+            results_by_order[n][p["line"]] = {
+                "energy": e_max,
+                "diff": diff_val,
+                "sigma": sig_val,
+            }
+
+        # Mark literature values
+        ax_ord.axvline(
+            17.48,
+            color="#C73E1D",
+            linestyle="--",
+            alpha=0.6,
+            label=r"Mo $K_\alpha$ (17.48 keV)",
+        )
+        ax_ord.axvline(
+            19.61,
+            color="#333333",
+            linestyle="--",
+            alpha=0.6,
+            label=r"Mo $K_\beta$ (19.61 keV)",
+        )
+
+        phys.set_style(ax_ord, xlabel="Energy (keV)", ylabel="Intensity (cps)")
+        ax_ord.grid(True, linestyle=":", alpha=0.6)
+        ax_ord.legend(loc="upper right")
+        fig_kbr_orders.savefig("data/kbr_spectrum_orders.svg")
+
+        # Table rows for marimo UI
+        table_rows = []
+        for n in [1, 2, 3]:
+            ka_info = results_by_order[n].get("K_alpha")
+            kb_info = results_by_order[n].get("K_beta")
+
+            ka_str = f"{ka_info['energy']:.2f} keV" if ka_info else "—"
+            sig_ka_str = (
+                f"{ka_info['diff']:.2f} keV ({ka_info['sigma']:.1f}σ)"
+                if ka_info
+                else "—"
+            )
+
+            kb_str = f"{kb_info['energy']:.2f} keV" if kb_info else "—"
+            sig_kb_str = (
+                f"{kb_info['diff']:.2f} keV ({kb_info['sigma']:.1f}σ)"
+                if kb_info
+                else "—"
+            )
+
+            table_rows.append(
+                {
+                    "Order (n)": n,
+                    "E(K_alpha)": ka_str,
+                    "K_alpha Sigma": sig_ka_str,
+                    "E(K_beta)": kb_str,
+                    "K_beta Sigma": sig_kb_str,
+                }
+            )
+
+        kbr_orders_table_ui = mo.ui.table(
+            table_rows, label="Peak Energies per Diffraction Order (KBr 2mm)"
+        )
+
+    kbr_orders_layout = (
+        mo.vstack([fig_kbr_orders, kbr_orders_table_ui])
+        if fig_kbr_orders is not None
+        else None
+    )
+    return (kbr_orders_layout,)
 
 
 @app.cell(hide_code=True)
