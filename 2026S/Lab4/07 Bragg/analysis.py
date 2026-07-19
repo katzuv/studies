@@ -874,7 +874,35 @@ def _(
         fig_diaphragm = _fig
         _fig.savefig("data/collimator_comparison.svg")
 
-    fig_diaphragm
+        # Non-normalized (raw counts) plot
+        _fig_raw, ax_dia_raw = plt.subplots(figsize=(8, 5), layout="constrained")
+        ax_dia_raw.plot(
+            lif_2mm_ang[mask_2mm],
+            lif_2mm_int[mask_2mm],
+            label="2mm Diaphragm",
+            color="#2E86AB",
+            alpha=0.9,
+            linewidth=1.5,
+        )
+        ax_dia_raw.plot(
+            lif_5mm_ang[mask_5mm],
+            lif_5mm_int[mask_5mm],
+            label="5mm Diaphragm",
+            color="#A23B72",
+            alpha=0.9,
+            linewidth=1.5,
+        )
+        ax_dia_raw.set_yscale("log")
+        ax_dia_raw.yaxis.set_minor_locator(plt.NullLocator())
+        phys.set_style(
+            ax_dia_raw,
+            xlabel=r"Bragg Angle $\theta_B$ ($^\circ$)",
+            ylabel="Intensity (cps, log scale)",
+        )
+        ax_dia_raw.grid(True, linestyle=":", alpha=0.6)
+        ax_dia_raw.legend()
+        _fig_raw.savefig("data/collimator_comparison_raw.svg")
+
     return
 
 
