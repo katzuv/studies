@@ -61,7 +61,7 @@ def _():
     except Exception:
         pass
     if not studies_path:
-        for p in [Path.cwd()] + list(Path.cwd().parents):
+        for _p in [Path.cwd()] + list(Path.cwd().parents):
             if (p / "physlab").is_dir():
                 studies_path = p
                 break
@@ -928,9 +928,9 @@ def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, mo, np, phys, plt):
         # Mark peaks on the graph and collect table data
         results_by_order = {1: {}, 2: {}, 3: {}}
 
-        for p in peaks_order_info:
-            n = p["n"]
-            mask = (lif_2mm_ang >= p["win"][0]) & (lif_2mm_ang <= p["win"][1])
+        for _p in peaks_order_info:
+            n = _p["n"]
+            mask = (lif_2mm_ang >= _p["win"][0]) & (lif_2mm_ang <= _p["win"][1])
             sub_ang = lif_2mm_ang[mask]
             sub_int = lif_2mm_int[mask]
             max_idx = np.argmax(sub_int)
@@ -949,7 +949,7 @@ def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, mo, np, phys, plt):
                 zorder=5,
             )
             ax_ord.annotate(
-                f"{p['lbl']} (n={n})\n{e_max:.2f} keV",
+                f"{_p['lbl']} (n={n})\n{e_max:.2f} keV",
                 (e_max, counts_max),
                 xytext=(e_max + 0.3, counts_max * 1.15),
                 arrowprops=dict(arrowstyle="->", color="#C73E1D", lw=0.8),
@@ -958,12 +958,12 @@ def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, mo, np, phys, plt):
                 fontweight="bold",
             )
 
-            theo_val = theo_ka if p["line"] == "K_alpha" else theo_kb
+            theo_val = theo_ka if _p["line"] == "K_alpha" else theo_kb
             diff_val = abs(e_max - theo_val)
             dE_val = e_max * (1 / np.tan(np.radians(ang_max))) * d_theta_rad
             sig_val = diff_val / dE_val
 
-            results_by_order[n][p["line"]] = {
+            results_by_order[n][_p["line"]] = {
                 "energy": e_max,
                 "diff": diff_val,
                 "sigma": sig_val,
@@ -1033,42 +1033,42 @@ def _(angle_to_energy, lif_2mm_ang, lif_2mm_int, mo, np, phys, plt):
 @app.cell(hide_code=True)
 def _(angle_to_energy, kbr_2mm_ang, kbr_2mm_int, mo, np, phys, plt):
     # 3c. Compare Diffraction Orders (n=1, 2, 3) vs Actual Energy for KBr (2mm)
-    fig_kbr_orders = None
-    kbr_orders_table_ui = None
+    _fig_kbr_orders = None
+    _kbr_orders_table_ui = None
     if kbr_2mm_ang is not None and len(kbr_2mm_ang) > 0:
-        fig_kbr_orders, ax_ord = plt.subplots(figsize=(8, 5.5), layout="constrained")
+        _fig_kbr_orders, _ax_ord = plt.subplots(figsize=(8, 5.5), layout="constrained")
 
         # Angle ranges for KBr orders:
         # n=1: 3.0 - 10.0 deg
         # n=2: 10.0 - 15.0 deg
         # n=3: 15.0 - 22.0 deg
-        ranges = {
+        _ranges = {
             1: (3.0, 10.0, "#2E86AB"),
             2: (10.0, 15.0, "#A23B72"),
             3: (15.0, 22.0, "#F18F01"),
         }
 
-        for n, (min_a, max_a, color) in ranges.items():
-            mask = (kbr_2mm_ang >= min_a) & (kbr_2mm_ang <= max_a)
-            if np.any(mask):
-                ord_ang = kbr_2mm_ang[mask]
-                ord_int = kbr_2mm_int[mask]
-                ord_energy = angle_to_energy(ord_ang, 329.9, n=n)
+        for _n, (_min_a, _max_a, _color) in _ranges.items():
+            _mask = (kbr_2mm_ang >= _min_a) & (kbr_2mm_ang <= _max_a)
+            if np.any(_mask):
+                _ord_ang = kbr_2mm_ang[_mask]
+                _ord_int = kbr_2mm_int[_mask]
+                _ord_energy = angle_to_energy(_ord_ang, 329.9, n=_n)
 
                 # Plot in range of characteristic lines
-                valid = (ord_energy >= 12.0) & (ord_energy <= 24.0)
-                if np.any(valid):
-                    sort_idx = np.argsort(ord_energy[valid])
-                    ax_ord.plot(
-                        ord_energy[valid][sort_idx],
-                        ord_int[valid][sort_idx],
-                        label=f"Order n={n}",
-                        color=color,
+                _valid = (_ord_energy >= 12.0) & (_ord_energy <= 24.0)
+                if np.any(_valid):
+                    _sort_idx = np.argsort(_ord_energy[_valid])
+                    _ax_ord.plot(
+                        _ord_energy[_valid][_sort_idx],
+                        _ord_int[_valid][_sort_idx],
+                        label=f"Order n={_n}",
+                        color=_color,
                         linewidth=1.5,
                     )
 
         # Confirmed peak search windows for KBr (2mm)
-        peaks_order_info = [
+        _peaks_order_info = [
             {"n": 1, "line": "K_beta", "win": (5.2, 5.8), "lbl": r"$K_\beta$"},
             {"n": 1, "line": "K_alpha", "win": (5.9, 6.5), "lbl": r"$K_\alpha$"},
             {"n": 2, "line": "K_alpha", "win": (12.1, 12.9), "lbl": r"$K_\alpha$"},
@@ -1076,54 +1076,54 @@ def _(angle_to_energy, kbr_2mm_ang, kbr_2mm_int, mo, np, phys, plt):
             {"n": 3, "line": "K_alpha", "win": (18.4, 19.4), "lbl": r"$K_\alpha$"},
         ]
 
-        theo_ka, theo_kb = 17.48, 19.61
-        d_theta_rad = np.radians(0.05)
+        _theo_ka, _theo_kb = 17.48, 19.61
+        _d_theta_rad = np.radians(0.05)
 
-        results_by_order = {1: {}, 2: {}, 3: {}}
+        _results_by_order = {1: {}, 2: {}, 3: {}}
 
-        for p in peaks_order_info:
-            n = p["n"]
-            mask = (kbr_2mm_ang >= p["win"][0]) & (kbr_2mm_ang <= p["win"][1])
-            sub_ang = kbr_2mm_ang[mask]
-            sub_int = kbr_2mm_int[mask]
-            max_idx = np.argmax(sub_int)
-            ang_max = sub_ang[max_idx]
-            counts_max = sub_int[max_idx]
-            e_max = angle_to_energy(ang_max, 329.9, n=n)
+        for _p in _peaks_order_info:
+            _n = _p["n"]
+            _mask = (kbr_2mm_ang >= _p["win"][0]) & (kbr_2mm_ang <= _p["win"][1])
+            _sub_ang = kbr_2mm_ang[_mask]
+            _sub_int = kbr_2mm_int[_mask]
+            _max_idx = np.argmax(_sub_int)
+            _ang_max = _sub_ang[_max_idx]
+            _counts_max = _sub_int[_max_idx]
+            _e_max = angle_to_energy(_ang_max, 329.9, n=_n)
 
             # Scatter point ('x') & annotation on figure
-            ax_ord.scatter(
-                e_max,
-                counts_max,
+            _ax_ord.scatter(
+                _e_max,
+                _counts_max,
                 color="#C73E1D",
                 marker="x",
                 s=55,
                 linewidth=1.8,
                 zorder=5,
             )
-            ax_ord.annotate(
-                f"{p['lbl']} (n={n})\n{e_max:.2f} keV",
-                (e_max, counts_max),
-                xytext=(e_max + 0.3, counts_max * 1.15),
+            _ax_ord.annotate(
+                f"{_p['lbl']} (n={_n})\n{_e_max:.2f} keV",
+                (_e_max, _counts_max),
+                xytext=(_e_max + 0.3, _counts_max * 1.15),
                 arrowprops=dict(arrowstyle="->", color="#C73E1D", lw=0.8),
                 color="#C73E1D",
                 fontsize=8,
                 fontweight="bold",
             )
 
-            theo_val = theo_ka if p["line"] == "K_alpha" else theo_kb
-            diff_val = abs(e_max - theo_val)
-            dE_val = e_max * (1 / np.tan(np.radians(ang_max))) * d_theta_rad
-            sig_val = diff_val / dE_val
+            _theo_val = _theo_ka if _p["line"] == "K_alpha" else _theo_kb
+            _diff_val = abs(_e_max - _theo_val)
+            _dE_val = _e_max * (1 / np.tan(np.radians(_ang_max))) * _d_theta_rad
+            _sig_val = _diff_val / _dE_val
 
-            results_by_order[n][p["line"]] = {
-                "energy": e_max,
-                "diff": diff_val,
-                "sigma": sig_val,
+            _results_by_order[_n][_p["line"]] = {
+                "energy": _e_max,
+                "diff": _diff_val,
+                "sigma": _sig_val,
             }
 
         # Mark Br K-edge absorption line (13.47 keV)
-        ax_ord.axvline(
+        _ax_ord.axvline(
             13.47,
             color="#27AE60",
             linestyle="-.",
@@ -1133,14 +1133,14 @@ def _(angle_to_energy, kbr_2mm_ang, kbr_2mm_int, mo, np, phys, plt):
         )
 
         # Mark literature values
-        ax_ord.axvline(
+        _ax_ord.axvline(
             17.48,
             color="#C73E1D",
             linestyle="--",
             alpha=0.6,
             label=r"Mo $K_\alpha$ (17.48 keV)",
         )
-        ax_ord.axvline(
+        _ax_ord.axvline(
             19.61,
             color="#333333",
             linestyle="--",
@@ -1148,51 +1148,51 @@ def _(angle_to_energy, kbr_2mm_ang, kbr_2mm_int, mo, np, phys, plt):
             label=r"Mo $K_\beta$ (19.61 keV)",
         )
 
-        phys.set_style(ax_ord, xlabel="Energy (keV)", ylabel="Intensity (cps)")
-        ax_ord.grid(True, linestyle=":", alpha=0.6)
-        ax_ord.legend(loc="upper right")
-        fig_kbr_orders.savefig("data/kbr_spectrum_orders.svg")
+        phys.set_style(_ax_ord, xlabel="Energy (keV)", ylabel="Intensity (cps)")
+        _ax_ord.grid(True, linestyle=":", alpha=0.6)
+        _ax_ord.legend(loc="upper right")
+        _fig_kbr_orders.savefig("data/kbr_spectrum_orders.svg")
 
         # Table rows for marimo UI
-        table_rows = []
-        for n in [1, 2, 3]:
-            ka_info = results_by_order[n].get("K_alpha")
-            kb_info = results_by_order[n].get("K_beta")
+        _table_rows = []
+        for _n in [1, 2, 3]:
+            _ka_info = _results_by_order[_n].get("K_alpha")
+            _kb_info = _results_by_order[_n].get("K_beta")
 
-            ka_str = f"{ka_info['energy']:.2f} keV" if ka_info else "—"
-            sig_ka_str = (
-                f"{ka_info['diff']:.2f} keV ({ka_info['sigma']:.1f}σ)"
-                if ka_info
+            _ka_str = f"{_ka_info['energy']:.2f} keV" if _ka_info else "—"
+            _sig_ka_str = (
+                f"{_ka_info['diff']:.2f} keV ({_ka_info['sigma']:.1f}σ)"
+                if _ka_info
                 else "—"
             )
 
-            kb_str = f"{kb_info['energy']:.2f} keV" if kb_info else "—"
-            sig_kb_str = (
-                f"{kb_info['diff']:.2f} keV ({kb_info['sigma']:.1f}σ)"
-                if kb_info
+            _kb_str = f"{_kb_info['energy']:.2f} keV" if _kb_info else "—"
+            _sig_kb_str = (
+                f"{_kb_info['diff']:.2f} keV ({_kb_info['sigma']:.1f}σ)"
+                if _kb_info
                 else "—"
             )
 
-            table_rows.append(
+            _table_rows.append(
                 {
-                    "Order (n)": n,
-                    "E(K_alpha)": ka_str,
-                    "K_alpha Sigma": sig_ka_str,
-                    "E(K_beta)": kb_str,
-                    "K_beta Sigma": sig_kb_str,
+                    "Order (n)": _n,
+                    "E(K_alpha)": _ka_str,
+                    "K_alpha Sigma": _sig_ka_str,
+                    "E(K_beta)": _kb_str,
+                    "K_beta Sigma": _sig_kb_str,
                 }
             )
 
-        kbr_orders_table_ui = mo.ui.table(
-            table_rows, label="Peak Energies per Diffraction Order (KBr 2mm)"
+        _kbr_orders_table_ui = mo.ui.table(
+            _table_rows, label="Peak Energies per Diffraction Order (KBr 2mm)"
         )
 
-    kbr_orders_layout = (
-        mo.vstack([fig_kbr_orders, kbr_orders_table_ui])
-        if fig_kbr_orders is not None
+    _kbr_orders_layout = (
+        mo.vstack([_fig_kbr_orders, _kbr_orders_table_ui])
+        if _fig_kbr_orders is not None
         else None
     )
-    return (kbr_orders_layout,)
+    return (_kbr_orders_layout,)
 
 
 @app.cell(hide_code=True)
@@ -1457,16 +1457,16 @@ def _(
         ]
     )
 
-    import marimo
+    import marimo as _marimo
 
-    if not marimo.running_in_notebook():
+    if not _marimo.running_in_notebook():
         try:
-            from rich.console import Console
-            from rich.table import Table
+            from rich.console import Console as _Console
+            from rich.table import Table as _Table
 
-            _console = Console()
+            _console = _Console()
             if _comp_data_lif:
-                _t_lif = Table(
+                _t_lif = _Table(
                     title="LiF (2mm) Peak Alignment",
                     show_header=True,
                     header_style="bold blue",
@@ -1477,7 +1477,7 @@ def _(
                     _t_lif.add_row(*[str(_v) for _v in _row.values()])
                 _console.print(_t_lif)
             if _comp_data_kbr:
-                _t_kbr = Table(
+                _t_kbr = _Table(
                     title="KBr (2mm) Peak Alignment",
                     show_header=True,
                     header_style="bold green",
@@ -1723,13 +1723,13 @@ def _(
 
     fit_status = "Successfully fitted peaks:\n\n" + "\n\n".join(fit_status_list)
 
-    import marimo
+    import marimo as _marimo
 
-    if not marimo.running_in_notebook():
+    if not _marimo.running_in_notebook():
         try:
-            from rich.console import Console
+            from rich.console import Console as _Console
 
-            _console = Console()
+            _console = _Console()
             _console.print(f"\n[bold green]{fit_status}[/bold green]\n")
         except Exception:
             pass
