@@ -4,6 +4,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy.stats import linregress
 
 # Add the project root to the path so we can import physlab
 sys.path.append(str(Path(__file__).resolve().parents[2]))
@@ -91,8 +92,11 @@ def analyze_ionization_experiment(
     x_fit = raw_voltage[fit_start:fit_end]
     y_fit = raw_current[fit_start:fit_end]
 
-    # Linear fit: y = mx + b
-    slope, intercept = np.polyfit(x_fit, y_fit, 1)
+    # Linear fit and R^2 calculation using scipy.stats.linregress
+    res = linregress(x_fit, y_fit)
+    slope = res.slope
+    intercept = res.intercept
+    r_squared = res.rvalue**2
 
     # 4. Find where the extrapolation line intersects the baseline noise floor
     v_onset = (mean_noise - intercept) / slope
@@ -156,7 +160,7 @@ def analyze_ionization_experiment(
         color="orange",
         linestyle="-",
         linewidth=2,
-        label="Linear Regression",
+        label=f"Linear Regression ($R^2$ = {r_squared:.4f})",
         zorder=3,
     )
 
@@ -191,7 +195,7 @@ def analyze_ionization_experiment(
 
     ax.legend(loc="upper left", frameon=True, shadow=True, fontsize=12)
     plt.tight_layout()
-    plt.savefig(output_svg, format="svg")
+    plt.savefig(output_svg, format="svg", transparent=True)
     plt.close()
 
     return {

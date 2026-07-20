@@ -212,7 +212,7 @@ def analyze_and_plot_fh_files(
         shadow=True,
     )
     plt.tight_layout()
-    plt.savefig(output_svg, format="svg")
+    plt.savefig(output_svg, format="svg", transparent=True)
     plt.close()
 
     return results_summary
