@@ -1,0 +1,71 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
+
+# Raw data
+x_raw = np.array([
+    0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45,
+    0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95,
+    1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.30, 1.35, 1.40, 1.45,
+    1.50, 1.55, 1.60, 1.65, 1.70, 1.75, 1.80, 1.85, 1.90, 1.95,
+    2.00, 2.05
+])
+y_raw = np.array([
+    7.667, 7.667, 8.576, 8.666, 8.667, 7.660, 7.314, 7.333, 7.656, 11.119,
+    13.568, 13.773, 12.959, 13.890, 35.819, 44.442, 63.486, 79.388, 115.125, 139.290,
+    184.441, 203.700, 212.828, 188.201, 143.595, 77.866, 60.759, 42.641, 32.408, 20.261,
+    15.705, 8.626, 8.537, 7.488, 7.306, 7.353, 7.100, 7.292, 8.390, 7.812,
+    7.667, 7.667
+])
+
+# Conversion: 1 step (0.05 in raw scale) = 1 pixel (3.45 um)
+# So x_um = (x_raw / 0.05) * 3.45
+x_um = (x_raw / 0.05) * 3.45
+
+# Gaussian model: I(x) = I_bg + I_0 * exp( -2 * (x - x0)^2 / w^2 )
+def gaussian(x, I_bg, I_0, x0, w):
+    return I_bg + I_0 * np.exp(-2.0 * ((x - x0) ** 2) / (w ** 2))
+
+p0 = [7.5, 205.0, 76.0, 20.0]
+popt, pcov = curve_fit(gaussian, x_um, y_raw, p0=p0)
+I_bg, I_0, x0, w0_um = popt
+w0_um = abs(w0_um)
+
+# Physical parameters
+f_lens_mm = 50.0
+lambda_nm = 532.0
+lambda_um = 0.532
+z_R_um = (np.pi * w0_um**2) / lambda_um
+z_R_mm = z_R_um * 1e-3
+
+table = Table(title=f"Focused Beam Waist Measurement (f = {f_lens_mm:.0f} mm Lens)")
+table.add_column("Parameter", style="cyan")
+table.add_column("Value", style="green")
+table.add_row("Center Position (x0)", f"{x0:.2f} µm")
+table.add_row("Baseline Intensity (I_bg)", f"{I_bg:.2f} counts")
+table.add_row("Peak Intensity (I_0)", f"{I_0:.2f} counts")
+table.add_row("Fitted Waist Radius (w0')", f"{w0_um:.2f} µm")
+table.add_row("Fitted Waist Diameter (2*w0')", f"{2*w0_um:.2f} µm")
+table.add_row("Rayleigh Range (z_R')", f"{z_R_mm:.2f} mm")
+console.print(table)
+
+# Plot
+x_dense = np.linspace(x_um[0], x_um[-1], 500)
+y_fit = gaussian(x_dense, *popt)
+
+plt.figure(figsize=(8, 5))
+plt.scatter(x_um, y_raw, color='forestgreen', s=30, label='Measured Data')
+plt.plot(x_dense, y_fit, color='black', linewidth=2, label=f'Gaussian Fit ($w_0\' = {w0_um:.1f}\\ \\mu\\mathrm{{m}}$)')
+plt.axhline(I_bg + I_0 * np.exp(-2), color='red', linestyle='--', label=r'$1/e^2$ Intensity Level')
+plt.title(f'Focused Beam Waist (f = {f_lens_mm:.0f} mm Lens, Non-saturated)')
+plt.xlabel('Transverse Position (µm)')
+plt.ylabel('Intensity (Counts)')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig('q3_short_lens_fit.png', dpi=300)
+plt.show()
