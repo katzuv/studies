@@ -4,19 +4,25 @@ from scipy.special import erf
 from scipy.optimize import curve_fit
 
 # Load ferrite data
-df_f = pd.read_csv(r"c:\Users\Student\studies\2026S\Lab4\03 Curie\curie_data_ferrit.csv", comment="#")
+df_f = pd.read_csv(
+    r"c:\Users\Student\studies\2026S\Lab4\03 Curie\curie_data_ferrit.csv", comment="#"
+)
 max_temp_idx_f = df_f["Temp (C)"].idxmax()
 h_df_f = df_f.iloc[:max_temp_idx_f].copy()
 c_df_f = df_f.iloc[max_temp_idx_f:].copy()
 
 # Load invar data
-df_i = pd.read_csv(r"c:\Users\Student\studies\2026S\Lab4\03 Curie\curie_data_invar.csv", comment="#")
+df_i = pd.read_csv(
+    r"c:\Users\Student\studies\2026S\Lab4\03 Curie\curie_data_invar.csv", comment="#"
+)
 max_temp_idx_i = df_i["Temp (C)"].idxmax()
 h_df_i = df_i.iloc[:max_temp_idx_i].copy()
 c_df_i = df_i.iloc[max_temp_idx_i:].copy()
 
+
 def erf_model(T, Tc, dT):
     return 0.5 * (1.0 - erf((T - Tc) / (dT * np.sqrt(2.0))))
+
 
 # Let's fit Ferrite Heating
 print("--- Ferrite Heating ---")

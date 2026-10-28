@@ -474,16 +474,13 @@ def plot_calibration(
 
     # Calculate R^2 and get chi^2_red
     fit_y = cauchy_model(he_lambdas, A_fit, B_fit)
-    ss_res = np.sum((he_ns - fit_y)**2)
-    ss_tot = np.sum((he_ns - np.mean(he_ns))**2)
+    ss_res = np.sum((he_ns - fit_y) ** 2)
+    ss_tot = np.sum((he_ns - np.mean(he_ns)) ** 2)
     r_sq = 1.0 - (ss_res / ss_tot)
     chi_red = fit_res.chi_red
 
     # Format R^2 to 3 decimal places
-    stats_text = (
-        f"$R^2 = {r_sq:.3f}$\n"
-        f"$\\chi^2_\\mathrm{{red}} = {chi_red:.3f}$"
-    )
+    stats_text = f"$R^2 = {r_sq:.3f}$\n$\\chi^2_\\mathrm{{red}} = {chi_red:.3f}$"
 
     # Mapping to actual display colors
     he_colors = {
@@ -536,7 +533,7 @@ def plot_calibration(
             zorder=2,
             label="Helium Data" if lam == he_lambdas[0] else "",
         )
-        
+
         # Position labels left/right as requested:
         # Green right, Blue-Green left, Blues left
         if name == "Green":
@@ -576,9 +573,7 @@ def plot_calibration(
         label="Cauchy Fit",
         zorder=1,
     )
-    set_style(
-        ax1, xlabel=r"$\lambda \ \text{[nm]}$", ylabel=r"Refractive Index $n$"
-    )
+    set_style(ax1, xlabel=r"$\lambda \ \text{[nm]}$", ylabel=r"Refractive Index $n$")
     ax1.set_ylim(min(he_ns) - 0.005, max(he_ns) + 0.005)
     ax1.legend()
     # Add stats box
@@ -623,7 +618,7 @@ def plot_calibration(
             s=60,
             zorder=2,
         )
-        
+
         # Position labels: green left, blue green right, both blue right
         if name == "Green":
             x_pos = inv_lam_val - 0.06e-6
@@ -752,9 +747,7 @@ def mercury_verification(
 
     sigma_dist = abs(lam_pred - lam_ref) / dlam_pred
 
-    is_success = (
-        "SUCCESS" if sigma_dist < 2.0 else "WARNING"
-    )
+    is_success = "SUCCESS" if sigma_dist < 2.0 else "WARNING"
 
     hg_md = mo.md(
         rf"""
@@ -793,12 +786,7 @@ def hydrogen_prism_analysis(
     prism_results = []
     _R_inf_theo = 10973731.568
 
-    _quantum_n = {
-        "Red": 3,
-        "Blue-Green": 4,
-        "Blue": 5,
-        "Violet": 6
-    }
+    _quantum_n = {"Red": 3, "Blue-Green": 4, "Blue": 5, "Violet": 6}
 
     for _row in h_prism_data:
         _line = _row["line_id"]
@@ -810,17 +798,14 @@ def hydrogen_prism_analysis(
 
         _n = np.sin((_alpha_rad + _beta_rad) / 2.0) / np.sin(_alpha_rad / 2.0)
         _dn = (
-            np.cos((_alpha_rad + _beta_rad) / 2.0)
-            / (2.0 * np.sin(_alpha_rad / 2.0))
+            np.cos((_alpha_rad + _beta_rad) / 2.0) / (2.0 * np.sin(_alpha_rad / 2.0))
         ) * _dbeta_rad
 
         def get_lam(A_param, B_param, n_val):
             return np.sqrt(B_param / (n_val - A_param))
 
         _lam = get_lam(A_fit, B_fit, _n)
-        _dlam = propagate_error(
-            get_lam, [A_fit, B_fit, _n], [dA_fit, dB_fit, _dn]
-        )
+        _dlam = propagate_error(get_lam, [A_fit, B_fit, _n], [dA_fit, dB_fit, _dn])
 
         # Rydberg calculation
         _n_q = _quantum_n.get(_line, 3)
@@ -833,13 +818,9 @@ def hydrogen_prism_analysis(
         _ref = get_graph_reference_lambda(_line)
         _color = _row.get("color", get_line_color(_line))
         _diff = _lam - _ref if not np.isnan(_ref) else np.nan
-        _pct_diff = (
-            (_diff / _ref) * 100.0 if not np.isnan(_ref) else np.nan
-        )
+        _pct_diff = (_diff / _ref) * 100.0 if not np.isnan(_ref) else np.nan
         _sigma_dist = (
-            abs(_lam - _ref) / _dlam
-            if not np.isnan(_ref) and _dlam > 0
-            else np.nan
+            abs(_lam - _ref) / _dlam if not np.isnan(_ref) and _dlam > 0 else np.nan
         )
 
         prism_results.append(
@@ -894,12 +875,7 @@ def hydrogen_grating_analysis(
     dd_grating = 0.0  # assume nominal d has negligible error
     _R_inf_theo = 10973731.568
 
-    _quantum_n = {
-        "Red": 3,
-        "Blue-Green": 4,
-        "Blue": 5,
-        "Violet": 6
-    }
+    _quantum_n = {"Red": 3, "Blue-Green": 4, "Blue": 5, "Violet": 6}
 
     grating_results = []
 
@@ -918,7 +894,9 @@ def hydrogen_grating_analysis(
         def _calc_lam_and_i0(bp_val, bm_val):
             bp_r = np.radians(bp_val)
             bm_r = np.radians(bm_val)
-            tan_val = (np.sin(bp_r) - np.sin(bm_r)) / (2.0 - np.cos(bp_r) - np.cos(bm_r))
+            tan_val = (np.sin(bp_r) - np.sin(bm_r)) / (
+                2.0 - np.cos(bp_r) - np.cos(bm_r)
+            )
             i0_r = np.arctan(tan_val)
             lam_val = (d_grating / _m) * (np.sin(bp_r - i0_r) + np.sin(i0_r))
             return lam_val, i0_r
@@ -927,22 +905,32 @@ def hydrogen_grating_analysis(
 
         # Error propagation in quadrature via central difference numerical derivative
         eps = 1e-5
-        
+
         # for i0
         def _calc_i0_only(bp_val, bm_val):
             return _calc_lam_and_i0(bp_val, bm_val)[1]
-            
-        di0_dbp = (_calc_i0_only(_bp + eps, _bm) - _calc_i0_only(_bp - eps, _bm)) / (2 * eps)
-        di0_dbm = (_calc_i0_only(_bp, _bm + eps) - _calc_i0_only(_bp, _bm - eps)) / (2 * eps)
-        _di0_rad = np.sqrt((di0_dbp * _db)**2 + (di0_dbm * _db)**2) * (np.pi / 180.0)
+
+        di0_dbp = (_calc_i0_only(_bp + eps, _bm) - _calc_i0_only(_bp - eps, _bm)) / (
+            2 * eps
+        )
+        di0_dbm = (_calc_i0_only(_bp, _bm + eps) - _calc_i0_only(_bp, _bm - eps)) / (
+            2 * eps
+        )
+        _di0_rad = np.sqrt((di0_dbp * _db) ** 2 + (di0_dbm * _db) ** 2) * (
+            np.pi / 180.0
+        )
 
         # for lam
         def _calc_lam_only(bp_val, bm_val):
             return _calc_lam_and_i0(bp_val, bm_val)[0]
-            
-        dlam_dbp = (_calc_lam_only(_bp + eps, _bm) - _calc_lam_only(_bp - eps, _bm)) / (2 * eps)
-        dlam_dbm = (_calc_lam_only(_bp, _bm + eps) - _calc_lam_only(_bp, _bm - eps)) / (2 * eps)
-        _dlam = np.sqrt((dlam_dbp * _db)**2 + (dlam_dbm * _db)**2)
+
+        dlam_dbp = (_calc_lam_only(_bp + eps, _bm) - _calc_lam_only(_bp - eps, _bm)) / (
+            2 * eps
+        )
+        dlam_dbm = (_calc_lam_only(_bp, _bm + eps) - _calc_lam_only(_bp, _bm - eps)) / (
+            2 * eps
+        )
+        _dlam = np.sqrt((dlam_dbp * _db) ** 2 + (dlam_dbm * _db) ** 2)
 
         # Rydberg calculation
         _n_q = _quantum_n.get(_line, 3)
@@ -955,13 +943,9 @@ def hydrogen_grating_analysis(
         _ref = get_graph_reference_lambda(_line)
         _color = _row.get("color", get_line_color(_line))
         _diff = _lam - _ref if not np.isnan(_ref) else np.nan
-        _pct_diff = (
-            (_diff / _ref) * 100.0 if not np.isnan(_ref) else np.nan
-        )
+        _pct_diff = (_diff / _ref) * 100.0 if not np.isnan(_ref) else np.nan
         _sigma_dist = (
-            abs(_lam - _ref) / _dlam
-            if not np.isnan(_ref) and _dlam > 0
-            else np.nan
+            abs(_lam - _ref) / _dlam if not np.isnan(_ref) and _dlam > 0 else np.nan
         )
 
         grating_results.append(
@@ -1106,13 +1090,11 @@ def rydberg_calculation(
         R_avg_prism = np.nan
         dR_avg_prism = np.nan
 
-    _valid_grating = df_R.dropna(
-        subset=["R (Grating) [m^-1]", "dR (Grating) [m^-1]"]
-    )
+    _valid_grating = df_R.dropna(subset=["R (Grating) [m^-1]", "dR (Grating) [m^-1]"])
     if not _valid_grating.empty:
         _w_grating = 1.0 / (_valid_grating["dR (Grating) [m^-1]"] ** 2)
         R_avg_grating = np.sum(
-        _valid_grating["R (Grating) [m^-1]"] * _w_grating
+            _valid_grating["R (Grating) [m^-1]"] * _w_grating
         ) / np.sum(_w_grating)
         dR_avg_grating = 1.0 / np.sqrt(np.sum(_w_grating))
     else:
@@ -1150,15 +1132,9 @@ def rydberg_calculation(
         if not np.isnan(R_avg_grating)
         else "N/A"
     )
-    prism_sig_str = (
-        f"{prism_sig:.2f}$\\sigma$"
-        if not np.isnan(prism_sig)
-        else "N/A"
-    )
+    prism_sig_str = f"{prism_sig:.2f}$\\sigma$" if not np.isnan(prism_sig) else "N/A"
     grating_sig_str = (
-        f"{grating_sig:.2f}$\\sigma$"
-        if not np.isnan(grating_sig)
-        else "N/A"
+        f"{grating_sig:.2f}$\\sigma$" if not np.isnan(grating_sig) else "N/A"
     )
 
     rydberg_md = mo.md(
@@ -1354,7 +1330,7 @@ def export_results(
             "symbol": "B",
             "value": float(B_fit),
             "error": float(dB_fit),
-            "units": "\"nm\"^2",
+            "units": '"nm"^2',
             "fmt_spec": ".1f",
         },
         {
@@ -1365,7 +1341,7 @@ def export_results(
             "symbol": "R_p",
             "value": clean_float(R_avg_prism),
             "error": clean_float(dR_avg_prism),
-            "units": "\"m\"^(-1)",
+            "units": '"m"^(-1)',
             "fmt_spec": ".4e",
         },
         {
@@ -1376,7 +1352,7 @@ def export_results(
             "symbol": "R_g",
             "value": clean_float(R_avg_grating),
             "error": clean_float(dR_avg_grating),
-            "units": "\"m\"^(-1)",
+            "units": '"m"^(-1)',
             "fmt_spec": ".4e",
         },
         {
@@ -1467,15 +1443,27 @@ def pretty_print_results(
     print(f" {'Cauchy Parameter A':<45} | {A_fit:.6f} \\u00b1 {dA_fit:.6f}")
     print(f" {'Cauchy Parameter B':<45} | {B_fit:.1f} \\u00b1 {dB_fit:.1f} nm\\u00b2")
     print("-" * 80)
-    print(f" {'Mercury Green predicted wavelength':<45} | {lam_pred:.2f} \\u00b1 {dlam_pred:.2f} nm")
+    print(
+        f" {'Mercury Green predicted wavelength':<45} | {lam_pred:.2f} \\u00b1 {dlam_pred:.2f} nm"
+    )
     print(f" {'Mercury Green reference wavelength':<45} | {lam_ref:.2f} nm")
     print(f" {'Mercury Green statistical distance':<45} | {sigma_dist:.2f} \\u03c3")
     print("-" * 80)
-    print(f" {'Rydberg Constant (Prism Method)':<45} | {R_avg_prism:.4e} \\u00b1 {dR_avg_prism:.4e} m\\u207b\\u00b9")
-    print(f" {'Prism Rydberg Discrepancy from Bohr':<45} | {_prism_disc:.3f}% ({prism_sig:.2f} \\u03c3)")
-    print(f" {'Rydberg Constant (Grating Method)':<45} | {R_avg_grating:.4e} \\u00b1 {dR_avg_grating:.4e} m\\u207b\\u00b9")
-    print(f" {'Grating Rydberg Discrepancy from Bohr':<45} | {_grating_disc:.3f}% ({grating_sig:.2f} \\u03c3)")
-    print(f" {'Theoretical Bohr Rydberg Prediction (R_inf)':<45} | {R_inf_theo:.4e} m\\u207b\\u00b9")
+    print(
+        f" {'Rydberg Constant (Prism Method)':<45} | {R_avg_prism:.4e} \\u00b1 {dR_avg_prism:.4e} m\\u207b\\u00b9"
+    )
+    print(
+        f" {'Prism Rydberg Discrepancy from Bohr':<45} | {_prism_disc:.3f}% ({prism_sig:.2f} \\u03c3)"
+    )
+    print(
+        f" {'Rydberg Constant (Grating Method)':<45} | {R_avg_grating:.4e} \\u00b1 {dR_avg_grating:.4e} m\\u207b\\u00b9"
+    )
+    print(
+        f" {'Grating Rydberg Discrepancy from Bohr':<45} | {_grating_disc:.3f}% ({grating_sig:.2f} \\u03c3)"
+    )
+    print(
+        f" {'Theoretical Bohr Rydberg Prediction (R_inf)':<45} | {R_inf_theo:.4e} m\\u207b\\u00b9"
+    )
     print("=" * 80)
     return
 

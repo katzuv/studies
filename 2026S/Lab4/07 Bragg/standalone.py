@@ -267,10 +267,14 @@ if lif2mm_ang is not None and len(lif2mm_ang) > 0:
         # Convert angles to keV
         E_ka = angle_to_energy(ctr_ka, d_LiF, n=1)
         # Apply systematic error in quadrature and convert from eV to keV
-        E_ka_err = get_de(ctr_ka, np.sqrt(err_ka**2 + d_theta_sys**2), d_LiF / 1000.0) / 1000.0
+        E_ka_err = (
+            get_de(ctr_ka, np.sqrt(err_ka**2 + d_theta_sys**2), d_LiF / 1000.0) / 1000.0
+        )
 
         E_kb = angle_to_energy(ctr_kb, d_LiF, n=1)
-        E_kb_err = get_de(ctr_kb, np.sqrt(err_kb**2 + d_theta_sys**2), d_LiF / 1000.0) / 1000.0
+        E_kb_err = (
+            get_de(ctr_kb, np.sqrt(err_kb**2 + d_theta_sys**2), d_LiF / 1000.0) / 1000.0
+        )
 
         print(f"Mo K_alpha Centroid: {ctr_ka:.3f} deg +/- {err_ka:.3f} deg")
         print(f"Mo K_beta Centroid:  {ctr_kb:.3f} deg +/- {err_kb:.3f} deg")

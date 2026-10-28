@@ -1,0 +1,79 @@
+[
+  {
+    "hebrew_name": "רדיוס מותן האלומה שנמדד",
+    "english_name": "Measured Beam Waist Radius",
+    "hebrew_var": "מותן_מדוד",
+    "english_var": "w0_meas",
+    "symbol": "w_0'",
+    "value": 34.86,
+    "error": 2.0,
+    "units": "upright(\"µm\")",
+    "formatted_value": "34.86 pm 2.00"
+  },
+  {
+    "hebrew_name": "מיקום מותן האלומה לאורך הציר",
+    "english_name": "Focal Waist Position",
+    "hebrew_var": "מיקום_מותן",
+    "english_var": "z0",
+    "symbol": "z_0",
+    "value": 92.19,
+    "error": 1.38,
+    "units": "\"mm\"",
+    "formatted_value": "92.19 pm 1.38"
+  },
+  {
+    "hebrew_name": "טווח ריילי שנמדד",
+    "english_name": "Measured Rayleigh Range",
+    "hebrew_var": "טווח_ריילי_מדוד",
+    "english_var": "zR_meas",
+    "symbol": "z_R'",
+    "value": 1.62,
+    "error": 0.17,
+    "units": "\"mm\"",
+    "formatted_value": "1.62 pm 0.17"
+  },
+  {
+    "hebrew_name": "חצי-זווית התבדרות באיזור הרחוק",
+    "english_name": "Far-field Divergence Half-Angle",
+    "hebrew_var": "התבדרות",
+    "english_var": "theta",
+    "symbol": "theta",
+    "value": 21.56,
+    "error": 2.22,
+    "units": "\"mrad\"",
+    "formatted_value": "21.56 pm 2.22"
+  },
+  {
+    "hebrew_name": "טווח ריילי מחושב מעדשה דקה",
+    "english_name": "Theoretical Thin Lens Rayleigh Range",
+    "hebrew_var": "טווח_ריילי_תאורטי",
+    "english_var": "zR_calc",
+    "symbol": "z_(R, \"th\")'",
+    "value": 0.55,
+    "error": null,
+    "units": "\"mm\"",
+    "formatted_value": "0.55"
+  },
+  {
+    "hebrew_name": "טווח ריילי אידיאלי למותן המדוד",
+    "english_name": "Ideal Diffraction-Limited Rayleigh Range",
+    "hebrew_var": "טווח_ריילי_אידיאלי",
+    "english_var": "zR_ideal",
+    "symbol": "z_(R, \"ideal\")'",
+    "value": 7.18,
+    "error": null,
+    "units": "\"mm\"",
+    "formatted_value": "7.18"
+  },
+  {
+    "hebrew_name": "מקדם איכות אלומה",
+    "english_name": "Beam Quality Factor",
+    "hebrew_var": "מקדם_איכות",
+    "english_var": "M2",
+    "symbol": "M^2",
+    "value": 4.44,
+    "error": null,
+    "units": "\"\"",
+    "formatted_value": "4.44"
+  }
+]

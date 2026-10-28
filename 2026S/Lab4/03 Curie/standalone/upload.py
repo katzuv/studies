@@ -3,6 +3,7 @@
 Curie Point Experiment – Measurements and Calculations
 Standalone Data Analysis Script.
 """
+
 from collections import namedtuple
 from collections.abc import Callable, Iterable
 
@@ -300,6 +301,7 @@ from scipy.special import erf
 # 1. Helper Functions & Physics Models
 # =====================================================================
 
+
 def cooling_model(t, T_env, T0, k):
     """Newton's Law of Cooling model."""
     return T_env + (T0 - T_env) * np.exp(-k * t)
@@ -382,19 +384,49 @@ def generate_and_save_plots(
     """Generates and saves diagnostic analysis plots for the magnetic cores."""
     # Plot 1: Hysteresis Loop and erf Transition fits
     fig1 = plt.figure(figsize=(6, 4.5))
-    plt.scatter(heating_df["Temp (C)"], heating_df["RMS CH2 (V)"], s=1.5, alpha=0.4, label="Heating data", color="#2E86AB")
-    plt.scatter(cooling_df["Temp (C)"], cooling_df["RMS CH2 (V)"], s=1.5, alpha=0.4, label="Cooling data", color="#A23B72")
+    plt.scatter(
+        heating_df["Temp (C)"],
+        heating_df["RMS CH2 (V)"],
+        s=1.5,
+        alpha=0.4,
+        label="Heating data",
+        color="#2E86AB",
+    )
+    plt.scatter(
+        cooling_df["Temp (C)"],
+        cooling_df["RMS CH2 (V)"],
+        s=1.5,
+        alpha=0.4,
+        label="Cooling data",
+        color="#A23B72",
+    )
 
-    h_trans = heating_df[(heating_df["Temp (C)"] >= h_range[0]) & (heating_df["Temp (C)"] <= h_range[1])]
-    c_trans = cooling_df[(cooling_df["Temp (C)"] >= c_range[0]) & (cooling_df["Temp (C)"] <= c_range[1])]
+    h_trans = heating_df[
+        (heating_df["Temp (C)"] >= h_range[0]) & (heating_df["Temp (C)"] <= h_range[1])
+    ]
+    c_trans = cooling_df[
+        (cooling_df["Temp (C)"] >= c_range[0]) & (cooling_df["Temp (C)"] <= c_range[1])
+    ]
     V_min_h, V_max_h = h_trans["RMS CH2 (V)"].min(), h_trans["RMS CH2 (V)"].max()
     V_min_c, V_max_c = c_trans["RMS CH2 (V)"].min(), c_trans["RMS CH2 (V)"].max()
 
     T_fit_h = np.linspace(h_range[0], h_range[1], 300)
-    plt.plot(T_fit_h, V_min_h + (V_max_h - V_min_h) * erf_model(T_fit_h, *fit_h.params), color="#0D47A1", linewidth=2.0, label="Heating Fit")
-    
+    plt.plot(
+        T_fit_h,
+        V_min_h + (V_max_h - V_min_h) * erf_model(T_fit_h, *fit_h.params),
+        color="#0D47A1",
+        linewidth=2.0,
+        label="Heating Fit",
+    )
+
     T_fit_c = np.linspace(c_range[0], c_range[1], 300)
-    plt.plot(T_fit_c, V_min_c + (V_max_c - V_min_c) * erf_model(T_fit_c, *fit_c.params), color="#4A148C", linewidth=2.0, label="Cooling Fit")
+    plt.plot(
+        T_fit_c,
+        V_min_c + (V_max_c - V_min_c) * erf_model(T_fit_c, *fit_c.params),
+        color="#4A148C",
+        linewidth=2.0,
+        label="Cooling Fit",
+    )
 
     plt.axvline(fit_h.params[0], color="#0D47A1", linestyle="--", alpha=0.8)
     plt.axvline(fit_c.params[0], color="#4A148C", linestyle="--", alpha=0.8)
@@ -404,24 +436,41 @@ def generate_and_save_plots(
     plt.ylim(bottom=ymin)
     plt.legend(frameon=True)
     plt.tight_layout()
-    fig1.savefig(parent_dir / f"{material_name}_curie_fit.svg", format="svg", bbox_inches="tight")
+    fig1.savefig(
+        parent_dir / f"{material_name}_curie_fit.svg", format="svg", bbox_inches="tight"
+    )
     plt.close(fig1)
 
     # Plot 2: Newton Cooling Curve Fit
     fig2 = plt.figure(figsize=(6, 4.5))
     plt.scatter(t_s, T_s, s=1.5, alpha=0.5, label="Cooling data", color="#2E86AB")
     t_fit = np.linspace(0, t_s.max(), 300)
-    plt.plot(t_fit, cooling_model(t_fit, *fit_temp.params), color="#C73E1D", linewidth=2.0, label="Newton Fit")
-    
-    set_style(xlabel="Time $t \\ [\\mathrm{sec}]$", ylabel="Temperature ($^\\circ\\mathrm{C}$)")
+    plt.plot(
+        t_fit,
+        cooling_model(t_fit, *fit_temp.params),
+        color="#C73E1D",
+        linewidth=2.0,
+        label="Newton Fit",
+    )
+
+    set_style(
+        xlabel="Time $t \\ [\\mathrm{sec}]$",
+        ylabel="Temperature ($^\\circ\\mathrm{C}$)",
+    )
     plt.yscale("log")
     plt.legend(frameon=True)
     plt.tight_layout()
-    fig2.savefig(parent_dir / f"{material_name}_cooling_fit.svg", format="svg", bbox_inches="tight")
+    fig2.savefig(
+        parent_dir / f"{material_name}_cooling_fit.svg",
+        format="svg",
+        bbox_inches="tight",
+    )
     plt.close(fig2)
 
 
-def export_material_results(material_name, hebrew_material, fit_h, fit_c, fit_temp, k_theory, parent_dir):
+def export_material_results(
+    material_name, hebrew_material, fit_h, fit_c, fit_temp, k_theory, parent_dir
+):
     """Saves analytical fitting output params to structured JSON and Typst markup."""
     results = [
         {
@@ -488,10 +537,14 @@ def export_material_results(material_name, hebrew_material, fit_h, fit_c, fit_te
 
     # Save summary JSON
     json_path = parent_dir / f"{material_name}_results.json"
-    json_path.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8")
+    json_path.write_text(
+        json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
 
     # Generate Typst report file
-    typst_lines = [f"// Automatically generated {material_name} fit results for Typst\n\n"]
+    typst_lines = [
+        f"// Automatically generated {material_name} fit results for Typst\n\n"
+    ]
     for item in results:
         val_expr = item["formatted_value"]
         if item["units"]:
@@ -524,9 +577,10 @@ def export_material_results(material_name, hebrew_material, fit_h, fit_c, fit_te
 # 2. Main Execution Pipeline
 # =====================================================================
 
+
 def main():
     parent_dir = Path(__file__).parent if "__file__" in locals() else Path(".")
-    
+
     print("=" * 60)
     print("  Curie Point Experiment - Analytical Data Framework  ")
     print("=" * 60)
@@ -538,20 +592,24 @@ def main():
     if constants_path.exists():
         print(f"\n[+] Loading system parameters from: {constants_path.name}")
         constants_data = json.loads(constants_path.read_text(encoding="utf-8"))
-        
+
         # Displaying a clean table representation in standard output
         records = []
         for c in constants_data:
-            records.append({
-                "Constant Parameter": c["english_name"],
-                "Symbol": c["symbol"],
-                "Value": c["value"],
-                "Uncertainty": c["error"],
-                "Units": c["units"]
-            })
+            records.append(
+                {
+                    "Constant Parameter": c["english_name"],
+                    "Symbol": c["symbol"],
+                    "Value": c["value"],
+                    "Uncertainty": c["error"],
+                    "Units": c["units"],
+                }
+            )
         print(pd.DataFrame(records).to_string(index=False))
     else:
-        print(f"\n[-] warning: {constants_path.name} not found. Skipping parameter summary table.")
+        print(
+            f"\n[-] warning: {constants_path.name} not found. Skipping parameter summary table."
+        )
 
     # -----------------------------------------------------------------
     # Part A: Frequency Response Data Evaluation
@@ -560,8 +618,10 @@ def main():
     if freq_path.exists():
         print(f"\n[+] Parsing frequency sweep dataset: {freq_path.name}")
         df_freq = pd.read_csv(freq_path)
-        
-        vs0_data = df_freq[df_freq["Core Type"] == "VS0 (Air core)"].reset_index(drop=True)
+
+        vs0_data = df_freq[df_freq["Core Type"] == "VS0 (Air core)"].reset_index(
+            drop=True
+        )
         vs1_data = df_freq[df_freq["Core Type"] == "VS1 (N1)"].reset_index(drop=True)
         vs2_data = df_freq[df_freq["Core Type"] == "VS2 (N2)"].reset_index(drop=True)
 
@@ -582,8 +642,12 @@ def main():
         ax1.set_xticklabels([str(t) for t in ticks])
         ax1.legend(frameon=True)
         plt.tight_layout()
-        fig1.savefig(parent_dir / "frequency_response_vs_vp.svg", format="svg", bbox_inches="tight")
-        
+        fig1.savefig(
+            parent_dir / "frequency_response_vs_vp.svg",
+            format="svg",
+            bbox_inches="tight",
+        )
+
         # Figure 2: Relative Permeability Ratio (Vs / V_air)
         vs1_v0 = vs1_data["CH2 (V)"] / vs0_data["CH2 (V)"]
         vs2_v0 = vs2_data["CH2 (V)"] / vs0_data["CH2 (V)"]
@@ -591,15 +655,23 @@ def main():
         fig2, ax2 = plt.subplots(figsize=(6, 4.5))
         ax2.semilogx(freqs, vs1_v0, label="Ferrite core ($V_{s1}/V_{s0}$)")
         ax2.semilogx(freqs, vs2_v0, label="Invar core ($V_{s2}/V_{s0}$)")
-        set_style(ax2, xlabel="$f \\ [\\mathrm{Hz}]$", ylabel="$V_s / V_{\\mathrm{air}}$")
+        set_style(
+            ax2, xlabel="$f \\ [\\mathrm{Hz}]$", ylabel="$V_s / V_{\\mathrm{air}}$"
+        )
         ax2.set_xticks(ticks)
         ax2.set_xticklabels([str(t) for t in ticks])
         ax2.legend(frameon=True)
         plt.tight_layout()
-        fig2.savefig(parent_dir / "frequency_response_ratio.svg", format="svg", bbox_inches="tight")
+        fig2.savefig(
+            parent_dir / "frequency_response_ratio.svg",
+            format="svg",
+            bbox_inches="tight",
+        )
         print("[+] Frequency response vector plots saved successfully (.svg format).")
     else:
-        print(f"\n[-] warning: {freq_path.name} data file omitted. Skipping Part A calculations.")
+        print(
+            f"\n[-] warning: {freq_path.name} data file omitted. Skipping Part A calculations."
+        )
 
     # -----------------------------------------------------------------
     # Part B: Ferrite Phase Transition Pipeline
@@ -608,18 +680,48 @@ def main():
     if ferrite_path.exists():
         print("\n[+] Executing non-linear fitting pipeline for: Ferrite Core")
         df_ferrite = pd.read_csv(ferrite_path, comment="#")
-        
+
         h_df, c_df = split_data(df_ferrite)
         t_s, T_s, fit_ferrite_temp = fit_cooling(c_df, p0=[24.0, 174.0, 0.001])
-        fit_ferrite_h, fit_ferrite_c = fit_curie(h_df, c_df, (120, 150), (125, 165), [133.0, 0.5], [138.0, 0.5])
+        fit_ferrite_h, fit_ferrite_c = fit_curie(
+            h_df, c_df, (120, 150), (125, 165), [133.0, 0.5], [138.0, 0.5]
+        )
 
-        generate_and_save_plots("ferrite", h_df, c_df, fit_ferrite_h, fit_ferrite_c, fit_ferrite_temp, t_s, T_s, (120, 150), (125, 165), 100, 1.9, parent_dir)
-        export_material_results("ferrite", "פריט", fit_ferrite_h, fit_ferrite_c, fit_ferrite_temp, k_theory=0.0829, parent_dir=parent_dir)
+        generate_and_save_plots(
+            "ferrite",
+            h_df,
+            c_df,
+            fit_ferrite_h,
+            fit_ferrite_c,
+            fit_ferrite_temp,
+            t_s,
+            T_s,
+            (120, 150),
+            (125, 165),
+            100,
+            1.9,
+            parent_dir,
+        )
+        export_material_results(
+            "ferrite",
+            "פריט",
+            fit_ferrite_h,
+            fit_ferrite_c,
+            fit_ferrite_temp,
+            k_theory=0.0829,
+            parent_dir=parent_dir,
+        )
 
         print("\n>>> Ferrite Fit Outputs Summary:")
-        print(f"  - Curie Temp (Heating) : {fit_ferrite_h.params[0]:.2f} +/- {fit_ferrite_h.params[1]:.2f} °C")
-        print(f"  - Curie Temp (Cooling) : {fit_ferrite_c.params[0]:.2f} +/- {fit_ferrite_c.params[1]:.2f} °C")
-        print(f"  - Cooling Constant k   : {fit_ferrite_temp.params[2]:.6f} s^-1 (Theoretical: 0.082900 s^-1)")
+        print(
+            f"  - Curie Temp (Heating) : {fit_ferrite_h.params[0]:.2f} +/- {fit_ferrite_h.params[1]:.2f} °C"
+        )
+        print(
+            f"  - Curie Temp (Cooling) : {fit_ferrite_c.params[0]:.2f} +/- {fit_ferrite_c.params[1]:.2f} °C"
+        )
+        print(
+            f"  - Cooling Constant k   : {fit_ferrite_temp.params[2]:.6f} s^-1 (Theoretical: 0.082900 s^-1)"
+        )
     else:
         print(f"\n[-] warning: {ferrite_path.name} not found.")
 
@@ -630,22 +732,54 @@ def main():
     if invar_path.exists():
         print("\n[+] Executing non-linear fitting pipeline for: Invar Core")
         df_invar = pd.read_csv(invar_path, comment="#")
-        
+
         h_df, c_df = split_data(df_invar)
         t_s, T_s, fit_invar_temp = fit_cooling(c_df, p0=[74.0, 293.0, 0.001])
-        fit_invar_h, fit_invar_c = fit_curie(h_df, c_df, (220, 275), (220, 275), [246.0, 5.0], [250.0, 5.0])
+        fit_invar_h, fit_invar_c = fit_curie(
+            h_df, c_df, (220, 275), (220, 275), [246.0, 5.0], [250.0, 5.0]
+        )
 
-        generate_and_save_plots("invar", h_df, c_df, fit_invar_h, fit_invar_c, fit_invar_temp, t_s, T_s, (220, 275), (220, 275), 100, 1.9, parent_dir)
-        export_material_results("invar", "אינבר", fit_invar_h, fit_invar_c, fit_invar_temp, k_theory=0.0483, parent_dir=parent_dir)
+        generate_and_save_plots(
+            "invar",
+            h_df,
+            c_df,
+            fit_invar_h,
+            fit_invar_c,
+            fit_invar_temp,
+            t_s,
+            T_s,
+            (220, 275),
+            (220, 275),
+            100,
+            1.9,
+            parent_dir,
+        )
+        export_material_results(
+            "invar",
+            "אינבר",
+            fit_invar_h,
+            fit_invar_c,
+            fit_invar_temp,
+            k_theory=0.0483,
+            parent_dir=parent_dir,
+        )
 
         print("\n>>> Invar Fit Outputs Summary:")
-        print(f"  - Curie Temp (Heating) : {fit_invar_h.params[0]:.2f} +/- {fit_invar_h.params[1]:.2f} °C")
-        print(f"  - Curie Temp (Cooling) : {fit_invar_c.params[0]:.2f} +/- {fit_invar_c.params[1]:.2f} °C")
-        print(f"  - Cooling Constant k   : {fit_invar_temp.params[2]:.6f} s^-1 (Theoretical: 0.048300 s^-1)")
+        print(
+            f"  - Curie Temp (Heating) : {fit_invar_h.params[0]:.2f} +/- {fit_invar_h.params[1]:.2f} °C"
+        )
+        print(
+            f"  - Curie Temp (Cooling) : {fit_invar_c.params[0]:.2f} +/- {fit_invar_c.params[1]:.2f} °C"
+        )
+        print(
+            f"  - Cooling Constant k   : {fit_invar_temp.params[2]:.6f} s^-1 (Theoretical: 0.048300 s^-1)"
+        )
     else:
         print(f"\n[-] warning: {invar_path.name} not found.")
 
-    print("\n[+] Pipeline execution completed successfully. Structural plots and analytics data dumped to working directory.\n")
+    print(
+        "\n[+] Pipeline execution completed successfully. Structural plots and analytics data dumped to working directory.\n"
+    )
 
 
 if __name__ == "__main__":
